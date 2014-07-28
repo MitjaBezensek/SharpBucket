@@ -71,6 +71,12 @@ While a complete coverage of the API is preferred SharpBucket currently does not
 # Contributing
 Contributions are always welcome. You can us check the issues or look which api calls [are still missing](https://github.com/MitjaBezensek/SharpBucket/blob/master/Coverage.md).
 
+# Continuous Integration from AppVeyor
+The project is using [AppVeyor's](http://www.appveyor.com/) Continuous Integration
+Service that is free for open source projects. It is enabled for Pull Requests as well as the main branch. Main branch's current status is:
+
+[![Build status](https://ci.appveyor.com/api/projects/status/jtlni3j2fq3j6pxy/branch/master)](https://ci.appveyor.com/project/MitjaBezenek/sharpbucket/branch/master)
+
 # Licensing
 SharpBucket is licensed with MIT license. It uses NServiceKit for requesting and parsing the data. NServiceKit is also licensed under MIT terms and is a open source fork of StackService.
 
