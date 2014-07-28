@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/MitjaBezensek/SharpBucket</projectUrl>
     <iconUrl>http://mbezensek.com/favicon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
+    <description>A .Net wrapper for the BitBucket REST API.</description>
     <releaseNotes>This is the first version of the package. Enjoy!</releaseNotes>
     <copyright>Copyright 2014</copyright>
     <tags>BitBucket REST API C#</tags>
