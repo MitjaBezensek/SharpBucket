@@ -2,7 +2,11 @@
 SharpBucket is a .Net wrapper for the BitBucket API. It is written in in C#. 
 
 # How to get started
-See the ConsoleTestProject to see how to use the wrapper. Here's just a brief demo:
+To install SharpBucket, run the following command in the Package Manager Console:
+
+    PM> Install-Package SharpBucket
+
+See the [Console Test Project][1] to see how to use the wrapper. Here's just a brief demo:
 
 First lets set your entry point to the API
 ```CSharp
@@ -69,3 +73,6 @@ Contributions are always welcome. You can us check the issues or look which api 
 
 # Licensing
 SharpBucket is licensed with MIT license. It uses NServiceKit for requesting and parsing the data. NServiceKit is also licensed under MIT terms and is a open source fork of StackService.
+
+
+  [1]: https://github.com/MitjaBezensek/SharpBucket/blob/master/ConsoleTests/Program.cs
