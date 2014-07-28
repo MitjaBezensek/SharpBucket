@@ -24,10 +24,15 @@ var userRepos = user.ListRepositories();
 Similarly for the Issues end point:
 
 ```CSharp
- var issues = sharpBucketV1.Repository(accountName, repository).Issues();
-
+var issues = sharpBucketV1.Repository(accountName, repository).Issues();
 var issues = issues.ListIssues();
 var issueComments = issues.ListIssueComments(ISSUE_ID);
+```
+Sending information is just as easy.
+
+```CSharp
+var newIssue = new Issue{Title = "I have this little bug", content = "that is really annoying", status = "new"};
+var newIssueResult = issues.PostIssue(newIssue);
 ```
 # Authentication
 There are two ways you can authenticate with SharpBucket
