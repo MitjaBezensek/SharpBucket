@@ -14,7 +14,7 @@ sharpBucket.BasicAuthentication(email, password);
 
 There are various end points you can use. Lets take a look at User end point:
 ```CSharp
-var user = sharpBucketV1.User();
+var user = sharpBucket.User();
 var info = user.GetInfo();
 var privileges = user.GetPrivileges();
 var follows = user.ListFollows();
@@ -24,7 +24,7 @@ var userRepos = user.ListRepositories();
 Similarly for the Issues end point:
 
 ```CSharp
-var issues = sharpBucketV1.Repository(accountName, repository).Issues();
+var issues = sharpBucket.Repository(accountName, repository).Issues();
 var issues = issues.ListIssues();
 var issueComments = issues.ListIssueComments(ISSUE_ID);
 ```
