@@ -106,9 +106,6 @@ It is quite limited compared to the API v1. So it has been postponed for later.
 - Basic (Finished)
 
 
-enter link description here
-
-
   [1]: https://confluence.atlassian.com/display/BITBUCKET/Version+1
   [2]: https://confluence.atlassian.com/display/BITBUCKET/users+Endpoint+-+1.0
   [3]: https://confluence.atlassian.com/display/BITBUCKET/account+Resource
