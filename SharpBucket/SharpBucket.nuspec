@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>SharpBucket</title>
+    <authors>Mitja Bezenšek</authors>
+    <owners>Mitja Bezenšek</owners>
+    <licenseUrl>https://github.com/MitjaBezensek/SharpBucket/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/MitjaBezensek/SharpBucket</projectUrl>
+    <iconUrl>http://mbezensek.com/favicon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>This is the first version of the package. Enjoy!</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>BitBucket REST API C#</tags>
+  </metadata>
+</package>

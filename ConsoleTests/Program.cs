@@ -47,7 +47,7 @@ namespace ConsoleTests{
 
             // Issues
             var issues = issuesEP.ListIssues();
-            var newIssue = new Issue{Title = "Completely new issue", content = "Hi", status = "new"};
+            var newIssue = new Issue{Title = "I have this little bug", content = "that is really annoying", status = "new"};
             var newIssueResult = issuesEP.PostIssue(newIssue);
             var changedIssue = new Issue{Title = "Completely new title", content = "Hi!", status = "new", local_id = newIssueResult.local_id};
             var changedIssueResult = issuesEP.PutIssue(changedIssue);
@@ -61,7 +61,7 @@ namespace ConsoleTests{
             var issueComments = issuesEP.ListIssueComments(ISSUE_ID);
             var firstComment = issueComments[0];
             var issueComment = issuesEP.GetIssueComment(ISSUE_ID, firstComment.comment_id);
-            var newComment = new Comment{content = "new comment"};
+            var newComment = new Comment{content = "This bug is really annoying!"};
             var newCommentResult = issuesEP.PostIssueComment(ISSUE_ID, newComment);
             var updateComment = new Comment{comment_id = newComment.comment_id, content = "updated"};
             var updatedCommentRes = issuesEP.PutIssueComment(ISSUE_ID, newCommentResult.comment_id, updateComment);
