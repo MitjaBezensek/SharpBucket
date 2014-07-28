@@ -1,7 +1,11 @@
 ﻿using SharpBucket.EndPoints;
 
-namespace SharpBucket.V1{
+namespace SharpBucket{
     public sealed class SharpBucketV1 : SharpBucket{
+        public SharpBucketV1(){
+            BaseUrl = "https://bitbucket.org/api/1.0/";
+        }
+
         public UserEndPointV1 User(){
             return new UserEndPointV1(this);
         }

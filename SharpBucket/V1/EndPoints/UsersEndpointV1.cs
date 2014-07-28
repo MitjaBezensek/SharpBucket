@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using SharpBucket.POCOs;
 using SharpBucket.Routes;
-using SharpBucket.V1;
 
 namespace SharpBucket.EndPoints{
     public class UsersEndpointV1{

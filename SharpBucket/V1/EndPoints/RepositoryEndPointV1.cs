@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SharpBucket.POCOs;
 using SharpBucket.Routes;
-using SharpBucket.V1;
 using Version = SharpBucket.POCOs.Version;
 
 namespace SharpBucket.EndPoints{

@@ -1,5 +1,5 @@
-﻿using SharpBucket.POCOs;
-using SharpBucket.V1;
+﻿using SharpBucket;
+using SharpBucket.POCOs;
 
 namespace ConsoleTests{
     internal class Program{

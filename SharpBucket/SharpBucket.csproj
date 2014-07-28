@@ -103,7 +103,7 @@
     <Compile Include="V1\Routes\RepositoryRoutes.cs" />
     <Compile Include="V1\Routes\UserRoutes.cs" />
     <Compile Include="V1\Routes\UsersRoutes.cs" />
-    <Compile Include="V1\SharpBucketV1.cs" />
+    <Compile Include="SharpBucketV1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

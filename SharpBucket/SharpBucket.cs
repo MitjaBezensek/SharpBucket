@@ -9,7 +9,7 @@ using SharpBucket.Authentication;
 
 namespace SharpBucket{
     public class SharpBucket{
-        private string BaseUrl { get; set; }
+        protected string BaseUrl { get; set; }
         private IAuthenticate authenticator;
 
         public void BasicAuthentication(string username, string password){
