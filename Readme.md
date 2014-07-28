@@ -31,7 +31,9 @@ var issueComments = issues.ListIssueComments(ISSUE_ID);
 Sending information is just as easy.
 
 ```CSharp
-var newIssue = new Issue{Title = "I have this little bug", content = "that is really annoying", status = "new"};
+var newIssue = new Issue{Title = "I have this little bug", 
+                         content = "that is really annoying",
+                         status = "new"};
 var newIssueResult = issues.PostIssue(newIssue);
 ```
 # Authentication
