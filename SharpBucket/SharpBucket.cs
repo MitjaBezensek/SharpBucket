@@ -31,9 +31,7 @@ namespace SharpBucket{
                 var relativeUrl = overrideUrl ?? request.ToUrl(method);
                 string ret;
                 try{
-                    var body = sendRequestBody ? QueryStringSerializer.SerializeToString(request) : null;
-                    var url = BaseUrl.CombineWith(relativeUrl);
-                    ret = authenticator.GetResponse(url, method, body);
+                    ret = authenticator.GetResponse(relativeUrl, method, request);
                 }
                 catch (WebException ex){
                     string errorBody = ex.GetResponseBody();
@@ -65,7 +63,7 @@ namespace SharpBucket{
             return Send(request, HttpMethods.Delete, false, overrideUrl);
         }
 
-        private class ConfigScope : IDisposable{
+        public class ConfigScope : IDisposable{
             private readonly JsConfigScope jsConfigScope;
 
             public ConfigScope(){

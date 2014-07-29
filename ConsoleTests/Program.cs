@@ -14,14 +14,14 @@ namespace ConsoleTests{
             var sharpBucket = new SharpBucketV1();
 
             // Do basic auth
-            //ReadTestDataBasic();
-            //sharpBucket.BasicAuthentication(email, password);
+            ReadTestDataBasic();
+            sharpBucket.BasicAuthentication(email, password);
 
             // Or OAuth
-            ReadTestDataOauth();
-            sharpBucket.OAuthAuthentication(apiKey, secretApiKey, threeLegged: true);
+            //ReadTestDataOauth();
+            //sharpBucket.OAuthAuthentication(apiKey, secretApiKey, threeLegged: true);
 
-            //TestUserEndPoint(sharpBucket);
+            TestUserEndPoint(sharpBucket);
             TestIssuesEndPoint(sharpBucket);
             TestRepositoryEndPoint(sharpBucket);
             TestUsersEndPoint(sharpBucket);
@@ -75,7 +75,7 @@ namespace ConsoleTests{
             var issues = issuesEP.ListIssues();
             var newIssue = new Issue{Title = "new title", Content = "new content", Status = "new", Priority = "trivial", Kind = "bug"};
             var newIssueResult = issuesEP.PostIssue(newIssue);
-            var changedIssue = new Issue{Title = "Completely new Title", Content = "Hi!", Status = "new", Local_id = newIssueResult.Local_id};
+            var changedIssue = new Issue{Title = "Completely new title", Content = "Hi!", Status = "new", Local_id = newIssueResult.Local_id};
             var changedIssueResult = issuesEP.PutIssue(changedIssue);
             issuesEP.DeleteIssue(newIssueResult.Local_id);
 

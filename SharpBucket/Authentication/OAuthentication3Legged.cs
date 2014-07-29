@@ -1,38 +1,49 @@
 ﻿using System;
 using System.Diagnostics;
-using DevDefined.OAuth.Consumer;
-using DevDefined.OAuth.Framework;
+using NServiceKit.ServiceHost;
+using RestSharp;
+using RestSharp.Authenticators;
+using RestSharp.Contrib;
 
 namespace SharpBucket.Authentication{
     public class OAuthentication3Legged : OauthAuthentication, IAuthenticate{
-        private IToken accessToken;
-        private OAuthConsumerContext context;
-        private IToken requestToken;
-       
-        public OAuthentication3Legged(string apiKey, string secretApiKey) : base(apiKey, secretApiKey){
-            Authenticate();
+        private readonly string OAuthToken;
+        private readonly string OauthTokenSecret;
+        private RestClient client;
+        private const string requestUrl = "oauth/request_token";
+        private const string userAuthorizeUrl = "oauth/authenticate";
+        private const string accessUrl = "access_token";
+
+        public OAuthentication3Legged(string consumerKey, string consumerSecret) : base(consumerKey, consumerSecret){
+            // get the tokens
+            var authClient = new RestClient(baseUrl){Authenticator = OAuth1Authenticator.ForRequestToken(consumerKey, consumerSecret, "oob")};
+            var request = new RestRequest(requestUrl, Method.POST);
+            var response = authClient.Execute(request);
+    
+            var qs = HttpUtility.ParseQueryString(response.Content);
+            var oauth_token = qs["oauth_token"];
+            var oauth_token_secret = qs["oauth_token_secret"];
+            request = new RestRequest(userAuthorizeUrl);
+            request.AddParameter("oauth_token", oauth_token);
+            var url = authClient.BuildUri(request).ToString();
+            Process.Start(url);
+            var verifier = Console.ReadLine();
+            request = new RestRequest(accessUrl, Method.POST);
+
+            authClient.Authenticator = OAuth1Authenticator.ForAccessToken(consumerKey, consumerSecret, oauth_token, oauth_token_secret, verifier);
+            response = authClient.Execute(request);
+            qs = HttpUtility.ParseQueryString(response.Content);
+            OAuthToken = qs["oauth_token"];
+            OauthTokenSecret = qs["oauth_token_secret"];
         }
 
-        public string GetResponse(string url, string method, string body){
-            var authorizationContext = new OAuthConsumerContext { ConsumerKey = _apiKey, ConsumerSecret = _secretApiKey, SignatureMethod = SignatureMethod.HmacSha1};
-            var oauthSession = new OAuthSession(authorizationContext, requestUrl, userAuthorizeUrl, accessUrl);
-            return ExecuteRequest(url, method, body, oauthSession);
-        }
-
-        private void Authenticate(){
-            context = new OAuthConsumerContext { ConsumerKey = _apiKey, ConsumerSecret = _secretApiKey, SignatureMethod = SignatureMethod.HmacSha1 };
-            var session = new OAuthSession(context, requestUrl, userAuthorizeUrl, accessUrl);
-            requestToken = session.GetRequestToken();
-            var link = session.GetUserAuthorizationUrlForToken(requestToken);
-            Process.Start(link);
-            Console.WriteLine("Please enter the PIN:");
-            var pin = Console.ReadLine();
-            accessToken = session.ExchangeRequestTokenForAccessToken(requestToken, pin);
-            accessToken.ConsumerKey = _apiKey;
-            //accessToken.Token = requestToken.Token;
-            //accessToken.TokenSecret = requestToken.TokenSecret;
-            accessToken.Realm = requestToken.Realm;
-           
+        public string GetResponse<T>(string url, string method, IReturn<T> body){
+            if (client == null){
+                client = new RestClient(baseUrl){
+                    Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)
+                };
+            }
+            return RequestExcecutor.ExectueRequest(url, method, body, client);
         }
     }
 }

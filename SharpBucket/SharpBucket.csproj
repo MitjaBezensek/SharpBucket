@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevDefined.OAuth">
-      <HintPath>..\packages\DevDefined.OAuth.0.1\lib\DevDefined.OAuth.dll</HintPath>
-    </Reference>
     <Reference Include="NServiceKit.Common">
       <HintPath>..\packages\NServiceKit.Common.1.0.27\lib\net35\NServiceKit.Common.dll</HintPath>
     </Reference>
@@ -41,6 +38,9 @@
     </Reference>
     <Reference Include="NServiceKit.Text">
       <HintPath>..\packages\NServiceKit.Text.1.0.10\lib\net35\NServiceKit.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,6 +54,7 @@
     <Compile Include="Authentication\OauthAuthentication.cs" />
     <Compile Include="Authentication\OAuthentication2Legged.cs" />
     <Compile Include="Authentication\OAuthentication3Legged.cs" />
+    <Compile Include="Authentication\RequestExcecutor.cs" />
     <Compile Include="SharpBucket.cs" />
     <Compile Include="V1\EndPoints\IssuesEndPoint.cs" />
     <Compile Include="V1\EndPoints\RepositoryEndPointV1.cs" />

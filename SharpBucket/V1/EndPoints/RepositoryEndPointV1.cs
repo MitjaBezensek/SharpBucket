@@ -32,22 +32,22 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         public Issue PostIssue(Issue issue){
-            return _sharpBucketV1.Post(new IssuesRoutes.PostIssue{AccountName = _accountName, RepositorySlug = _repository, Title = issue.Title, Content = issue.Content, Status = issue.Status, Kind = issue.Kind, Priority = issue.Priority}, _issuesUrl);
+            return _sharpBucketV1.Post(new IssuesRoutes.PostIssue{AccountName = _accountName, RepositorySlug = _repository, title = issue.Title, content = issue.Content, status = issue.Status, kind = issue.Kind, priority = issue.Priority}, _issuesUrl);
         }
 
         public Issue GetIssue(int? issueId){
             var overrideUrl = String.Format(_issuesIdUrl, issueId);
-            return _sharpBucketV1.Get(new IssuesRoutes.GetIssue{AccountName = _accountName, RepositorySlug = _repository, Local_id = issueId}, overrideUrl);
+            return _sharpBucketV1.Get(new IssuesRoutes.GetIssue{AccountName = _accountName, RepositorySlug = _repository, local_id = issueId}, overrideUrl);
         }
 
         public Issue DeleteIssue(int? issueId){
             var overrideUrl = String.Format(_issuesIdUrl, issueId);
-            return _sharpBucketV1.Delete(new IssuesRoutes.PostIssue{AccountName = _accountName, RepositorySlug = _repository, Local_id = issueId}, overrideUrl);
+            return _sharpBucketV1.Delete(new IssuesRoutes.PostIssue{AccountName = _accountName, RepositorySlug = _repository, local_id = issueId}, overrideUrl);
         }
 
         public Issue PutIssue(Issue issue){
             var overrideUrl = String.Format(_issuesIdUrl, issue.Local_id);
-            return _sharpBucketV1.Put(new IssuesRoutes.GetIssue{AccountName = _accountName, RepositorySlug = _repository, Title = issue.Title, Content = issue.Content}, overrideUrl);
+            return _sharpBucketV1.Put(new IssuesRoutes.GetIssue{AccountName = _accountName, RepositorySlug = _repository, title = issue.Title, content = issue.Content}, overrideUrl);
         }
 
         public List<User> ListIssueFollowers(int issueId){
