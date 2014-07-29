@@ -14,14 +14,14 @@ namespace ConsoleTests{
             var sharpBucket = new SharpBucketV1();
 
             // Do basic auth
-            ReadTestDataBasic();
-            sharpBucket.BasicAuthentication(email, password);
+            //ReadTestDataBasic();
+            //sharpBucket.BasicAuthentication(email, password);
 
             // Or OAuth
-            //ReadTestDataOauth();
-            //sharpBucket.OAuthAuthentication(apiKey, secretApiKey);
+            ReadTestDataOauth();
+            sharpBucket.OAuthAuthentication(apiKey, secretApiKey, threeLegged: true);
 
-            TestUserEndPoint(sharpBucket);
+            //TestUserEndPoint(sharpBucket);
             TestIssuesEndPoint(sharpBucket);
             TestRepositoryEndPoint(sharpBucket);
             TestUsersEndPoint(sharpBucket);
@@ -77,7 +77,7 @@ namespace ConsoleTests{
             var newIssueResult = issuesEP.PostIssue(newIssue);
             var changedIssue = new Issue{Title = "Completely new Title", Content = "Hi!", Status = "new", Local_id = newIssueResult.Local_id};
             var changedIssueResult = issuesEP.PutIssue(changedIssue);
-            issuesEP.DeleteIssue(changedIssueResult.Local_id);
+            issuesEP.DeleteIssue(newIssueResult.Local_id);
 
             // Issue followers
             var issueFollowers = issuesEP.ListIssueFollowers(ISSUE_ID);
@@ -91,7 +91,7 @@ namespace ConsoleTests{
             var newCommentResult = issuesEP.PostIssueComment(ISSUE_ID, newComment);
             var updateComment = new Comment{Comment_id = newComment.Comment_id, Content = "updated"};
             var updatedCommentRes = issuesEP.PutIssueComment(ISSUE_ID, newCommentResult.Comment_id, updateComment);
-            issuesEP.DeleteIssueComment(13, updatedCommentRes.Comment_id);
+            issuesEP.DeleteIssueComment(13, newCommentResult.Comment_id);
 
             // Components
             var components = issuesEP.ListComponents();

@@ -52,6 +52,8 @@
   <ItemGroup>
     <Compile Include="Authentication\BasicAuthentication.cs" />
     <Compile Include="Authentication\OauthAuthentication.cs" />
+    <Compile Include="Authentication\OAuthentication2Legged.cs" />
+    <Compile Include="Authentication\OAuthentication3Legged.cs" />
     <Compile Include="SharpBucket.cs" />
     <Compile Include="V1\EndPoints\IssuesEndPoint.cs" />
     <Compile Include="V1\EndPoints\RepositoryEndPointV1.cs" />
@@ -101,7 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="SharpBucket.nuspec" />
+    <None Include="SharpBucket.nuspec">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
