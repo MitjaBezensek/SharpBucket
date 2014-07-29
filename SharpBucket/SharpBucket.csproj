@@ -30,20 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NServiceKit">
-      <HintPath>..\packages\NServiceKit.1.0.11\lib\net35\NServiceKit.dll</HintPath>
+    <Reference Include="DevDefined.OAuth">
+      <HintPath>..\packages\DevDefined.OAuth.0.1\lib\DevDefined.OAuth.dll</HintPath>
     </Reference>
     <Reference Include="NServiceKit.Common">
-      <HintPath>..\packages\NServiceKit.Common.1.0.11\lib\net35\NServiceKit.Common.dll</HintPath>
+      <HintPath>..\packages\NServiceKit.Common.1.0.27\lib\net35\NServiceKit.Common.dll</HintPath>
     </Reference>
     <Reference Include="NServiceKit.Interfaces">
-      <HintPath>..\packages\NServiceKit.Common.1.0.11\lib\net35\NServiceKit.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="NServiceKit.Razor">
-      <HintPath>..\packages\NServiceKit.Razor.1.0.27\lib\net40\NServiceKit.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="NServiceKit.ServiceInterface">
-      <HintPath>..\packages\NServiceKit.1.0.11\lib\net35\NServiceKit.ServiceInterface.dll</HintPath>
+      <HintPath>..\packages\NServiceKit.Common.1.0.27\lib\net35\NServiceKit.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="NServiceKit.Text">
       <HintPath>..\packages\NServiceKit.Text.1.0.10\lib\net35\NServiceKit.Text.dll</HintPath>
@@ -51,14 +45,13 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Web.Razor.Unofficial">
-      <HintPath>..\packages\System.Web.Razor.Unofficial.2.0.2\lib\net40\System.Web.Razor.Unofficial.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\BasicAuthentication.cs" />
     <Compile Include="Authentication\OauthAuthentication.cs" />
-    <Compile Include="Authentication\OAuthBase.cs" />
     <Compile Include="SharpBucket.cs" />
     <Compile Include="V1\EndPoints\IssuesEndPoint.cs" />
     <Compile Include="V1\EndPoints\RepositoryEndPointV1.cs" />

@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using NServiceKit.Common;
 using NServiceKit.Common.Web;
 using NServiceKit.ServiceClient.Web;
@@ -19,36 +20,28 @@ namespace SharpBucket{
             authenticator = new OauthAuthentication(apiKey, secretApiKey);
         }
 
-        private string Send(string relativeUrl, string method, string body){
-            try{
-                var url = BaseUrl.CombineWith(relativeUrl);
-
-                var response = url.SendStringToUrl(method, body, requestFilter: req =>{
-                    req.Accept = MimeTypes.Json;
-                    authenticator.AuthenticateRequest(req);
-                    if (method == HttpMethods.Post || method == HttpMethods.Put){
-                        req.ContentType = "application/x-www-form-urlencoded";
-                    }
-                });
-
-                return response;
-            }
-            catch (WebException ex){
-                string errorBody = ex.GetResponseBody();
-                var errorStatus = ex.GetStatus() ?? HttpStatusCode.BadRequest;
-
-                if (ex.IsAny400()){
-                }
-                return null;
-            }
-        }
 
         private T Send<T>(IReturn<T> request, string method, bool sendRequestBody = true, string overrideUrl = null){
-            var relativeUrl = overrideUrl ?? request.ToUrl(method);
-            var body = sendRequestBody ? QueryStringSerializer.SerializeToString(request) : null;
-            var json = Send(relativeUrl, method, body);
-            var response = json.FromJson<T>();
-            return response;
+            using (new ConfigScope()){
+                var relativeUrl = overrideUrl ?? request.ToUrl(method);
+                string ret;
+                try{
+                    var body = sendRequestBody ? QueryStringSerializer.SerializeToString(request) : null;
+                    var url = BaseUrl.CombineWith(relativeUrl);
+                    ret = authenticator.GetResponse(url, method, body);
+                }
+                catch (WebException ex){
+                    string errorBody = ex.GetResponseBody();
+                    var errorStatus = ex.GetStatus() ?? HttpStatusCode.BadRequest;
+
+                    if (ex.IsAny400()){
+                    }
+                    ret = null;
+                }
+                var json = ret;
+                var response = json.FromJson<T>();
+                return response;
+            }
         }
 
         public T Get<T>(IReturn<T> request, string overrideUrl = null){
@@ -65,6 +58,20 @@ namespace SharpBucket{
 
         public T Delete<T>(IReturn<T> request, string overrideUrl = null){
             return Send(request, HttpMethods.Delete, false, overrideUrl);
+        }
+
+        private class ConfigScope : IDisposable{
+            private readonly JsConfigScope jsConfigScope;
+
+            public ConfigScope(){
+                jsConfigScope = JsConfig.With(
+                    emitLowercaseUnderscoreNames: true,
+                    emitCamelCaseNames: false);
+            }
+
+            public void Dispose(){
+                jsConfigScope.Dispose();
+            }
         }
     }
 }
