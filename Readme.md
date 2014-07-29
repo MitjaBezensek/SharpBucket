@@ -77,7 +77,7 @@ sharpBucket.BasicAuthentication(email, password);
 ```
 
 ## How much of the API is covered?
-While a complete coverage of the API is preferred SharpBucket currently does not support everything yet. But the main functionality is covered and the rest should also get covered sooner or later.
+While a complete coverage of the API is preferred SharpBucket currently does not support everything yet. But the main functionality is [covered](https://github.com/MitjaBezensek/SharpBucket/blob/master/Coverage.md) and the rest should also get covered sooner or later.
 
 ## Contributing
 Contributions are always welcome. You can check the issues or look which api calls [are still missing](https://github.com/MitjaBezensek/SharpBucket/blob/master/Coverage.md). A few topics that still need to be covered:
