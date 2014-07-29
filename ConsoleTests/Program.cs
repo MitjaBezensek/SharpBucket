@@ -5,29 +5,55 @@ namespace ConsoleTests{
     internal class Program{
         private static string email;
         private static string password;
+        private static string apiKey;
+        private static string secretApiKey;
         private static string accountName;
         private static string repository;
 
         private static void Main(){
-            ReadTestData();
             var sharpBucket = new SharpBucketV1();
-            sharpBucket.BasicAuthentication(email, password);
+
+            // Do basic auth
+            //ReadTestDataBasic();
+            //sharpBucket.BasicAuthentication(email, password);
+            
+            // Or OAuth
+            ReadTestDataOauth();
+            sharpBucket.OAtuhAuthentication(apiKey, secretApiKey);
+
             TestUserEndPoint(sharpBucket);
             TestIssuesEndPoint(sharpBucket);
-            TestRepositoryEndPoitn(sharpBucket);
+            TestRepositoryEndPoint(sharpBucket);
             TestUsersEndPoint(sharpBucket);
         }
 
-        private static void ReadTestData(){
+        private static void ReadTestDataOauth(){
+            // Reads test data information from a file, you should structure it like this:
+            // By default it reads from c:\
+            // ApiKey:yourApiKey
+            // SecretApiKey:yourSecretApiKey
+            // AccountName:yourAccountName
+            // Repository:testRepository
+            var lines = System.IO.File.ReadAllLines("c:\\TestInformationOauth.txt");
+            apiKey = lines[0].Split(':')[1];
+            secretApiKey = lines[1].Split(':')[1];
+            ReadAccoutNameAndRepository(lines);
+        }
+
+        private static void ReadTestDataBasic(){
             // Reads test data information from a file, you should structure it like this:
             // By default it reads from c:\
             // Username:yourUsername
             // Password:yourPassword
             // AccountName:yourAccountName
             // Repository:testRepository
-            var lines = System.IO.File.ReadAllLines("c:\\TestInformation.txt");
+            var lines = System.IO.File.ReadAllLines("c:\\TestInformationOauth.txt");
             email = lines[0].Split(':')[1];
             password = lines[1].Split(':')[1];
+            ReadAccoutNameAndRepository(lines);
+        }
+
+        private static void ReadAccoutNameAndRepository(string[] lines){
             accountName = lines[2].Split(':')[1];
             repository = lines[3].Split(':')[1];
         }
@@ -98,7 +124,7 @@ namespace ConsoleTests{
             issuesEP.DeleteVersion(updatedversion.id);
         }
 
-        private static void TestRepositoryEndPoitn(SharpBucketV1 sharpBucketV1){
+        private static void TestRepositoryEndPoint(SharpBucketV1 sharpBucketV1){
             var repositoryEP = sharpBucketV1.Repository(accountName, repository);
             var tags = repositoryEP.ListTags();
             var branches = repositoryEP.ListBranches();
