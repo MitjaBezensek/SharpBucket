@@ -66,7 +66,15 @@ var newCommentResult = issue.PostComment(newComment);
 ## Authentication
 There are two ways you can authenticate with SharpBucket
 - via the Oauth 1.0a, which is preferred
-- via BitBucket's username and password.
+- via BitBucket's username and password
+
+Here is how you can use them:
+```CSharp
+// authenticate with OAuth keys
+sharpBucket.OAuthAuthentication(apiKey, secretApiKey);
+// authenticate with username and password
+sharpBucket.BasicAuthentication(email, password);
+```
 
 ## How much of the API is covered?
 While a complete coverage of the API is preferred SharpBucket currently does not support everything yet. But the main functionality is covered and the rest should also get covered sooner or later.

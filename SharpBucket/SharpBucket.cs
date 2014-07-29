@@ -16,7 +16,7 @@ namespace SharpBucket{
             authenticator = new BasicAuthentication(username, password);
         }
 
-        public void OAtuhAuthentication(string apiKey, string secretApiKey){
+        public void OAuthAuthentication(string apiKey, string secretApiKey){
             authenticator = new OauthAuthentication(apiKey, secretApiKey);
         }
 
