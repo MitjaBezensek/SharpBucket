@@ -19,7 +19,7 @@ namespace ConsoleTests{
             
             // Or OAuth
             ReadTestDataOauth();
-            sharpBucket.OAtuhAuthentication(apiKey, secretApiKey);
+            sharpBucket.OAuthAuthentication(apiKey, secretApiKey);
 
             TestUserEndPoint(sharpBucket);
             TestIssuesEndPoint(sharpBucket);
