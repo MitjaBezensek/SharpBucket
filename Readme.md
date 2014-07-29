@@ -14,8 +14,8 @@ First lets set your entry point to the API
 ```CSharp
 // your main entry to the BitBucket API, this one is for V1
 var sharpBucket = new SharpBucketV1();
-// authenticate with the username and password (OAuth coming soon)
-sharpBucket.BasicAuthentication(email, password);
+// authenticate with OAuth keys
+sharpBucket.OAuthAuthentication(apiKey, secretApiKey);
 ```
 
 There are various end points you can use. Lets take a look at User end point:
@@ -65,7 +65,7 @@ var newCommentResult = issue.PostComment(newComment);
 ```
 ## Authentication
 There are two ways you can authenticate with SharpBucket
-- via the Oauth 1.0 (not implemented yet)
+- via the Oauth 1.0a, which is preferred
 - via BitBucket's username and password.
 
 ## How much of the API is covered?
@@ -73,7 +73,6 @@ While a complete coverage of the API is preferred SharpBucket currently does not
 
 ## Contributing
 Contributions are always welcome. You can check the issues or look which api calls [are still missing](https://github.com/MitjaBezensek/SharpBucket/blob/master/Coverage.md). A few topics that still need to be covered:
-- Oauth authorization
 - V2 of the api
 - async calls?
 - paging
@@ -86,7 +85,7 @@ Service that is free for open source projects. It is enabled for Pull Requests a
 [![Build status](https://ci.appveyor.com/api/projects/status/jtlni3j2fq3j6pxy/branch/master)](https://ci.appveyor.com/project/MitjaBezenek/sharpbucket/branch/master)
 
 ## Licensing
-SharpBucket is licensed with MIT license. It uses NServiceKit for requesting and parsing the data. NServiceKit is also [licensed under MIT](https://github.com/NServiceKit/NServiceKit.Text/blob/master/LICENSE) terms and is an open source fork of StackService. SharpBucket was influenced by ServiceStack's [Stripe api wrapper](https://github.com/ServiceStack/Stripe).
+SharpBucket is licensed with MIT license. It uses NServiceKit for requesting and parsing the data. NServiceKit is also [licensed under MIT](https://github.com/NServiceKit/NServiceKit.Text/blob/master/LICENSE) terms and is an open source fork of StackService. SharpBucket was influenced by ServiceStack's [Stripe api wrapper](https://github.com/ServiceStack/Stripe). It also uses Google's [OAuth protocol](https://code.google.com/p/oauth/), that is licensed under Apache License.
 
 
   [1]: https://github.com/MitjaBezensek/SharpBucket/blob/master/ConsoleTests/Program.cs

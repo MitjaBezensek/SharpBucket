@@ -102,8 +102,8 @@
 It is quite limited compared to the API v1. So it has been postponed for later.
 
 ## [Authentication][28] 
-- Oauth
-- Basic (Finished)
+- Oauth 1.0a **(done)**
+- Basic **(done)**
 
 
   [1]: https://confluence.atlassian.com/display/BITBUCKET/Version+1

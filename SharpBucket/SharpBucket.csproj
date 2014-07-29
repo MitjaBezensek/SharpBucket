@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Authentication\BasicAuthentication.cs" />
     <Compile Include="Authentication\OauthAuthentication.cs" />
+    <Compile Include="Authentication\OAuthBase.cs" />
     <Compile Include="SharpBucket.cs" />
     <Compile Include="V1\EndPoints\IssuesEndPoint.cs" />
     <Compile Include="V1\EndPoints\RepositoryEndPointV1.cs" />

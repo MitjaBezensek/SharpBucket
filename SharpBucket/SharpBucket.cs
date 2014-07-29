@@ -16,6 +16,10 @@ namespace SharpBucket{
             authenticator = new BasicAuthentication(username, password);
         }
 
+        public void OAtuhAuthentication(string apiKey, string secretApiKey){
+            authenticator = new OauthAuthentication(apiKey, secretApiKey);
+        }
+
         private string Send(string relativeUrl, string method, string body){
             try{
                 var url = BaseUrl.CombineWith(relativeUrl);
