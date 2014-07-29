@@ -32,42 +32,33 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NServiceKit">
-      <HintPath>..\packages\NServiceKit.1.0.11\lib\net35\NServiceKit.dll</HintPath>
+    <Reference Include="DevDefined.OAuth">
+      <HintPath>..\packages\DevDefined.OAuth.0.1\lib\DevDefined.OAuth.dll</HintPath>
     </Reference>
     <Reference Include="NServiceKit.Common">
-      <HintPath>..\packages\NServiceKit.Common.1.0.11\lib\net35\NServiceKit.Common.dll</HintPath>
+      <HintPath>..\packages\NServiceKit.Common.1.0.27\lib\net35\NServiceKit.Common.dll</HintPath>
     </Reference>
     <Reference Include="NServiceKit.Interfaces">
-      <HintPath>..\packages\NServiceKit.Common.1.0.11\lib\net35\NServiceKit.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="NServiceKit.Razor">
-      <HintPath>..\packages\NServiceKit.Razor.1.0.27\lib\net40\NServiceKit.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="NServiceKit.ServiceInterface">
-      <HintPath>..\packages\NServiceKit.1.0.11\lib\net35\NServiceKit.ServiceInterface.dll</HintPath>
+      <HintPath>..\packages\NServiceKit.Common.1.0.27\lib\net35\NServiceKit.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="NServiceKit.Text">
       <HintPath>..\packages\NServiceKit.Text.1.0.10\lib\net35\NServiceKit.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web.Razor.Unofficial">
-      <HintPath>..\packages\System.Web.Razor.Unofficial.2.0.2\lib\net40\System.Web.Razor.Unofficial.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\SharpBucket\SharpBucket.csproj">
       <Project>{f7c8fef8-4adb-4175-a4d8-2a0598b78786}</Project>
       <Name>SharpBucket</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
