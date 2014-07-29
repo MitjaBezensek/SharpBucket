@@ -19,7 +19,7 @@ namespace SharpBucket.V1.EndPoints{
             _repository = repository;
             _sharpBucketV1 = sharpBucketV1;
             _baserUrl = "repositories/" + accountName + "/" + repository + "/";
-            _issuesUrl = "repositories/" + accountName + "/" + repository + "/issues";
+            _issuesUrl = "repositories/" + accountName + "/" + repository + "/issues/";
             _issuesIdUrl = "repositories/" + accountName + "/" + repository + "/issues/{0}/";
         }
 
@@ -31,14 +31,13 @@ namespace SharpBucket.V1.EndPoints{
             return _sharpBucketV1.Get(new IssuesRoutes.ListIssues{AccountName = _accountName, RepositorySlug = _repository}, _issuesUrl);
         }
 
+        public Issue PostIssue(Issue issue){
+            return _sharpBucketV1.Post(new IssuesRoutes.PostIssue{AccountName = _accountName, RepositorySlug = _repository, Title = issue.Title, Content = issue.Content, Status = issue.Status, Kind = issue.Kind, Priority = issue.Priority}, _issuesUrl);
+        }
+
         public Issue GetIssue(int? issueId){
             var overrideUrl = String.Format(_issuesIdUrl, issueId);
             return _sharpBucketV1.Get(new IssuesRoutes.GetIssue{AccountName = _accountName, RepositorySlug = _repository, Local_id = issueId}, overrideUrl);
-        }
-
-        public Issue PostIssue(Issue issue){
-            var overrideUrl =_issuesUrl;
-            return _sharpBucketV1.Post(new IssuesRoutes.PostIssue{AccountName = _accountName, RepositorySlug = _repository, Title = issue.Title, Content = issue.Content, Status = issue.Status}, overrideUrl);
         }
 
         public Issue DeleteIssue(int? issueId){
@@ -181,7 +180,7 @@ namespace SharpBucket.V1.EndPoints{
         // Doesnt work, 500 server error, same for put
         public Wiki PostWiki(Wiki newPage, string location){
             var overrideUrl = _baserUrl + "wiki/" + location;
-            return _sharpBucketV1.Post(new RepositoryRoutes.GetWiki { AccountName = _accountName, RepositorySlug = _repository, Page = location, Data = newPage.Data}, overrideUrl);
+            return _sharpBucketV1.Post(new RepositoryRoutes.GetWiki{AccountName = _accountName, RepositorySlug = _repository, Page = location, Data = newPage.Data}, overrideUrl);
         }
 
         public ChangesetInfo ListChangeset(string start = null, int? limit = null){
@@ -202,7 +201,7 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         public EventInfo ListEvents(){
-            return _sharpBucketV1.Get(new RepositoryRoutes.ListEvents { AccountName = _accountName, RepositorySlug = _repository });
+            return _sharpBucketV1.Get(new RepositoryRoutes.ListEvents{AccountName = _accountName, RepositorySlug = _repository});
         }
     }
 }

@@ -6,7 +6,7 @@ using SharpBucket.POCOs;
 namespace SharpBucket.V1.Routes{
     public class IssuesRoutes{
         // ISSUES DONE
-        [Route("repositories/{AccountName}/{RepositorySlug}/issues")]
+        [Route("repositories/{AccountName}/{RepositorySlug}/issues/")]
         public class ListIssues : IReturn<IssuesInfo>{
             [IgnoreDataMember]
             public string AccountName { get; set; }
@@ -23,14 +23,15 @@ namespace SharpBucket.V1.Routes{
             [IgnoreDataMember]
             public string RepositorySlug { get; set; }
 
+            public string Title { get; set; }
+            public string Content { get; set; }
             public string Status { get; set; }
             public string Priority { get; set; }
-            public string Title { get; set; }
+            public string Kind { get; set; }
             public User Reported_by { get; set; }
             public string Utc_last_updated { get; set; }
             public int? Comment_count { get; set; }
             public Metadata Metadata { get; set; }
-            public string Content { get; set; }
             public string Created_on { get; set; }
             public int? Local_id { get; set; }
             public int? Follower_count { get; set; }
@@ -39,7 +40,7 @@ namespace SharpBucket.V1.Routes{
             public bool? Is_spam { get; set; }
         }
 
-        [Route("repositories/{AccountName}/{RepositorySlug}/issues/{Local_id}/")]
+        [Route("repositories/{AccountName}/{RepositorySlug}/issues/{Local_id}")]
         public class GetIssue : IReturn<Issue>{
             [IgnoreDataMember]
             public string AccountName { get; set; }

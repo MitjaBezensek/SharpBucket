@@ -12,14 +12,14 @@ namespace SharpBucket.V1.EndPoints{
             _sharpBucketV1 = sharpBucketV1;
         }
 
-        public List<Email> ListEmails(){
+        public List<EmailInfo> ListEmails(){
             if (_accountName != null){
                 return _sharpBucketV1.Get(new UsersRoutes.ListEmails{AccountName = _accountName});
             }
             return null;
         }
 
-        public Email GetEmail(string email){
+        public EmailInfo GetEmail(string email){
             if (_accountName != null){
                 return _sharpBucketV1.Get(new UsersRoutes.GetEmail{AccountName = _accountName, Email = email});
             }
