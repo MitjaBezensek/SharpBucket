@@ -73,9 +73,9 @@ namespace ConsoleTests{
 
             // Issues
             var issues = issuesEP.ListIssues();
-            var newIssue = new Issue{Title = "I have this little bug", content = "that is really annoying", status = "new"};
+            var newIssue = new Issue{title = "I have this little bug", content = "that is really annoying", status = "new"};
             var newIssueResult = issuesEP.PostIssue(newIssue);
-            var changedIssue = new Issue{Title = "Completely new title", content = "Hi!", status = "new", local_id = newIssueResult.local_id};
+            var changedIssue = new Issue{title = "Completely new title", content = "Hi!", status = "new", local_id = newIssueResult.local_id};
             var changedIssueResult = issuesEP.PutIssue(changedIssue);
             issuesEP.DeleteIssue(changedIssueResult.local_id);
 

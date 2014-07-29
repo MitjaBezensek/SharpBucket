@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using NServiceKit.ServiceHost;
 using SharpBucket.POCOs;
 
-namespace SharpBucket.Routes{
+namespace SharpBucket.V1.Routes{
     public class RepositoryRoutes{
         // REPOSITORY TAGS DONE
         [Route("repositories/{AccountName}/{RepositorySlug}/tags")]

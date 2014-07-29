@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace SharpBucket {
+namespace SharpBucket.Authentication {
     interface IAuthenticate{
         void AuthenticateRequest(HttpWebRequest req);
     }

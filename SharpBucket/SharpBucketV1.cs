@@ -1,4 +1,4 @@
-﻿using SharpBucket.EndPoints;
+﻿using SharpBucket.V1.EndPoints;
 
 namespace SharpBucket{
     public sealed class SharpBucketV1 : SharpBucket{

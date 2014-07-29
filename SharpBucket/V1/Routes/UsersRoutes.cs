@@ -2,7 +2,7 @@
 using NServiceKit.ServiceHost;
 using SharpBucket.POCOs;
 
-namespace SharpBucket.Routes{
+namespace SharpBucket.V1.Routes{
     public class UsersRoutes{
         // USERS EVENTS DONE
         [Route("users/{AccountName}/events")]

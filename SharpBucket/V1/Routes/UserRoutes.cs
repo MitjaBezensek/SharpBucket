@@ -2,7 +2,7 @@
 using NServiceKit.ServiceHost;
 using SharpBucket.POCOs;
 
-namespace SharpBucket.Routes{
+namespace SharpBucket.V1.Routes{
     public class UserRoutes{
         // USER
         [Route("user")]

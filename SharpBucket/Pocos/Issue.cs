@@ -2,7 +2,7 @@
     public class Issue{
         public string status { get; set; }
         public string priority { get; set; }
-        public string Title { get; set; }
+        public string title { get; set; }
         public User reported_by { get; set; }
         public string utc_last_updated { get; set; }
         public int? comment_count { get; set; }

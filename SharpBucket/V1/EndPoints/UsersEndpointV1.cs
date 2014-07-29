@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using SharpBucket.POCOs;
-using SharpBucket.Routes;
+using SharpBucket.V1.Routes;
 
-namespace SharpBucket.EndPoints{
+namespace SharpBucket.V1.EndPoints{
     public class UsersEndpointV1{
         private readonly string _accountName;
         private readonly SharpBucketV1 _sharpBucketV1;

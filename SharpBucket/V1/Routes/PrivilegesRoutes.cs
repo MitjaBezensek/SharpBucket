@@ -1,4 +1,4 @@
-﻿namespace SharpBucket.Routes {
+﻿namespace SharpBucket.V1.Routes {
     class PrivilegesRoutes {
         // USER PERMISSIONS
 

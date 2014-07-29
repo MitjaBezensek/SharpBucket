@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using SharpBucket.POCOs;
-using SharpBucket.Routes;
+using SharpBucket.V1.Routes;
 using Version = SharpBucket.POCOs.Version;
 
-namespace SharpBucket.EndPoints{
+namespace SharpBucket.V1.EndPoints{
     public class RepositoryEndPointV1{
         private readonly string _accountName;
         private readonly string _repository;
         private readonly SharpBucketV1 _sharpBucketV1;
-        private string _baserUrl;
-        private string _issuesUrl;
-        private string _issuesIdUrl;
+        private readonly string _baserUrl;
+        private readonly string _issuesUrl;
+        private readonly string _issuesIdUrl;
 
         public RepositoryEndPointV1(string accountName, string repository, SharpBucketV1 sharpBucketV1){
             _accountName = accountName;
@@ -38,7 +38,7 @@ namespace SharpBucket.EndPoints{
 
         public Issue PostIssue(Issue issue){
             var overrideUrl = String.Format(_issuesIdUrl, issue.local_id);
-            return _sharpBucketV1.Post(new IssuesRoutes.PostIssue{AccountName = _accountName, RepositorySlug = _repository, title = issue.Title, content = issue.content, status = issue.status}, overrideUrl);
+            return _sharpBucketV1.Post(new IssuesRoutes.PostIssue{AccountName = _accountName, RepositorySlug = _repository, title = issue.title, content = issue.content, status = issue.status}, overrideUrl);
         }
 
         public Issue DeleteIssue(int? issueId){
@@ -48,7 +48,7 @@ namespace SharpBucket.EndPoints{
 
         public Issue PutIssue(Issue issue){
             var overrideUrl = String.Format(_issuesIdUrl, issue.local_id);
-            return _sharpBucketV1.Put(new IssuesRoutes.GetIssue{AccountName = _accountName, RepositorySlug = _repository, title = issue.Title, content = issue.content}, overrideUrl);
+            return _sharpBucketV1.Put(new IssuesRoutes.GetIssue{AccountName = _accountName, RepositorySlug = _repository, title = issue.title, content = issue.content}, overrideUrl);
         }
 
         public List<User> ListIssueFollowers(int issueId){
@@ -58,7 +58,7 @@ namespace SharpBucket.EndPoints{
 
         public List<Comment> ListIssueComments(int issueId){
             var overrideUrl = String.Format(_issuesIdUrl + "comments", issueId);
-            return _sharpBucketV1.Get(new IssuesRoutes.ListIssueComments{AccountName = _accountName, RepositorySlug = _repository, Id = issueId});
+            return _sharpBucketV1.Get(new IssuesRoutes.ListIssueComments{AccountName = _accountName, RepositorySlug = _repository, Id = issueId}, overrideUrl);
         }
 
         public Comment PostIssueComment(int issueId, Comment comment){

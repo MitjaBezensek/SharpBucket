@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SharpBucket.POCOs;
 
-namespace SharpBucket.EndPoints{
+namespace SharpBucket.V1.EndPoints{
     public class IssuesEndPoint{
         private readonly RepositoryEndPointV1 _repositoryEndPointV1;
 
