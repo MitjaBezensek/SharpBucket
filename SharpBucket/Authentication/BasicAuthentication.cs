@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Net;
 using System.Text;
+using NServiceKit.Common.Web;
+using NServiceKit.Text;
 
 namespace SharpBucket.Authentication{
     public class BasicAuthentication : IAuthenticate{
@@ -16,8 +17,15 @@ namespace SharpBucket.Authentication{
             return string.Format("Basic {0}", encodedUsernameAndPassword);
         }
 
-        public void AuthenticateRequest(HttpWebRequest req){
-            req.Headers.Add("Authorization", credentialsToken);
+        public string GetResponse(string url, string method, string body){
+            var response = url.SendStringToUrl(method, body, requestFilter: req =>{
+                req.Accept = MimeTypes.Json;
+                req.Headers.Add("Authorization", credentialsToken);
+                if (method == HttpMethods.Post || method == HttpMethods.Put){
+                    req.ContentType = "application/x-www-form-urlencoded";
+                }
+            });
+            return response;
         }
     }
 }
