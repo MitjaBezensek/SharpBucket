@@ -14,7 +14,7 @@ namespace SharpBucket.V1.Routes{
 
         // REPOSITORY BRANCHES DONE
         [Route("repositories/{AccountName}/{RepositorySlug}/branches")]
-        public class ListBranches : IReturn<Dictionary<string, Branch>>{
+        public class ListBranches : IReturn<Dictionary<string, BranchInfo>>{
             public string AccountName { get; set; }
             public string RepositorySlug { get; set; }
         }
@@ -46,7 +46,7 @@ namespace SharpBucket.V1.Routes{
             [IgnoreDataMember]
             public string Page { get; set; }
 
-            public string data { get; set; }
+            public string Data { get; set; }
         }
 
         [Route("repositories/{AccountName}/{RepositorySlug}")]

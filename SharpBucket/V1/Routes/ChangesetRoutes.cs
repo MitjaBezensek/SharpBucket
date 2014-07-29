@@ -12,8 +12,8 @@ namespace SharpBucket.V1.Routes{
         public class ListChangesets : IReturn<ChangesetInfo>{
             public string AccountName { get; set; }
             public string RepositorySlug { get; set; }
-            public string start { get; set; }
-            public int? limit { get; set; }
+            public string Start { get; set; }
+            public int? Limit { get; set; }
         }
 
         [Route("repositories/{AccountName}/{RepositorySlug}/changesets/{Node}")]

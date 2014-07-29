@@ -2,7 +2,7 @@
 
 namespace SharpBucket.POCOs{
     public class UserInfo{
-        public List<Repository> repositories { get; set; }
-        public User user { get; set; }
+        public List<Repository> Repositories { get; set; }
+        public User User { get; set; }
     }
 }

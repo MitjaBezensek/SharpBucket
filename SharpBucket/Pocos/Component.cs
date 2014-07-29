@@ -1,6 +1,6 @@
 ﻿namespace SharpBucket.POCOs{
     public class Component{
-        public string name { get; set; }
-        public int? id { get; set; }
+        public string Name { get; set; }
+        public int? Id { get; set; }
     }
 }

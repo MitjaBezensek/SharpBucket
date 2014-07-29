@@ -33,22 +33,22 @@ namespace SharpBucket.V1.EndPoints{
 
         public Issue GetIssue(int? issueId){
             var overrideUrl = String.Format(_issuesIdUrl, issueId);
-            return _sharpBucketV1.Get(new IssuesRoutes.GetIssue{AccountName = _accountName, RepositorySlug = _repository, local_id = issueId}, overrideUrl);
+            return _sharpBucketV1.Get(new IssuesRoutes.GetIssue{AccountName = _accountName, RepositorySlug = _repository, Local_id = issueId}, overrideUrl);
         }
 
         public Issue PostIssue(Issue issue){
-            var overrideUrl = String.Format(_issuesIdUrl, issue.local_id);
-            return _sharpBucketV1.Post(new IssuesRoutes.PostIssue{AccountName = _accountName, RepositorySlug = _repository, title = issue.title, content = issue.content, status = issue.status}, overrideUrl);
+            var overrideUrl =_issuesUrl;
+            return _sharpBucketV1.Post(new IssuesRoutes.PostIssue{AccountName = _accountName, RepositorySlug = _repository, Title = issue.Title, Content = issue.Content, Status = issue.Status}, overrideUrl);
         }
 
         public Issue DeleteIssue(int? issueId){
             var overrideUrl = String.Format(_issuesIdUrl, issueId);
-            return _sharpBucketV1.Delete(new IssuesRoutes.PostIssue{AccountName = _accountName, RepositorySlug = _repository, local_id = issueId}, overrideUrl);
+            return _sharpBucketV1.Delete(new IssuesRoutes.PostIssue{AccountName = _accountName, RepositorySlug = _repository, Local_id = issueId}, overrideUrl);
         }
 
         public Issue PutIssue(Issue issue){
-            var overrideUrl = String.Format(_issuesIdUrl, issue.local_id);
-            return _sharpBucketV1.Put(new IssuesRoutes.GetIssue{AccountName = _accountName, RepositorySlug = _repository, title = issue.title, content = issue.content}, overrideUrl);
+            var overrideUrl = String.Format(_issuesIdUrl, issue.Local_id);
+            return _sharpBucketV1.Put(new IssuesRoutes.GetIssue{AccountName = _accountName, RepositorySlug = _repository, Title = issue.Title, Content = issue.Content}, overrideUrl);
         }
 
         public List<User> ListIssueFollowers(int issueId){
@@ -63,7 +63,7 @@ namespace SharpBucket.V1.EndPoints{
 
         public Comment PostIssueComment(int issueId, Comment comment){
             var overrideUrl = String.Format(_issuesIdUrl + "comments", issueId);
-            return _sharpBucketV1.Post(new IssuesRoutes.PostIssueComment{AccountName = _accountName, RepositorySlug = _repository, Id = issueId, content = comment.content}, overrideUrl);
+            return _sharpBucketV1.Post(new IssuesRoutes.PostIssueComment{AccountName = _accountName, RepositorySlug = _repository, Id = issueId, content = comment.Content}, overrideUrl);
         }
 
         public Comment GetIssueComment(int issueId, int? commentId){
@@ -73,7 +73,7 @@ namespace SharpBucket.V1.EndPoints{
 
         public Comment PutIssueComment(int issueId, int? commentId, Comment comment){
             var overrideUrl = String.Format(_issuesIdUrl + "comments/{1}", issueId, commentId);
-            return _sharpBucketV1.Put(new IssuesRoutes.GetIssueComment{AccountName = _accountName, RepositorySlug = _repository, Id = issueId, CommentId = commentId, content = comment.content}, overrideUrl);
+            return _sharpBucketV1.Put(new IssuesRoutes.GetIssueComment{AccountName = _accountName, RepositorySlug = _repository, Id = issueId, CommentId = commentId, content = comment.Content}, overrideUrl);
         }
 
         public Comment DeleteIssueComment(int? issueId, int? commentId){
@@ -88,22 +88,22 @@ namespace SharpBucket.V1.EndPoints{
 
         public Component PostComponent(Component component){
             var overrideUrl = _issuesUrl + "/components";
-            return _sharpBucketV1.Post(new IssuesRoutes.PostComponent{AccountName = _accountName, RepositorySlug = _repository, name = component.name}, overrideUrl);
+            return _sharpBucketV1.Post(new IssuesRoutes.PostComponent{AccountName = _accountName, RepositorySlug = _repository, Name = component.Name}, overrideUrl);
         }
 
         public Component GetComponent(int componentId){
             var overrideUrl = _issuesUrl + "/components/" + componentId;
-            return _sharpBucketV1.Get(new IssuesRoutes.GetComponent{AccountName = _accountName, RepositorySlug = _repository, id = componentId}, overrideUrl);
+            return _sharpBucketV1.Get(new IssuesRoutes.GetComponent{AccountName = _accountName, RepositorySlug = _repository, Id = componentId}, overrideUrl);
         }
 
         public Component DeleteComponent(int? componentId){
             var overrideUrl = _issuesUrl + "/components/" + componentId;
-            return _sharpBucketV1.Delete(new IssuesRoutes.GetComponent{AccountName = _accountName, RepositorySlug = _repository, id = componentId}, overrideUrl);
+            return _sharpBucketV1.Delete(new IssuesRoutes.GetComponent{AccountName = _accountName, RepositorySlug = _repository, Id = componentId}, overrideUrl);
         }
 
         public Component PutComponent(Component component){
-            var overrideUrl = _issuesUrl + "/components/" + component.id;
-            return _sharpBucketV1.Put(new IssuesRoutes.GetComponent{AccountName = _accountName, RepositorySlug = _repository, name = component.name}, overrideUrl);
+            var overrideUrl = _issuesUrl + "/components/" + component.Id;
+            return _sharpBucketV1.Put(new IssuesRoutes.GetComponent{AccountName = _accountName, RepositorySlug = _repository, Name = component.Name}, overrideUrl);
         }
 
         public List<Milestone> ListMilestones(){
@@ -113,22 +113,22 @@ namespace SharpBucket.V1.EndPoints{
 
         public Milestone PostMilestone(Milestone milestone){
             var overrideUrl = _issuesUrl + "/milestones";
-            return _sharpBucketV1.Post(new IssuesRoutes.PostMilestone{AccountName = _accountName, RepositorySlug = _repository, name = milestone.name}, overrideUrl);
+            return _sharpBucketV1.Post(new IssuesRoutes.PostMilestone{AccountName = _accountName, RepositorySlug = _repository, Name = milestone.Name}, overrideUrl);
         }
 
         public Milestone GetMilestone(int? milestoneId){
             var overrideUrl = _issuesUrl + "/milestones/" + milestoneId;
-            return _sharpBucketV1.Get(new IssuesRoutes.GetMilestone{AccountName = _accountName, RepositorySlug = _repository, id = milestoneId}, overrideUrl);
+            return _sharpBucketV1.Get(new IssuesRoutes.GetMilestone{AccountName = _accountName, RepositorySlug = _repository, Id = milestoneId}, overrideUrl);
         }
 
         public Milestone DeleteMilestone(int? milestoneId){
             var overrideUrl = _issuesUrl + "/milestones/" + milestoneId;
-            return _sharpBucketV1.Delete(new IssuesRoutes.GetMilestone{AccountName = _accountName, RepositorySlug = _repository, id = milestoneId}, overrideUrl);
+            return _sharpBucketV1.Delete(new IssuesRoutes.GetMilestone{AccountName = _accountName, RepositorySlug = _repository, Id = milestoneId}, overrideUrl);
         }
 
         public Milestone PutMilestone(Milestone milestone){
-            var overrideUrl = _issuesUrl + "/milestones/" + milestone.id;
-            return _sharpBucketV1.Put(new IssuesRoutes.GetMilestone{AccountName = _accountName, RepositorySlug = _repository, name = milestone.name}, overrideUrl);
+            var overrideUrl = _issuesUrl + "/milestones/" + milestone.Id;
+            return _sharpBucketV1.Put(new IssuesRoutes.GetMilestone{AccountName = _accountName, RepositorySlug = _repository, Name = milestone.Name}, overrideUrl);
         }
 
         public List<Version> ListVersions(){
@@ -138,22 +138,22 @@ namespace SharpBucket.V1.EndPoints{
 
         public Version PostVersion(Version version){
             var overrideUrl = _issuesUrl + "/versions";
-            return _sharpBucketV1.Post(new IssuesRoutes.PostVersion{AccountName = _accountName, RepositorySlug = _repository, name = version.name}, overrideUrl);
+            return _sharpBucketV1.Post(new IssuesRoutes.PostVersion{AccountName = _accountName, RepositorySlug = _repository, Name = version.Name}, overrideUrl);
         }
 
         public Version GetVersion(int? versionId){
             var overrideUrl = _issuesUrl + "/versions/" + versionId;
-            return _sharpBucketV1.Get(new IssuesRoutes.GetVersion{AccountName = _accountName, RepositorySlug = _repository, id = versionId}, overrideUrl);
+            return _sharpBucketV1.Get(new IssuesRoutes.GetVersion{AccountName = _accountName, RepositorySlug = _repository, Id = versionId}, overrideUrl);
         }
 
         public Version PutVersion(Version version){
-            var overrideUrl = _issuesUrl + "/versions/" + version.id;
-            return _sharpBucketV1.Put(new IssuesRoutes.GetVersion{AccountName = _accountName, RepositorySlug = _repository, name = version.name}, overrideUrl);
+            var overrideUrl = _issuesUrl + "/versions/" + version.Id;
+            return _sharpBucketV1.Put(new IssuesRoutes.GetVersion{AccountName = _accountName, RepositorySlug = _repository, Name = version.Name}, overrideUrl);
         }
 
         public Version DeleteVersion(int? versionId){
             var overrideUrl = _issuesUrl + "/versions/" + versionId;
-            return _sharpBucketV1.Delete(new IssuesRoutes.GetVersion{AccountName = _accountName, RepositorySlug = _repository, id = versionId}, overrideUrl);
+            return _sharpBucketV1.Delete(new IssuesRoutes.GetVersion{AccountName = _accountName, RepositorySlug = _repository, Id = versionId}, overrideUrl);
         }
 
         public List<Tag> ListTags(){
@@ -165,7 +165,7 @@ namespace SharpBucket.V1.EndPoints{
             return _sharpBucketV1.Get(new RepositoryRoutes.GetTag{AccountName = _accountName, RepositorySlug = _repository, Id = tagId});
         }
 
-        public List<Branch> ListBranches(){
+        public List<BranchInfo> ListBranches(){
             return _sharpBucketV1.Get(new RepositoryRoutes.ListBranches{AccountName = _accountName, RepositorySlug = _repository}).Values.ToList();
         }
 
@@ -181,11 +181,11 @@ namespace SharpBucket.V1.EndPoints{
         // Doesnt work, 500 server error, same for put
         public Wiki PostWiki(Wiki newPage, string location){
             var overrideUrl = _baserUrl + "wiki/" + location;
-            return _sharpBucketV1.Post(new RepositoryRoutes.GetWiki { AccountName = _accountName, RepositorySlug = _repository, Page = location, data = newPage.data}, overrideUrl);
+            return _sharpBucketV1.Post(new RepositoryRoutes.GetWiki { AccountName = _accountName, RepositorySlug = _repository, Page = location, Data = newPage.Data}, overrideUrl);
         }
 
         public ChangesetInfo ListChangeset(string start = null, int? limit = null){
-            return _sharpBucketV1.Get(new ChangesRoutes.ListChangesets{AccountName = _accountName, RepositorySlug = _repository, start = start, limit = limit});
+            return _sharpBucketV1.Get(new ChangesRoutes.ListChangesets{AccountName = _accountName, RepositorySlug = _repository, Start = start, Limit = limit});
         }
 
         public Changeset GetChangeset(string node){

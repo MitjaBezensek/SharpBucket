@@ -71,12 +71,12 @@ namespace SharpBucket.V1.Routes{
         // EMAILS
         // Missing
         [Route("users/{AccountName}/emails/")]
-        public class ListEmails : IReturn<List<Email>>{
+        public class ListEmails : IReturn<List<EmailInfo>>{
             public string AccountName { get; set; }
         }
 
         [Route("users/{AccountName}/emails/{Email}")]
-        public class GetEmail : IReturn<Email>{
+        public class GetEmail : IReturn<EmailInfo>{
             public string AccountName { get; set; }
             public string Email { get; set; }
         }

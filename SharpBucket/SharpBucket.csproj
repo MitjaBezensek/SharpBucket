@@ -65,7 +65,7 @@
     <Compile Include="V1\EndPoints\UserEndPointV1.cs" />
     <Compile Include="V1\EndPoints\UsersEndpointV1.cs" />
     <Compile Include="Authentication\IAuthenticate.cs" />
-    <Compile Include="Pocos\Branch.cs" />
+    <Compile Include="Pocos\BranchInfo.cs" />
     <Compile Include="Pocos\Changeset.cs" />
     <Compile Include="Pocos\ChangesetInfo.cs" />
     <Compile Include="Pocos\Comment.cs" />
@@ -73,10 +73,10 @@
     <Compile Include="Pocos\Consumer.cs" />
     <Compile Include="Pocos\Diffstat.cs" />
     <Compile Include="Pocos\DiffstatInfo.cs" />
-    <Compile Include="Pocos\Email.cs" />
-    <Compile Include="Pocos\Event.cs" />
+    <Compile Include="Pocos\EmailInfo.cs" />
+    <Compile Include="Pocos\EventData.cs" />
     <Compile Include="Pocos\EventInfo.cs" />
-    <Compile Include="Pocos\File.cs" />
+    <Compile Include="Pocos\FileInfo.cs" />
     <Compile Include="Pocos\Filter.cs" />
     <Compile Include="Pocos\InvitationsInfo.cs" />
     <Compile Include="Pocos\Issue.cs" />
@@ -84,7 +84,7 @@
     <Compile Include="Pocos\MainBranch.cs" />
     <Compile Include="Pocos\Metadata.cs" />
     <Compile Include="Pocos\Milestone.cs" />
-    <Compile Include="Pocos\Privilege.cs" />
+    <Compile Include="Pocos\PrivilegeInfo.cs" />
     <Compile Include="Pocos\Privileges.cs" />
     <Compile Include="Pocos\RepositoriesOverview.cs" />
     <Compile Include="Pocos\Repository.cs" />

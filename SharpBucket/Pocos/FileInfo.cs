@@ -1,7 +1,6 @@
 ﻿namespace SharpBucket.POCOs{
-    public class DiffstatInfo{
+    public class FileInfo{
         public string Type { get; set; }
         public string File { get; set; }
-        public Diffstat Diffstat { get; set; }
     }
 }
