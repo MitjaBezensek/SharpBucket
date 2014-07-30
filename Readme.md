@@ -15,7 +15,7 @@ First lets set your entry point to the API
 // your main entry to the BitBucket API, this one is for V1
 var sharpBucket = new SharpBucketV1();
 // authenticate with OAuth keys
-sharpBucket.OAuthAuthentication(apiKey, secretApiKey);
+sharpBucket.OAuth2LeggedAuthentication(ConsumerKey, ConsumerSecretKey);
 ```
 
 There are various end points you can use. Lets take a look at User end point:

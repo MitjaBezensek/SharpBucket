@@ -24,15 +24,14 @@ namespace ConsoleTests{
             ReadTestDataOauth();
             // Two legged OAuth, just supply the ConsumerKey and the ConsumerSecretKey and you are done
             //sharpBucket.OAuth2LeggedAuthentication(ConsumerKey, ConsumerSecretKey);
+
             // Three legged OAuth. We can supply our own callback url to which bitbucket will send our pin
             // If we use "oob" as the callback url we will get the bitbuckets url address which will have our pin
             var authenticator = sharpBucket.OAuth3LeggedAuthentication(ConsumerKey, ConsumerSecretKey, "oob");
-            // if we used oob, we can open the url in the browser
             var uri = authenticator.StartAuthentication();
             Process.Start(uri);
-            // and paste the pin to the console
             var pin = Console.ReadLine();
-            // we can now fo the final step by using the pin to get our access tokens
+            // we can now do the final step by using the pin to get our access tokens
             authenticator.AuthenticateWithPin(pin);
 
             TestUserEndPoint(sharpBucket);
