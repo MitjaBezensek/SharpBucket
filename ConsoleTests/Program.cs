@@ -89,7 +89,7 @@ namespace ConsoleTests{
 
             // Issues
             var issues = issuesEP.ListIssues();
-            var newIssue = new Issue{Title = "new title", Content = "new content", Status = "new", Priority = "trivial", Kind = "bug"};
+            var newIssue = new Issue{Title = "Let's add a new issue", Content = "Some issue content", Status = "new", Priority = "trivial", Kind = "bug"};
             var newIssueResult = issuesEP.PostIssue(newIssue);
             var changedIssue = new Issue{Title = "Completely new title", Content = "Hi!", Status = "new", Local_id = newIssueResult.Local_id};
             var changedIssueResult = issuesEP.PutIssue(changedIssue);
@@ -104,7 +104,7 @@ namespace ConsoleTests{
             var issueComment = issuesEP.GetIssueComment(ISSUE_ID, firstComment.Comment_id);
             var newComment = new Comment{Content = "This bug is really annoying!"};
             var newCommentResult = issuesEP.PostIssueComment(ISSUE_ID, newComment);
-            var updateComment = new Comment{Comment_id = newComment.Comment_id, Content = "updated"};
+            var updateComment = new Comment{Comment_id = newComment.Comment_id, Content = "The bug is still annoying"};
             var updatedCommentRes = issuesEP.PutIssueComment(ISSUE_ID, newCommentResult.Comment_id, updateComment);
             issuesEP.DeleteIssueComment(13, newCommentResult.Comment_id);
 
@@ -113,7 +113,7 @@ namespace ConsoleTests{
             var newComponent = new Component{Name = "Awesome component"};
             var newComponentRes = issuesEP.PostComponent(newComponent);
             var component = components[0];
-            component.Name = "New name";
+            component.Name = "Even more awesome component";
             var updatedComponent = issuesEP.PutComponent(component);
             issuesEP.DeleteComponent(newComponentRes.Id);
 
@@ -124,16 +124,16 @@ namespace ConsoleTests{
             var newMilestone = new Milestone{Name = "Awesome milestone"};
             var newMilestoneRes = issuesEP.PostMilestone(newMilestone);
             issuesEP.DeleteMilestone(newMilestoneRes.Id);
-            updateMilestone.Name = "New name";
+            updateMilestone.Name = "Even more awesome milestone";
             var updatedMilestone = issuesEP.PutMilestone(updateMilestone);
 
             // Versions
             var versions = issuesEP.ListVersions();
             var updateVersion = versions[0];
             var version = issuesEP.GetVersion(updateVersion.Id);
-            var newVersion = new Version{Name = "Completely new"};
+            var newVersion = new Version{Name = "Awesome version"};
             var newVersionRes = issuesEP.PostVersion(newVersion);
-            newVersionRes.Name = "New name";
+            newVersionRes.Name = "Even more awesome version";
             var updatedversion = issuesEP.PutVersion(newVersionRes);
             issuesEP.DeleteVersion(updatedversion.Id);
         }
@@ -146,7 +146,7 @@ namespace ConsoleTests{
             string WIKI_PAGE = "";
             var wiki = repositoryEP.GetWiki(WIKI_PAGE);
             var newPage = new Wiki{Data = "Hello to my new page"};
-            var newWiki = repositoryEP.PostWiki(newPage, "Location");
+            var newWiki = repositoryEP.PostWiki(newPage, "NewPage");
             var changeSet = repositoryEP.ListChangeset();
             var change = changeSet.changesets[4];
             var smallerChangeSet = repositoryEP.ListChangeset(start: change.Node, limit: 5);
