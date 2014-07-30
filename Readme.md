@@ -96,8 +96,7 @@ If you had a server waiting from BitBucket's response, you would simply use your
 
 If you already have the tokens you can simply skip the authentication process:
 ```CSharp
-var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oob");
-authenticator.RestoreSavedTokens(consumerKey, consumerSecretKey, "oauthToken", "oauthTokenSecret");
+var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, oauthToken" oauthtokenSecret);
 ```
 
 ## How much of the API is covered?
