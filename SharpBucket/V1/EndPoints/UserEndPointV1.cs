@@ -4,7 +4,7 @@ using SharpBucket.V1.Pocos;
 namespace SharpBucket.V1.EndPoints {
     public class UserEndPointV1 {
         private readonly SharpBucketV1 _sharpBucketV1;
-        private string _baseUrl;
+        private readonly string _baseUrl;
 
         public UserEndPointV1(SharpBucketV1 sharpBucketV1) {
             _sharpBucketV1 = sharpBucketV1;

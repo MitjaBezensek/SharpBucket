@@ -3,14 +3,10 @@ using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.EndPoints {
     public class UsersEndpointV1 {
-        private readonly string _accountName;
         private readonly SharpBucketV1 _sharpBucketV1;
-        private readonly string _invitationsUrl;
-        private readonly string _sshKeysUrl;
         private readonly string _baseUrl;
 
         public UsersEndpointV1(string accountName, SharpBucketV1 sharpBucketV1) {
-            _accountName = accountName;
             _sharpBucketV1 = sharpBucketV1;
             _baseUrl = "users/" + accountName + "/";
         }
@@ -34,7 +30,7 @@ namespace SharpBucket.V1.EndPoints {
 
         // TODO: Serialization
         public object GetInvitationsFor(string email) {
-            var overrideUrl = _baseUrl + "invitations/";
+            var overrideUrl = _baseUrl + "invitations/" + email;
             return _sharpBucketV1.Get(new object(), overrideUrl);
         }
 

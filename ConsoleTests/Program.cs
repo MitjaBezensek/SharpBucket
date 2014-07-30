@@ -1,5 +1,4 @@
-﻿using SharpBucket;
-using SharpBucket.V1;
+﻿using SharpBucket.V1;
 using SharpBucket.V1.Pocos;
 using SharpBucket.V2;
 using Version = SharpBucket.V1.Pocos.Version;

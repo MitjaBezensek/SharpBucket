@@ -250,7 +250,7 @@ namespace SharpBucket.V1.EndPoints{
             return _sharpBucketV1.Post(newPage, overrideUrl);
         }
 
-        public ChangesetInfo ListChangeset(string start = null, int? limit = null){
+        public ChangesetInfo ListChangeset(){
             var overrideUrl = _baserUrl + "changesets/";
             return _sharpBucketV1.Get(new ChangesetInfo(), overrideUrl);
         }
