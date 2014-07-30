@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using NServiceKit.ServiceHost;
+using RestSharp.Deserializers;
 using SharpBucket.POCOs;
 
 namespace SharpBucket.V1.Routes{
@@ -22,25 +23,21 @@ namespace SharpBucket.V1.Routes{
 
             [IgnoreDataMember]
             public string RepositorySlug { get; set; }
-
-            public string Title { get; set; }
-            public string Content { get; set; }
-            public string Status { get; set; }
-            public string Priority { get; set; }
-            public string Kind { get; set; }
-            public User Reported_by { get; set; }
-            public string Utc_last_updated { get; set; }
-            public int? Comment_count { get; set; }
-            public Metadata Metadata { get; set; }
-            public string Created_on { get; set; }
-            public int? Local_id { get; set; }
-            public int? Follower_count { get; set; }
-            public string Utc_created_on { get; set; }
-            public string Resource_uri { get; set; }
-            public bool? Is_spam { get; set; }
+            [DeserializeAs(Name = "title")]
+            public string title { get; set; }
+            [DeserializeAs(Name = "content")]
+            public string content { get; set; }
+            [DeserializeAs(Name = "status")]
+            public string status { get; set; }
+            [DeserializeAs(Name = "priority")]
+            public string priority { get; set; }
+            [DeserializeAs(Name = "kind")]
+            public string kind { get; set; }
+            [DeserializeAs(Name = "local_id")]
+            public int? local_id { get; set; }
         }
 
-        [Route("repositories/{AccountName}/{RepositorySlug}/issues/{Local_id}")]
+        [Route("repositories/{AccountName}/{RepositorySlug}/issues/{local_id}")]
         public class GetIssue : IReturn<Issue>{
             [IgnoreDataMember]
             public string AccountName { get; set; }
@@ -50,14 +47,14 @@ namespace SharpBucket.V1.Routes{
 
             public string Status { get; set; }
             public string Priority { get; set; }
-            public string Title { get; set; }
+            public string title { get; set; }
             public User Reported_by { get; set; }
             public string Utc_last_updated { get; set; }
             public int? Comment_count { get; set; }
             public Metadata Metadata { get; set; }
-            public string Content { get; set; }
+            public string content { get; set; }
             public string Created_on { get; set; }
-            public int? Local_id { get; set; }
+            public int? local_id { get; set; }
             public int? Follower_count { get; set; }
             public string Utc_created_on { get; set; }
             public string Resource_uri { get; set; }

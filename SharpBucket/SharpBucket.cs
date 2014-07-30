@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Net;
+<<<<<<< HEAD
 using NServiceKit.Common;
+=======
+>>>>>>> Oauth3Legged
 using NServiceKit.Common.Web;
 using NServiceKit.ServiceClient.Web;
 using NServiceKit.ServiceHost;
@@ -16,8 +19,13 @@ namespace SharpBucket{
             authenticator = new BasicAuthentication(username, password);
         }
 
-        public void OAuthAuthentication(string apiKey, string secretApiKey){
-            authenticator = new OauthAuthentication(apiKey, secretApiKey);
+        public void OAuthAuthentication(string apiKey, string secretApiKey, bool threeLegged = true){
+            if (threeLegged){
+                authenticator = new OAuthentication3Legged(apiKey, secretApiKey);
+            }
+            else{
+                authenticator = new OAuthentication2Legged(apiKey, secretApiKey);
+            }
         }
 
 
@@ -26,9 +34,13 @@ namespace SharpBucket{
                 var relativeUrl = overrideUrl ?? request.ToUrl(method);
                 string ret;
                 try{
+<<<<<<< HEAD
                     var body = sendRequestBody ? QueryStringSerializer.SerializeToString(request) : null;
                     var url = BaseUrl.CombineWith(relativeUrl);
                     ret = authenticator.GetResponse(url, method, body);
+=======
+                    ret = authenticator.GetResponse(relativeUrl, method, request);
+>>>>>>> Oauth3Legged
                 }
                 catch (WebException ex){
                     string errorBody = ex.GetResponseBody();
@@ -60,7 +72,11 @@ namespace SharpBucket{
             return Send(request, HttpMethods.Delete, false, overrideUrl);
         }
 
+<<<<<<< HEAD
         private class ConfigScope : IDisposable{
+=======
+        public class ConfigScope : IDisposable{
+>>>>>>> Oauth3Legged
             private readonly JsConfigScope jsConfigScope;
 
             public ConfigScope(){

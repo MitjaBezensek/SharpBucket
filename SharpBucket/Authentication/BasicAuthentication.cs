@@ -1,16 +1,24 @@
 ﻿using System;
 using System.Text;
 using NServiceKit.Common.Web;
+<<<<<<< HEAD
 using NServiceKit.Text;
+=======
+using NServiceKit.ServiceHost;
+using NServiceKit.Text;
+using RestSharp;
+>>>>>>> Oauth3Legged
 
 namespace SharpBucket.Authentication{
     public class BasicAuthentication : IAuthenticate{
-        private readonly string credentialsToken;
+        private RestClient client;
+        private const string baseUrl = "https://bitbucket.org/api/1.0/";
 
         public BasicAuthentication(string username, string password){
-            credentialsToken = GetCredentialsToken(username, password);
+            client = new RestClient(baseUrl){Authenticator = new HttpBasicAuthenticator(username, password)};
         }
 
+<<<<<<< HEAD
         private string GetCredentialsToken(string username, string paswword){
             var usernameAndPassword = string.Format("{0}:{1}", username, paswword);
             var encodedUsernameAndPassword = Convert.ToBase64String(new ASCIIEncoding().GetBytes(usernameAndPassword));
@@ -26,6 +34,10 @@ namespace SharpBucket.Authentication{
                 }
             });
             return response;
+=======
+        public string GetResponse<T>(string url, string method, IReturn<T> body){
+           return RequestExcecutor.ExectueRequest(url, method, body, client);
+>>>>>>> Oauth3Legged
         }
     }
 }

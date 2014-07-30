@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -14,12 +15,23 @@ namespace SharpBucket.Authentication{
         private const string requestUrl = " https://bitbucket.org/api/1.0/oauth/request_token";
         private const string userAuthorizeUrl = "https://bitbucket.org/api/1.0/oauth/authenticate";
         private const string accessUrl = "https://bitbucket.org/api/1.0/oauth/access_token";
+=======
+﻿using System.Collections.Generic;
+using System.Linq;
 
-        public OauthAuthentication(string apiKey, string secretApiKey){
-            _apiKey = apiKey;
-            _secretApiKey = secretApiKey;
+namespace SharpBucket.Authentication{
+    public abstract class OauthAuthentication{
+        protected readonly string ConsumerKey;
+        protected readonly string ConsumerSecret;
+        protected const string baseUrl = "https://bitbucket.org/api/1.0/";
+>>>>>>> Oauth3Legged
+
+        protected OauthAuthentication(string consumerKey, string consumerSecret){
+            ConsumerKey = consumerKey;
+            ConsumerSecret = consumerSecret;
         }
 
+<<<<<<< HEAD
         public string GetResponse(string url, string method, string body){
             var oauthSession = CreateSession(_apiKey, _secretApiKey);
             var dictionary = GetParameterDictionary(body);
@@ -45,6 +57,9 @@ namespace SharpBucket.Authentication{
         }
 
         private static Dictionary<string, string> GetParameterDictionary(string body){
+=======
+        protected static Dictionary<string, string> GetParameterDictionary(string body){
+>>>>>>> Oauth3Legged
             var dictionary = new Dictionary<string, string>();
             if (body != null){
                 var parameters = body.Split('&');
@@ -53,6 +68,7 @@ namespace SharpBucket.Authentication{
                 }
             }
             return dictionary;
+<<<<<<< HEAD
         }
         
         private OAuthSession CreateSession(string consumer, string consumerSecret){
@@ -63,6 +79,8 @@ namespace SharpBucket.Authentication{
                 UseHeaderForOAuthParameters = true,
             };
             return new OAuthSession(consumerContext, requestUrl, userAuthorizeUrl, accessUrl);
+=======
+>>>>>>> Oauth3Legged
         }
     }
 }

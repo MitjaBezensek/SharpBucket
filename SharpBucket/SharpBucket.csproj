@@ -30,9 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Reference Include="DevDefined.OAuth">
       <HintPath>..\packages\DevDefined.OAuth.0.1\lib\DevDefined.OAuth.dll</HintPath>
     </Reference>
+=======
+>>>>>>> Oauth3Legged
     <Reference Include="NServiceKit.Common">
       <HintPath>..\packages\NServiceKit.Common.1.0.27\lib\net35\NServiceKit.Common.dll</HintPath>
     </Reference>
@@ -42,16 +45,28 @@
     <Reference Include="NServiceKit.Text">
       <HintPath>..\packages\NServiceKit.Text.1.0.10\lib\net35\NServiceKit.Text.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+<<<<<<< HEAD
     <Reference Include="System.Web" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
+=======
+>>>>>>> Oauth3Legged
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\BasicAuthentication.cs" />
     <Compile Include="Authentication\OauthAuthentication.cs" />
+<<<<<<< HEAD
+=======
+    <Compile Include="Authentication\OAuthentication2Legged.cs" />
+    <Compile Include="Authentication\OAuthentication3Legged.cs" />
+    <Compile Include="Authentication\RequestExcecutor.cs" />
+>>>>>>> Oauth3Legged
     <Compile Include="SharpBucket.cs" />
     <Compile Include="V1\EndPoints\IssuesEndPoint.cs" />
     <Compile Include="V1\EndPoints\RepositoryEndPointV1.cs" />
@@ -101,7 +116,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="SharpBucket.nuspec" />
+    <None Include="SharpBucket.nuspec">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

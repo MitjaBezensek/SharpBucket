@@ -19,7 +19,14 @@ namespace ConsoleTests{
 
             // Or OAuth
             //ReadTestDataOauth();
+<<<<<<< HEAD
             //sharpBucket.OAuthAuthentication(apiKey, secretApiKey);
+=======
+            // Three legged authorization
+            //sharpBucket.OAuthAuthentication(apiKey, secretApiKey, threeLegged: true);
+            // Two legged authorization
+            //sharpBucket.OAuthAuthentication(apiKey, secretApiKey, threeLegged: true);
+>>>>>>> Oauth3Legged
 
             TestUserEndPoint(sharpBucket);
             TestIssuesEndPoint(sharpBucket);
@@ -75,9 +82,15 @@ namespace ConsoleTests{
             var issues = issuesEP.ListIssues();
             var newIssue = new Issue{Title = "new title", Content = "new content", Status = "new", Priority = "trivial", Kind = "bug"};
             var newIssueResult = issuesEP.PostIssue(newIssue);
+<<<<<<< HEAD
             var changedIssue = new Issue{Title = "Completely new Title", Content = "Hi!", Status = "new", Local_id = newIssueResult.Local_id};
             var changedIssueResult = issuesEP.PutIssue(changedIssue);
             issuesEP.DeleteIssue(changedIssueResult.Local_id);
+=======
+            var changedIssue = new Issue{Title = "Completely new title", Content = "Hi!", Status = "new", Local_id = newIssueResult.Local_id};
+            var changedIssueResult = issuesEP.PutIssue(changedIssue);
+            issuesEP.DeleteIssue(newIssueResult.Local_id);
+>>>>>>> Oauth3Legged
 
             // Issue followers
             var issueFollowers = issuesEP.ListIssueFollowers(ISSUE_ID);
@@ -91,7 +104,11 @@ namespace ConsoleTests{
             var newCommentResult = issuesEP.PostIssueComment(ISSUE_ID, newComment);
             var updateComment = new Comment{Comment_id = newComment.Comment_id, Content = "updated"};
             var updatedCommentRes = issuesEP.PutIssueComment(ISSUE_ID, newCommentResult.Comment_id, updateComment);
+<<<<<<< HEAD
             issuesEP.DeleteIssueComment(13, updatedCommentRes.Comment_id);
+=======
+            issuesEP.DeleteIssueComment(13, newCommentResult.Comment_id);
+>>>>>>> Oauth3Legged
 
             // Components
             var components = issuesEP.ListComponents();
