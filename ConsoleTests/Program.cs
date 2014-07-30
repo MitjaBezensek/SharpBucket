@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using NServiceKit.Common.Utils;
 using SharpBucket;
 using SharpBucket.POCOs;
 using Version = SharpBucket.POCOs.Version;
@@ -37,8 +38,8 @@ namespace ConsoleTests{
             // of if you saved the tokens you can simply use those
             // var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oauthtoken", "oauthtokensecret");
 
-            TestUserEndPoint(sharpBucket);
-            TestIssuesEndPoint(sharpBucket);
+            //TestUserEndPoint(sharpBucket);
+            //TestIssuesEndPoint(sharpBucket);
             TestRepositoryEndPoint(sharpBucket);
             TestUsersEndPoint(sharpBucket);
         }
@@ -81,60 +82,59 @@ namespace ConsoleTests{
             var follows = userEP.ListFollows();
             var userRepos = userEP.ListRepositories();
             var userReposOverview = userEP.RepositoriesOverview();
+            var userRepositoryDashboard = userEP.GetRepositoryDasboard();
         }
 
         private static void TestIssuesEndPoint(SharpBucketV1 sharpBucketV1){
             var issuesEP = sharpBucketV1.Repository(accountName, repository).Issues();
-            int ISSUE_ID = 13;
+            int ISSUE_ID = 5;
 
-            // Issues
+            //// Issues
             var issues = issuesEP.ListIssues();
             var newIssue = new Issue{Title = "Let's add a new issue", Content = "Some issue content", Status = "new", Priority = "trivial", Kind = "bug"};
             var newIssueResult = issuesEP.PostIssue(newIssue);
-            var changedIssue = new Issue{Title = "Completely new title", Content = "Hi!", Status = "new", Local_id = newIssueResult.Local_id};
+            var issue = issuesEP.GetIssue(newIssueResult.Local_id);
+            var changedIssue = new Issue{Title = "Completely new title", Content = "Hi!", Status = "new", Local_id = issue.Local_id};
             var changedIssueResult = issuesEP.PutIssue(changedIssue);
-            issuesEP.DeleteIssue(newIssueResult.Local_id);
+            issuesEP.DeleteIssue(changedIssueResult.Local_id);
 
-            // Issue followers
-            var issueFollowers = issuesEP.ListIssueFollowers(ISSUE_ID);
+            //// Issue followers
+            //var issueFollowers = issuesEP.ListIssueFollowers(issues.Issues[0].Local_id);
 
-            // Issue comments
+            //// Issue comments
             var issueComments = issuesEP.ListIssueComments(ISSUE_ID);
-            var firstComment = issueComments[0];
-            var issueComment = issuesEP.GetIssueComment(ISSUE_ID, firstComment.Comment_id);
             var newComment = new Comment{Content = "This bug is really annoying!"};
             var newCommentResult = issuesEP.PostIssueComment(ISSUE_ID, newComment);
-            var updateComment = new Comment{Comment_id = newComment.Comment_id, Content = "The bug is still annoying"};
-            var updatedCommentRes = issuesEP.PutIssueComment(ISSUE_ID, newCommentResult.Comment_id, updateComment);
-            issuesEP.DeleteIssueComment(13, newCommentResult.Comment_id);
+            var comment = issuesEP.GetIssueComment(ISSUE_ID, newCommentResult.Comment_id);
+            comment.Content = "The bug is still annoying";
+            var updatedCommentRes = issuesEP.PutIssueComment(ISSUE_ID, comment.Comment_id, comment);
+            issuesEP.DeleteIssueComment(ISSUE_ID, updatedCommentRes.Comment_id);
 
             // Components
             var components = issuesEP.ListComponents();
             var newComponent = new Component{Name = "Awesome component"};
             var newComponentRes = issuesEP.PostComponent(newComponent);
-            var component = components[0];
+            var component = issuesEP.GetComponent(newComponentRes.Id);
             component.Name = "Even more awesome component";
             var updatedComponent = issuesEP.PutComponent(component);
-            issuesEP.DeleteComponent(newComponentRes.Id);
+            issuesEP.DeleteComponent(updatedComponent.Id);
 
             // Milestones
             var milestones = issuesEP.ListMilestones();
-            var updateMilestone = milestones[0];
-            var milestone = issuesEP.GetMilestone(updateMilestone.Id);
             var newMilestone = new Milestone{Name = "Awesome milestone"};
             var newMilestoneRes = issuesEP.PostMilestone(newMilestone);
-            issuesEP.DeleteMilestone(newMilestoneRes.Id);
-            updateMilestone.Name = "Even more awesome milestone";
-            var updatedMilestone = issuesEP.PutMilestone(updateMilestone);
+            var milestone = issuesEP.GetMilestone(newMilestoneRes.Id);
+            milestone.Name = "Even more awesome milestone";
+            var updatedMilestone = issuesEP.PutMilestone(milestone);
+            issuesEP.DeleteMilestone(updatedMilestone.Id);
 
             // Versions
             var versions = issuesEP.ListVersions();
-            var updateVersion = versions[0];
-            var version = issuesEP.GetVersion(updateVersion.Id);
             var newVersion = new Version{Name = "Awesome version"};
             var newVersionRes = issuesEP.PostVersion(newVersion);
-            newVersionRes.Name = "Even more awesome version";
-            var updatedversion = issuesEP.PutVersion(newVersionRes);
+            var version = issuesEP.GetVersion(newVersionRes.Id);
+            version.Name = "Even more awesome version";
+            var updatedversion = issuesEP.PutVersion(version);
             issuesEP.DeleteVersion(updatedversion.Id);
         }
 

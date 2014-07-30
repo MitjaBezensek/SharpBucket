@@ -9,8 +9,9 @@ namespace SharpBucket.V1.Routes{
         public class GetInfo : IReturn<UserInfo>{
         }
 
+        // TODO: Serialization is not ok
         [Route("user/privileges")]
-        public class GetPrivileges : IReturn<Privileges>{
+        public class GetPrivileges : IReturn<string>{
         }
 
         [Route("user/follows")]
@@ -27,7 +28,7 @@ namespace SharpBucket.V1.Routes{
 
         // TODO Repository dashboard. Not priority.
         [Route("user/repositories/dashboard")]
-        public class GetRepositoryDashboard : IReturn<RepositoriesOverview>{
+        public class GetRepositoryDashboard : IReturn<string>{
         }
     }
 }

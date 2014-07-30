@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 using NServiceKit.ServiceHost;
 using RestSharp.Deserializers;
 using SharpBucket.POCOs;
+using SharpBucket.Pocos;
 
 namespace SharpBucket.V1.Routes{
     public class IssuesRoutes{
@@ -23,17 +24,17 @@ namespace SharpBucket.V1.Routes{
 
             [IgnoreDataMember]
             public string RepositorySlug { get; set; }
-            [DeserializeAs(Name = "title")]
+
             public string title { get; set; }
-            [DeserializeAs(Name = "content")]
+
             public string content { get; set; }
-            [DeserializeAs(Name = "status")]
+
             public string status { get; set; }
-            [DeserializeAs(Name = "priority")]
+
             public string priority { get; set; }
-            [DeserializeAs(Name = "kind")]
+
             public string kind { get; set; }
-            [DeserializeAs(Name = "local_id")]
+
             public int? local_id { get; set; }
         }
 
@@ -63,7 +64,7 @@ namespace SharpBucket.V1.Routes{
 
         // ISSUE FOLLOWERS DONE
         [Route("repositories/{AccountName}/{RepositorySlug}/issues/{Id}/followers")]
-        public class ListIssueFollowers : IReturn<List<User>>{
+        public class ListIssueFollowers : IReturn<IssueFollowers>{
             public string AccountName { get; set; }
             public string RepositorySlug { get; set; }
             public int? Id { get; set; }
@@ -91,7 +92,7 @@ namespace SharpBucket.V1.Routes{
             public string content { get; set; }
         }
 
-        [Route("repositories/{AccountName}/{RepositorySlug}/issues/{Id}/comments/{CommentId}")]
+        [Route("repositories/{AccountName}/{RepositorySlug}/issues/{Id}/comments/{commentId}")]
         public class GetIssueComment : IReturn<Comment>{
             [IgnoreDataMember]
             public string AccountName { get; set; }
@@ -102,7 +103,8 @@ namespace SharpBucket.V1.Routes{
             [IgnoreDataMember]
             public int? Id { get; set; }
 
-            public int? CommentId { get; set; }
+            public int? commentId { get; set; }
+
             public string content { get; set; }
         }
 
@@ -123,10 +125,10 @@ namespace SharpBucket.V1.Routes{
             [IgnoreDataMember]
             public string RepositorySlug { get; set; }
 
-            public string Name { get; set; }
+            public string name { get; set; }
         }
 
-        [Route("repositories/{AccountName}/{RepositorySlug}/issues/components/{Id}")]
+        [Route("repositories/{AccountName}/{RepositorySlug}/issues/components/{id}")]
         public class GetComponent : IReturn<Component>{
             [IgnoreDataMember]
             public string AccountName { get; set; }
@@ -134,8 +136,9 @@ namespace SharpBucket.V1.Routes{
             [IgnoreDataMember]
             public string RepositorySlug { get; set; }
 
-            public int? Id { get; set; }
-            public string Name { get; set; }
+            public int? id { get; set; }
+
+            public string name { get; set; }
         }
 
         // ISSUE MILESTONES DONE
@@ -155,10 +158,10 @@ namespace SharpBucket.V1.Routes{
             [IgnoreDataMember]
             public string RepositorySlug { get; set; }
 
-            public string Name { get; set; }
+            public string name { get; set; }
         }
 
-        [Route("repositories/{AccountName}/{RepositorySlug}/issues/milestones/{Id}")]
+        [Route("repositories/{AccountName}/{RepositorySlug}/issues/milestones/{id}")]
         public class GetMilestone : IReturn<Milestone>{
             [IgnoreDataMember]
             public string AccountName { get; set; }
@@ -166,8 +169,9 @@ namespace SharpBucket.V1.Routes{
             [IgnoreDataMember]
             public string RepositorySlug { get; set; }
 
-            public int? Id { get; set; }
-            public string Name { get; set; }
+            public int? id { get; set; }
+
+            public string name { get; set; }
         }
 
         // ISSUE VERSIONS DONE
@@ -187,10 +191,10 @@ namespace SharpBucket.V1.Routes{
             [IgnoreDataMember]
             public string RepositorySlug { get; set; }
 
-            public string Name { get; set; }
+            public string name { get; set; }
         }
 
-        [Route("repositories/{AccountName}/{RepositorySlug}/issues/versions/{Id}")]
+        [Route("repositories/{AccountName}/{RepositorySlug}/issues/versions/{id}")]
         public class GetVersion : IReturn<Version>{
             [IgnoreDataMember]
             public string AccountName { get; set; }
@@ -198,8 +202,9 @@ namespace SharpBucket.V1.Routes{
             [IgnoreDataMember]
             public string RepositorySlug { get; set; }
 
-            public int? Id { get; set; }
-            public string Name { get; set; }
+            public int? id { get; set; }
+
+            public string name { get; set; }
         }
     }
 }

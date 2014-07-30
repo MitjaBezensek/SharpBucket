@@ -14,7 +14,7 @@ namespace SharpBucket.V1.EndPoints{
             return _sharpBucketV1.Get(new UserRoutes.GetInfo());
         }
 
-        public Privileges GetPrivileges(){
+        public string GetPrivileges(){
             return _sharpBucketV1.Get(new UserRoutes.GetPrivileges());
         }
 
@@ -37,5 +37,8 @@ namespace SharpBucket.V1.EndPoints{
         //    return _sharpBucketV1.GetUserRepositoryOverview();
 
         //}
+        public string GetRepositoryDasboard(){
+            return _sharpBucketV1.Get(new UserRoutes.GetRepositoryDashboard());
+        }
     }
 }

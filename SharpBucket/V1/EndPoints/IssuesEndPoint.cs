@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SharpBucket.POCOs;
+using SharpBucket.Pocos;
 
 namespace SharpBucket.V1.EndPoints{
     public class IssuesEndPoint{
@@ -17,7 +18,7 @@ namespace SharpBucket.V1.EndPoints{
             return _repositoryEndPointV1.PostIssue(issue);
         }
 
-        public Issue GetIssue(int issueId){
+        public Issue GetIssue(int? issueId){
             return _repositoryEndPointV1.GetIssue(issueId);
         }
 
@@ -29,7 +30,7 @@ namespace SharpBucket.V1.EndPoints{
             return _repositoryEndPointV1.DeleteIssue(issueId);
         }
 
-        public List<User> ListIssueFollowers(int issueId){
+        public IssueFollowers ListIssueFollowers(int? issueId){
             return _repositoryEndPointV1.ListIssueFollowers(issueId);
         }
 
@@ -61,7 +62,7 @@ namespace SharpBucket.V1.EndPoints{
             return _repositoryEndPointV1.PostComponent(component);
         }
 
-        public Component GetComponent(int componentId){
+        public Component GetComponent(int? componentId){
             return _repositoryEndPointV1.GetComponent(componentId);
         }
 

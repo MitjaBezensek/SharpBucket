@@ -53,6 +53,7 @@
     <Compile Include="Authentication\OAuthentication3Legged.cs" />
     <Compile Include="Authentication\RequestExcecutor.cs" />
     <Compile Include="ConfigScope.cs" />
+    <Compile Include="Pocos\IssueFollowers.cs" />
     <Compile Include="SharpBucket.cs" />
     <Compile Include="V1\EndPoints\IssuesEndPoint.cs" />
     <Compile Include="V1\EndPoints\RepositoryEndPointV1.cs" />
