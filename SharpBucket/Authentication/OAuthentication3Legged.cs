@@ -46,7 +46,7 @@ namespace SharpBucket.Authentication{
 
         public void AuthenticateWithPin(string pin){
             var request = new RestRequest(accessUrl, Method.POST);
-            var restClient = new RestClient(baseUrl) {
+            var restClient = new RestClient(baseUrl){
                 Authenticator = OAuth1Authenticator.ForAccessToken(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret, pin)
             };
             var response = restClient.Execute(request);

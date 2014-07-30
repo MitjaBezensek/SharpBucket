@@ -16,7 +16,7 @@ namespace SharpBucket.Authentication{
 
         private class Serializer : ISerializer{
             public string Serialize(object obj){
-                using (new SharpBucket.ConfigScope()){
+                using (new ConfigScope()){
                     return NServiceKit.Text.QueryStringSerializer.SerializeToString(obj);
                 }
             }

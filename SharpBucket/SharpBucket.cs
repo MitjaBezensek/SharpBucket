@@ -8,7 +8,6 @@ using SharpBucket.Authentication;
 
 namespace SharpBucket{
     public class SharpBucket{
-        protected string BaseUrl { private get; set; }
         private IAuthenticate authenticator;
 
         public void BasicAuthentication(string username, string password){
@@ -40,8 +39,9 @@ namespace SharpBucket{
                 catch (WebException ex){
                     string errorBody = ex.GetResponseBody();
                     var errorStatus = ex.GetStatus() ?? HttpStatusCode.BadRequest;
-
                     if (ex.IsAny400()){
+                        Console.WriteLine(errorBody);
+                        Console.WriteLine(errorStatus);
                     }
                     ret = null;
                 }
@@ -56,29 +56,15 @@ namespace SharpBucket{
         }
 
         public T Post<T>(IReturn<T> request, string overrideUrl = null){
-            return Send(request, HttpMethods.Post, overrideUrl: overrideUrl);
+            return Send(request, HttpMethods.Post, overrideUrl);
         }
 
         public T Put<T>(IReturn<T> request, string overrideUrl = null){
-            return Send(request, HttpMethods.Put, overrideUrl: overrideUrl);
+            return Send(request, HttpMethods.Put, overrideUrl);
         }
 
         public T Delete<T>(IReturn<T> request, string overrideUrl = null){
             return Send(request, HttpMethods.Delete, overrideUrl);
-        }
-
-        public class ConfigScope : IDisposable{
-            private readonly JsConfigScope jsConfigScope;
-
-            public ConfigScope(){
-                jsConfigScope = JsConfig.With(
-                    emitLowercaseUnderscoreNames: true,
-                    emitCamelCaseNames: false);
-            }
-
-            public void Dispose(){
-                jsConfigScope.Dispose();
-            }
         }
     }
 }

@@ -1,12 +1,10 @@
-﻿using System;
-using NServiceKit.ServiceHost;
+﻿using NServiceKit.ServiceHost;
 using RestSharp;
 using RestSharp.Authenticators;
-using RestSharp.Serializers;
 
 namespace SharpBucket.Authentication{
     public class OAuthentication2Legged : OauthAuthentication, IAuthenticate{
-        private RestClient client;
+        private readonly RestClient client;
 
         public OAuthentication2Legged(string consumerKey, string consumerSecret) : base(consumerKey, consumerSecret){
             client = new RestClient(baseUrl){
