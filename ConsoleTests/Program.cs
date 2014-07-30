@@ -19,6 +19,9 @@ namespace ConsoleTests{
 
             // Or OAuth
             //ReadTestDataOauth();
+            // Three legged authorization
+            //sharpBucket.OAuthAuthentication(apiKey, secretApiKey, threeLegged: true);
+            // Two legged authorization
             //sharpBucket.OAuthAuthentication(apiKey, secretApiKey, threeLegged: true);
 
             TestUserEndPoint(sharpBucket);

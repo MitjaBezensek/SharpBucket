@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using NServiceKit.Common;
 using NServiceKit.Common.Web;
 using NServiceKit.ServiceClient.Web;
 using NServiceKit.ServiceHost;
