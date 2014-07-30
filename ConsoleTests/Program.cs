@@ -1,12 +1,15 @@
-﻿using SharpBucket;
+﻿using System;
+using System.Diagnostics;
+using SharpBucket;
 using SharpBucket.POCOs;
+using Version = SharpBucket.POCOs.Version;
 
 namespace ConsoleTests{
     internal class Program{
         private static string email;
         private static string password;
-        private static string apiKey;
-        private static string secretApiKey;
+        private static string ConsumerKey;
+        private static string ConsumerSecretKey;
         private static string accountName;
         private static string repository;
 
@@ -14,15 +17,23 @@ namespace ConsoleTests{
             var sharpBucket = new SharpBucketV1();
 
             // Do basic auth
-            ReadTestDataBasic();
-            sharpBucket.BasicAuthentication(email, password);
+            //ReadTestDataBasic();
+            //sharpBucket.BasicAuthentication(email, password);
 
             // Or OAuth
-            //ReadTestDataOauth();
-            // Three legged authorization
-            //sharpBucket.OAuthAuthentication(apiKey, secretApiKey, threeLegged: true);
-            // Two legged authorization
-            //sharpBucket.OAuthAuthentication(apiKey, secretApiKey, threeLegged: true);
+            ReadTestDataOauth();
+            // Two legged OAuth, just supply the ConsumerKey and the ConsumerSecretKey and you are done
+            //sharpBucket.OAuth2LeggedAuthentication(ConsumerKey, ConsumerSecretKey);
+            // Three legged OAuth. We can supply our own callback url to which bitbucket will send our pin
+            // If we use "oob" as the callback url we will get the bitbuckets url address which will have our pin
+            var authenticator = sharpBucket.OAuth3LeggedAuthentication(ConsumerKey, ConsumerSecretKey, "oob");
+            // if we used oob, we can open the url in the browser
+            var uri = authenticator.StartAuthentication();
+            Process.Start(uri);
+            // and paste the pin to the console
+            var pin = Console.ReadLine();
+            // we can now fo the final step by using the pin to get our access tokens
+            authenticator.AuthenticateWithPin(pin);
 
             TestUserEndPoint(sharpBucket);
             TestIssuesEndPoint(sharpBucket);
@@ -38,8 +49,8 @@ namespace ConsoleTests{
             // AccountName:yourAccountName
             // Repository:testRepository
             var lines = System.IO.File.ReadAllLines("c:\\TestInformationOauth.txt");
-            apiKey = lines[0].Split(':')[1];
-            secretApiKey = lines[1].Split(':')[1];
+            ConsumerKey = lines[0].Split(':')[1];
+            ConsumerSecretKey = lines[1].Split(':')[1];
             ReadAccoutNameAndRepository(lines);
         }
 

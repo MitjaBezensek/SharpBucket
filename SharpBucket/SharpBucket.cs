@@ -15,13 +15,13 @@ namespace SharpBucket{
             authenticator = new BasicAuthentication(username, password);
         }
 
-        public void OAuthAuthentication(string apiKey, string secretApiKey, bool threeLegged = true){
-            if (threeLegged){
-                authenticator = new OAuthentication3Legged(apiKey, secretApiKey);
-            }
-            else{
-                authenticator = new OAuthentication2Legged(apiKey, secretApiKey);
-            }
+        public void OAuth2LeggedAuthentication(string apiKey, string secretApiKey){
+            authenticator = new OAuthentication2Legged(apiKey, secretApiKey);
+        }
+
+        public OAuthentication3Legged OAuth3LeggedAuthentication(string apiKey, string secretApiKey, string callback = "oob"){
+            authenticator = new OAuthentication3Legged(apiKey, secretApiKey, callback);
+            return (OAuthentication3Legged) authenticator;
         }
 
 
