@@ -37,7 +37,7 @@ var issueComments = issues.ListIssueComments(ISSUE_ID);
 Sending information is just as easy.
 
 ```CSharp
-var newIssue = new Issue{Title = "I have this little bug", 
+var newIssue = new Issue{title = "I have this little bug", 
                          content = "that is really annoying",
                          status = "new"};
 var newIssueResult = issues.PostIssue(newIssue);
@@ -97,7 +97,7 @@ If you had a server waiting from BitBucket's response, you would simply use your
 If you already have the tokens you can simply skip the authentication process:
 ```CSharp
 var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, 
-														   oauthToken oauthtokenSecret);
+														   oauthToken oauthTokenSecret);
 ```
 
 ## How much of the API is covered?
