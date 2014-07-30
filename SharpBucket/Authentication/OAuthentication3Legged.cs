@@ -49,5 +49,12 @@ namespace SharpBucket.Authentication{
             OAuthToken = qs["oauth_token"];
             OauthTokenSecret = qs["oauth_token_secret"];
         }
+
+        public void RestoreSavedTokens(string consumerKey, string consumerSecret, string oauthToken, string oauthTokenSecret){
+            ConsumerKey = consumerKey;
+            ConsumerSecret = consumerSecret;
+            OAuthToken = oauthToken;
+            OauthTokenSecret = oauthTokenSecret;
+        }
     }
 }

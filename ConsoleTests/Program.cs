@@ -8,8 +8,8 @@ namespace ConsoleTests{
     internal class Program{
         private static string email;
         private static string password;
-        private static string ConsumerKey;
-        private static string ConsumerSecretKey;
+        private static string consumerKey;
+        private static string consumerSecretKey;
         private static string accountName;
         private static string repository;
 
@@ -22,17 +22,19 @@ namespace ConsoleTests{
 
             // Or OAuth
             ReadTestDataOauth();
-            // Two legged OAuth, just supply the ConsumerKey and the ConsumerSecretKey and you are done
-            //sharpBucket.OAuth2LeggedAuthentication(ConsumerKey, ConsumerSecretKey);
+            // Two legged OAuth, just supply the consumerKey and the consumerSecretKey and you are done
+            //sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
 
             // Three legged OAuth. We can supply our own callback url to which bitbucket will send our pin
             // If we use "oob" as the callback url we will get the bitbuckets url address which will have our pin
-            var authenticator = sharpBucket.OAuth3LeggedAuthentication(ConsumerKey, ConsumerSecretKey, "oob");
+            var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oob");
             var uri = authenticator.StartAuthentication();
             Process.Start(uri);
             var pin = Console.ReadLine();
             // we can now do the final step by using the pin to get our access tokens
             authenticator.AuthenticateWithPin(pin);
+            // of if you saved the tokens you can simply use those
+            // authenticator.RestoreSavedTokens(consumerKey, consumerSecretKey, "oauthToken", "oauthTokenSecret");
 
             TestUserEndPoint(sharpBucket);
             TestIssuesEndPoint(sharpBucket);
@@ -48,8 +50,8 @@ namespace ConsoleTests{
             // AccountName:yourAccountName
             // Repository:testRepository
             var lines = System.IO.File.ReadAllLines("c:\\TestInformationOauth.txt");
-            ConsumerKey = lines[0].Split(':')[1];
-            ConsumerSecretKey = lines[1].Split(':')[1];
+            consumerKey = lines[0].Split(':')[1];
+            consumerSecretKey = lines[1].Split(':')[1];
             ReadAccoutNameAndRepository(lines);
         }
 
