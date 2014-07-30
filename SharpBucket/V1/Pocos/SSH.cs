@@ -1,7 +1,7 @@
 ﻿namespace SharpBucket.V1.Pocos{
     public class SSH {
-        public int? Pk { get; set; }
-        public string Key { get; set; }
-        public string Label { get; set; }
+        public int? pk { get; set; }
+        public string key { get; set; }
+        public string label { get; set; }
     }
 }

@@ -2,9 +2,9 @@
 
 namespace SharpBucket.V1.Pocos{
     public class IssuesInfo{
-        public int? Count { get; set; }
-        public Filter Filter { get; set; }
-        public object Search { get; set; }
-        public List<Issue> Issues { get; set; }
+        public int? count { get; set; }
+        public Filter filter { get; set; }
+        public object search { get; set; }
+        public List<Issue> issues { get; set; }
     }
 }

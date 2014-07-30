@@ -1,6 +1,6 @@
 ﻿namespace SharpBucket.V1.Pocos{
     public class FileInfo{
-        public string Type { get; set; }
-        public string File { get; set; }
+        public string type { get; set; }
+        public string file { get; set; }
     }
 }

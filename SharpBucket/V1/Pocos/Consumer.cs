@@ -1,10 +1,10 @@
 ﻿namespace SharpBucket.V1.Pocos{
     public class Consumer {
-        public string Description { get; set; }
-        public int? Id { get; set; }
-        public string Key { get; set; }
-        public string Name { get; set; }
-        public string Secret { get; set; }
-        public string Url { get; set; }
+        public string description { get; set; }
+        public int? id { get; set; }
+        public string key { get; set; }
+        public string name { get; set; }
+        public string secret { get; set; }
+        public string url { get; set; }
     }
 }

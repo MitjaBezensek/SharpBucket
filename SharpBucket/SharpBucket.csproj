@@ -45,6 +45,7 @@
     <Compile Include="Authentication\OAuthentication2Legged.cs" />
     <Compile Include="Authentication\OAuthentication3Legged.cs" />
     <Compile Include="Authentication\RequestExcecutor.cs" />
+    <Compile Include="V1\EndPoints\IssueEndPoint.cs" />
     <Compile Include="V2\Pocos\ListOfUsers.cs" />
     <Compile Include="V2\Pocos\Link.cs" />
     <Compile Include="V2\Pocos\Links.cs" />

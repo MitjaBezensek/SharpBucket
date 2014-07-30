@@ -1,12 +1,12 @@
 ﻿namespace SharpBucket.V1.Pocos{
     public class User{
-        public string Username { get; set; }
-        public string First_name { get; set; }
-        public string Last_name { get; set; }
-        public string Display_name { get; set; }
-        public bool? Is_staff { get; set; }
-        public string Avatar { get; set; }
-        public string Resource_uri { get; set; }
-        public bool? Is_team { get; set; }
+        public string username { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public string display_name { get; set; }
+        public bool? is_staff { get; set; }
+        public string avatar { get; set; }
+        public string resource_uri { get; set; }
+        public bool? is_team { get; set; }
     }
 }

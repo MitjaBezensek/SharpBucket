@@ -4,6 +4,10 @@ using SharpBucket.V1.Pocos;
 namespace SharpBucket.V1.EndPoints {
     public class IssuesEndPoint {
         private readonly RepositoryEndPointV1 _repositoryEndPointV1;
+        
+        public IssueEndPoint Issue(int issueId){
+            return new IssueEndPoint(_repositoryEndPointV1, issueId);
+        }
 
         public IssuesEndPoint(RepositoryEndPointV1 repositoryEndPointV1) {
             _repositoryEndPointV1 = repositoryEndPointV1;

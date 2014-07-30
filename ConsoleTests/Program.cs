@@ -14,7 +14,7 @@ namespace ConsoleTests{
         private static string repository;
 
         private static void Main(){
-             TestApiV1();
+            TestApiV1();
             //TestApiV2();
         }
 
@@ -42,7 +42,7 @@ namespace ConsoleTests{
             // of if you saved the tokens you can simply use those
             // var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oauthtoken", "oauthtokensecret");
 
-            TestUserEndPoint(sharpBucket);
+            //TestUserEndPoint(sharpBucket);
             TestIssuesEndPoint(sharpBucket);
             TestRepositoryEndPoint(sharpBucket);
             TestUsersEndPoint(sharpBucket);
@@ -100,7 +100,7 @@ namespace ConsoleTests{
             var issuesEP = sharpBucket.Repository(accountName, repository).Issues();
             int ISSUE_ID = 5;
 
-            //// Issues
+            // Issues
             var issues = issuesEP.ListIssues();
             var newIssue = new Issue{title = "Let's add a new issue", content = "Some issue content", status = "new", priority = "trivial", kind = "bug"};
             var newIssueResult = issuesEP.PostIssue(newIssue);
@@ -109,44 +109,54 @@ namespace ConsoleTests{
             var changedIssueResult = issuesEP.PutIssue(changedIssue);
             issuesEP.DeleteIssue(changedIssueResult.local_id);
 
-            //// Issue followers
-            //var issueFollowers = issuesEP.ListIssueFollowers(issues.Issues[0].Local_id);
+            // Issue followers
+            var issueFollowers = issuesEP.ListIssueFollowers(issues.issues[0].local_id);
 
-            //// Issue comments
-            var issueComments = issuesEP.ListIssueComments(ISSUE_ID);
-            var newComment = new Comment{Content = "This bug is really annoying!"};
-            var newCommentResult = issuesEP.PostIssueComment(ISSUE_ID, newComment);
-            var comment = issuesEP.GetIssueComment(ISSUE_ID, newCommentResult.Comment_id);
-            comment.Content = "The bug is still annoying";
-            var updatedCommentRes = issuesEP.PutIssueComment(ISSUE_ID, comment);
-            issuesEP.DeleteIssueComment(ISSUE_ID, updatedCommentRes.Comment_id);
+            // Issue comments
+            //var issueComments = issuesEP.ListIssueComments(ISSUE_ID);
+            //var newComment = new Comment{content = "This bug is really annoying!"};
+            //var newCommentResult = issuesEP.PostIssueComment(ISSUE_ID, newComment);
+            //var comment = issuesEP.GetIssueComment(ISSUE_ID, newCommentResult.comment_id);
+            //comment.content = "The bug is still annoying";
+            //var updatedCommentRes = issuesEP.PutIssueComment(ISSUE_ID, comment);
+            //issuesEP.DeleteIssueComment(ISSUE_ID, updatedCommentRes.comment_id);
+
+            //// Issue comments alternative
+            var issueEP = issuesEP.Issue(ISSUE_ID);
+            var issueComments = issueEP.ListComments();
+            var newComment = new Comment{content = "This bug is really annoying!"};
+            var newCommentResult = issueEP.PostComment(newComment);
+            var comment = issueEP.GetIssueComment(newCommentResult.comment_id);
+            comment.content = "The bug is still annoying";
+            var updatedCommentRes = issueEP.PutIssueComment(comment);
+            issueEP.DeleteIssueComment(updatedCommentRes.comment_id);
 
             // Components
             var components = issuesEP.ListComponents();
-            var newComponent = new Component{Name = "Awesome component"};
+            var newComponent = new Component{name = "Awesome component"};
             var newComponentRes = issuesEP.PostComponent(newComponent);
-            var component = issuesEP.GetComponent(newComponentRes.Id);
-            component.Name = "Even more awesome component";
+            var component = issuesEP.GetComponent(newComponentRes.id);
+            component.name = "Even more awesome component";
             var updatedComponent = issuesEP.PutComponent(component);
-            issuesEP.DeleteComponent(updatedComponent.Id);
+            issuesEP.DeleteComponent(updatedComponent.id);
 
             // Milestones
             var milestones = issuesEP.ListMilestones();
-            var newMilestone = new Milestone{Name = "Awesome milestone"};
+            var newMilestone = new Milestone{name = "Awesome milestone"};
             var newMilestoneRes = issuesEP.PostMilestone(newMilestone);
-            var milestone = issuesEP.GetMilestone(newMilestoneRes.Id);
-            milestone.Name = "Even more awesome milestone";
+            var milestone = issuesEP.GetMilestone(newMilestoneRes.id);
+            milestone.name = "Even more awesome milestone";
             var updatedMilestone = issuesEP.PutMilestone(milestone);
-            issuesEP.DeleteMilestone(updatedMilestone.Id);
+            issuesEP.DeleteMilestone(updatedMilestone.id);
 
             // Versions
             var versions = issuesEP.ListVersions();
-            var newVersion = new Version{Name = "Awesome version"};
+            var newVersion = new Version{name = "Awesome version"};
             var newVersionRes = issuesEP.PostVersion(newVersion);
-            var version = issuesEP.GetVersion(newVersionRes.Id);
-            version.Name = "Even more awesome version";
+            var version = issuesEP.GetVersion(newVersionRes.id);
+            version.name = "Even more awesome version";
             var updatedversion = issuesEP.PutVersion(version);
-            issuesEP.DeleteVersion(updatedversion.Id);
+            issuesEP.DeleteVersion(updatedversion.id);
         }
 
         private static void TestRepositoryEndPoint(SharpBucketV1 sharpBucket){
@@ -156,12 +166,12 @@ namespace ConsoleTests{
             var mainBranch = repositoryEP.GetMainBranch();
             string WIKI_PAGE = "";
             var wiki = repositoryEP.GetWiki(WIKI_PAGE);
-            var newPage = new Wiki{Data = "Hello to my new page"};
+            var newPage = new Wiki{data = "Hello to my new page"};
             var newWiki = repositoryEP.PostWiki(newPage, "NewPage");
             var changeSet = repositoryEP.ListChangeset();
             var change = changeSet.changesets[4];
-            var getChange = repositoryEP.GetChangeset(change.Node);
-            var diffStats = repositoryEP.GetChangesetDiffstat(change.Node);
+            var getChange = repositoryEP.GetChangeset(change.node);
+            var diffStats = repositoryEP.GetChangesetDiffstat(change.node);
             var repoEvents = repositoryEP.ListEvents();
         }
 
@@ -174,10 +184,10 @@ namespace ConsoleTests{
             var invitationsForEmail = usersEP.GetInvitationsFor(email);
             var followers = usersEP.ListFollowers();
             var consumers = usersEP.ListConsumers();
-            int? CONSUMER_ID = consumers[0].Id;
-           // var consumer = usersEP.ListConsumer(CONSUMER_ID);
+            int? CONSUMER_ID = consumers[0].id;
+            // var consumer = usersEP.ListConsumer(CONSUMER_ID);
             var ssh_keys = usersEP.ListSSHKeys();
-            int? PK = ssh_keys[0].Pk;
+            int? PK = ssh_keys[0].pk;
             var getSSH = usersEP.GetSSHKey(PK);
         }
 

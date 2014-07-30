@@ -2,7 +2,7 @@
 
 namespace SharpBucket.V1.Pocos{
     public class EventInfo {
-        public int? COunt { get; set; }
-        public List<EventData> Events { get; set; }
+        public int? count { get; set; }
+        public List<EventData> events { get; set; }
     }
 }

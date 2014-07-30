@@ -1,10 +1,10 @@
 ﻿namespace SharpBucket.V1.Pocos{
     public class RepositoryEvent{
-        public string Name { get; set; }
-        public string Url { get; set; }
-        public string Avatar { get; set; }
-        public string Owner { get; set; }
-        public string Slug { get; set; }
-        public bool? Is_psrivate { get; set; }
+        public string name { get; set; }
+        public string url { get; set; }
+        public string avatar { get; set; }
+        public string owner { get; set; }
+        public string slug { get; set; }
+        public bool? is_private { get; set; }
     }
 }

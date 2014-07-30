@@ -2,7 +2,7 @@
 
 namespace SharpBucket.V1.Pocos{
     public class RepositoriesOverview{
-        public List<EventData> Updated { get; set; }
-        public List<EventData> Viewed { get; set; }
+        public List<EventData> updated { get; set; }
+        public List<EventData> viewed { get; set; }
     }
 }
