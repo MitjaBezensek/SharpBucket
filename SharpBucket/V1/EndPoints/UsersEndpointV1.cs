@@ -1,71 +1,76 @@
 ﻿using System.Collections.Generic;
 using SharpBucket.V1.Pocos;
-using SharpBucket.V1.Routes;
 
-namespace SharpBucket.V1.EndPoints{
-    public class UsersEndpointV1{
+namespace SharpBucket.V1.EndPoints {
+    public class UsersEndpointV1 {
         private readonly string _accountName;
         private readonly SharpBucketV1 _sharpBucketV1;
         private readonly string _invitationsUrl;
         private readonly string _sshKeysUrl;
+        private readonly string _baseUrl;
 
-        public UsersEndpointV1(string accountName, SharpBucketV1 sharpBucketV1){
+        public UsersEndpointV1(string accountName, SharpBucketV1 sharpBucketV1) {
             _accountName = accountName;
             _sharpBucketV1 = sharpBucketV1;
-            _invitationsUrl = "users/" + accountName + "/invitations/";
-            _sshKeysUrl = "users/" + accountName + "/ssh-keys/";
+            _baseUrl = "users/" + accountName + "/";
         }
 
-        public List<EmailInfo> ListEmails(){
-            if (_accountName != null){
-                return _sharpBucketV1.Get(new UsersRoutes.ListEmails{AccountName = _accountName});
-            }
-            return null;
+        public EventInfo ListUserEvents() {
+            var overrideUrl = _baseUrl + "events/";
+            return _sharpBucketV1.Get(new EventInfo(), overrideUrl);
         }
 
-        public EmailInfo GetEmail(string email){
-            if (_accountName != null){
-                return _sharpBucketV1.Get(new UsersRoutes.GetEmail{AccountName = _accountName, Email = email});
-            }
-            return null;
+        // TODO: Serialization
+        public object ListUserPrivileges() {
+            var overrideUrl = _baseUrl + "privileges/";
+            return _sharpBucketV1.Get(new object(), overrideUrl);
         }
 
-        public EventInfo ListUserEvents(){
-            return _sharpBucketV1.Get(new UsersRoutes.ListUserEvents{AccountName = _accountName});
+        // TODO: Serialization
+        public object ListInvitations() {
+            var overrideUrl = _baseUrl + "invitations/";
+            return _sharpBucketV1.Get(new object(), overrideUrl);
         }
 
-        public string ListUserPrivileges(){
-            return _sharpBucketV1.Get(new UsersRoutes.ListPrivileges{AccountName = _accountName});
+        // TODO: Serialization
+        public object GetInvitationsFor(string email) {
+            var overrideUrl = _baseUrl + "invitations/";
+            return _sharpBucketV1.Get(new object(), overrideUrl);
         }
 
-        public string ListInvitations(){
-            return _sharpBucketV1.Get(new UsersRoutes.ListInvitations{AccountName = _accountName});
+        public List<User> ListFollowers() {
+            var overrideUrl = _baseUrl + "followers/";
+            return _sharpBucketV1.Get(new List<User>(), overrideUrl);
         }
 
-        public string GetInvitationsFor(string email){
-            var overrideUrl = _invitationsUrl + email;
-            return _sharpBucketV1.Get(new UsersRoutes.ListInvitationsForEmail{Email = email}, overrideUrl);
+        public List<Consumer> ListConsumers() {
+            var overrideUrl = _baseUrl + "consumers/";
+            return _sharpBucketV1.Get(new List<Consumer>(), overrideUrl);
         }
 
-        public List<User> ListFollowers(){
-            return _sharpBucketV1.Get(new UsersRoutes.ListFollowers{AccountName = _accountName});
+        public Consumer GetConsumer(int? consumerId) {
+            var overrideUrl = _baseUrl + "consumers/" + consumerId;
+            return _sharpBucketV1.Get(new Consumer(), overrideUrl);
         }
 
-        public List<Consumer> ListConsumers(){
-            return _sharpBucketV1.Get(new UsersRoutes.ListConsumers{AccountName = _accountName});
+        public List<SSH> ListSSHKeys() {
+            var overrideUrl = _baseUrl + "ssh-keys/";
+            return _sharpBucketV1.Get(new List<SSH>(), overrideUrl);
         }
 
-        public object ListConsumer(int? consumerId){
-            return _sharpBucketV1.Get(new UsersRoutes.GetConsumer{AccountName = _accountName, Id = consumerId});
+        public SSHDetailed GetSSHKey(int? pk) {
+            var overrideUrl = _baseUrl + "ssh-keys/" + pk;
+            return _sharpBucketV1.Get(new SSHDetailed(), overrideUrl);
         }
 
-        public List<SSH> ListSSHKeys(){
-            return _sharpBucketV1.Get(new UsersRoutes.ListSSHKeys{AccountName = _accountName});
+        public List<EmailInfo> ListEmails() {
+            var overrideUrl = _baseUrl + "emails/";
+            return _sharpBucketV1.Get(new List<EmailInfo>(), overrideUrl);
         }
 
-        public SSHDetailed GetSSHKey(int? pk){
-            var overrideUrl = _sshKeysUrl + pk;
-            return _sharpBucketV1.Get(new UsersRoutes.GetSSHKey{AccountName = _accountName, pk = pk}, overrideUrl);
+        public EmailInfo GetEmail(string email) {
+            var overrideUrl = _baseUrl + "emails/" + email;
+            return _sharpBucketV1.Get(new EmailInfo(), overrideUrl);
         }
     }
 }

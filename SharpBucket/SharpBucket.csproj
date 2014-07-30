@@ -30,12 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NServiceKit.Common">
-      <HintPath>..\packages\NServiceKit.Common.1.0.27\lib\net35\NServiceKit.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="NServiceKit.Interfaces">
-      <HintPath>..\packages\NServiceKit.Common.1.0.27\lib\net35\NServiceKit.Interfaces.dll</HintPath>
-    </Reference>
     <Reference Include="NServiceKit.Text">
       <HintPath>..\packages\NServiceKit.Text.1.0.10\lib\net35\NServiceKit.Text.dll</HintPath>
     </Reference>
@@ -44,7 +38,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\BasicAuthentication.cs" />
@@ -52,7 +45,6 @@
     <Compile Include="Authentication\OAuthentication2Legged.cs" />
     <Compile Include="Authentication\OAuthentication3Legged.cs" />
     <Compile Include="Authentication\RequestExcecutor.cs" />
-    <Compile Include="ConfigScope.cs" />
     <Compile Include="V2\Pocos\ListOfUsers.cs" />
     <Compile Include="V2\Pocos\Link.cs" />
     <Compile Include="V2\Pocos\Links.cs" />
@@ -102,15 +94,7 @@
     <Compile Include="V1\Pocos\Version.cs" />
     <Compile Include="V1\Pocos\Wiki.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="V1\Routes\ChangesetRoutes.cs" />
-    <Compile Include="V1\Routes\GroupRoutes.cs" />
-    <Compile Include="V1\Routes\IssuesRoutes.cs" />
-    <Compile Include="V1\Routes\PrivilegesRoutes.cs" />
-    <Compile Include="V1\Routes\RepositoryRoutes.cs" />
-    <Compile Include="V1\Routes\UserRoutes.cs" />
-    <Compile Include="V1\Routes\UsersRoutes.cs" />
     <Compile Include="V1\SharpBucketV1.cs" />
-    <Compile Include="V2\Routes\UsersRoutes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

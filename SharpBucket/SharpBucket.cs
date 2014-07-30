@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Net;
-using NServiceKit.ServiceClient.Web;
-using NServiceKit.ServiceHost;
 using NServiceKit.Text;
 using RestSharp;
 using SharpBucket.Authentication;
@@ -11,8 +9,8 @@ namespace SharpBucket{
         private IAuthenticate authenticator;
         protected string _baseUrl;
 
-        public void BasicAuthentication(string username, string password, string baseUrl){
-            authenticator = new BasicAuthentication(username, password, baseUrl);
+        public void BasicAuthentication(string username, string password){
+            authenticator = new BasicAuthentication(username, password, _baseUrl);
         }
 
         public void OAuth2LeggedAuthentication(string consumerKey, string consumerSecretKey){
@@ -29,39 +27,31 @@ namespace SharpBucket{
             return (OAuthentication3Legged) authenticator;
         }
 
-        private T Send<T>(IReturn<T> request, Method method, string overrideUrl = null){
-            using (new ConfigScope()){
-                var relativeUrl = overrideUrl ?? request.ToUrl(method.ToString());
-                string response;
-                try{
-                    response = authenticator.GetResponse(relativeUrl, method, request);
-                }
-                catch (WebException ex){
-                    string errorBody = ex.GetResponseBody();
-                    var errorStatus = ex.GetStatus() ?? HttpStatusCode.BadRequest;
-                    if (ex.IsAny400()){
-                        Console.WriteLine(errorBody);
-                        Console.WriteLine(errorStatus);
-                    }
-                    response = null;
-                }
-                return response.FromJson<T>();
+        private T Send<T>(T request, Method method, string overrideUrl = null){
+            var relativeUrl = overrideUrl;
+            string response;
+            try{
+                response = authenticator.GetResponse(relativeUrl, method, request);
             }
+            catch (WebException ex){               
+                response = null;
+            }
+            return response.FromJson<T>();
         }
 
-        public T Get<T>(IReturn<T> request, string overrideUrl = null){
+        public T Get<T>(T request, string overrideUrl){
             return Send(request, Method.GET, overrideUrl);
         }
 
-        public T Post<T>(IReturn<T> request, string overrideUrl = null){
+        public T Post<T>(T request, string overrideUrl){
             return Send(request, Method.POST, overrideUrl);
         }
 
-        public T Put<T>(IReturn<T> request, string overrideUrl = null){
+        public T Put<T>(T request, string overrideUrl){
             return Send(request, Method.PUT, overrideUrl);
         }
 
-        public T Delete<T>(IReturn<T> request, string overrideUrl = null){
+        public T Delete<T>(T request, string overrideUrl){
             return Send(request, Method.DELETE, overrideUrl);
         }
     }

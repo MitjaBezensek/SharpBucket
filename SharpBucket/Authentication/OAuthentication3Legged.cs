@@ -1,5 +1,4 @@
-﻿using NServiceKit.ServiceHost;
-using RestSharp;
+﻿using RestSharp;
 using RestSharp.Authenticators;
 using RestSharp.Contrib;
 
@@ -24,7 +23,7 @@ namespace SharpBucket.Authentication{
             OauthTokenSecret = oauthTokenSecret;
         }
 
-        public string GetResponse<T>(string url, Method method, IReturn<T> body){
+        public string GetResponse<T>(string url, Method method, T body){
             if (client == null){
                 client = new RestClient(_baseUrl){
                     Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)

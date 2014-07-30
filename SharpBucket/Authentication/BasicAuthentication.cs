@@ -1,5 +1,4 @@
-﻿using NServiceKit.ServiceHost;
-using RestSharp;
+﻿using RestSharp;
 
 namespace SharpBucket.Authentication{
     public class BasicAuthentication : IAuthenticate{
@@ -11,7 +10,7 @@ namespace SharpBucket.Authentication{
             };
         }
 
-        public string GetResponse<T>(string url, Method method, IReturn<T> body){
+        public string GetResponse<T>(string url, Method method, T body){
             return RequestExcecutor.ExectueRequest(url, method, body, client);
         }
     }

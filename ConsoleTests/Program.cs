@@ -14,8 +14,8 @@ namespace ConsoleTests{
         private static string repository;
 
         private static void Main(){
-            // TestApiV1();
-            TestApiV2();
+             TestApiV1();
+            //TestApiV2();
         }
 
         private static void TestApiV1(){
@@ -102,12 +102,12 @@ namespace ConsoleTests{
 
             //// Issues
             var issues = issuesEP.ListIssues();
-            var newIssue = new Issue{Title = "Let's add a new issue", Content = "Some issue content", Status = "new", Priority = "trivial", Kind = "bug"};
+            var newIssue = new Issue{title = "Let's add a new issue", content = "Some issue content", status = "new", priority = "trivial", kind = "bug"};
             var newIssueResult = issuesEP.PostIssue(newIssue);
-            var issue = issuesEP.GetIssue(newIssueResult.Local_id);
-            var changedIssue = new Issue{Title = "Completely new title", Content = "Hi!", Status = "new", Local_id = issue.Local_id};
+            var issue = issuesEP.GetIssue(newIssueResult.local_id);
+            var changedIssue = new Issue{title = "Completely new title", content = "Hi!", status = "new", local_id = issue.local_id};
             var changedIssueResult = issuesEP.PutIssue(changedIssue);
-            issuesEP.DeleteIssue(changedIssueResult.Local_id);
+            issuesEP.DeleteIssue(changedIssueResult.local_id);
 
             //// Issue followers
             //var issueFollowers = issuesEP.ListIssueFollowers(issues.Issues[0].Local_id);
@@ -118,7 +118,7 @@ namespace ConsoleTests{
             var newCommentResult = issuesEP.PostIssueComment(ISSUE_ID, newComment);
             var comment = issuesEP.GetIssueComment(ISSUE_ID, newCommentResult.Comment_id);
             comment.Content = "The bug is still annoying";
-            var updatedCommentRes = issuesEP.PutIssueComment(ISSUE_ID, comment.Comment_id, comment);
+            var updatedCommentRes = issuesEP.PutIssueComment(ISSUE_ID, comment);
             issuesEP.DeleteIssueComment(ISSUE_ID, updatedCommentRes.Comment_id);
 
             // Components
@@ -175,18 +175,18 @@ namespace ConsoleTests{
             var followers = usersEP.ListFollowers();
             var consumers = usersEP.ListConsumers();
             int? CONSUMER_ID = consumers[0].Id;
-            var consumer = usersEP.ListConsumer(CONSUMER_ID);
+           // var consumer = usersEP.ListConsumer(CONSUMER_ID);
             var ssh_keys = usersEP.ListSSHKeys();
             int? PK = ssh_keys[0].Pk;
             var getSSH = usersEP.GetSSHKey(PK);
         }
 
         private static void TestUsersEndPointV2(SharpBucketV2 sharpBucket){
-            var usersEP = sharpBucket.Users(accountName);
-            var profile = usersEP.GetProfile();
+            //var usersEP = sharpBucket.Users(accountName);
+            //var profile = usersEP.GetProfile();
             //var followers = usersEP.ListFollowers();
             //var following = usersEP.ListFollowing();
-            var repositories = usersEP.ListRepositories();
+            //var repositories = usersEP.ListRepositories();
         }
     }
 }
