@@ -15,7 +15,7 @@ First lets set your entry point to the API
 // your main entry to the BitBucket API, this one is for V1
 var sharpBucket = new SharpBucketV1();
 // authenticate with OAuth keys
-sharpBucket.OAuth2LeggedAuthentication(ConsumerKey, ConsumerSecretKey);
+sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
 ```
 
 There are various end points you can use. Lets take a look at User end point:
@@ -81,11 +81,11 @@ With OAuth you can choose between [2 legged and 3 legged authentication](http://
 **Two legged** is as simple as basic authentication:
 ```CSharp
 // authenticate with OAuth keys
-sharpBucket.OAuth2LeggedAuthentication(ConsumerKey, ConsumerSecretKey);
+sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
 ```
-**The three legged** one requires an additional step for getting the pin / verifier from the server. If you dont supply a callback url (or use "oob") you will get an bitbucket url that will contain your pin / verifier. Here is a simple example of how you could manually copy paste the pin from the browser:
+**The three legged** one requires an additional step for getting the pin / verifier from the BitBucket. If you dont supply a callback url (or use "oob") you will get a BitBucket's url that will promt your user to allow access for your application and supply you with the pin / verifier. Here is a simple example of how you could manually copy paste the pin from the browser:
 ```CSharp
-var authenticator = sharpBucket.OAuth3LeggedAuthentication(ConsumerKey, ConsumerSecretKey, "oob");
+var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oob");
 var uri = authenticator.StartAuthentication();
 Process.Start(uri);
 var pin = Console.ReadLine();
@@ -93,6 +93,12 @@ var pin = Console.ReadLine();
 authenticator.AuthenticateWithPin(pin);
 ```
 If you had a server waiting from BitBucket's response, you would simply use your server's url as the callback and then wait for BitBucket to send you the pin to that address.
+
+If you already have the tokens you can simply skip the authentication process:
+```CSharp
+var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oob");
+authenticator.RestoreSavedTokens(consumerKey, consumerSecretKey, "oauthToken", "oauthTokenSecret");
+```
 
 ## How much of the API is covered?
 While a complete coverage of the API is preferred SharpBucket currently does not support everything yet. But the main functionality is [covered](https://github.com/MitjaBezensek/SharpBucket/blob/master/Coverage.md) and the rest should also get covered sooner or later.

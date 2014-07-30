@@ -18,7 +18,7 @@ namespace ConsoleTests{
 
             // Do basic auth
             //ReadTestDataBasic();
-            //sharpBucket.BasicAuthentication(email, password);
+            //sharpBucket.BasicAuthentication(email, password)
 
             // Or OAuth
             ReadTestDataOauth();
@@ -33,8 +33,9 @@ namespace ConsoleTests{
             var pin = Console.ReadLine();
             // we can now do the final step by using the pin to get our access tokens
             authenticator.AuthenticateWithPin(pin);
+
             // of if you saved the tokens you can simply use those
-            // authenticator.RestoreSavedTokens(consumerKey, consumerSecretKey, "oauthToken", "oauthTokenSecret");
+            // var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oauthtoken", "oauthtokensecret");
 
             TestUserEndPoint(sharpBucket);
             TestIssuesEndPoint(sharpBucket);

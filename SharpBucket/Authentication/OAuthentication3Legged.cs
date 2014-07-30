@@ -17,6 +17,11 @@ namespace SharpBucket.Authentication{
             this.callback = callback;
         }
 
+        public OAuthentication3Legged(string consumerKey, string consumerSecret, string oAuthToken, string oauthTokenSecret) : base(consumerKey, consumerSecret){
+            OAuthToken = oAuthToken;
+            OauthTokenSecret = oauthTokenSecret;
+        }
+
         public string GetResponse<T>(string url, string method, IReturn<T> body){
             if (client == null){
                 client = new RestClient(baseUrl){
@@ -48,13 +53,6 @@ namespace SharpBucket.Authentication{
             var qs = HttpUtility.ParseQueryString(response.Content);
             OAuthToken = qs["oauth_token"];
             OauthTokenSecret = qs["oauth_token_secret"];
-        }
-
-        public void RestoreSavedTokens(string consumerKey, string consumerSecret, string oauthToken, string oauthTokenSecret){
-            ConsumerKey = consumerKey;
-            ConsumerSecret = consumerSecret;
-            OAuthToken = oauthToken;
-            OauthTokenSecret = oauthTokenSecret;
         }
     }
 }

@@ -15,17 +15,22 @@ namespace SharpBucket{
             authenticator = new BasicAuthentication(username, password);
         }
 
-        public void OAuth2LeggedAuthentication(string apiKey, string secretApiKey){
-            authenticator = new OAuthentication2Legged(apiKey, secretApiKey);
+        public void OAuth2LeggedAuthentication(string consumerKey, string consumerSecretKey){
+            authenticator = new OAuthentication2Legged(consumerKey, consumerSecretKey);
         }
 
-        public OAuthentication3Legged OAuth3LeggedAuthentication(string apiKey, string secretApiKey, string callback = "oob"){
-            authenticator = new OAuthentication3Legged(apiKey, secretApiKey, callback);
+        public OAuthentication3Legged OAuth3LeggedAuthentication(string consumerKey, string consumerSecretKey, string callback = "oob"){
+            authenticator = new OAuthentication3Legged(consumerKey, consumerSecretKey, callback);
+            return (OAuthentication3Legged) authenticator;
+        }
+
+        public OAuthentication3Legged OAuth3LeggedAuthentication(string consumerKey, string consumerSecretKey, string oauthToken, string oauthTokenSecret){
+            authenticator = new OAuthentication3Legged(consumerKey, consumerSecretKey, oauthToken, oauthTokenSecret);
             return (OAuthentication3Legged) authenticator;
         }
 
 
-        private T Send<T>(IReturn<T> request, string method, bool sendRequestBody = true, string overrideUrl = null){
+        private T Send<T>(IReturn<T> request, string method, string overrideUrl = null){
             using (new ConfigScope()){
                 var relativeUrl = overrideUrl ?? request.ToUrl(method);
                 string ret;
@@ -47,7 +52,7 @@ namespace SharpBucket{
         }
 
         public T Get<T>(IReturn<T> request, string overrideUrl = null){
-            return Send(request, HttpMethods.Get, false, overrideUrl);
+            return Send(request, HttpMethods.Get, overrideUrl);
         }
 
         public T Post<T>(IReturn<T> request, string overrideUrl = null){
@@ -59,7 +64,7 @@ namespace SharpBucket{
         }
 
         public T Delete<T>(IReturn<T> request, string overrideUrl = null){
-            return Send(request, HttpMethods.Delete, false, overrideUrl);
+            return Send(request, HttpMethods.Delete, overrideUrl);
         }
 
         public class ConfigScope : IDisposable{
