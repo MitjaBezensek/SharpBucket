@@ -69,12 +69,30 @@ There are two ways you can authenticate with SharpBucket
 - via BitBucket's username and password
 
 Here is how you can use them:
+### Basic authentication
 ```CSharp
-// authenticate with OAuth keys
-sharpBucket.OAuthAuthentication(apiKey, secretApiKey);
 // authenticate with username and password
 sharpBucket.BasicAuthentication(email, password);
 ```
+
+### OAuth authentication
+With OAuth you can choose between [2 legged and 3 legged authentication](http://cakebaker.42dh.com/2011/01/10/2-legged-vs-3-legged-oauth/).
+
+**Two legged** is as simple as basic authentication:
+```CSharp
+// authenticate with OAuth keys
+sharpBucket.OAuth2LeggedAuthentication(ConsumerKey, ConsumerSecretKey);
+```
+**The three legged** one requires an additional step for getting the pin / verifier from the server. If you dont supply a callback url (or use "oob") you will get an bitbucket url that will contain your pin / verifier. Here is a simple example of how you could manually copy paste the pin from the browser:
+```CSharp
+var authenticator = sharpBucket.OAuth3LeggedAuthentication(ConsumerKey, ConsumerSecretKey, "oob");
+var uri = authenticator.StartAuthentication();
+Process.Start(uri);
+var pin = Console.ReadLine();
+// we can now do the final step by using the pin to get our access tokens
+authenticator.AuthenticateWithPin(pin);
+```
+If you had a server waiting from BitBucket's response, you would simply use your server's url as the callback and then wait for BitBucket to send you the pin to that address.
 
 ## How much of the API is covered?
 While a complete coverage of the API is preferred SharpBucket currently does not support everything yet. But the main functionality is [covered](https://github.com/MitjaBezensek/SharpBucket/blob/master/Coverage.md) and the rest should also get covered sooner or later.
