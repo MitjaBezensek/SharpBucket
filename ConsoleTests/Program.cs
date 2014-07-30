@@ -1,9 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-using NServiceKit.Common.Utils;
-using SharpBucket;
-using SharpBucket.POCOs;
-using Version = SharpBucket.POCOs.Version;
+﻿using SharpBucket;
+using SharpBucket.V1;
+using SharpBucket.V1.Pocos;
+using SharpBucket.V2;
+using Version = SharpBucket.V1.Pocos.Version;
 
 namespace ConsoleTests{
     internal class Program{
@@ -15,6 +14,11 @@ namespace ConsoleTests{
         private static string repository;
 
         private static void Main(){
+            // TestApiV1();
+            TestApiV2();
+        }
+
+        private static void TestApiV1(){
             var sharpBucket = new SharpBucketV1();
 
             // Do basic auth
@@ -42,6 +46,13 @@ namespace ConsoleTests{
             TestIssuesEndPoint(sharpBucket);
             TestRepositoryEndPoint(sharpBucket);
             TestUsersEndPoint(sharpBucket);
+        }
+
+        private static void TestApiV2(){
+            var sharpBucket = new SharpBucketV2();
+            ReadTestDataOauth();
+            sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
+            TestUsersEndPointV2(sharpBucket);
         }
 
         private static void ReadTestDataOauth(){
@@ -75,8 +86,8 @@ namespace ConsoleTests{
             repository = lines[3].Split(':')[1];
         }
 
-        private static void TestUserEndPoint(SharpBucketV1 sharpBucketV1){
-            var userEP = sharpBucketV1.User();
+        private static void TestUserEndPoint(SharpBucketV1 sharpBucket){
+            var userEP = sharpBucket.User();
             var info = userEP.GetInfo();
             var privileges = userEP.GetPrivileges();
             var follows = userEP.ListFollows();
@@ -85,8 +96,8 @@ namespace ConsoleTests{
             var userRepositoryDashboard = userEP.GetRepositoryDasboard();
         }
 
-        private static void TestIssuesEndPoint(SharpBucketV1 sharpBucketV1){
-            var issuesEP = sharpBucketV1.Repository(accountName, repository).Issues();
+        private static void TestIssuesEndPoint(SharpBucketV1 sharpBucket){
+            var issuesEP = sharpBucket.Repository(accountName, repository).Issues();
             int ISSUE_ID = 5;
 
             //// Issues
@@ -138,8 +149,8 @@ namespace ConsoleTests{
             issuesEP.DeleteVersion(updatedversion.Id);
         }
 
-        private static void TestRepositoryEndPoint(SharpBucketV1 sharpBucketV1){
-            var repositoryEP = sharpBucketV1.Repository(accountName, repository);
+        private static void TestRepositoryEndPoint(SharpBucketV1 sharpBucket){
+            var repositoryEP = sharpBucket.Repository(accountName, repository);
             var tags = repositoryEP.ListTags();
             var branches = repositoryEP.ListBranches();
             var mainBranch = repositoryEP.GetMainBranch();
@@ -154,8 +165,8 @@ namespace ConsoleTests{
             var repoEvents = repositoryEP.ListEvents();
         }
 
-        private static void TestUsersEndPoint(SharpBucketV1 sharpBucketV1){
-            var usersEP = sharpBucketV1.Users(accountName);
+        private static void TestUsersEndPoint(SharpBucketV1 sharpBucket){
+            var usersEP = sharpBucket.Users(accountName);
             var userEvents = usersEP.ListUserEvents();
             var userPrivileges = usersEP.ListUserPrivileges();
             var invitations = usersEP.ListInvitations();
@@ -168,6 +179,14 @@ namespace ConsoleTests{
             var ssh_keys = usersEP.ListSSHKeys();
             int? PK = ssh_keys[0].Pk;
             var getSSH = usersEP.GetSSHKey(PK);
+        }
+
+        private static void TestUsersEndPointV2(SharpBucketV2 sharpBucket){
+            var usersEP = sharpBucket.Users(accountName);
+            var profile = usersEP.GetProfile();
+            //var followers = usersEP.ListFollowers();
+            //var following = usersEP.ListFollowing();
+            var repositories = usersEP.ListRepositories();
         }
     }
 }

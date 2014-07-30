@@ -53,44 +53,54 @@
     <Compile Include="Authentication\OAuthentication3Legged.cs" />
     <Compile Include="Authentication\RequestExcecutor.cs" />
     <Compile Include="ConfigScope.cs" />
-    <Compile Include="Pocos\IssueFollowers.cs" />
+    <Compile Include="V2\Pocos\ListOfUsers.cs" />
+    <Compile Include="V2\Pocos\Link.cs" />
+    <Compile Include="V2\Pocos\Links.cs" />
+    <Compile Include="V2\Pocos\ListOfRepositories.cs" />
+    <Compile Include="V2\Pocos\Owner.cs" />
+    <Compile Include="V2\Pocos\Profile.cs" />
+    <Compile Include="V2\EndPoints\RepositoryEndPointV2.cs" />
+    <Compile Include="V2\SharpBucketV2.cs" />
+    <Compile Include="V1\Pocos\IssueFollowers.cs" />
     <Compile Include="SharpBucket.cs" />
+    <Compile Include="V2\EndPoints\TeamsEndPointV2.cs" />
+    <Compile Include="V2\EndPoints\UsersEndpointV2.cs" />
     <Compile Include="V1\EndPoints\IssuesEndPoint.cs" />
     <Compile Include="V1\EndPoints\RepositoryEndPointV1.cs" />
     <Compile Include="V1\EndPoints\UserEndPointV1.cs" />
     <Compile Include="V1\EndPoints\UsersEndpointV1.cs" />
     <Compile Include="Authentication\IAuthenticate.cs" />
-    <Compile Include="Pocos\BranchInfo.cs" />
-    <Compile Include="Pocos\Changeset.cs" />
-    <Compile Include="Pocos\ChangesetInfo.cs" />
-    <Compile Include="Pocos\Comment.cs" />
-    <Compile Include="Pocos\Component.cs" />
-    <Compile Include="Pocos\Consumer.cs" />
-    <Compile Include="Pocos\Diffstat.cs" />
-    <Compile Include="Pocos\DiffstatInfo.cs" />
-    <Compile Include="Pocos\EmailInfo.cs" />
-    <Compile Include="Pocos\EventData.cs" />
-    <Compile Include="Pocos\EventInfo.cs" />
-    <Compile Include="Pocos\FileInfo.cs" />
-    <Compile Include="Pocos\Filter.cs" />
-    <Compile Include="Pocos\InvitationsInfo.cs" />
-    <Compile Include="Pocos\Issue.cs" />
-    <Compile Include="Pocos\IssuesInfo.cs" />
-    <Compile Include="Pocos\MainBranch.cs" />
-    <Compile Include="Pocos\Metadata.cs" />
-    <Compile Include="Pocos\Milestone.cs" />
-    <Compile Include="Pocos\PrivilegeInfo.cs" />
-    <Compile Include="Pocos\Privileges.cs" />
-    <Compile Include="Pocos\RepositoriesOverview.cs" />
-    <Compile Include="Pocos\Repository.cs" />
-    <Compile Include="Pocos\RepositoryEvent.cs" />
-    <Compile Include="Pocos\SSH.cs" />
-    <Compile Include="Pocos\SSHDetailed.cs" />
-    <Compile Include="Pocos\Tag.cs" />
-    <Compile Include="Pocos\User.cs" />
-    <Compile Include="Pocos\UserInfo.cs" />
-    <Compile Include="Pocos\Version.cs" />
-    <Compile Include="Pocos\Wiki.cs" />
+    <Compile Include="V1\Pocos\BranchInfo.cs" />
+    <Compile Include="V1\Pocos\Changeset.cs" />
+    <Compile Include="V1\Pocos\ChangesetInfo.cs" />
+    <Compile Include="V1\Pocos\Comment.cs" />
+    <Compile Include="V1\Pocos\Component.cs" />
+    <Compile Include="V1\Pocos\Consumer.cs" />
+    <Compile Include="V1\Pocos\Diffstat.cs" />
+    <Compile Include="V1\Pocos\DiffstatInfo.cs" />
+    <Compile Include="V1\Pocos\EmailInfo.cs" />
+    <Compile Include="V1\Pocos\EventData.cs" />
+    <Compile Include="V1\Pocos\EventInfo.cs" />
+    <Compile Include="V1\Pocos\FileInfo.cs" />
+    <Compile Include="V1\Pocos\Filter.cs" />
+    <Compile Include="V1\Pocos\InvitationsInfo.cs" />
+    <Compile Include="V1\Pocos\Issue.cs" />
+    <Compile Include="V1\Pocos\IssuesInfo.cs" />
+    <Compile Include="V1\Pocos\MainBranch.cs" />
+    <Compile Include="V1\Pocos\Metadata.cs" />
+    <Compile Include="V1\Pocos\Milestone.cs" />
+    <Compile Include="V1\Pocos\PrivilegeInfo.cs" />
+    <Compile Include="V1\Pocos\Privileges.cs" />
+    <Compile Include="V1\Pocos\RepositoriesOverview.cs" />
+    <Compile Include="V1\Pocos\Repository.cs" />
+    <Compile Include="V1\Pocos\RepositoryEvent.cs" />
+    <Compile Include="V1\Pocos\SSH.cs" />
+    <Compile Include="V1\Pocos\SSHDetailed.cs" />
+    <Compile Include="V1\Pocos\Tag.cs" />
+    <Compile Include="V1\Pocos\User.cs" />
+    <Compile Include="V1\Pocos\UserInfo.cs" />
+    <Compile Include="V1\Pocos\Version.cs" />
+    <Compile Include="V1\Pocos\Wiki.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="V1\Routes\ChangesetRoutes.cs" />
     <Compile Include="V1\Routes\GroupRoutes.cs" />
@@ -99,7 +109,8 @@
     <Compile Include="V1\Routes\RepositoryRoutes.cs" />
     <Compile Include="V1\Routes\UserRoutes.cs" />
     <Compile Include="V1\Routes\UsersRoutes.cs" />
-    <Compile Include="SharpBucketV1.cs" />
+    <Compile Include="V1\SharpBucketV1.cs" />
+    <Compile Include="V2\Routes\UsersRoutes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -107,6 +118,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

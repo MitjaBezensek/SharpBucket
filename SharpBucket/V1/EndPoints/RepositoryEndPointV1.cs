@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SharpBucket.POCOs;
-using SharpBucket.Pocos;
+using SharpBucket.V1.Pocos;
 using SharpBucket.V1.Routes;
-using Version = SharpBucket.POCOs.Version;
+using Version = SharpBucket.V1.Pocos.Version;
 
 namespace SharpBucket.V1.EndPoints{
     public class RepositoryEndPointV1{

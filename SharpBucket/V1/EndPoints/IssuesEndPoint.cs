@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using SharpBucket.POCOs;
-using SharpBucket.Pocos;
+using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.EndPoints{
     public class IssuesEndPoint{

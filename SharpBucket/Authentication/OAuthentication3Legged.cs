@@ -13,18 +13,20 @@ namespace SharpBucket.Authentication{
         private const string accessUrl = "oauth/access_token";
         private readonly string callback;
 
-        public OAuthentication3Legged(string consumerKey, string consumerSecret, string callback) : base(consumerKey, consumerSecret){
+        public OAuthentication3Legged(string consumerKey, string consumerSecret, string callback, string baseUrl)
+            : base(consumerKey, consumerSecret, baseUrl){
             this.callback = callback;
         }
 
-        public OAuthentication3Legged(string consumerKey, string consumerSecret, string oAuthToken, string oauthTokenSecret) : base(consumerKey, consumerSecret){
+        public OAuthentication3Legged(string consumerKey, string consumerSecret, string oAuthToken, string oauthTokenSecret, string baseUrl)
+            : base(consumerKey, consumerSecret, baseUrl){
             OAuthToken = oAuthToken;
             OauthTokenSecret = oauthTokenSecret;
         }
 
-        public string GetResponse<T>(string url, string method, IReturn<T> body){
+        public string GetResponse<T>(string url, Method method, IReturn<T> body){
             if (client == null){
-                client = new RestClient(baseUrl){
+                client = new RestClient(_baseUrl){
                     Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)
                 };
             }
@@ -32,7 +34,7 @@ namespace SharpBucket.Authentication{
         }
 
         public string StartAuthentication(){
-            var restClient = new RestClient(baseUrl){Authenticator = OAuth1Authenticator.ForRequestToken(ConsumerKey, ConsumerSecret, callback)};
+            var restClient = new RestClient(_baseUrl){Authenticator = OAuth1Authenticator.ForRequestToken(ConsumerKey, ConsumerSecret, callback)};
             var request = new RestRequest(requestUrl, Method.POST);
             var response = restClient.Execute(request);
 
@@ -46,7 +48,7 @@ namespace SharpBucket.Authentication{
 
         public void AuthenticateWithPin(string pin){
             var request = new RestRequest(accessUrl, Method.POST);
-            var restClient = new RestClient(baseUrl){
+            var restClient = new RestClient(_baseUrl){
                 Authenticator = OAuth1Authenticator.ForAccessToken(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret, pin)
             };
             var response = restClient.Execute(request);

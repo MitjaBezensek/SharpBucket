@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using NServiceKit.ServiceHost;
-using SharpBucket.POCOs;
+using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.Routes{
     public class RepositoryRoutes{

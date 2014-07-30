@@ -1,19 +1,17 @@
 ﻿using System.Collections.Generic;
-using SharpBucket.POCOs;
+using SharpBucket.V1.Pocos;
 using SharpBucket.V1.Routes;
 
 namespace SharpBucket.V1.EndPoints{
     public class UsersEndpointV1{
         private readonly string _accountName;
         private readonly SharpBucketV1 _sharpBucketV1;
-        private string _baserUrl;
         private readonly string _invitationsUrl;
-        private string _sshKeysUrl;
+        private readonly string _sshKeysUrl;
 
         public UsersEndpointV1(string accountName, SharpBucketV1 sharpBucketV1){
             _accountName = accountName;
             _sharpBucketV1 = sharpBucketV1;
-            _baserUrl = "users/" + accountName + "/";
             _invitationsUrl = "users/" + accountName + "/invitations/";
             _sshKeysUrl = "users/" + accountName + "/ssh-keys/";
         }

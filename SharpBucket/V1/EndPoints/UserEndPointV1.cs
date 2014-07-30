@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SharpBucket.POCOs;
+using SharpBucket.V1.Pocos;
 using SharpBucket.V1.Routes;
 
 namespace SharpBucket.V1.EndPoints{
@@ -30,13 +30,6 @@ namespace SharpBucket.V1.EndPoints{
             return _sharpBucketV1.Get(new UserRoutes.GetRepositoryOverview());
         }
 
-        // TODO: Missing
-
-        //public RepositoriesOverview RepositoriesDashboard() {
-
-        //    return _sharpBucketV1.GetUserRepositoryOverview();
-
-        //}
         public string GetRepositoryDasboard(){
             return _sharpBucketV1.Get(new UserRoutes.GetRepositoryDashboard());
         }

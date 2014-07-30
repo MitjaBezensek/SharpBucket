@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using NServiceKit.ServiceHost;
-using RestSharp.Deserializers;
-using SharpBucket.POCOs;
-using SharpBucket.Pocos;
+using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.Routes{
     public class IssuesRoutes{
