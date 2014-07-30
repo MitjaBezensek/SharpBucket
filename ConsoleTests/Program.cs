@@ -38,8 +38,8 @@ namespace ConsoleTests{
             // of if you saved the tokens you can simply use those
             // var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oauthtoken", "oauthtokensecret");
 
-            //TestUserEndPoint(sharpBucket);
-            //TestIssuesEndPoint(sharpBucket);
+            TestUserEndPoint(sharpBucket);
+            TestIssuesEndPoint(sharpBucket);
             TestRepositoryEndPoint(sharpBucket);
             TestUsersEndPoint(sharpBucket);
         }
@@ -149,10 +149,8 @@ namespace ConsoleTests{
             var newWiki = repositoryEP.PostWiki(newPage, "NewPage");
             var changeSet = repositoryEP.ListChangeset();
             var change = changeSet.changesets[4];
-            var smallerChangeSet = repositoryEP.ListChangeset(start: change.Node, limit: 5);
             var getChange = repositoryEP.GetChangeset(change.Node);
             var diffStats = repositoryEP.GetChangesetDiffstat(change.Node);
-
             var repoEvents = repositoryEP.ListEvents();
         }
 
@@ -161,14 +159,15 @@ namespace ConsoleTests{
             var userEvents = usersEP.ListUserEvents();
             var userPrivileges = usersEP.ListUserPrivileges();
             var invitations = usersEP.ListInvitations();
+            var email = "example@example.com";
             var invitationsForEmail = usersEP.GetInvitationsFor(email);
             var followers = usersEP.ListFollowers();
             var consumers = usersEP.ListConsumers();
-            string CONSUMER_ID = "";
+            int? CONSUMER_ID = consumers[0].Id;
             var consumer = usersEP.ListConsumer(CONSUMER_ID);
             var ssh_keys = usersEP.ListSSHKeys();
-            string SSH_ID = "";
-            var getSSH = usersEP.GetSSHKey(SSH_ID);
+            int? PK = ssh_keys[0].Pk;
+            var getSSH = usersEP.GetSSHKey(PK);
         }
     }
 }

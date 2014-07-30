@@ -19,19 +19,19 @@ namespace SharpBucket.V1.Routes{
         // TEAM PRIVILEGES
         // Missing 
         [Route("users/{AccountName}/privileges")]
-        public class ListPrivileges : IReturn<Privileges>{
+        public class ListPrivileges : IReturn<string>{
             public string AccountName { get; set; }
         }
 
         // ACCOUNT INVITES
         // Missing
         [Route("users/{AccountName}/invitations")]
-        public class ListInvitations : IReturn<InvitationsInfo>{
+        public class ListInvitations : IReturn<string>{
             public string AccountName { get; set; }
         }
 
         [Route("users/{AccountName}/invitations/{Email}")]
-        public class ListInvitationsForEmail : IReturn<InvitationsInfo>{
+        public class ListInvitationsForEmail : IReturn<string>{
             public string AccountName { get; set; }
             public string Email { get; set; }
         }
@@ -52,7 +52,7 @@ namespace SharpBucket.V1.Routes{
         [Route("users/{AccountName}/consumers/{Id}")]
         public class GetConsumer : IReturn<Consumer>{
             public string AccountName { get; set; }
-            public string Id { get; set; }
+            public int? Id { get; set; }
         }
 
         // SSH KEYS
@@ -62,10 +62,10 @@ namespace SharpBucket.V1.Routes{
             public string AccountName { get; set; }
         }
 
-        [Route("users/{AccountName}/ssh-keys/{Id}")]
+        [Route("users/{AccountName}/ssh-keys/{pk}")]
         public class GetSSHKey : IReturn<SSHDetailed>{
             public string AccountName { get; set; }
-            public string Id { get; set; }
+            public int? pk { get; set; }
         }
 
         // EMAILS

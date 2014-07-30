@@ -32,9 +32,9 @@ namespace SharpBucket{
         private T Send<T>(IReturn<T> request, string method, string overrideUrl = null){
             using (new ConfigScope()){
                 var relativeUrl = overrideUrl ?? request.ToUrl(method);
-                string ret;
+                string response;
                 try{
-                    ret = authenticator.GetResponse(relativeUrl, method, request);
+                    response = authenticator.GetResponse(relativeUrl, method, request);
                 }
                 catch (WebException ex){
                     string errorBody = ex.GetResponseBody();
@@ -43,11 +43,9 @@ namespace SharpBucket{
                         Console.WriteLine(errorBody);
                         Console.WriteLine(errorStatus);
                     }
-                    ret = null;
+                    response = null;
                 }
-                var json = ret;
-                var response = json.FromJson<T>();
-                return response;
+                return response.FromJson<T>();
             }
         }
 
