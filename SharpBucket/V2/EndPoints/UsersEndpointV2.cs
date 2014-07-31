@@ -1,28 +1,36 @@
-﻿
+﻿using System.Collections.Generic;
+using SharpBucket.V2.Pocos;
+
 namespace SharpBucket.V2.EndPoints{
     public class UsersEndpointV2{
         private readonly SharpBucketV2 _sharpBucketV2;
-        private readonly string _accountName;
+
+        private readonly string _baseUrl;
+        private readonly string _repositoriesUrl;
 
         public UsersEndpointV2(string accountName, SharpBucketV2 sharpBucketV2){
-            _accountName = accountName;
             _sharpBucketV2 = sharpBucketV2;
+            _baseUrl = "users/" + accountName + "/";
+            _repositoriesUrl = "repositories/" + accountName + "/";
         }
 
-        //public Profile GetProfile(){
-        //    return _sharpBucketV2.Get(new UsersRoutes.GetProfile{AccountName = _accountName});
-        //}
+        public User GetProfile(){
+            return _sharpBucketV2.Get(new User(), _baseUrl);
+        }
 
-        //public ListOfUsers ListFollowers(){
-        //    return _sharpBucketV2.Get(new UsersRoutes.ListFollowers{AccountName = _accountName});
-        //}
+        public ListOfUsers ListFollowers(){
+            var overrideUrl = _baseUrl + "followers/";
+            return _sharpBucketV2.Get(new ListOfUsers(), overrideUrl);
+        }
 
-        //public ListOfUsers ListFollowing(){
-        //    return _sharpBucketV2.Get(new UsersRoutes.ListFollowing{AccountName = _accountName});
-        //}
+        public ListOfUsers ListFollowing(){
+            var overrideUrl = _baseUrl + "following/";
+            return _sharpBucketV2.Get(new ListOfUsers(), overrideUrl);
+        }
 
-        //public List<Repository> ListRepositories(){
-        //    return _sharpBucketV2.Get(new UsersRoutes.ListRepositories{AccountName = _accountName});
-        //}
+        // Moved permanently
+        public List<Repository> ListRepositories(){
+            return _sharpBucketV2.Get(new List<Repository>(), _repositoriesUrl);
+        }
     }
 }

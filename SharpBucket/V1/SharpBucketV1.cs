@@ -10,8 +10,8 @@ namespace SharpBucket.V1{
             return new UserEndPointV1(this);
         }
 
-        public RepositoryEndPointV1 Repository(string accountName, string repository){
-            return new RepositoryEndPointV1(accountName, repository, this);
+        public RepositoriesEndPointV1 Repositories(string accountName, string repository){
+            return new RepositoriesEndPointV1(accountName, repository, this);
         }
 
         public UsersEndpointV1 Users(string accountName){

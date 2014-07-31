@@ -1,6 +1,9 @@
-﻿using SharpBucket.V1;
+﻿using System;
+using SharpBucket.V1;
 using SharpBucket.V1.Pocos;
 using SharpBucket.V2;
+using SharpBucket.V2.EndPoints;
+using SharpBucket.V2.Pocos;
 using Version = SharpBucket.V1.Pocos.Version;
 
 namespace ConsoleTests{
@@ -13,8 +16,8 @@ namespace ConsoleTests{
         private static string repository;
 
         private static void Main(){
-            TestApiV1();
-            //TestApiV2();
+            //TestApiV1();
+            TestApiV2();
         }
 
         private static void TestApiV1(){
@@ -41,9 +44,9 @@ namespace ConsoleTests{
             // of if you saved the tokens you can simply use those
             // var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oauthtoken", "oauthtokensecret");
 
-            //TestUserEndPoint(sharpBucket);
+            TestUserEndPoint(sharpBucket);
             TestIssuesEndPoint(sharpBucket);
-            TestRepositoryEndPoint(sharpBucket);
+            TestRepositoriesEndPoint(sharpBucket);
             TestUsersEndPoint(sharpBucket);
         }
 
@@ -51,7 +54,9 @@ namespace ConsoleTests{
             var sharpBucket = new SharpBucketV2();
             ReadTestDataOauth();
             sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
-            TestUsersEndPointV2(sharpBucket);
+            //TestUsersEndPointV2(sharpBucket);
+            //TestTeamsEndPointV2(sharpBucket);
+            RestRepositoriesEndPointV2(sharpBucket);
         }
 
         private static void ReadTestDataOauth(){
@@ -96,7 +101,7 @@ namespace ConsoleTests{
         }
 
         private static void TestIssuesEndPoint(SharpBucketV1 sharpBucket){
-            var issuesEP = sharpBucket.Repository(accountName, repository).Issues();
+            var issuesEP = sharpBucket.Repositories(accountName, repository).Issues();
             int ISSUE_ID = 5;
 
             // Issues
@@ -158,8 +163,8 @@ namespace ConsoleTests{
             issuesEP.DeleteVersion(updatedversion.id);
         }
 
-        private static void TestRepositoryEndPoint(SharpBucketV1 sharpBucket){
-            var repositoryEP = sharpBucket.Repository(accountName, repository);
+        private static void TestRepositoriesEndPoint(SharpBucketV1 sharpBucket){
+            var repositoryEP = sharpBucket.Repositories(accountName, repository);
             var tags = repositoryEP.ListTags();
             var branches = repositoryEP.ListBranches();
             var mainBranch = repositoryEP.GetMainBranch();
@@ -191,11 +196,72 @@ namespace ConsoleTests{
         }
 
         private static void TestUsersEndPointV2(SharpBucketV2 sharpBucket){
-            //var usersEP = sharpBucket.Users(accountName);
-            //var profile = usersEP.GetProfile();
-            //var followers = usersEP.ListFollowers();
-            //var following = usersEP.ListFollowing();
-            //var repositories = usersEP.ListRepositories();
+            var usersEP = sharpBucket.Users(accountName);
+            var profile = usersEP.GetProfile();
+            var followers = usersEP.ListFollowers();
+            var following = usersEP.ListFollowing();
+            var repositories = usersEP.ListRepositories();
+        }
+
+        private static void TestTeamsEndPointV2(SharpBucketV2 sharpBucket){
+            var TEAM_NAME = "zebrabi";
+            var teamsEP = sharpBucket.Teams(TEAM_NAME);
+            var teamProfile = teamsEP.GetProfile();
+            var teamMembers = teamsEP.ListMembers();
+            var teamFollowers = teamsEP.ListFollowers();
+            var teamFollowing = teamsEP.ListFollowing();
+        }
+
+        private static void RestRepositoriesEndPointV2(SharpBucketV2 sharpBucket){
+            var repositoriesEP = sharpBucket.Repositories();
+            //var repositories = repositoriesEP.ListRepositories(accountName);
+            //var publicRepositories = repositoriesEP.ListPublicRepositories();
+            //var repo = repositoriesEP.GetRepository(accountName, repository);
+            var repoInfo = new RepositoryInfo();
+            //var newRepository = repositoriesEP.PutRepository(repo, accountName, repository);
+            //var deletedRepository = repositoriesEP.DeleteRepository(newRepository, accountName, repository);
+            //var watchers = repositoriesEP.ListWatchers(accountName, repository);
+            //var forks = repositoriesEP.ListForks(repo, accountName, repository);
+            //var branchRestictions = repositoriesEP.ListBranchRestrictions(repo, accountName, repository);
+            //var newRestrictions = repositoriesEP.PostBranchRestriction(repo, accountName, repository, new BranchRestriction());
+            //int restrictionId = 1;
+            //var restriction = repositoriesEP.GetBranchRestriction(repo, accountName, repository, branchRestictions[0].id);
+            //var newRestiction = repositoriesEP.PutBranchRestriction(repo, accountName, repository, restrictionId, new BranchRestriction());
+            //var deletedRestiction = repositoriesEP.DeleteBranchRestriction(repo, accountName, repository, restrictionId);
+            //var diff = repositoriesEP.GetDiff(repo, accountName, repository, new object());
+            //var patch = repositoriesEP.GetPatch(repo, accountName, repository, new object());
+            //var commits = repositoriesEP.ListCommits(repo, accountName, repository);
+            //string commitId = "sdfsdf";
+            //var commit = repositoriesEP.GetCommit(repo, accountName, repository, commitId);
+            //var commitComments = repositoriesEP.ListCommitComments(repo, accountName, repository, commitId);
+            //int commentId = 10;
+            //var commitComment = repositoriesEP.GetCommitComment(repo, accountName, repository, commitId, commentId);
+            //var commitApproval = repositoriesEP.ApproveCommit(repo, accountName, repository, commitId);
+            //var deleteApproval = repositoriesEP.DeleteCommitApproval(repo, accountName, repository, commitId);
+
+            //var r = repositoriesEP.Repository(accountName, repository);
+            //var dr = r.DeleteRepository();
+            //var w = r.ListWatchers();
+            //var f = r.ListForks();
+            //var br = r.ListBranchRestrictions();
+            //var gr = r.GetBranchRestriction(restrictionId);
+            //var nr = r.PostBranchRestriction(new BranchRestriction());
+            //var dbr = r.DeleteBrachRestriction(restrictionId);
+            //var diff2 = r.GetDiff(new object());
+            //var patch2 = r.GetPatch(new object());
+            //var commits2 = r.ListCommits();
+            //var commit2 = r.GetCommit(commitId);
+            //var commitComments2 = r.ListCommitComments(commitId);
+            //var commitComment2 = r.GetCommitComment(commitId, commentId);
+            //var commitApproval2 = r.ApproveCommit(commitId);
+            //var deleteApproval2 = r.DeleteCommitApproval(commitId);
+
+
+            var pullRequests = repositoriesEP.ListPullRequests(accountName, repository);
+            var newPullRequest = repositoriesEP.PostPullRequest(accountName, repository, new PullRequest());
+            var updatedPullRequest = repositoriesEP.PutPullRequest(accountName, repository, new PullRequest());
+            var pullRequestId = 10;
+            var pullRequest = repositoriesEP.GetPullRequest(accountName, repository, pullRequestId
         }
     }
 }

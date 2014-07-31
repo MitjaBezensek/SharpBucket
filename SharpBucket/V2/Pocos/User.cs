@@ -1,5 +1,5 @@
 ﻿namespace SharpBucket.V2.Pocos {
-    public class Profile {
+    public class User {
         public string username { get; set; }
         public string kind { get; set; }
         public string website { get; set; }

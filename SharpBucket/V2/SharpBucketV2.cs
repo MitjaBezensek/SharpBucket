@@ -6,12 +6,12 @@ namespace SharpBucket.V2{
             _baseUrl = "https://bitbucket.org/api/2.0/";
         }
 
-        public TeamsEndPointV2 Teams(){
-            return new TeamsEndPointV2(this);
+        public TeamsEndPointV2 Teams(string teamName){
+            return new TeamsEndPointV2(this, teamName);
         }
 
-        public RepositoryEndPointV2 Repository(string accountName, string repository){
-            return new RepositoryEndPointV2(accountName, repository, this);
+        public RepositoriesEndPointV2 Repositories(){
+            return new RepositoriesEndPointV2(this);
         }
 
         public UsersEndpointV2 Users(string accountName){
