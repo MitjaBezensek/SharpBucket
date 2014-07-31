@@ -61,12 +61,12 @@
     <Compile Include="V2\EndPoints\RepositoryEndPointV2.cs" />
     <Compile Include="V2\Pocos\Activity.cs" />
     <Compile Include="V2\Pocos\ActivityInfo.cs" />
-    <Compile Include="V2\Pocos\Class1.cs" />
+    <Compile Include="V2\Pocos\Update.cs" />
     <Compile Include="V2\Pocos\Comment.cs" />
     <Compile Include="V2\Pocos\CommentsInfo.cs" />
     <Compile Include="V2\Pocos\Commit.cs" />
     <Compile Include="V2\Pocos\Content.cs" />
-    <Compile Include="V2\Pocos\ListOfUsers.cs" />
+    <Compile Include="V2\Pocos\UsersInfo.cs" />
     <Compile Include="V2\Pocos\Link.cs" />
     <Compile Include="V2\Pocos\Links.cs" />
     <Compile Include="V2\Pocos\Merge.cs" />

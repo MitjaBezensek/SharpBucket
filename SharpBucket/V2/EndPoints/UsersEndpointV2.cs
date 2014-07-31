@@ -18,14 +18,14 @@ namespace SharpBucket.V2.EndPoints{
             return _sharpBucketV2.Get(new User(), _baseUrl);
         }
 
-        public ListOfUsers ListFollowers(){
+        public UsersInfo ListFollowers(){
             var overrideUrl = _baseUrl + "followers/";
-            return _sharpBucketV2.Get(new ListOfUsers(), overrideUrl);
+            return _sharpBucketV2.Get(new UsersInfo(), overrideUrl);
         }
 
-        public ListOfUsers ListFollowing(){
+        public UsersInfo ListFollowing(){
             var overrideUrl = _baseUrl + "following/";
-            return _sharpBucketV2.Get(new ListOfUsers(), overrideUrl);
+            return _sharpBucketV2.Get(new UsersInfo(), overrideUrl);
         }
 
         // Moved permanently
