@@ -1,6 +1,10 @@
-﻿namespace SharpBucket.V1.Pocos{
+﻿using Newtonsoft.Json;
+using RestSharp.Serializers;
+
+namespace SharpBucket.V1.Pocos{
         public class Issue {
-            public string title { get; set; }
+              [SerializeAs(Name = "title")]
+            public string Title { get; set; }
             public string content { get; set; }
             public string priority { get; set; }
             public string status { get; set; }

@@ -30,10 +30,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NServiceKit.Text">
-      <HintPath>..\packages\NServiceKit.Text.1.0.10\lib\net35\NServiceKit.Text.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp">
+    <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -41,25 +42,36 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\BasicAuthentication.cs" />
+    <Compile Include="Authentication\LowerCaseResolver.cs" />
     <Compile Include="Authentication\OauthAuthentication.cs" />
     <Compile Include="Authentication\OAuthentication2Legged.cs" />
     <Compile Include="Authentication\OAuthentication3Legged.cs" />
     <Compile Include="Authentication\RequestExcecutor.cs" />
+    <Compile Include="Authentication\LowerCaseSerializer.cs" />
     <Compile Include="V1\EndPoints\IssueEndPoint.cs" />
-    <Compile Include="V2\EndPoints\Branch.cs" />
-    <Compile Include="V2\EndPoints\BranchRestriction.cs" />
-    <Compile Include="V2\EndPoints\BranchRestrictionInfo.cs" />
-    <Compile Include="V2\EndPoints\Fork.cs" />
-    <Compile Include="V2\EndPoints\ForkInfo.cs" />
-    <Compile Include="V2\EndPoints\Parent.cs" />
-    <Compile Include="V2\EndPoints\PullRequestsEndPoint.cs" />
+    <Compile Include="V2\EndPoints\PullRequestEndPointV2.cs" />
+    <Compile Include="V2\Pocos\Branch.cs" />
+    <Compile Include="V2\Pocos\BranchRestriction.cs" />
+    <Compile Include="V2\Pocos\BranchRestrictionInfo.cs" />
+    <Compile Include="V2\Pocos\CommitInfo.cs" />
+    <Compile Include="V2\Pocos\Fork.cs" />
+    <Compile Include="V2\Pocos\ForkInfo.cs" />
+    <Compile Include="V2\Pocos\Parent.cs" />
+    <Compile Include="V2\EndPoints\PullRequestsEndPointV2.cs" />
     <Compile Include="V2\EndPoints\RepositoryEndPointV2.cs" />
+    <Compile Include="V2\Pocos\Activity.cs" />
+    <Compile Include="V2\Pocos\ActivityInfo.cs" />
+    <Compile Include="V2\Pocos\Class1.cs" />
+    <Compile Include="V2\Pocos\Comment.cs" />
+    <Compile Include="V2\Pocos\CommentsInfo.cs" />
     <Compile Include="V2\Pocos\Commit.cs" />
-    <Compile Include="V2\Pocos\Destination.cs" />
+    <Compile Include="V2\Pocos\Content.cs" />
     <Compile Include="V2\Pocos\ListOfUsers.cs" />
     <Compile Include="V2\Pocos\Link.cs" />
     <Compile Include="V2\Pocos\Links.cs" />
+    <Compile Include="V2\Pocos\Merge.cs" />
     <Compile Include="V2\Pocos\PullRequest.cs" />
+    <Compile Include="V2\Pocos\PullRequestInfo.cs" />
     <Compile Include="V2\Pocos\PullRequestsInfo.cs" />
     <Compile Include="V2\Pocos\Repository.cs" />
     <Compile Include="V2\Pocos\Owner.cs" />

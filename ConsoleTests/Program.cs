@@ -4,6 +4,8 @@ using SharpBucket.V1.Pocos;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
+using Comment = SharpBucket.V1.Pocos.Comment;
+using Repository = SharpBucket.V2.Pocos.Repository;
 using Version = SharpBucket.V1.Pocos.Version;
 
 namespace ConsoleTests{
@@ -25,7 +27,7 @@ namespace ConsoleTests{
 
             // Do basic auth
             //ReadTestDataBasic();
-            //sharpBucket.BasicAuthentication(email, password)
+            //sharpBucket.BasicAuthentication(email, password);
 
             // Or OAuth
             ReadTestDataOauth();
@@ -44,7 +46,7 @@ namespace ConsoleTests{
             // of if you saved the tokens you can simply use those
             // var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oauthtoken", "oauthtokensecret");
 
-            TestUserEndPoint(sharpBucket);
+            //TestUserEndPoint(sharpBucket);
             TestIssuesEndPoint(sharpBucket);
             TestRepositoriesEndPoint(sharpBucket);
             TestUsersEndPoint(sharpBucket);
@@ -106,10 +108,10 @@ namespace ConsoleTests{
 
             // Issues
             var issues = issuesEP.ListIssues();
-            var newIssue = new Issue{title = "Let's add a new issue", content = "Some issue content", status = "new", priority = "trivial", kind = "bug"};
+            var newIssue = new Issue{Title = "Let's add a new issue", content = "Some issue content", status = "new", priority = "trivial", kind = "bug"};
             var newIssueResult = issuesEP.PostIssue(newIssue);
             var issue = issuesEP.GetIssue(newIssueResult.local_id);
-            var changedIssue = new Issue{title = "Completely new title", content = "Hi!", status = "new", local_id = issue.local_id};
+            var changedIssue = new Issue{Title = "Completely new title", content = "Hi!", status = "new", local_id = issue.local_id};
             var changedIssueResult = issuesEP.PutIssue(changedIssue);
             issuesEP.DeleteIssue(changedIssueResult.local_id);
 
@@ -257,11 +259,73 @@ namespace ConsoleTests{
             //var deleteApproval2 = r.DeleteCommitApproval(commitId);
 
 
-            var pullRequests = repositoriesEP.ListPullRequests(accountName, repository);
-            var newPullRequest = repositoriesEP.PostPullRequest(accountName, repository, new PullRequest());
-            var updatedPullRequest = repositoriesEP.PutPullRequest(accountName, repository, new PullRequest());
-            var pullRequestId = 10;
-            var pullRequest = repositoriesEP.GetPullRequest(accountName, repository, pullRequestId
+            //var pullRequests = repositoriesEP.ListPullRequests(accountName, repository);
+            var source = new Source{
+                branch = new Branch{name = "develop"},
+                repository = new Repository{
+                    full_name = "zebra-bi-tester"
+                }
+            };
+            var destination = new Source {
+                branch = new Branch { name = "master" },
+                commit = new Commit { hash = "56c3aca" }
+            };
+            var newRequest = new PullRequest{
+                title = "testing new one",
+                description = "My new description",
+                source = source,
+                destination = destination
+            };
+            //var newPullRequest = repositoriesEP.PostPullRequest(accountName, repository, newRequest);
+            //var updatedPullRequest = repositoriesEP.PutPullRequest(accountName, repository, new PullRequest());
+            var pullRequestId = 1;
+            //var pullRequest = repositoriesEP.GetPullRequest(accountName, repository, pullRequestId);
+            //pullRequest.title = "HEHEHEH";
+            //var updatedPullRequest = repositoriesEP.PutPullRequest(accountName, repository, pullRequest);
+
+            //var commitsInPullRequest = repositoriesEP.ListPullRequestCommits(accountName, repository, pullRequestId);
+            //var postPullRequestApproval = repositoriesEP.ApprovePullRequest(accountName, repository, pullRequestId);
+            //var deletePullRequest = repositoriesEP.RemovePullRequestApproval(accountName, repository, pullRequestId);
+            //var getDiffForPullRequest = repositoriesEP.GetDiffForPullRequest(accountName, repository, pullRequestId);
+            //var pullRequestLog = repositoriesEP.GetPullRequestLog(accountName, repository);
+            //var pullRequestActivity = repositoriesEP.GetPullRequestActivity(accountName, repository, pullRequestId);
+            //var acceptPullRequest = repositoriesEP.AcceptAndMergePullRequest(accountName, repository, pullRequestId);
+            //var declinePullRequest = repositoriesEP.DeclinePullRequest(accountName, repository, pullRequestId);
+            var pullRequestComments = repositoriesEP.ListPullRequestComments(accountName, repository, pullRequestId);
+            var commentId = 10;
+            var pullRequestComment = repositoriesEP.GetPullRequestComment(accountName, repository, pullRequestId, commentId);
+
+            var pullRequestsEP = repositoriesEP.PullReqests(accountName, repository);
+            var PRs = pullRequestsEP.ListPullRequests();
+            var newPR = pullRequestsEP.PostPullRequest(new PullRequest());
+            var updatedPR = pullRequestsEP.PutPullRequest(new PullRequest());
+            var PRId = 10;
+            var PR = pullRequestsEP.GetPullRequest(PRId);
+            var commitsInPR = pullRequestsEP.ListPullRequestCommits(PRId);
+            var postPRApproval = pullRequestsEP.ApprovePullRequest(PRId);
+            var deletePR = pullRequestsEP.RemovePullRequestApproval(PRId);
+            var getDiffForPR = pullRequestsEP.GetDiffForPullRequest(PRId);
+            var PRLog = pullRequestsEP.GetPullRequestLog();
+            var PRActivity = pullRequestsEP.GetPullRequestActivity(PRId);
+            var acceptPR = pullRequestsEP.AcceptAndMergePullRequest(PRId);
+            var declinePR = pullRequestsEP.DeclinePullRequest(PRId);
+            var PRComments = pullRequestsEP.ListPullRequestComments(PRId);
+            var cId = 10;
+            var PRComment = pullRequestsEP.GetPullRequestComment(PRId, cId);
+
+            var PRId2 = 10;
+            var pullRequestEP = pullRequestsEP.PullRequestEndPoint(PRId);
+            var PR2 = pullRequestEP.GetPullRequest();
+            var commitsInPR2 = pullRequestEP.ListPullRequestCommits();
+            var postPR2Approval = pullRequestEP.ApprovePullRequest();
+            var deletePR2 = pullRequestEP.RemovePullRequestApproval();
+            var getDiffForPR2 = pullRequestEP.GetDiffForPullRequest();
+            var PR2Activity = pullRequestEP.GetPullRequestActivity();
+            var acceptPR2 = pullRequestEP.AcceptAndMergePullRequest();
+            var declinePR2 = pullRequestEP.DeclinePullRequest();
+            var PR2Comments = pullRequestEP.ListPullRequestComments();
+            var cId2 = 10;
+            var PR2Comment = pullRequestEP.GetPullRequestComment(cId2);
         }
     }
 }

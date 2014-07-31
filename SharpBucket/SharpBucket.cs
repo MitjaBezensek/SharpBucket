@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using NServiceKit.Text;
 using RestSharp;
 using SharpBucket.Authentication;
 
@@ -26,32 +25,32 @@ namespace SharpBucket{
             return (OAuthentication3Legged) authenticator;
         }
 
-        private T Send<T>(T request, Method method, string overrideUrl = null){
+        private T Send<T>(T body, Method method, string overrideUrl = null){
             var relativeUrl = overrideUrl;
-            string response;
+            T response;
             try{
-                response = authenticator.GetResponse(relativeUrl, method, request);
+                response = authenticator.GetResponse(relativeUrl, method, body);
             }
-            catch (WebException ex){               
-                response = null;
+            catch (WebException ex){
+                response = default(T);
             }
-            return response.FromJson<T>();
+            return response;
         }
 
-        public T Get<T>(T request, string overrideUrl){
-            return Send(request, Method.GET, overrideUrl);
+        public T Get<T>(T body, string overrideUrl){
+            return Send(body, Method.GET, overrideUrl);
         }
 
-        public T Post<T>(T request, string overrideUrl){
-            return Send(request, Method.POST, overrideUrl);
+        public T Post<T>(T body, string overrideUrl){
+            return Send(body, Method.POST, overrideUrl);
         }
 
-        public T Put<T>(T request, string overrideUrl){
-            return Send(request, Method.PUT, overrideUrl);
+        public T Put<T>(T body, string overrideUrl){
+            return Send(body, Method.PUT, overrideUrl);
         }
 
-        public T Delete<T>(T request, string overrideUrl){
-            return Send(request, Method.DELETE, overrideUrl);
+        public T Delete<T>(T body, string overrideUrl){
+            return Send(body, Method.DELETE, overrideUrl);
         }
     }
 }

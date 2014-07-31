@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
+using SharpBucket.V1.Pocos;
 using SharpBucket.V2.Pocos;
+using Comment = SharpBucket.V2.Pocos.Comment;
+using Repository = SharpBucket.V2.Pocos.Repository;
 
 namespace SharpBucket.V2.EndPoints{
     public class RepositoriesEndPointV2{
@@ -12,8 +16,8 @@ namespace SharpBucket.V2.EndPoints{
             _baseUrl = "repositories/";
         }
 
-        public PullRequestsEndPoint PullReqests(string accountName, string repository){
-            return new PullRequestsEndPoint(accountName, repository, this);
+        public PullRequestsEndPointV2 PullReqests(string accountName, string repository){
+            return new PullRequestsEndPointV2(accountName, repository, this);
         }
 
         public RepositoryEndPointV2 Repository(string accountName, string repository){
@@ -124,9 +128,9 @@ namespace SharpBucket.V2.EndPoints{
             return _sharpBucketV2.Delete(new object(), overrideUrl);
         }
 
-        public List<PullRequest> ListPullRequests(string accountName, string repository){
+        public PullRequestsInfo ListPullRequests(string accountName, string repository){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/");
-            return _sharpBucketV2.Get(new PullRequestsInfo(), overrideUrl).values;
+            return _sharpBucketV2.Get(new PullRequestsInfo(), overrideUrl);
         }
 
         public PullRequest PostPullRequest(string accountName, string repository, PullRequest pullRequest){
@@ -137,6 +141,61 @@ namespace SharpBucket.V2.EndPoints{
         public PullRequest PutPullRequest(string accountName, string repository, PullRequest pullRequest){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/");
             return _sharpBucketV2.Put(pullRequest, overrideUrl);
+        }
+
+        public PullRequest GetPullRequest(string accountName, string repository, int pullRequestId){
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/");
+            return _sharpBucketV2.Get(new PullRequest(), overrideUrl);
+        }
+
+        public CommitInfo ListPullRequestCommits(string accountName, string repository, int pullRequestId){
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/commits/");
+            return _sharpBucketV2.Get(new CommitInfo(), overrideUrl);
+        }
+
+        public PullRequestInfo ApprovePullRequest(string accountName, string repository, int pullRequestId){
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/approve/");
+            return _sharpBucketV2.Post(new PullRequestInfo(), overrideUrl);
+        }
+
+        public object RemovePullRequestApproval(string accountName, string repository, int pullRequestId){
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/approve/");
+            return _sharpBucketV2.Delete(new PullRequestInfo(), overrideUrl);
+        }
+
+        public object GetDiffForPullRequest(string accountName, string repository, int pullRequestId){
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/diff/");
+            return _sharpBucketV2.Get(new Object(), overrideUrl);
+        }
+
+        public ActivityInfo GetPullRequestLog(string accountName, string repository){
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/activity/");
+            return _sharpBucketV2.Get(new ActivityInfo(), overrideUrl);
+        }
+
+        public ActivityInfo GetPullRequestActivity(string accountName, string repository, int pullRequestId){
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/activity/");
+            return _sharpBucketV2.Get(new ActivityInfo(), overrideUrl);
+        }
+
+        public Merge AcceptAndMergePullRequest(string accountName, string repository, int pullRequestId) {
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/merge/");
+            return _sharpBucketV2.Post(new Merge(), overrideUrl);
+        }
+
+        public Merge DeclinePullRequest(string accountName, string repository, int pullRequestId) {
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/decline/");
+            return _sharpBucketV2.Get(new Merge(), overrideUrl);
+        }
+
+        public object ListPullRequestComments(string accountName, string repository, int pullRequestId){
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/comments/");
+            return _sharpBucketV2.Get(new ActivityInfo(), overrideUrl);
+        }
+
+        public Comment GetPullRequestComment(string accountName, string repository, int pullRequestId, int commentId){
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/comments/" + commentId + "/");
+            return _sharpBucketV2.Get(new Comment(), overrideUrl);
         }
     }
 }

@@ -15,8 +15,8 @@ namespace SharpBucket.V2.EndPoints{
             _baseUrl = string.Format("repositories/{0}/{1}/", accountName, repository);
         }
 
-        public PullRequestsEndPoint PullRequests(){
-            return new PullRequestsEndPoint(_accountName, _repository, _repositoriesEndPointV2);
+        public PullRequestsEndPointV2 PullRequests(){
+            return new PullRequestsEndPointV2(_accountName, _repository, _repositoriesEndPointV2);
         }
 
         public Repository DeleteRepository(){
