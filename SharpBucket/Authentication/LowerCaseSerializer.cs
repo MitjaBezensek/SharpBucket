@@ -1,5 +1,4 @@
-﻿using System.Net.Mime;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Deserializers;
 using RestSharp.Serializers;

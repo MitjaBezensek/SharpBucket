@@ -1,5 +1,4 @@
-﻿using System;
-using SharpBucket.V1;
+﻿using SharpBucket.V1;
 using SharpBucket.V1.Pocos;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;

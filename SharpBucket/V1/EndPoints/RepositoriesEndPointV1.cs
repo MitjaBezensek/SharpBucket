@@ -5,16 +5,12 @@ using Version = SharpBucket.V1.Pocos.Version;
 
 namespace SharpBucket.V1.EndPoints{
     public class RepositoriesEndPointV1{
-        private readonly string _accountName;
-        private readonly string _repository;
         private readonly SharpBucketV1 _sharpBucketV1;
         private readonly string _baserUrl;
         private readonly string _issuesUrl;
         private readonly string _issuesIdUrl;
 
         public RepositoriesEndPointV1(string accountName, string repository, SharpBucketV1 sharpBucketV1){
-            _accountName = accountName;
-            _repository = repository;
             _sharpBucketV1 = sharpBucketV1;
             _baserUrl = "repositories/" + accountName + "/" + repository + "/";
             _issuesUrl = _baserUrl + "issues/";

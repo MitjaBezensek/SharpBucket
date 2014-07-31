@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace SharpBucket.V2.Pocos{
+﻿namespace SharpBucket.V2.Pocos{
     public class Repository{
         public string scm { get; set; }
         public bool? has_wiki { get; set; }

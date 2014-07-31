@@ -25,6 +25,9 @@ namespace SharpBucket.Authentication{
         }
 
         public T GetResponse<T>(string url, Method method, T body){
+            if (client == null){
+                client = new RestClient(_baseUrl);
+            }
             MethodInfo executeMethod = typeof (RequestExcecutor).GetMethod("ExectueRequest");
             MethodInfo generic = executeMethod.MakeGenericMethod(typeof (T));
             return (T) generic.Invoke(this, new object[]{url, method, body, client});

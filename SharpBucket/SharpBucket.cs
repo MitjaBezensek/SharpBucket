@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using RestSharp;
 using SharpBucket.Authentication;
 
@@ -32,6 +33,7 @@ namespace SharpBucket{
                 response = authenticator.GetResponse(relativeUrl, method, body);
             }
             catch (WebException ex){
+                Console.WriteLine(ex.Message);
                 response = default(T);
             }
             return response;

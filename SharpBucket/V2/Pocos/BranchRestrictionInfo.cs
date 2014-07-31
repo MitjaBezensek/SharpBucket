@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using SharpBucket.V2.Pocos;
 
-namespace SharpBucket.V2.EndPoints{
+namespace SharpBucket.V2.Pocos{
     public class BranchRestrictionInfo {
         public int? page { get; set; }
         public int? pagelen { get; set; }

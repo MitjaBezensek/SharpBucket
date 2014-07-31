@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SharpBucket.V2.Pocos;
+﻿using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints {
     public class PullRequestsEndPointV2 {

@@ -1,6 +1,4 @@
-﻿using SharpBucket.V2.EndPoints;
-
-namespace SharpBucket.V2.Pocos{
+﻿namespace SharpBucket.V2.Pocos{
     public class Comment {
         public Parent parent { get; set; }
         public Links links { get; set; }

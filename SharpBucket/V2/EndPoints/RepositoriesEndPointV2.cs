@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
-using SharpBucket.V1.Pocos;
 using SharpBucket.V2.Pocos;
 using Comment = SharpBucket.V2.Pocos.Comment;
 using Repository = SharpBucket.V2.Pocos.Repository;
@@ -58,32 +56,32 @@ namespace SharpBucket.V2.EndPoints{
             return _sharpBucketV2.Get(new WatcherInfo(), overrideUrl).values;
         }
 
-        public List<Fork> ListForks(Repository repo, string accountName, string repository){
+        public List<Fork> ListForks(string accountName, string repository){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "forks");
             return _sharpBucketV2.Get(new ForkInfo(), overrideUrl).values;
         }
 
-        public List<BranchRestriction> ListBranchRestrictions(Repository repo, string accountName, string repository){
+        public List<BranchRestriction> ListBranchRestrictions(string accountName, string repository){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/");
             return _sharpBucketV2.Get(new BranchRestrictionInfo(), overrideUrl).values;
         }
 
-        public BranchRestriction PostBranchRestriction(Repository repo, string accountName, string repository, BranchRestriction restriction){
+        public BranchRestriction PostBranchRestriction(string accountName, string repository, BranchRestriction restriction){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/");
             return _sharpBucketV2.Post(restriction, overrideUrl);
         }
 
-        public BranchRestriction GetBranchRestriction(Repository repo, string accountName, string repository, int restrictionId){
+        public BranchRestriction GetBranchRestriction(string accountName, string repository, int restrictionId){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restrictionId);
             return _sharpBucketV2.Get(new BranchRestriction(), overrideUrl);
         }
 
-        public BranchRestriction PutBranchRestriction(Repository repo, string accountName, string repository, int restrictionId, BranchRestriction restriction){
+        public BranchRestriction PutBranchRestriction(string accountName, string repository, int restrictionId, BranchRestriction restriction){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restrictionId);
             return _sharpBucketV2.Put(restriction, overrideUrl);
         }
 
-        public BranchRestriction DeleteBranchRestriction(Repository repo, string accountName, string repository, int restrictionId){
+        public BranchRestriction DeleteBranchRestriction(string accountName, string repository, int restrictionId){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restrictionId);
             return _sharpBucketV2.Delete(new BranchRestriction(), overrideUrl);
         }
@@ -103,27 +101,27 @@ namespace SharpBucket.V2.EndPoints{
             return _sharpBucketV2.Get(repo, overrideUrl);
         }
 
-        public object GetCommit(Repository repo, string accountName, string repository, string commitId){
+        public object GetCommit(string accountName, string repository, string commitId){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + commitId);
             return _sharpBucketV2.Get(new object(), overrideUrl);
         }
 
-        public List<object> ListCommitComments(Repository repo, string accountName, string repository, string commitId){
+        public List<object> ListCommitComments(string accountName, string repository, string commitId){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + commitId + "/comments/");
             return _sharpBucketV2.Get(new List<object>(), overrideUrl);
         }
 
-        public object GetCommitComment(Repository repo, string accountName, string repository, string commitId, int commentId){
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + commitId + "/comments/" + commitId + "/");
+        public object GetCommitComment(string accountName, string repository, string commitId, int commentId){
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + commitId + "/comments/" + commitId + "/" + commentId + "/");
             return _sharpBucketV2.Get(new object(), overrideUrl);
         }
 
-        public object ApproveCommit(Repository repo, string accountName, string repository, string commitId){
+        public object ApproveCommit(string accountName, string repository, string commitId){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + commitId + "/approve/");
             return _sharpBucketV2.Post(new object(), overrideUrl);
         }
 
-        public object DeleteCommitApproval(Repository repo, string accountName, string repository, string commitId){
+        public object DeleteCommitApproval(string accountName, string repository, string commitId){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + commitId + "/approve/");
             return _sharpBucketV2.Delete(new object(), overrideUrl);
         }

@@ -1,6 +1,4 @@
-﻿using SharpBucket.V2.Pocos;
-
-namespace SharpBucket.V2.EndPoints{
+﻿namespace SharpBucket.V2.Pocos{
     public class Fork {
         public string scm { get; set; }
         public bool? has_wiki { get; set; }
