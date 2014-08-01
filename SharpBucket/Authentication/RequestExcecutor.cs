@@ -1,21 +1,21 @@
-﻿using Newtonsoft.Json;
+﻿using System.Diagnostics;
 using RestSharp;
 
 namespace SharpBucket.Authentication{
     internal class RequestExcecutor{
+        private static readonly LowerCaseSerializer serializer = new LowerCaseSerializer();
+
         public static T ExectueRequest<T>(string url, Method method, T body, RestClient client) where T : new(){
+            client.AddHandler("application/json", serializer);
             var request = new RestRequest(url, method);
             if (ShouldAddBody(method)){
+                request.RequestFormat = DataFormat.Json;
+                request.JsonSerializer = serializer;
                 request.AddObject(body);
             }
-            var settings = new JsonSerializerSettings{
-                NullValueHandling = NullValueHandling.Ignore,
-                DefaultValueHandling = DefaultValueHandling.Ignore,
-                ContractResolver = new LowerCaseResolver()
-            };
-            var test = client.Execute(request);
-            var result =  JsonConvert.DeserializeObject<T>(test.Content, settings);
-            return result;
+            var result = client.Execute<T>(request);
+            Debug.WriteLine(serializer.traceWriter);
+            return result.Data;
         }
 
         private static bool ShouldAddBody(Method method){

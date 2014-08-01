@@ -1,25 +1,31 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using RestSharp;
 using RestSharp.Deserializers;
 using RestSharp.Serializers;
 
 namespace SharpBucket.Authentication{
     public class LowerCaseSerializer : ISerializer, IDeserializer{
+        public readonly ITraceWriter traceWriter;
+        private readonly JsonSerializerSettings settings;
+
         public LowerCaseSerializer(){
             ContentType = "application/json";
+            traceWriter = new MemoryTraceWriter();
+            settings = new JsonSerializerSettings{
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore,
+                ContractResolver = new LowerCaseResolver(),
+                TraceWriter = traceWriter
+            };
         }
 
         public string Serialize(object obj){
-            var settings = new JsonSerializerSettings{
-                NullValueHandling = NullValueHandling.Ignore,
-                DefaultValueHandling = DefaultValueHandling.Ignore,
-                ContractResolver = new LowerCaseResolver()
-            };
             return JsonConvert.SerializeObject(obj, Formatting.None, settings);
         }
 
         public T Deserialize<T>(IRestResponse response){
-            return JsonConvert.DeserializeObject<T>(response.Content);
+            return JsonConvert.DeserializeObject<T>(response.Content, settings);
         }
 
         public string RootElement { get; set; }
