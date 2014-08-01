@@ -19,7 +19,6 @@
 - Update an email address **(done)**
 
 ### [Invitations Resource][6]
-### [Oauth Resource][7]
 ### [Privileges Resource][8]
 ### [Ssh-keys Resource][9]
 - GET the list of an accounts SSH keys **(done)**
@@ -41,6 +40,11 @@
 - Toggle spam flag on an existing changeset comment
 
 ### [Deploy-keys Resource][12]
+- GET a list of keys **(done)**
+- GET the key's content **(done)**
+- POST a new key **(done)**
+- DELETE a key **(done)**
+
 ### [Events Resources][13]
  - GET a list of events **(done)**
 
@@ -75,6 +79,12 @@
 - DELETE a milestone **(done)**
 
 ### [Links Resources][16]
+- GET list of links **(done)**
+- GET a link **(done)**
+- POST a new link **(done)**
+- PUT an update to a link **(done)**
+- DELETE a link **(done)**
+
 ### [Pullrequests Resource 1.0][17]
 ### [Repository Resource 1.0][18]
 ### [Services Resource][19]

@@ -15,7 +15,6 @@ namespace SharpBucket.V1.EndPoints{
             return _sharpBucketV1.Get(new UserInfo(), _baseUrl);
         }
 
-        // TODO: Fix serialization
         public Privileges ListPrivileges(){
             var overrideUrl = _baseUrl + "privileges";
             return _sharpBucketV1.Get(new Privileges(), overrideUrl);

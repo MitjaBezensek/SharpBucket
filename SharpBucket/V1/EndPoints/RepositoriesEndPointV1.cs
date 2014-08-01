@@ -286,5 +286,50 @@ namespace SharpBucket.V1.EndPoints{
             var overrideUrl = _baserUrl + "events/";
             return _sharpBucketV1.Get(new EventInfo(), overrideUrl);
         }
+
+        public List<Link> ListLinks(){
+            var overrideUrl = _baserUrl + "links/";
+            return _sharpBucketV1.Get(new List<Link>(), overrideUrl);
+        }
+
+        public Link PostLink(Link link){
+            var overrideUrl = _baserUrl + "links/";
+            return _sharpBucketV1.Post(link, overrideUrl);
+        }
+
+        public Link GetLink(int? linkId){
+            var overrideUrl = _baserUrl + "links/" + linkId + "/";
+            return _sharpBucketV1.Get(new Link(), overrideUrl);
+        }
+
+        public Link PutLink(Link link){
+            var overrideUrl = _baserUrl + "links/" + link.id + "/";
+            return _sharpBucketV1.Put(link, overrideUrl);
+        }
+
+        public Link DeleteLink(Link link){
+            var overrideUrl = _baserUrl + "links/" + link.id + "/";
+            return _sharpBucketV1.Delete(link, overrideUrl);
+        }
+
+        public List<SSH> ListDeployKeys(){
+            var overrideUrl = _baserUrl + "deploy-keys/";
+            return _sharpBucketV1.Get(new List<SSH>(), overrideUrl);
+        }
+
+        public SSH PostDeployKey(SSH key){
+            var overrideUrl = _baserUrl + "deploy-keys/";
+            return _sharpBucketV1.Post(key, overrideUrl);
+        }
+
+        public SSH GetDeployKey(int? pk){
+            var overrideUrl = _baserUrl + "deploy-keys/" + pk + "/";
+            return _sharpBucketV1.Get(new SSH(), overrideUrl);
+        }
+
+        public SSH DeleteDeployKey(SSH key){
+            var overrideUrl = _baserUrl + "deploy-keys/" + key.pk + "/";
+            return _sharpBucketV1.Delete(key, overrideUrl);
+        }
     }
 }

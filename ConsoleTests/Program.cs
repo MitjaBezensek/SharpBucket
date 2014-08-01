@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using SharpBucket.V1;
+﻿using SharpBucket.V1;
 using SharpBucket.V1.Pocos;
 using SharpBucket.V2;
-using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
 using Comment = SharpBucket.V1.Pocos.Comment;
 using Repository = SharpBucket.V2.Pocos.Repository;
@@ -171,19 +169,26 @@ namespace ConsoleTests{
             var mainBranch = repositoryEP.GetMainBranch();
             string WIKI_PAGE = "";
             var wiki = repositoryEP.GetWiki(WIKI_PAGE);
-            var newPage = new Wiki{data = "Hello to my new page"};
+            var newPage = new Wiki { data = "Hello to my new page" };
             var newWiki = repositoryEP.PostWiki(newPage, "NewPage");
             var changeSet = repositoryEP.ListChangeset();
             var change = changeSet.changesets[4];
             var getChange = repositoryEP.GetChangeset(change.node);
             var diffStats = repositoryEP.GetChangesetDiffstat(change.node);
             var repoEvents = repositoryEP.ListEvents();
+            var links = repositoryEP.ListLinks();
+            var newLink = new SharpBucket.V1.Pocos.Link{id = 100};
+            var newLinkResponse = repositoryEP.PostLink(newLink);
+            var link = repositoryEP.GetLink(newLinkResponse.id);
+            newLinkResponse.handler.name = "sfsdf";
+            var updatedLink = repositoryEP.PutLink(newLinkResponse);
+            repositoryEP.DeleteLink(updatedLink);
         }
 
         private static void TestUsersEndPoint(SharpBucketV1 sharpBucket){
             var usersEP = sharpBucket.Users(accountName);
-            var userEvents = usersEP.ListUserEvents();
-            var userPrivileges = usersEP.ListUserPrivileges();
+            //var userEvents = usersEP.ListUserEvents();
+            //var userPrivileges = usersEP.ListUserPrivileges();
             var invitations = usersEP.ListInvitations();
             var email = "example@example.com";
             var invitationsForEmail = usersEP.GetInvitationsFor(email);

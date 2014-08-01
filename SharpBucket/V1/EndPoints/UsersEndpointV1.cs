@@ -16,16 +16,14 @@ namespace SharpBucket.V1.EndPoints{
             return _sharpBucketV1.Get(new EventInfo(), overrideUrl);
         }
 
-        // TODO: Serialization
         public Privileges ListUserPrivileges(){
             var overrideUrl = _baseUrl + "privileges/";
             return _sharpBucketV1.Get(new Privileges(), overrideUrl);
         }
 
-        // TODO: Serialization
-        public object ListInvitations(){
+        public InvitationsInfo ListInvitations(){
             var overrideUrl = _baseUrl + "invitations/";
-            return _sharpBucketV1.Get(new object(), overrideUrl);
+            return _sharpBucketV1.Get(new InvitationsInfo(), overrideUrl);
         }
 
         // TODO: Serialization
