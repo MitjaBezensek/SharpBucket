@@ -219,18 +219,18 @@ namespace SharpBucket.V1.EndPoints{
             return DeleteVersion(new Version{id = versionId});
         }
 
-        public List<Tag> ListTags(){
+        public IDictionary<string, Tag> ListTags(){
             var overrideUrl = _baserUrl + "tags/";
-            return _sharpBucketV1.Get(new List<Tag>(), overrideUrl);
+            return _sharpBucketV1.Get(new Dictionary<string, Tag>(), overrideUrl);
         }
 
-        public List<BranchInfo> ListBranches(){
+        public Dictionary<string, BranchInfo> ListBranches(){
             var overrideUrl = _baserUrl + "branches/";
-            return _sharpBucketV1.Get(new List<BranchInfo>(), overrideUrl);
+            return _sharpBucketV1.Get(new Dictionary<string, BranchInfo>(), overrideUrl);
         }
 
         public MainBranch GetMainBranch(){
-            var overrideUrl = _baserUrl + "branches/main-branch";
+            var overrideUrl = _baserUrl + "main-branch/";
             return _sharpBucketV1.Get(new MainBranch(), overrideUrl);
         }
 
@@ -239,11 +239,15 @@ namespace SharpBucket.V1.EndPoints{
             return _sharpBucketV1.Get(new Wiki(), overrideUrl);
         }
 
-        // Doesnt work, 500 server error, same for put
-
+        // TODO:  Doesnt work, 500 server error, same for put
         public Wiki PostWiki(Wiki newPage, string location){
             var overrideUrl = _baserUrl + "wiki/" + location;
             return _sharpBucketV1.Post(newPage, overrideUrl);
+        }
+
+        public Wiki PutWiki(Wiki newPage, string location){
+            var overrideUrl = _baserUrl + "wiki/" + location;
+            return _sharpBucketV1.Put(newPage, overrideUrl);
         }
 
         public ChangesetInfo ListChangeset(){

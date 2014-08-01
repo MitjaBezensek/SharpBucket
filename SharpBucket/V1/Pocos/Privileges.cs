@@ -2,7 +2,6 @@
 
 namespace SharpBucket.V1.Pocos{
     public class Privileges{
-        // TODO: Probably not ok
-        public List<PrivilegeInfo> privilegesDictionary { get; set; }
+        public Dictionary<string, string> teams { get; set; }
     }
 }

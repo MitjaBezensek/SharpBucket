@@ -1,4 +1,5 @@
-﻿using SharpBucket.V1;
+﻿using System.Collections.Generic;
+using SharpBucket.V1;
 using SharpBucket.V1.Pocos;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
@@ -17,18 +18,17 @@ namespace ConsoleTests{
         private static string repository;
 
         private static void Main(){
-            //TestApiV1();
-            TestApiV2();
+            // Decide which version you wish to test
+            TestApiV1();
+            //TestApiV2();
         }
 
         private static void TestApiV1(){
             var sharpBucket = new SharpBucketV1();
-
-            // Do basic auth
+            // Decide on which authentication you wish to use
             //ReadTestDataBasic();
             //sharpBucket.BasicAuthentication(email, password);
 
-            // Or OAuth
             ReadTestDataOauth();
             // Two legged OAuth, just supply the consumerKey and the consumerSecretKey and you are done
             sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
@@ -45,7 +45,7 @@ namespace ConsoleTests{
             // of if you saved the tokens you can simply use those
             // var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oauthtoken", "oauthtokensecret");
 
-            //TestUserEndPoint(sharpBucket);
+            TestUserEndPoint(sharpBucket);
             TestIssuesEndPoint(sharpBucket);
             TestRepositoriesEndPoint(sharpBucket);
             TestUsersEndPoint(sharpBucket);
@@ -55,8 +55,8 @@ namespace ConsoleTests{
             var sharpBucket = new SharpBucketV2();
             ReadTestDataOauth();
             sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
-            //TestUsersEndPointV2(sharpBucket);
-            //TestTeamsEndPointV2(sharpBucket);
+            TestUsersEndPointV2(sharpBucket);
+            TestTeamsEndPointV2(sharpBucket);
             RestRepositoriesEndPointV2(sharpBucket);
         }
 
@@ -94,7 +94,7 @@ namespace ConsoleTests{
         private static void TestUserEndPoint(SharpBucketV1 sharpBucket){
             var userEP = sharpBucket.User();
             var info = userEP.GetInfo();
-            var privileges = userEP.GetPrivileges();
+            var privileges = userEP.ListPrivileges();
             var follows = userEP.ListFollows();
             var userRepos = userEP.ListRepositories();
             var userReposOverview = userEP.RepositoriesOverview();
@@ -117,16 +117,7 @@ namespace ConsoleTests{
             // Issue followers
             var issueFollowers = issuesEP.ListIssueFollowers(issues.issues[0].local_id);
 
-            // Issue comments
-            //var issueComments = issuesEP.ListIssueComments(ISSUE_ID);
-            //var newComment = new Comment{content = "This bug is really annoying!"};
-            //var newCommentResult = issuesEP.PostIssueComment(ISSUE_ID, newComment);
-            //var comment = issuesEP.GetIssueComment(ISSUE_ID, newCommentResult.comment_id);
-            //comment.content = "The bug is still annoying";
-            //var updatedCommentRes = issuesEP.PutIssueComment(ISSUE_ID, comment);
-            //issuesEP.DeleteIssueComment(ISSUE_ID, updatedCommentRes.comment_id);
-
-            //// Issue comments alternative
+            // Issue comments 
             var issueEP = issuesEP.Issue(ISSUE_ID);
             var issueComments = issueEP.ListComments();
             var newComment = new Comment{content = "This bug is really annoying!"};
@@ -135,6 +126,15 @@ namespace ConsoleTests{
             comment.content = "The bug is still annoying";
             var updatedCommentRes = issueEP.PutIssueComment(comment);
             issueEP.DeleteIssueComment(updatedCommentRes.comment_id);
+
+            // Issue comments alternative
+            //var issueComments = issuesEP.ListIssueComments(ISSUE_ID);
+            //var newComment = new Comment{content = "This bug is really annoying!"};
+            //var newCommentResult = issuesEP.PostIssueComment(ISSUE_ID, newComment);
+            //var comment = issuesEP.GetIssueComment(ISSUE_ID, newCommentResult.comment_id);
+            //comment.content = "The bug is still annoying";
+            //var updatedCommentRes = issuesEP.PutIssueComment(ISSUE_ID, comment);
+            //issuesEP.DeleteIssueComment(ISSUE_ID, updatedCommentRes.comment_id);
 
             // Components
             var components = issuesEP.ListComponents();
@@ -190,7 +190,7 @@ namespace ConsoleTests{
             var followers = usersEP.ListFollowers();
             var consumers = usersEP.ListConsumers();
             int? CONSUMER_ID = consumers[0].id;
-            // var consumer = usersEP.ListConsumer(CONSUMER_ID);
+            var consumer = usersEP.GetConsumer(CONSUMER_ID);
             var ssh_keys = usersEP.ListSSHKeys();
             int? PK = ssh_keys[0].pk;
             var getSSH = usersEP.GetSSHKey(PK);
@@ -265,9 +265,9 @@ namespace ConsoleTests{
                     full_name = "zebra-bi-tester"
                 }
             };
-            var destination = new Source {
-                branch = new Branch { name = "master" },
-                commit = new Commit { hash = "56c3aca" }
+            var destination = new Source{
+                branch = new Branch{name = "master"},
+                commit = new Commit{hash = "56c3aca"}
             };
             var newRequest = new PullRequest{
                 title = "testing new one",
