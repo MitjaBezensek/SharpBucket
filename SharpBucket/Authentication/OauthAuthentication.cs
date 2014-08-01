@@ -1,5 +1,5 @@
 namespace SharpBucket.Authentication{
-    public abstract class OauthAuthentication{
+    public abstract class OauthAuthentication : Authenticate{
         protected readonly string ConsumerKey;
         protected readonly string ConsumerSecret;
         protected readonly string _baseUrl;

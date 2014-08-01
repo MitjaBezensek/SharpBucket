@@ -1,13 +1,11 @@
-﻿using System.Reflection;
-using RestSharp;
+﻿using RestSharp;
 using RestSharp.Authenticators;
 using RestSharp.Contrib;
 
 namespace SharpBucket.Authentication{
-    public class OAuthentication3Legged : OauthAuthentication, IAuthenticate{
+    public class OAuthentication3Legged : OauthAuthentication{
         private string OAuthToken;
         private string OauthTokenSecret;
-        private RestClient client;
         private const string requestUrl = "oauth/request_token";
         private const string userAuthorizeUrl = "oauth/authenticate";
         private const string accessUrl = "oauth/access_token";
@@ -24,13 +22,11 @@ namespace SharpBucket.Authentication{
             OauthTokenSecret = oauthTokenSecret;
         }
 
-        public T GetResponse<T>(string url, Method method, T body){
+        public override T GetResponse<T>(string url, Method method, T body){
             if (client == null){
                 client = new RestClient(_baseUrl);
             }
-            MethodInfo executeMethod = typeof (RequestExcecutor).GetMethod("ExectueRequest");
-            MethodInfo generic = executeMethod.MakeGenericMethod(typeof (T));
-            return (T) generic.Invoke(this, new object[]{url, method, body, client});
+            return base.GetResponse(url, method, body);
         }
 
         public string StartAuthentication(){
