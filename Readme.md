@@ -31,7 +31,7 @@ Similarly for the Issues end point:
 
 ```CSharp
 var issues = sharpBucket.Repository(accountName, repository).Issues();
-var issues = issues.ListIssues();
+var issuesList = issues.ListIssues();
 var issueComments = issues.ListIssueComments(ISSUE_ID);
 ```
 Sending information is just as easy.
