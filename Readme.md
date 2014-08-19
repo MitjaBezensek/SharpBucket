@@ -116,8 +116,15 @@ Service that is free for open source projects. It is enabled for Pull Requests a
 
 [![Build status](https://ci.appveyor.com/api/projects/status/jtlni3j2fq3j6pxy/branch/master)](https://ci.appveyor.com/project/MitjaBezenek/sharpbucket/branch/master)
 
-## Licensing
-SharpBucket is licensed with MIT license. It uses NServiceKit for requesting and parsing the data. NServiceKit is also [licensed under MIT](https://github.com/NServiceKit/NServiceKit.Text/blob/master/LICENSE) terms and is an open source fork of StackService. SharpBucket was influenced by ServiceStack's [Stripe api wrapper](https://github.com/ServiceStack/Stripe). It also uses Google's [OAuth protocol](https://code.google.com/p/oauth/), that is licensed under Apache License.
+## Licensing, Dependencies and Influence
+SharpBucket is licensed under [MIT license](https://github.com/MitjaBezensek/SharpBucket/blob/master/LICENSE). 
+
+### Dependencies:
+- **RestSharp** for HTTP requests and responses. RestSHarp is [licensed under Apache 2.0 license](https://github.com/restsharp/RestSharp/blob/master/LICENSE.txt) terms. 
+- **Json.NET** for parsing the the JSON data. Json.NET is [licensed under MIT license](https://raw.githubusercontent.com/JamesNK/Newtonsoft.Json/master/LICENSE.md)
+
+### Influence
+SharpBucket was influenced by ServiceStack's [Stripe api wrapper](https://github.com/ServiceStack/Stripe). The first versions of SharpBucket used ServiceStack's library, but has since moved to RestSharp.
 
 
   [1]: https://github.com/MitjaBezensek/SharpBucket/blob/master/ConsoleTests/Program.cs
