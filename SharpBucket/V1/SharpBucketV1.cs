@@ -17,5 +17,9 @@ namespace SharpBucket.V1{
         public UsersEndpointV1 Users(string accountName){
             return new UsersEndpointV1(accountName, this);
         }
+
+        public PrivilegesEndPointV1 Privileges(string accountName){
+            return new PrivilegesEndPointV1(accountName, this);
+        }
     }
 }

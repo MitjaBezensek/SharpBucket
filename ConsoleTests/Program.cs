@@ -42,11 +42,11 @@ namespace ConsoleTests{
 
             // of if you saved the tokens you can simply use those
             // var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oauthtoken", "oauthtokensecret");
-
-            TestUserEndPoint(sharpBucket);
-            TestIssuesEndPoint(sharpBucket);
-            TestRepositoriesEndPoint(sharpBucket);
-            TestUsersEndPoint(sharpBucket);
+            //TestUserEndPoint(sharpBucket);
+            //TestIssuesEndPoint(sharpBucket);
+            //TestRepositoriesEndPoint(sharpBucket);
+            //TestUsersEndPoint(sharpBucket);
+            TestPrivilegesEndPoint(sharpBucket);
         }
 
         private static void TestApiV2(){
@@ -169,7 +169,7 @@ namespace ConsoleTests{
             var mainBranch = repositoryEP.GetMainBranch();
             string WIKI_PAGE = "";
             var wiki = repositoryEP.GetWiki(WIKI_PAGE);
-            var newPage = new Wiki { data = "Hello to my new page" };
+            var newPage = new Wiki{data = "Hello to my new page"};
             var newWiki = repositoryEP.PostWiki(newPage, "NewPage");
             var changeSet = repositoryEP.ListChangeset();
             var change = changeSet.changesets[4];
@@ -199,6 +199,12 @@ namespace ConsoleTests{
             var ssh_keys = usersEP.ListSSHKeys();
             int? PK = ssh_keys[0].pk;
             var getSSH = usersEP.GetSSHKey(PK);
+        }
+
+        private static void TestPrivilegesEndPoint(SharpBucketV1 sharpBucket){
+            var privilegesEP = sharpBucket.Privileges(accountName);
+            var privileges = privilegesEP.ListRepositoryPrivileges(repository);
+            var privilege = privilegesEP.GetPrivilegesForAccount(repository, accountName);
         }
 
         private static void TestUsersEndPointV2(SharpBucketV2 sharpBucket){
