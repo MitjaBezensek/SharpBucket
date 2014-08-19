@@ -14,7 +14,7 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// List all the comments for the current issue.
         /// </summary>
-        /// <returns>A list of comments.</returns>
+        /// <returns></returns>
         public List<Comment> ListComments(){
             return _repositoriesEndPointV1.ListIssueComments(_issueId);
         }
@@ -32,7 +32,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Get a specific comment for the current issue.
         /// </summary>
         /// <param name="commentId">The Id of the comment you wish to get.</param>
-        /// <returns>The comment with the specified Id.</returns>
+        /// <returns></returns>
         public Comment GetIssueComment(int? commentId){
             return _repositoriesEndPointV1.GetIssueComment(_issueId, commentId);
         }

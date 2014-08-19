@@ -22,7 +22,7 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// List all the issues for the current repository.
         /// </summary>
-        /// <returns>A list of issues for the current repository.</returns>
+        /// <returns></returns>
         public IssuesInfo ListIssues(){
             return _repositoriesEndPointV1.ListIssues();
         }
@@ -40,7 +40,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Get a specific issue from the current repository.
         /// </summary>
         /// <param name="issueId">The Id of the issue you wish to get.</param>
-        /// <returns>The requested issue.</returns>
+        /// <returns></returns>
         public Issue GetIssue(int? issueId){
             return _repositoriesEndPointV1.GetIssue(issueId);
         }
@@ -76,7 +76,7 @@ namespace SharpBucket.V1.EndPoints{
         /// List all the followers of the selected issue.
         /// </summary>
         /// <param name="issue">The issue whose followers you wish to get.</param>
-        /// <returns>A list of followers for the selected issue.</returns>
+        /// <returns></returns>
         public IssueFollowers ListIssueFollowers(Issue issue){
             return _repositoriesEndPointV1.ListIssueFollowers(issue);
         }
@@ -85,7 +85,7 @@ namespace SharpBucket.V1.EndPoints{
         /// List all the followers of the selected issue.
         /// </summary>
         /// <param name="issueId">The Id of the issue whose followers you wish to get.</param>
-        /// <returns>A list of followers for the selected issue.</returns>
+        /// <returns></returns>
         public IssueFollowers ListIssueFollowers(int? issueId){
             return _repositoriesEndPointV1.ListIssueFollowers(issueId);
         }
@@ -94,7 +94,7 @@ namespace SharpBucket.V1.EndPoints{
         /// List all the comments for the selected issue.
         /// </summary>
         /// <param name="issue">The issue whose comments you wish to get.</param>
-        /// <returns>A list of comments for the selected issue.</returns>
+        /// <returns></returns>
         public List<Comment> ListIssueComments(Issue issue){
             return _repositoriesEndPointV1.ListIssueComments(issue);
         }
@@ -103,7 +103,7 @@ namespace SharpBucket.V1.EndPoints{
         /// List all the comments for the selected issue.
         /// </summary>
         /// <param name="issueId">The Id of the issue whose comments you wish to get.</param>
-        /// <returns>A list of comments for the selected issue.</returns>
+        /// <returns></returns>
         public List<Comment> ListIssueComments(int issueId){
             return _repositoriesEndPointV1.ListIssueComments(issueId);
         }
@@ -133,7 +133,7 @@ namespace SharpBucket.V1.EndPoints{
         /// </summary>
         /// <param name="issue">The issue whose comment you wish to get.</param>
         /// <param name="commentId">The id of the comment you wish to get.</param>
-        /// <returns>The specified comment of the issue.</returns>
+        /// <returns></returns>
         public Comment GetIssueComment(Issue issue, int? commentId){
             return _repositoriesEndPointV1.GetIssueComment(issue, commentId);
         }
@@ -143,7 +143,7 @@ namespace SharpBucket.V1.EndPoints{
         /// </summary>
         /// <param name="issueId">The Id of the issue whose comment you wish to get.</param>
         /// <param name="commentId">The id of the comment you wish to get.</param>
-        /// <returns>The specified comment of the issue.</returns>
+        /// <returns></returns>
         public Comment GetIssueComment(int issueId, int? commentId){
             return _repositoriesEndPointV1.GetIssueComment(issueId, commentId);
         }
@@ -164,8 +164,8 @@ namespace SharpBucket.V1.EndPoints{
         /// <param name="issueId">The Id of the issue whose comment you wish to update.</param>
         /// <param name="comment">The comment that you wish to update.</param>
         /// <returns>The response of BitBucket API.</returns>
-        public Comment PutIssueComment(int issudId, Comment comment){
-            return _repositoriesEndPointV1.PutIssueComment(issudId, comment);
+        public Comment PutIssueComment(int issueId, Comment comment){
+            return _repositoriesEndPointV1.PutIssueComment(issueId, comment);
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// List the components of the current repository.
         /// </summary>
-        /// <returns>A list of components for the current repository.</returns>
+        /// <returns></returns>
         public List<Component> ListComponents(){
             return _repositoriesEndPointV1.ListComponents();
         }
@@ -220,7 +220,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Post a new component to the current repository.
         /// </summary>
         /// <param name="component"></param>
-        /// <returns></returns>
+        /// <returns>The response from the BitBucket API.</returns>
         public Component PostComponent(Component component){
             return _repositoriesEndPointV1.PostComponent(component);
         }
@@ -229,7 +229,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Get a specific component of the current repository.
         /// </summary>
         /// <param name="componentId">The Id of the component you wish to get.</param>
-        /// <returns>The requested component.</returns>
+        /// <returns></returns>
         public Component GetComponent(int? componentId){
             return _repositoriesEndPointV1.GetComponent(componentId);
         }
@@ -264,7 +264,7 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// List all the milestones of the current repository.
         /// </summary>
-        /// <returns>A list of milestones for the current repository.</returns>
+        /// <returns></returns>
         public List<Milestone> ListMilestones(){
             return _repositoriesEndPointV1.ListMilestones();
         }
@@ -282,7 +282,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Get a specific milestone of the current repositotry.
         /// </summary>
         /// <param name="milestoneId">The Id of the milestone you wish to get.</param>
-        /// <returns>The milestone you requested.</returns>
+        /// <returns></returns>
         public Milestone GetMilestone(int? milestoneId){
             return _repositoriesEndPointV1.GetMilestone(milestoneId);
         }
@@ -317,7 +317,7 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// List all the versions for the current repository.
         /// </summary>
-        /// <returns>A list of versions for the current repository. </returns>
+        /// <returns></returns>
         public List<Version> ListVersions(){
             return _repositoriesEndPointV1.ListVersions();
         }
@@ -335,7 +335,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Get a specific version of the current repository.
         /// </summary>
         /// <param name="versionId">The Id of the version you wish to get.</param>
-        /// <returns>The requested version.</returns>
+        /// <returns></returns>
         public Version GetVersion(int? versionId){
             return _repositoriesEndPointV1.GetVersion(versionId);
         }

@@ -15,7 +15,7 @@ namespace SharpBucket.V1.EndPoints{
         /// List the privileges for the specified repository.
         /// </summary>
         /// <param name="repository">The repository whose privileges you wish to get.</param>
-        /// <returns>A list of privileges for the specified repository.</returns>
+        /// <returns></returns>
         public List<RepositoryPrivileges> ListRepositoryPrivileges(string repository){
             string overrideUrl = _baseUrl + repository + "/";
             return _sharpBucketV1.Get(new List<RepositoryPrivileges>(), overrideUrl);
