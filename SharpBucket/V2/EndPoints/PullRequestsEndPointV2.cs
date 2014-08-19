@@ -1,7 +1,7 @@
 ﻿using SharpBucket.V2.Pocos;
 
-namespace SharpBucket.V2.EndPoints {
-    public class PullRequestsEndPointV2 {
+namespace SharpBucket.V2.EndPoints{
+    public class PullRequestsEndPointV2{
         private readonly RepositoriesEndPointV2 _repositoriesEndPointV2;
         private readonly string _repository;
         private readonly string _accountName;
@@ -16,7 +16,7 @@ namespace SharpBucket.V2.EndPoints {
             return new PullRequestEndPointV2(_accountName, _repository, pullRequestId, _repositoriesEndPointV2);
         }
 
-        public PullRequestsInfo ListPullRequests() {
+        public PullRequestsInfo ListPullRequests(){
             return _repositoriesEndPointV2.ListPullRequests(_accountName, _repository);
         }
 
@@ -36,7 +36,6 @@ namespace SharpBucket.V2.EndPoints {
             return _repositoriesEndPointV2.ListPullRequestCommits(_accountName, _repository, pullRequestId);
         }
 
-
         public object ApprovePullRequest(int pullRequestId){
             return _repositoriesEndPointV2.ApprovePullRequest(_accountName, _repository, pullRequestId);
         }
@@ -53,23 +52,23 @@ namespace SharpBucket.V2.EndPoints {
             return _repositoriesEndPointV2.GetPullRequestLog(_accountName, _repository);
         }
 
-        public object GetPullRequestActivity(int pullRequestId) {
+        public object GetPullRequestActivity(int pullRequestId){
             return _repositoriesEndPointV2.GetPullRequestActivity(_accountName, _repository, pullRequestId);
         }
 
-        public object AcceptAndMergePullRequest(int pullRequestId) {
+        public object AcceptAndMergePullRequest(int pullRequestId){
             return _repositoriesEndPointV2.AcceptAndMergePullRequest(_accountName, _repository, pullRequestId);
         }
 
-        public object DeclinePullRequest(int pullRequestId) {
+        public object DeclinePullRequest(int pullRequestId){
             return _repositoriesEndPointV2.DeclinePullRequest(_accountName, _repository, pullRequestId);
         }
 
-        public object ListPullRequestComments(int pullRequestId) {
+        public object ListPullRequestComments(int pullRequestId){
             return _repositoriesEndPointV2.ListPullRequestComments(_accountName, _repository, pullRequestId);
         }
 
-        public object GetPullRequestComment(int pullRequestId, int commentId) {
+        public object GetPullRequestComment(int pullRequestId, int commentId){
             return _repositoriesEndPointV2.GetPullRequestComment(_accountName, _repository, pullRequestId, commentId);
         }
     }

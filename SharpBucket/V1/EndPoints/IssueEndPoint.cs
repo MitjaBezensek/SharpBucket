@@ -27,7 +27,7 @@ namespace SharpBucket.V1.EndPoints{
             return _repositoriesEndPointV1.PutIssueComment(_issueId, comment);
         }
 
-        public Comment DeleteIssueComment(Comment comment) {
+        public Comment DeleteIssueComment(Comment comment){
             return _repositoriesEndPointV1.DeleteIssueComment(_issueId, comment);
         }
 

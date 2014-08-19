@@ -176,12 +176,12 @@ namespace SharpBucket.V2.EndPoints{
             return _sharpBucketV2.Get(new ActivityInfo(), overrideUrl);
         }
 
-        public Merge AcceptAndMergePullRequest(string accountName, string repository, int pullRequestId) {
+        public Merge AcceptAndMergePullRequest(string accountName, string repository, int pullRequestId){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/merge/");
             return _sharpBucketV2.Post(new Merge(), overrideUrl);
         }
 
-        public Merge DeclinePullRequest(string accountName, string repository, int pullRequestId) {
+        public Merge DeclinePullRequest(string accountName, string repository, int pullRequestId){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/decline/");
             return _sharpBucketV2.Get(new Merge(), overrideUrl);
         }

@@ -33,7 +33,7 @@ namespace SharpBucket.V2.EndPoints{
             return _repositoriesEndPointV2.ListBranchRestrictions(_accountName, _repository);
         }
 
-        public object GetBranchRestriction(int restrictionId) {
+        public object GetBranchRestriction(int restrictionId){
             return _repositoriesEndPointV2.GetBranchRestriction(_accountName, _repository, restrictionId);
         }
 

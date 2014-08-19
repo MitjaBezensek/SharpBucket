@@ -5,6 +5,5 @@ namespace SharpBucket.Authentication{
         protected override string ResolvePropertyName(string propertyName){
             return propertyName.ToLower();
         }
-        
     }
 }
