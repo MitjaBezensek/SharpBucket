@@ -3,7 +3,7 @@ using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints{
     /// <summary>
-    /// The /teams endpoint gets a team's profile information.
+    /// The Teams End Point gets a team's profile information.
     /// More info:
     /// https://confluence.atlassian.com/display/BITBUCKET/teams+Endpoint
     /// </summary>
