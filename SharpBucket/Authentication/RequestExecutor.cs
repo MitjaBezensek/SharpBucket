@@ -2,7 +2,7 @@
 using RestSharp;
 
 namespace SharpBucket.Authentication{
-    internal class RequestExcecutor{
+    internal class RequestExecutor{
         private static readonly LowerCaseSerializer serializer = new LowerCaseSerializer();
 
         public static T ExecuteRequest<T>(string url, Method method, T body, RestClient client) where T : new(){

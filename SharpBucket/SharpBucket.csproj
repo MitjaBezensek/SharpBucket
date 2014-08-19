@@ -46,7 +46,7 @@
     <Compile Include="Authentication\OauthAuthentication.cs" />
     <Compile Include="Authentication\OAuthentication2Legged.cs" />
     <Compile Include="Authentication\OAuthentication3Legged.cs" />
-    <Compile Include="Authentication\RequestExcecutor.cs" />
+    <Compile Include="Authentication\RequestExecutor.cs" />
     <Compile Include="Authentication\LowerCaseSerializer.cs" />
     <Compile Include="V1\EndPoints\IssueEndPoint.cs" />
     <Compile Include="V1\EndPoints\PrivilegesEndPointV1.cs" />
