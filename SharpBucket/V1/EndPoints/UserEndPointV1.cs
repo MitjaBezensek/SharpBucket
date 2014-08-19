@@ -2,6 +2,12 @@
 using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.EndPoints{
+    /// <summary>
+    /// The User End Point is used for getting the information about the current user.
+    /// This information includes things like: followers, privileges,...
+    /// More info here:
+    /// https://confluence.atlassian.com/display/BITBUCKET/user+Endpoint
+    /// </summary>
     public class UserEndPointV1{
         private readonly SharpBucketV1 _sharpBucketV1;
         private readonly string _baseUrl;
