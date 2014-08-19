@@ -3,7 +3,11 @@ using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.EndPoints{
     /// <summary>
-    /// A "Virtual" End Point that offers easier manipulation of issues of a repository.
+    /// The issues resource provides functionality for getting information on issues in an issue tracker, 
+    /// creating new issues, updating them and deleting them. 
+    /// You can access public issues without authentication, but you will only receive a subset of information, 
+    /// and you can't gain access to private repositories' issues. By authenticating, you will get a more detailed set of information, 
+    /// the ability to create issues, as well as access to updating data or deleting issues you have access to.
     /// </summary>
     public class IssuesEndPointV1{
         private readonly RepositoriesEndPointV1 _repositoriesEndPointV1;
@@ -24,7 +28,9 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List all the issues for the current repository.
+        /// Gets the list of issues in the repository.
+        /// If you issue this call without filtering parameters, the count value contains the total number of issues in the repository's tracker.  
+        /// If you filter this call, the count value contains the total number of issues that meet the filter criteria.
         /// </summary>
         /// <returns></returns>
         public IssuesInfo ListIssues(){
@@ -32,7 +38,9 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Post a new issue to the current repository.
+        /// Creates a new issue in a repository. This call requires authentication. 
+        /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
+        /// The authenticated user is used for the issue's reported_by field.
         /// </summary>
         /// <param name="issue">The issue that you wish to post.</param>
         /// <returns>Response from the BitBucket API.</returns>
@@ -41,16 +49,20 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Get a specific issue from the current repository.
+        /// Gets in individual issue from a repository. 
+        /// Authorization is not required for public repositories with a public issue tracker. 
+        /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate access. 
         /// </summary>
-        /// <param name="issueId">The Id of the issue you wish to get.</param>
+        /// <param name="issueId">The issue identifier.</param>
         /// <returns></returns>
         public Issue GetIssue(int? issueId){
             return _repositoriesEndPointV1.GetIssue(issueId);
         }
 
         /// <summary>
-        /// Update an issue of the current repository.
+        /// Updates an existing issue. Updating the title or content fields requires that the caller authenticate as a user with write access. 
+        /// For other fields, the caller must authenticate as a user with read access. 
+        /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate access. 
         /// </summary>
         /// <param name="issue">The issue that you wish to update.</param>
         /// <returns>Response from the BitBucket API.</returns>
@@ -68,16 +80,19 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Delete and issue from the current repository.
+        /// Deletes the specified issue_id. 
+        /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate access. 
         /// </summary>
-        /// <param name="issueId">The Id of the issue that you wish to delete.</param>
+        /// <param name="issueId">The issue identifier.</param>
         /// <returns>Response from the BitBucket API.</returns>
         public Issue DeleteIssue(int? issueId){
             return _repositoriesEndPointV1.DeleteIssue(issueId);
         }
 
         /// <summary>
-        /// List all the followers of the selected issue.
+        /// Gets the followers for an individual issue from a repository. 
+        /// authorization is not required for public repositories with a public issue tracker. 
+        /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate access.
         /// </summary>
         /// <param name="issue">The issue whose followers you wish to get.</param>
         /// <returns></returns>
@@ -86,16 +101,18 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List all the followers of the selected issue.
+        /// Gets the followers for an individual issue from a repository. 
+        /// authorization is not required for public repositories with a public issue tracker. 
+        /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate access.
         /// </summary>
-        /// <param name="issueId">The Id of the issue whose followers you wish to get.</param>
+        /// <param name="issueId">The issue identifier.</param>
         /// <returns></returns>
         public IssueFollowers ListIssueFollowers(int? issueId){
             return _repositoriesEndPointV1.ListIssueFollowers(issueId);
         }
 
         /// <summary>
-        /// List all the comments for the selected issue.
+        /// List all the comments on the specified issue. 
         /// </summary>
         /// <param name="issue">The issue whose comments you wish to get.</param>
         /// <returns></returns>
@@ -104,9 +121,9 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List all the comments for the selected issue.
+        /// List all the comments on the specified issue. 
         /// </summary>
-        /// <param name="issueId">The Id of the issue whose comments you wish to get.</param>
+        /// <param name="issueId">The issue identifier.</param>
         /// <returns></returns>
         public List<Comment> ListIssueComments(int issueId){
             return _repositoriesEndPointV1.ListIssueComments(issueId);

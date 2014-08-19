@@ -3,8 +3,8 @@ using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.EndPoints{
     /// <summary>
-    /// The Users End Point is used for getting information about privileges, emails, ssh-key, consumers,...
-    /// for a specified account.
+    /// The users endpoints gets information related to an individual or team account. 
+    /// Individual and team accounts both have the same set of user fields:
     /// More info here:
     /// https://confluence.atlassian.com/display/BITBUCKET/users+Endpoint+-+1.0
     /// </summary>
@@ -18,7 +18,8 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List the events for the account.
+        /// Gets a count and the list of events associated with an account. 
+        /// This call requires authentication.
         /// </summary>
         /// <returns></returns>
         public EventInfo ListUserEvents(){
@@ -27,7 +28,7 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List the privileges for the account.
+        /// Gets the groups with account privileges defined for a team account. 
         /// </summary>
         /// <returns></returns>
         public Privileges ListUserPrivileges(){
@@ -36,7 +37,8 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List the invitations for the account.
+        /// List of pending invitations on a team or individual account. 
+        /// This call requires authorization and the caller must have administrative rights on the account.
         /// </summary>
         /// <returns></returns>
         public InvitationsInfo ListInvitations(){
@@ -46,9 +48,11 @@ namespace SharpBucket.V1.EndPoints{
 
         // TODO: Serialization
         /// <summary>
-        /// List the invitations for the specified email.
+        /// List any pending invitations on a team or individual account for a particular email address. 
+        /// Any user with admin access to the account can invite someone to a group. 
+        /// This call requires authorization and the caller must have administrative rights on the account.
         /// </summary>
-        /// <param name="email">The email whose invitations you wish to get.</param>
+        /// <param name="email">The email address to get invitations for.</param>
         /// <returns></returns>
         public object GetInvitationsFor(string email){
             var overrideUrl = _baseUrl + "invitations/" + email;
@@ -56,7 +60,8 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List the followers for the account.
+        /// Gets a count and the list of accounts following an account. Use this API to get a list of the individuals following an account. 
+        /// Currently, the Bitbucket UI does not list each account, it only displays the count. This call requires authentication.
         /// </summary>
         /// <returns></returns>
         public Followers ListFollowers(){
@@ -65,7 +70,7 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List the consumers for the account.
+        /// List the consumers integrated with the account.
         /// </summary>
         /// <returns></returns>
         public List<Consumer> ListConsumers(){
@@ -74,9 +79,9 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Get a specific consumer for the account.
+        /// Get an individual consumer for an account.
         /// </summary>
-        /// <param name="consumerId">The Id of the consumer that you wish to get.</param>
+        /// <param name="consumerId">Identifier for the key.</param>
         /// <returns></returns>
         public Consumer GetConsumer(int? consumerId){
             var overrideUrl = _baseUrl + "consumers/" + consumerId;
@@ -84,7 +89,7 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List the SSH keys for the account.
+        /// List all of the keys associated with an account. This call requires authentication. 
         /// </summary>
         /// <returns></returns>
         public List<SSH> ListSSHKeys(){
@@ -93,9 +98,10 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Get a specific SSH key for the account.
+        /// Gets the content of the specified key_id. 
+        /// This call requires authentication. 
         /// </summary>
-        /// <param name="pk">The identification of the key that you wish to get.</param>
+        /// <param name="pk">The key identifier. This is an internal value created by Bitbucket when the key is added.</param>
         /// <returns></returns>
         public SSHDetailed GetSSHKey(int? pk){
             var overrideUrl = _baseUrl + "ssh-keys/" + pk;
@@ -103,7 +109,8 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List the emails for the account.
+        /// List of all the email addresses associated with the account. 
+        /// This call requires authentication. The possible return fields are the same for both individual and team accounts. 
         /// </summary>
         /// <returns></returns>
         public List<EmailInfo> ListEmails(){
@@ -112,9 +119,10 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Get a specific email information for the account.
+        /// Get an individual email address associated with an account. 
+        /// This call requires authentication. 
         /// </summary>
-        /// <param name="email">The email whose information you wish to get.</param>
+        /// <param name="email">The email address to get.</param>
         /// <returns></returns>
         public EmailInfo GetEmail(string email){
             var overrideUrl = _baseUrl + "emails/" + email;

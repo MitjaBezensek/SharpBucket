@@ -3,8 +3,10 @@ using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.EndPoints{
     /// <summary>
-    /// The User End Point is used for getting the information about the current user.
-    /// This information includes things like: followers, privileges,...
+    /// Use the user endpoints to gets information related to the currently authenticated user. 
+    /// It is useful for OAuth or other in situations where the username is unknown. 
+    /// This endpoint returns information about an individual or team account. 
+    /// Individual and team accounts both have the same set of user fields:
     /// More info here:
     /// https://confluence.atlassian.com/display/BITBUCKET/user+Endpoint
     /// </summary>
@@ -18,7 +20,7 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Get the current users info.
+        /// Gets the basic information associated with an account and a list of all of the repositories owned by the user.
         /// </summary>
         /// <returns></returns>
         public UserInfo GetInfo(){
@@ -26,7 +28,9 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List the privileges for the current user.
+        /// List the account-level privileges for an individual or team account. 
+        /// Use this call to locate the accounts that the currently authenticated accountname has access to. 
+        /// An account can have admin or collaborator (member) privileges. The accountname always has admin privileges on itself. 
         /// </summary>
         /// <returns></returns>
         public Privileges ListPrivileges(){
@@ -35,7 +39,9 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List the repositories that the current user follows.
+        /// List the details of the repositories that the individual or team account follows. 
+        /// This call returns the full data about the repositories including if the repository is a fork of another repository. 
+        /// An account always "follows" its own repositories. 
         /// </summary>
         /// <returns></returns>
         public List<Repository> ListFollows(){
@@ -44,7 +50,8 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List the repositories of the current user.
+        /// List the details of the repositories that the user owns or has at least read access to. 
+        /// Use this if you're looking for a full list of all of the repositories associated with a user.
         /// </summary>
         /// <returns></returns>
         public List<Repository> ListRepositories(){
@@ -53,7 +60,7 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Get the overview of the repositories for the current user.
+        /// List the repositories the account follows.  This is the same list that appears on the Following tab on your account dashboard.
         /// </summary>
         /// <returns></returns>
         public RepositoriesOverview RepositoriesOverview(){
@@ -61,10 +68,9 @@ namespace SharpBucket.V1.EndPoints{
             return _sharpBucketV1.Get(new RepositoriesOverview(), overrideUrl);
         }
 
-        
         // TODO: Fix serialization
         /// <summary>
-        /// Get the repository dashboard for the current user.
+        /// List the repositories from the account's dashboard.
         /// </summary>
         /// <returns></returns>
         public object GetRepositoryDasboard(){

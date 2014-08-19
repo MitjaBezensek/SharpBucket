@@ -3,9 +3,12 @@ using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.EndPoints{
     /// <summary>
-    /// Get the Privileges End Point.
-    /// The Privileges End Point is used for getting all the information about privileges:
-    /// user privileges, repository privileges,...
+    /// Use the privileges endpoint to manage the user privileges (permissions). 
+    /// It allows you to grant specific users access to read, write and or administer your repositories. 
+    /// Only the repository owner, a team account administrator, or an account with administrative rights 
+    /// on the repository can can query or modify repository privileges. 
+    /// To manage group access to your repositories, use the group-privileges Endpoint 
+    /// and to manage privilege settings for team accounts, use the privileges Resource.  
     /// More info here:
     /// https://confluence.atlassian.com/display/BITBUCKET/privileges+Endpoint
     /// </summary>
@@ -19,7 +22,11 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List the privileges for the specified repository.
+        /// Gets a list of the privileges granted on a repository.  
+        /// Only the repository owner, a team account administrator, 
+        /// or an account with administrative rights on the repository can make this call.  
+        /// If a repository has no individual users with privileges, the method returns an [] empty array.  
+        /// To get privileges for groups, use the group-privileges Endpoint.
         /// </summary>
         /// <param name="repository">The repository whose privileges you wish to get.</param>
         /// <returns></returns>
@@ -29,7 +36,9 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List the privileges for a specific account for a specific repository.
+        /// Get a list of privileges for an individual account. 
+        /// Only the repository owner, a team account administrator, 
+        /// or an account with administrative rights on the repository can make this call. 
         /// </summary>
         /// <param name="repository">The repository whose privileges you wish to get.</param>
         /// <param name="accountName">The account name whose privileges you wish to get.</param>

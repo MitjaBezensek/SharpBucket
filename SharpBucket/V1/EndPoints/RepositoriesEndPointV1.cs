@@ -5,9 +5,9 @@ using Version = SharpBucket.V1.Pocos.Version;
 
 namespace SharpBucket.V1.EndPoints{
     /// <summary>
-    /// The Repositories End Point is your main End Point for getting information of the
-    /// specified repository. This includes information like: issues, issue comments, commits,...
-    /// This end point contains access to a few other end points, like Issues End point.
+    /// The repositories endpoint has a number of resources you can use to manage repository resources. 
+    /// For all repository resources, you supply a repo_slug that identifies the specific repository.  
+    /// For example, the repo_slug for the repository https://bitbucket.org/tortoisehg/thg is thg.  
     /// More info here:
     /// https://confluence.atlassian.com/display/BITBUCKET/repositories+Endpoint+-+1.0
     /// </summary>
@@ -25,9 +25,11 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Get the Issues End Point.
-        /// BitBucket does not have this End Point so this is a "Virtual" end point
-        /// which offers easier manipulation of issues.
+        /// The issues resource provides functionality for getting information on issues in an issue tracker, 
+        /// creating new issues, updating them and deleting them. 
+        /// You can access public issues without authentication, but you will only receive a subset of information, 
+        /// and you can't gain access to private repositories' issues. By authenticating, you will get a more detailed set of information, 
+        /// the ability to create issues, as well as access to updating data or deleting issues you have access to.
         /// </summary>
         /// <returns></returns>
         public IssuesEndPointV1 Issues(){
@@ -35,7 +37,7 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List he issues of the current repository.
+        /// List the issues of the current repository.
         /// </summary>
         /// <returns></returns>
         public IssuesInfo ListIssues(){
