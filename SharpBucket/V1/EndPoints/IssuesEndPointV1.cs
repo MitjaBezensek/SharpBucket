@@ -5,7 +5,7 @@ namespace SharpBucket.V1.EndPoints{
     /// <summary>
     /// A "Virtual" End Point that offers easier manipulation of issues of a repository.
     /// </summary>
-    public class IssuesEndPoint{
+    public class IssuesEndPointV1{
         private readonly RepositoriesEndPointV1 _repositoriesEndPointV1;
 
         /// <summary>
@@ -15,11 +15,11 @@ namespace SharpBucket.V1.EndPoints{
         /// </summary>
         /// <param name="issueId">The Id of the issue that you wish to get.</param>
         /// <returns>And end point to the issue you requested.</returns>
-        public IssueEndPoint Issue(int issueId){
-            return new IssueEndPoint(_repositoriesEndPointV1, issueId);
+        public IssueEndPointV1 Issue(int issueId){
+            return new IssueEndPointV1(_repositoriesEndPointV1, issueId);
         }
 
-        public IssuesEndPoint(RepositoriesEndPointV1 repositoriesEndPointV1){
+        public IssuesEndPointV1(RepositoriesEndPointV1 repositoriesEndPointV1){
             _repositoriesEndPointV1 = repositoriesEndPointV1;
         }
 

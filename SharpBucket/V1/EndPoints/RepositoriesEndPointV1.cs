@@ -17,8 +17,8 @@ namespace SharpBucket.V1.EndPoints{
             _issuesIdUrl = _issuesUrl + "{0}/";
         }
 
-        public IssuesEndPoint Issues(){
-            return new IssuesEndPoint(this);
+        public IssuesEndPointV1 Issues(){
+            return new IssuesEndPointV1(this);
         }
 
         public IssuesInfo ListIssues(){
