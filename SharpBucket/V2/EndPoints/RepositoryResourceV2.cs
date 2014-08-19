@@ -2,19 +2,19 @@
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints{
-    public class RepositoryEndPointV2{
+    public class RepositoryResourceV2{
         private readonly RepositoriesEndPointV2 _repositoriesEndPointV2;
         private readonly string _accountName;
         private readonly string _repository;
 
-        public RepositoryEndPointV2(string accountName, string repository, RepositoriesEndPointV2 repositoriesEndPointV2){
+        public RepositoryResourceV2(string accountName, string repository, RepositoriesEndPointV2 repositoriesEndPointV2){
             _repository = repository;
             _accountName = accountName;
             _repositoriesEndPointV2 = repositoriesEndPointV2;
         }
 
-        public PullRequestsEndPointV2 PullRequests(){
-            return new PullRequestsEndPointV2(_accountName, _repository, _repositoriesEndPointV2);
+        public PullRequestsResourceV2 PullRequests(){
+            return new PullRequestsResourceV2(_accountName, _repository, _repositoriesEndPointV2);
         }
 
         public Repository DeleteRepository(){
