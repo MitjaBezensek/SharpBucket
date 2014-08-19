@@ -12,8 +12,8 @@ namespace SharpBucket.V2.EndPoints{
             _repositoriesEndPointV2 = repositoriesEndPointV2;
         }
 
-        public PullRequestEndPointV2 PullRequestEndPoint(int pullRequestId){
-            return new PullRequestEndPointV2(_accountName, _repository, pullRequestId, _repositoriesEndPointV2);
+        public PullRequestResourceV2 PullRequestEndPoint(int pullRequestId){
+            return new PullRequestResourceV2(_accountName, _repository, pullRequestId, _repositoriesEndPointV2);
         }
 
         public PullRequestsInfo ListPullRequests(){
