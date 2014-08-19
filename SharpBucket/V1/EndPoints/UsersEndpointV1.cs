@@ -2,6 +2,12 @@
 using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.EndPoints{
+    /// <summary>
+    /// The Users End Point is used for getting information about privileges, emails, ssh-key, consumers,...
+    /// for a specified account.
+    /// More info here:
+    /// https://confluence.atlassian.com/display/BITBUCKET/users+Endpoint+-+1.0
+    /// </summary>
     public class UsersEndpointV1{
         private readonly SharpBucketV1 _sharpBucketV1;
         private readonly string _baseUrl;
