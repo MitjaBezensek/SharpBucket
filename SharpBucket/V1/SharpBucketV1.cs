@@ -12,6 +12,15 @@ namespace SharpBucket.V1{
         }
 
         /// <summary>
+        /// Get the Privileges End Point for a specific account.
+        /// </summary>
+        /// <param name="accountName">The account for which you wish to get the Privileges End Point.</param>
+        /// <returns></returns>
+        public PrivilegesEndPointV1 Privileges(string accountName){
+            return new PrivilegesEndPointV1(accountName, this);
+        }
+
+        /// <summary>
         /// Get the Repositories End Point for a specific repository and account.
         /// </summary>
         /// <param name="accountName">The account that is the owner of the specific repository.</param>
@@ -34,17 +43,8 @@ namespace SharpBucket.V1{
         /// </summary>
         /// <param name="accountName">The account for which you wish to get the Users End Point.</param>
         /// <returns></returns>
-        public UsersEndpointV1 Users(string accountName){
-            return new UsersEndpointV1(accountName, this);
-        }
-
-        /// <summary>
-        /// Get the Privileges End Point for a specific account.
-        /// </summary>
-        /// <param name="accountName">The account for which you wish to get the Privileges End Point.</param>
-        /// <returns></returns>
-        public PrivilegesEndPointV1 Privileges(string accountName){
-            return new PrivilegesEndPointV1(accountName, this);
+        public UsersEndPointV1 Users(string accountName){
+            return new UsersEndPointV1(accountName, this);
         }
     }
 }

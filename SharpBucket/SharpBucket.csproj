@@ -48,7 +48,7 @@
     <Compile Include="Authentication\OAuthentication3Legged.cs" />
     <Compile Include="Authentication\RequestExecutor.cs" />
     <Compile Include="Authentication\LowerCaseSerializer.cs" />
-    <Compile Include="V1\EndPoints\IssueEndPointV1.cs" />
+    <Compile Include="V1\EndPoints\IssueResourceV1.cs" />
     <Compile Include="V1\EndPoints\PrivilegesEndPointV1.cs" />
     <Compile Include="V1\Pocos\Followers.cs" />
     <Compile Include="V1\Pocos\Link.cs" />
@@ -57,7 +57,9 @@
     <Compile Include="V1\Pocos\RepositoryPrivileges.cs" />
     <Compile Include="V1\Pocos\RepositoryPrivilegesUser.cs" />
     <Compile Include="V1\Pocos\RepositorySimple.cs" />
-    <Compile Include="V2\EndPoints\PullRequestEndPointV2.cs" />
+    <Compile Include="V2\EndPoints\PullRequestResourceV2.cs" />
+    <Compile Include="V2\EndPoints\PullRequestsResourceV2.cs" />
+    <Compile Include="V2\EndPoints\RepositoryResourceV2.cs" />
     <Compile Include="V2\Pocos\Branch.cs" />
     <Compile Include="V2\Pocos\BranchRestriction.cs" />
     <Compile Include="V2\Pocos\BranchRestrictionInfo.cs" />
@@ -65,8 +67,6 @@
     <Compile Include="V2\Pocos\Fork.cs" />
     <Compile Include="V2\Pocos\ForkInfo.cs" />
     <Compile Include="V2\Pocos\Parent.cs" />
-    <Compile Include="V2\EndPoints\PullRequestsEndPointV2.cs" />
-    <Compile Include="V2\EndPoints\RepositoryEndPointV2.cs" />
     <Compile Include="V2\Pocos\Activity.cs" />
     <Compile Include="V2\Pocos\ActivityInfo.cs" />
     <Compile Include="V2\Pocos\Update.cs" />
@@ -96,7 +96,7 @@
     <Compile Include="SharpBucket.cs" />
     <Compile Include="V2\EndPoints\TeamsEndPointV2.cs" />
     <Compile Include="V2\EndPoints\UsersEndpointV2.cs" />
-    <Compile Include="V1\EndPoints\IssuesEndPointV1.cs" />
+    <Compile Include="V1\EndPoints\IssuesResourceV1.cs" />
     <Compile Include="V1\EndPoints\RepositoriesEndPointV1.cs" />
     <Compile Include="V1\EndPoints\UserEndPointV1.cs" />
     <Compile Include="V1\EndPoints\UsersEndpointV1.cs" />
