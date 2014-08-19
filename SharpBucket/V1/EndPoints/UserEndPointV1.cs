@@ -11,6 +11,10 @@ namespace SharpBucket.V1.EndPoints{
             _baseUrl = "user/";
         }
 
+        /// <summary>
+        /// Get the current users info.
+        /// </summary>
+        /// <returns></returns>
         public UserInfo GetInfo(){
             return _sharpBucketV1.Get(new UserInfo(), _baseUrl);
         }
