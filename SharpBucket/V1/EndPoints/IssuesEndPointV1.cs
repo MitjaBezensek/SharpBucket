@@ -13,8 +13,8 @@ namespace SharpBucket.V1.EndPoints{
         /// BitBucket does not have this End Point so this is a "Virtual" end point
         /// which offers easier access to issue specific information.
         /// </summary>
-        /// <param name="issueId">The Id of the issue that you wish to get.</param>
-        /// <returns>And end point to the issue you requested.</returns>
+        /// <param name="issueId">The Id of the issue whose End Point you wish to get.</param>
+        /// <returns></returns>
         public IssueEndPointV1 Issue(int issueId){
             return new IssueEndPointV1(_repositoriesEndPointV1, issueId);
         }
