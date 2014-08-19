@@ -205,7 +205,7 @@ namespace ConsoleTests{
         }
 
         private static void TestTeamsEndPointV2(SharpBucketV2 sharpBucket){
-            var TEAM_NAME = "zebrabi";
+            var TEAM_NAME = "";
             var teamsEP = sharpBucket.Teams(TEAM_NAME);
             var teamProfile = teamsEP.GetProfile();
             var teamMembers = teamsEP.ListMembers();
@@ -262,7 +262,7 @@ namespace ConsoleTests{
             var source = new Source{
                 branch = new Branch{name = "develop"},
                 repository = new Repository{
-                    full_name = "zebra-bi-tester"
+                    full_name = repository
                 }
             };
             var destination = new Source{
