@@ -15,7 +15,7 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// List all the comments for the current issue.
+        /// List all the comments of the issue. 
         /// </summary>
         /// <returns></returns>
         public List<Comment> ListComments(){
@@ -23,21 +23,21 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Post a new comment for the current issue.
+        /// Get a specific comment of the issue.
+        /// </summary>
+        /// <param name="commentId">The comment identifier.</param>
+        /// <returns></returns>
+        public Comment GetIssueComment(int? commentId){
+            return _repositoriesEndPointV1.GetIssueComment(_issueId, commentId);
+        }
+
+        /// <summary>
+        /// Post a comment to the issue.
         /// </summary>
         /// <param name="comment">The comment you wish to post.</param>
         /// <returns>Response from the BitBucket API.</returns>
         public Comment PostComment(Comment comment){
             return _repositoriesEndPointV1.PostIssueComment(_issueId, comment);
-        }
-
-        /// <summary>
-        /// Get a specific comment for the current issue.
-        /// </summary>
-        /// <param name="commentId">The Id of the comment you wish to get.</param>
-        /// <returns></returns>
-        public Comment GetIssueComment(int? commentId){
-            return _repositoriesEndPointV1.GetIssueComment(_issueId, commentId);
         }
 
         /// <summary>
@@ -50,18 +50,18 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Delete a specific comment from the current issue.
+        /// Update a specific comment of the issue.
         /// </summary>
-        /// <param name="comment">The comment that you wish to delete.</param>
+        /// <param name="comment">The comment.</param>
         /// <returns>Response from the BitBucket API.</returns>
         public Comment DeleteIssueComment(Comment comment){
             return _repositoriesEndPointV1.DeleteIssueComment(_issueId, comment);
         }
 
         /// <summary>
-        /// Delete a specific comment from the current issue.
+        /// Delete a specific comment of the issue.
         /// </summary>
-        /// <param name="commentId">The Id of the comment you wish to delete.</param>
+        /// <param name="commentId">The comment identifier.</param>
         /// <returns>Response from the BitBucket API.</returns>
         public Comment DeleteIssueComment(int? commentId){
             return _repositoriesEndPointV1.DeleteIssueComment(_issueId, commentId);
