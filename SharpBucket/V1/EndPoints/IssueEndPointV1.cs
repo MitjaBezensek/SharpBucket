@@ -3,7 +3,7 @@ using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.EndPoints{
     /// <summary>
-    /// A "Virtual" End Point that offers easier manipulation of specific issue.
+    /// A "Virtual" End Point that offers easier manipulation of a specific issue.
     /// </summary>
     public class IssueEndPointV1{
         private readonly RepositoriesEndPointV1 _repositoriesEndPointV1;
