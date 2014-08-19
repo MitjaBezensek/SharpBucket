@@ -11,11 +11,22 @@ namespace SharpBucket.V1.EndPoints{
             _baseUrl = "privileges/" + accountName + "/";
         }
 
+        /// <summary>
+        /// List the privileges for the specified repository.
+        /// </summary>
+        /// <param name="repository">The repository whose privileges you wish to get.</param>
+        /// <returns>A list of privileges for the specified repository.</returns>
         public List<RepositoryPrivileges> ListRepositoryPrivileges(string repository){
             string overrideUrl = _baseUrl + repository + "/";
             return _sharpBucketV1.Get(new List<RepositoryPrivileges>(), overrideUrl);
         }
 
+        /// <summary>
+        /// List the privileges for a specific account for a specific repository.
+        /// </summary>
+        /// <param name="repository">The repository whose privileges you wish to get.</param>
+        /// <param name="accountName">The account name whose privileges you wish to get.</param>
+        /// <returns></returns>
         public RepositoryPrivilegesUser GetPrivilegesForAccount(string repository, string accountName){
             string overrideUrl = _baseUrl + repository + "/" + accountName;
             return _sharpBucketV1.Get(new RepositoryPrivilegesUser(), overrideUrl);
