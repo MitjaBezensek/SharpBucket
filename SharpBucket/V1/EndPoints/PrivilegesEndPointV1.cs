@@ -2,6 +2,13 @@
 using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.EndPoints{
+    /// <summary>
+    /// Get the Privileges End Point.
+    /// The Privileges End Point is used for getting all the information about privileges:
+    /// user privileges, repository privileges,...
+    /// More info here:
+    /// https://confluence.atlassian.com/display/BITBUCKET/privileges+Endpoint
+    /// </summary>
     public class PrivilegesEndPointV1{
         private readonly string _baseUrl;
         private readonly SharpBucketV1 _sharpBucketV1;
