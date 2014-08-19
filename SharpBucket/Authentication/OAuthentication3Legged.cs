@@ -3,6 +3,9 @@ using RestSharp.Authenticators;
 using RestSharp.Contrib;
 
 namespace SharpBucket.Authentication{
+    /// <summary>
+    /// This class helps you authenticated with the BitBucket REST API via the 3 legged OAuth authentication.
+    /// </summary>
     public class OAuthentication3Legged : OauthAuthentication{
         private string OAuthToken;
         private string OauthTokenSecret;
@@ -29,6 +32,13 @@ namespace SharpBucket.Authentication{
             return base.GetResponse(url, method, body);
         }
 
+        /// <summary>
+        /// Start the OAuth authentication process.
+        /// The method returns the the URL where the user can authorize your application to act on his/her behalf.
+        /// More info:
+        /// https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket#OAuthonBitbucket-Step3.RedirecttheusertoBitbuckettoauthorizeyourapplication
+        /// </summary>
+        /// <returns></returns>
         public string StartAuthentication(){
             var restClient = new RestClient(_baseUrl){Authenticator = OAuth1Authenticator.ForRequestToken(ConsumerKey, ConsumerSecret, callback)};
             var request = new RestRequest(requestUrl, Method.POST);
@@ -42,6 +52,12 @@ namespace SharpBucket.Authentication{
             return restClient.BuildUri(request).ToString();
         }
 
+        /// <summary>
+        /// The method is used to obtain the credentials that let you access resources on BitBucket.
+        /// More info:
+        /// https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket#OAuthonBitbucket-Step4.RequestanAccessToken
+        /// </summary>
+        /// <param name="pin">The pin / verifier that was obtained in the previous step.</param>
         public void AuthenticateWithPin(string pin){
             var request = new RestRequest(accessUrl, Method.POST);
             var restClient = new RestClient(_baseUrl){
