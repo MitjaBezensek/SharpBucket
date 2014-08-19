@@ -53,7 +53,7 @@ namespace SharpBucket.V1.EndPoints{
         /// authorization is not required for public repositories with a public issue tracker. 
         /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate access.
         /// </summary>
-        /// <param name="issue">The issue whose followers you wish to get.</param>
+        /// <param name="issue">The issue.</param>
         /// <returns></returns>
         public IssueFollowers ListIssueFollowers(Issue issue){
             return _repositoriesEndPointV1.ListIssueFollowers(issue);
@@ -75,7 +75,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
         /// The authenticated user is used for the issue's reported_by field.
         /// </summary>
-        /// <param name="issue">The issue that you wish to post.</param>
+        /// <param name="issue">The issue.</param>
         /// <returns>Response from the BitBucket API.</returns>
         public Issue PostIssue(Issue issue){
             return _repositoriesEndPointV1.PostIssue(issue);
@@ -86,7 +86,7 @@ namespace SharpBucket.V1.EndPoints{
         /// For other fields, the caller must authenticate as a user with read access. 
         /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate access. 
         /// </summary>
-        /// <param name="issue">The issue that you wish to update.</param>
+        /// <param name="issue">The issue.</param>
         /// <returns>Response from the BitBucket API.</returns>
         public Issue PutIssue(Issue issue){
             return _repositoriesEndPointV1.PutIssue(issue);
@@ -95,7 +95,7 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// Delete an issue from the current repository.
         /// </summary>
-        /// <param name="issue">The issue that you wish to delete.</param>
+        /// <param name="issue">The issue.</param>
         /// <returns>Response from the BitBucket API.</returns>
         public Issue DeleteIssue(Issue issue){
             return _repositoriesEndPointV1.DeleteIssue(issue);
@@ -114,7 +114,7 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// List all the comments on the specified issue. 
         /// </summary>
-        /// <param name="issue">The issue whose comments you wish to get.</param>
+        /// <param name="issue">The issue.</param>
         /// <returns></returns>
         public List<Comment> ListIssueComments(Issue issue){
             return _repositoriesEndPointV1.ListIssueComments(issue);
@@ -132,8 +132,8 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// Get a specific comment of an issue.
         /// </summary>
-        /// <param name="issue">The issue whose comment you wish to get.</param>
-        /// <param name="commentId">The identifier of the comment you wish to get.</param>
+        /// <param name="issue">The issue.</param>
+        /// <param name="commentId">The comment identifier.</param>
         /// <returns></returns>
         public Comment GetIssueComment(Issue issue, int? commentId){
             return _repositoriesEndPointV1.GetIssueComment(issue, commentId);
@@ -142,8 +142,8 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// Get a specific comment of an issue.
         /// </summary>
-        /// <param name="issueId">The identifier of the issue whose comment you wish to get.</param>
-        /// <param name="commentId">The identifier of the comment you wish to get.</param>
+        /// <param name="issueId">The issue identifier.</param>
+        /// <param name="commentId">The comment identifier.</param>
         /// <returns></returns>
         public Comment GetIssueComment(int issueId, int? commentId){
             return _repositoriesEndPointV1.GetIssueComment(issueId, commentId);
@@ -152,8 +152,8 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// Post a comment to the selected issue.
         /// </summary>
-        /// <param name="issue">The issue to which you want to post a comment.</param>
-        /// <param name="comment">The comment you wish to post.</param>
+        /// <param name="issue">The issue.</param>
+        /// <param name="comment">The comment.</param>
         /// <returns>Response from the BitBucket API.</returns>
         public Comment PostIssueComment(Issue issue, Comment comment){
             return _repositoriesEndPointV1.PostIssueComment(issue, comment);
@@ -162,8 +162,8 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// Post a comment to the selected issue.
         /// </summary>
-        /// <param name="issueId">The identifier of the issue to which you wish to post a comment.</param>
-        /// <param name="comment">The comment you wish to post.</param>
+        /// <param name="issueId">The issue identifier.</param>
+        /// <param name="comment">The comment.</param>
         /// <returns>Response from the BitBucket API.</returns>
         public Comment PostIssueComment(int issueId, Comment comment){
             return _repositoriesEndPointV1.PostIssueComment(issueId, comment);
@@ -172,8 +172,8 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// Update a specific comment of an issue.
         /// </summary>
-        /// <param name="issue">The issue whose comment you wish to update.</param>
-        /// <param name="comment">The comment that you wish to update.</param>
+        /// <param name="issue">The issue.</param>
+        /// <param name="comment">The comment.</param>
         /// <returns>The response of BitBucket API.</returns>
         public Comment PutIssueComment(Issue issue, Comment comment){
             return _repositoriesEndPointV1.PutIssueComment(issue, comment);
@@ -182,8 +182,8 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// Update a specific comment of an issue.
         /// </summary>
-        /// <param name="issueId">The identifier of the issue whose comment you wish to update.</param>
-        /// <param name="comment">The comment that you wish to update.</param>
+        /// <param name="issueId">The issue identifier.</param>
+        /// <param name="comment">The comment.</param>
         /// <returns>The response of BitBucket API.</returns>
         public Comment PutIssueComment(int issueId, Comment comment){
             return _repositoriesEndPointV1.PutIssueComment(issueId, comment);
@@ -192,8 +192,8 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// Delete a specific comment of an issue.
         /// </summary>
-        /// <param name="issue">The issue whose comment you wish to delete.</param>
-        /// <param name="comment">The comment that you wish to delete.</param>
+        /// <param name="issue">The issue.</param>
+        /// <param name="comment">The comment.</param>
         /// <returns>The response of BitBucket API.</returns>
         public Comment DeleteIssueComment(Issue issue, Comment comment){
             return _repositoriesEndPointV1.DeleteIssueComment(issue, comment);
@@ -202,8 +202,8 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// Delete a specific comment of an issue.
         /// </summary>
-        /// <param name="issue">The issue whose comment you wish to delete.</param>
-        /// <param name="commentId">The identifier of the comment you wish to delete.</param>
+        /// <param name="issue">The issue.</param>
+        /// <param name="commentId">The comment identifier.</param>
         /// <returns>The response of BitBucket API.</returns>
         public Comment DeleteIssueComment(Issue issue, int? commentId){
             return _repositoriesEndPointV1.DeleteIssueComment(issue, commentId);
@@ -212,8 +212,8 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// Delete a specific comment of an issue.
         /// </summary>
-        /// <param name="issueId">The identifier of the issue whose comment you wish to delete.</param>
-        /// <param name="commentId">The identifier of the comment you wish to delete.</param>
+        /// <param name="issueId">The issue identifier.</param>
+        /// <param name="commentId">The comment identifier.</param>
         /// <returns>The response of BitBucket API.</returns>
         public Comment DeleteIssueComment(int? issueId, int? commentId){
             return _repositoriesEndPointV1.DeleteIssueComment(issueId, commentId);
@@ -222,8 +222,8 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// Delete a specific comment of an issue.
         /// </summary>
-        /// <param name="issueId">The identifier of the issue whose comment you wish to delete.</param>
-        /// <param name="comment">The comment that you wish to delete.</param>
+        /// <param name="issueId">The issue identifier.</param>
+        /// <param name="comment">The comment.</param>
         /// <returns>The response of BitBucket API.</returns>
         public Comment DeleteIssueComment(int? issueId, Comment comment){
             return _repositoriesEndPointV1.DeleteIssueComment(issueId, comment);
@@ -241,7 +241,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Gets an individual component in an issue tracker. 
         /// To get a component, private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
         /// </summary>
-        /// <param name="componentId">The Id of the component you wish to get.</param>
+        /// <param name="componentId">The component identifier.</param>
         /// <returns></returns>
         public Component GetComponent(int? componentId){
             return _repositoriesEndPointV1.GetComponent(componentId);
@@ -253,18 +253,18 @@ namespace SharpBucket.V1.EndPoints{
         /// The server creates the id for you and it appears in the return value. 
         /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation.
         /// </summary>
-        /// <param name="component"></param>
+        /// <param name="component">The component.</param>
         /// <returns>The response from the BitBucket API.</returns>
         public Component PostComponent(Component component){
             return _repositoriesEndPointV1.PostComponent(component);
         }
 
         /// <summary>
-        /// pdates an existing component in an issue tracker. 
+        /// Updates an existing component in an issue tracker. 
         /// You must supply a name value in the form of a string. 
         /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
         /// </summary>
-        /// <param name="component">The component that you wish to update.</param>
+        /// <param name="component">The component.</param>
         /// <returns>The response from the BitBucket API.</returns>
         public Component PutComponent(Component component){
             return _repositoriesEndPointV1.PutComponent(component);
@@ -274,7 +274,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Deletes a component in an issue tracker. Keep in mind that the component can be in use on existing issues. 
         /// To delete a component, public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
         /// </summary>
-        /// <param name="component">The component that you wish to delete.</param>
+        /// <param name="component">The component.</param>
         /// <returns>The response from the BitBucket API.</returns>
         public Component DeleteComponent(Component component){
             return _repositoriesEndPointV1.DeleteComponent(component);
@@ -284,7 +284,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Deletes a component in an issue tracker. Keep in mind that the component can be in use on existing issues. 
         /// To delete a component, public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
         /// </summary>
-        /// <param name="componentId">The Id of the component that you wish to delete.</param>
+        /// <param name="componentId">The component identifier.</param>
         /// <returns>The response from the BitBucket API.</returns>
         public Component DeleteComponent(int? componentId){
             return _repositoriesEndPointV1.DeleteComponent(componentId);
@@ -302,7 +302,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Gets an individual version in an issue tracker. 
         /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
         /// </summary>
-        /// <param name="versionId">The Id of the version you wish to get.</param>
+        /// <param name="versionId">The version identifier.</param>
         /// <returns></returns>
         public Version GetVersion(int? versionId){
             return _repositoriesEndPointV1.GetVersion(versionId);
@@ -313,7 +313,7 @@ namespace SharpBucket.V1.EndPoints{
         /// The server creates the id for you and it appears in the return value. 
         /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
         /// </summary>
-        /// <param name="version">The version you wish to add.</param>
+        /// <param name="version">The version.</param>
         /// <returns>The response from the BitBucket API.</returns>
         public Version PostVersion(Version version){
             return _repositoriesEndPointV1.PostVersion(version);
@@ -323,7 +323,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Updates an existing version in an issue tracker. You must supply a name value in the form of a string. 
         /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
         /// </summary>
-        /// <param name="version">The version you wish to update.</param>
+        /// <param name="version">The version.</param>
         /// <returns>The response from the BitBucket API.</returns>
         public Version PutVersion(Version version){
             return _repositoriesEndPointV1.PutVersion(version);
@@ -333,7 +333,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Deletes a version in an issue tracker. Keep in mind that the version can be in use on existing issues. 
         /// To delete a version, public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
         /// </summary>
-        /// <param name="version">The version that you wish to delete.</param>
+        /// <param name="version">The version.</param>
         /// <returns>The response from the BitBucket API.</returns>
         public Version DeleteVersion(Version version){
             return _repositoriesEndPointV1.DeleteVersion(version);
@@ -343,7 +343,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Deletes a version in an issue tracker. Keep in mind that the version can be in use on existing issues. 
         /// To delete a version, public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
         /// </summary>
-        /// <param name="versionId">The Id of the version that you wish to delete.</param>
+        /// <param name="versionId">The version identifier.</param>
         /// <returns>The response from the BitBucket API.</returns>
         public Version DeleteVersion(int? versionId){
             return _repositoriesEndPointV1.DeleteVersion(versionId);
@@ -361,7 +361,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Gets an individual milestone in an issue tracker. 
         /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation.
         /// </summary>
-        /// <param name="milestoneId">The Id of the milestone you wish to get.</param>
+        /// <param name="milestoneId">The milestone identifier.</param>
         /// <returns></returns>
         public Milestone GetMilestone(int? milestoneId){
             return _repositoriesEndPointV1.GetMilestone(milestoneId);
@@ -372,7 +372,7 @@ namespace SharpBucket.V1.EndPoints{
         /// The server creates the id for you and it appears in the return value. 
         /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
         /// </summary>
-        /// <param name="milestone">The milestone that you wish to add.</param>
+        /// <param name="milestone">The milestone.</param>
         /// <returns>The response from the BitBucket API.</returns>
         public Milestone PostMilestone(Milestone milestone){
             return _repositoriesEndPointV1.PostMilestone(milestone);
@@ -383,7 +383,7 @@ namespace SharpBucket.V1.EndPoints{
         /// You must supply a name value in the form of a string. 
         /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation.
         /// </summary>
-        /// <param name="milestone">The milestone you wish to update.</param>
+        /// <param name="milestone">The milestone.</param>
         /// <returns>The response from the BitBucket API.</returns>
         public Milestone PutMilestone(Milestone milestone){
             return _repositoriesEndPointV1.PutMilestone(milestone);
@@ -393,7 +393,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Deletes a milestone in an issue tracker. Keep in mind that the milestone can be in use on existing issues. 
         /// To delete a milestone, public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
         /// </summary>
-        /// <param name="milestone">The milestone that you wish to delete.</param>
+        /// <param name="milestone">The milestone .</param>
         /// <returns>The response from the BitBucket API.</returns>
         public Milestone DeleteMilestone(Milestone milestone){
             return _repositoriesEndPointV1.DeleteMilestone(milestone);
@@ -403,7 +403,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Deletes a milestone in an issue tracker. Keep in mind that the milestone can be in use on existing issues. 
         /// To delete a milestone, public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
         /// </summary>
-        /// <param name="milestoneId">The Id of the milestone that you wish to delete.</param>
+        /// <param name="milestoneId">The milestone identifier.</param>
         /// <returns>The response from the BitBucket API.</returns>
         public Milestone DeleteMilestone(int? milestoneId){
             return _repositoriesEndPointV1.DeleteMilestone(milestoneId);
