@@ -6,12 +6,14 @@ using SharpBucket.Authentication;
 namespace SharpBucket{
     /// <summary>
     /// A client for the BitBucket API. It supports V1 and V2 of the API.
+    /// More info:
+    /// https://confluence.atlassian.com/display/BITBUCKET/Use+the+Bitbucket+REST+APIs
     /// </summary>
     public class SharpBucket{
         private Authenticate authenticator;
         protected string _baseUrl;
 
-        /// <summary>
+        /// <summary>   
         /// Use basic authentication with the BitBucket API. OAuth authentication is preferred over
         /// basic authentication, due to security reasons.
         /// </summary>
@@ -25,6 +27,8 @@ namespace SharpBucket{
         /// Use 2 legged OAuth 1.0a authentication. This is similar to basic authentication, since
         /// it requires the same number of steps. It is still safer to use than basic authentication, 
         /// since you can revoke the API keys.
+        /// More info:
+        /// https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket
         /// </summary>
         /// <param name="consumerKey">Your consumer API key obtained from the BitBucket web page.</param>
         /// <param name="consumerSecretKey">Your consumer secret API key also obtained from the BitBucket web page.</param>
@@ -35,6 +39,8 @@ namespace SharpBucket{
         /// <summary>
         /// Use 3 legged OAuth 1.0a authentication. This is the most secure one, but for simple uses it might
         /// be a bit too complex.
+        /// More info:
+        /// https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket
         /// </summary>
         /// <param name="consumerKey">Your consumer API key obtained from the BitBucket web page.</param>
         /// <param name="consumerSecretKey">Your consumer secret API key also obtained from the BitBucket web page.</param>
