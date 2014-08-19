@@ -24,451 +24,13 @@ namespace SharpBucket.V1.EndPoints{
             _issuesIdUrl = _issuesUrl + "{0}/";
         }
 
-        /// <summary>
-        /// The issues resource provides functionality for getting information on issues in an issue tracker, 
-        /// creating new issues, updating them and deleting them. 
-        /// You can access public issues without authentication, but you will only receive a subset of information, 
-        /// and you can't gain access to private repositories' issues. By authenticating, you will get a more detailed set of information, 
-        /// the ability to create issues, as well as access to updating data or deleting issues you have access to.
-        /// </summary>
-        /// <returns></returns>
-        public IssuesEndPointV1 Issues(){
-            return new IssuesEndPointV1(this);
-        }
+        #region Repositories
 
-        /// <summary>
-        /// List the issues of the current repository.
-        /// </summary>
-        /// <returns></returns>
-        public IssuesInfo ListIssues(){
-            return _sharpBucketV1.Get(new IssuesInfo(), _issuesUrl);
-        }
-
-        /// <summary>
-        /// Add an issue to the current repository.
-        /// </summary>
-        /// <param name="issue">The issue that you wish to add.</param>
-        /// <returns></returns>
-        public Issue PostIssue(Issue issue){
-            return _sharpBucketV1.Post(issue, _issuesUrl);
-        }
-
-        /// <summary>
-        /// Get a specific issue of the repository.
-        /// </summary>
-        /// <param name="issue">The issue that you wish to get.</param>
-        /// <returns></returns>
-        public Issue GetIssue(Issue issue){
-            var overrideUrl = String.Format(_issuesIdUrl, issue.local_id);
-            return _sharpBucketV1.Get(issue, overrideUrl);
-        }
-
-        /// <summary>
-        /// Get a specific issue of the current repository.
-        /// </summary>
-        /// <param name="issueId">The Id of the issue you wish to get.</param>
-        /// <returns></returns>
-        public Issue GetIssue(int? issueId){
-            return GetIssue(new Issue{local_id = issueId});
-        }
-
-        /// <summary>
-        /// Update a specific issue of the current repository.
-        /// </summary>
-        /// <param name="issue">The issue that you wish to update.</param>
-        /// <returns>The response from the BitBucket API.</returns>
-        public Issue PutIssue(Issue issue){
-            var overrideUrl = String.Format(_issuesIdUrl, issue.local_id);
-            return _sharpBucketV1.Put(issue, overrideUrl);
-        }
-
-        /// <summary>
-        /// Delete a specific issue of the current repository.
-        /// </summary>
-        /// <param name="issue">The issue that you wish to delete.</param>
-        /// <returns>The response from the BitBucket API.</returns>
-        public Issue DeleteIssue(Issue issue){
-            var overrideUrl = String.Format(_issuesIdUrl, issue.local_id);
-            return _sharpBucketV1.Delete(issue, overrideUrl);
-        }
-
-        /// <summary>
-        /// Delete a specific issue of the current repository.
-        /// </summary>
-        /// <param name="issueId">The Id of the issue that you wish to delete.</param>
-        /// <returns></returns>
-        public Issue DeleteIssue(int? issueId){
-            return DeleteIssue(new Issue{local_id = issueId});
-        }
-
-        /// <summary>
-        /// List the followers of the selected issue of the current repository.
-        /// </summary>
-        /// <param name="issue">The issue whose followers you wish to get.</param>
-        /// <returns></returns>
-        public IssueFollowers ListIssueFollowers(Issue issue){
-            var overrideUrl = String.Format(_issuesIdUrl + "followers", issue.local_id);
-            return _sharpBucketV1.Get(new IssueFollowers(), overrideUrl);
-        }
-
-        /// <summary>
-        /// List the followers of the selected issue of the current repository.
-        /// </summary>
-        /// <param name="issueId">The Id of the issue whose followers you wish to get.</param>
-        /// <returns></returns>
-        public IssueFollowers ListIssueFollowers(int? issueId){
-            return ListIssueFollowers(new Issue{local_id = issueId});
-        }
-
-        /// <summary>
-        /// List the comments of the selected issue of the current repository.
-        /// </summary>
-        /// <param name="issue">The issue whose comments you wish to get.</param>
-        /// <returns></returns>
-        public List<Comment> ListIssueComments(Issue issue){
-            var overrideUrl = String.Format(_issuesIdUrl + "comments", issue.local_id);
-            return _sharpBucketV1.Get(new List<Comment>(), overrideUrl);
-        }
-
-        /// <summary>
-        /// List the comments of the selected issue of the current repository.
-        /// </summary>
-        /// <param name="issueId">The Id of the issue whose comments you wish to get.</param>
-        /// <returns></returns>
-        public List<Comment> ListIssueComments(int issueId){
-            return ListIssueComments(new Issue{local_id = issueId});
-        }
-
-        /// <summary>
-        /// Add a comment to the selected issue of the current repository.
-        /// </summary>
-        /// <param name="issue">The issue to which you wish to add the comment.</param>
-        /// <param name="comment">The comment that you wish to add.</param>
-        /// <returns></returns>
-        public Comment PostIssueComment(Issue issue, Comment comment){
-            var overrideUrl = String.Format(_issuesIdUrl + "comments", issue.local_id);
-            return _sharpBucketV1.Post(comment, overrideUrl);
-        }
-
-        /// <summary>
-        /// Add a comment to the selected issue of the current repository.
-        /// </summary>
-        /// <param name="issueId">The Id of the issue to which you wish to add the comment.</param>
-        /// <param name="comment">The comment that you wish to add.</param>
-        /// <returns></returns>
-        public Comment PostIssueComment(int issueId, Comment comment){
-            return PostIssueComment(new Issue{local_id = issueId}, comment);
-        }
-
-        /// <summary>
-        /// Get the comments of the selected issue of the current repository.
-        /// </summary>
-        /// <param name="issue">The issue whose comment you wish to get.</param>
-        /// <param name="commentId">The Id of the comment you wish to get.</param>
-        /// <returns></returns>
-        public Comment GetIssueComment(Issue issue, int? commentId){
-            var overrideUrl = String.Format(_issuesIdUrl + "comments/{1}", issue.local_id, commentId);
-            return _sharpBucketV1.Get(new Comment{comment_id = commentId}, overrideUrl);
-        }
-
-        /// <summary>
-        /// Get the comments of the selected issue of the current repository.
-        /// </summary>
-        /// <param name="issueId">The Id of the issue whose comment you wish to get.</param>
-        /// <param name="comment">The comment you wish to get.</param>
-        /// <returns></returns>
-        public Comment GetIssueComment(int issueId, Comment comment){
-            var overrideUrl = String.Format(_issuesIdUrl + "comments/{1}", issueId, comment.comment_id);
-            return _sharpBucketV1.Get(comment, overrideUrl);
-        }
-
-        /// <summary>
-        /// Get the comments of the selected issue of the current repository.
-        /// </summary>
-        /// <param name="issueId">The Id of the issue whose comment you wish to get.</param>
-        /// <param name="commentId">The Id of the comment you wish to get.</param>
-        /// <returns></returns>
-        public Comment GetIssueComment(int issueId, int? commentId){
-            return GetIssueComment(issueId, new Comment{comment_id = commentId});
-        }
-
-        /// <summary>
-        /// Update a comment of the selected issue of the current repository.
-        /// </summary>
-        /// <param name="issue">The issue whose comment you wish to update.</param>
-        /// <param name="comment">The comment that you wish to update.</param>
-        /// <returns></returns>
-        public Comment PutIssueComment(Issue issue, Comment comment){
-            var overrideUrl = String.Format(_issuesIdUrl + "comments/{1}", issue.local_id, comment.comment_id);
-            return _sharpBucketV1.Put(comment, overrideUrl);
-        }
-
-        /// <summary>
-        /// Update a comment of the selected issue of the current repository.
-        /// </summary>
-        /// <param name="issueId">The Id of the issue whose comment you wish to update.</param>
-        /// <param name="comment">The comment that you wish to update.</param>
-        /// <returns></returns>
-        public Comment PutIssueComment(int issueId, Comment comment){
-            var overrideUrl = String.Format(_issuesIdUrl + "comments/{1}", issueId, comment.comment_id);
-            return _sharpBucketV1.Put(comment, overrideUrl);
-        }
-
-        /// <summary>
-        /// Delete a comment of the selected issue of the current repository.
-        /// </summary>
-        /// <param name="issue">The issue whose comment you wish to delete.</param>
-        /// <param name="comment">The comment that you wish to delte.</param>
-        /// <returns></returns>
-        public Comment DeleteIssueComment(Issue issue, Comment comment){
-            var overrideUrl = String.Format(_issuesIdUrl + "comments/{1}", issue.local_id, comment.comment_id);
-            return _sharpBucketV1.Delete(comment, overrideUrl);
-        }
-
-        /// <summary>
-        /// Delete a comment of the selected issue of the current repository.
-        /// </summary>
-        /// <param name="issue">The issue whose comment you wish to delete.</param>
-        /// <param name="commentId">The Id of the comment that you wish to delte.</param>
-        /// <returns></returns>
-        public Comment DeleteIssueComment(Issue issue, int? commentId){
-            return DeleteIssueComment(issue, new Comment{comment_id = commentId});
-        }
-
-        /// <summary>
-        /// Delete a comment of the selected issue of the current repository.
-        /// </summary>
-        /// <param name="issueId">The Id of the issue whose comment you wish to delete.</param>
-        /// <param name="comment">The comment that you wish to delte.</param>
-        /// <returns></returns>
-        public Comment DeleteIssueComment(int? issueId, Comment comment){
-            return DeleteIssueComment(new Issue{local_id = issueId}, comment);
-        }
-
-        /// <summary>
-        /// Delete a comment of the selected issue of the current repository.
-        /// </summary>
-        /// <param name="issueId">The Id of the issue whose comment you wish to delete.</param>
-        /// <param name="commentId">The Id of the comment that you wish to delte.</param>
-        /// <returns></returns>
-        public Comment DeleteIssueComment(int? issueId, int? commentId){
-            return DeleteIssueComment(issueId, new Comment{comment_id = commentId});
-        }
-
-        /// <summary>
-        /// List he components of the current repository.
-        /// </summary>
-        /// <returns></returns>
-        public List<Component> ListComponents(){
-            var overrideUrl = _issuesUrl + "components/";
-            return _sharpBucketV1.Get(new List<Component>(), overrideUrl);
-        }
-
-        /// <summary>
-        /// Add a component to the current repository.
-        /// </summary>
-        /// <param name="component">The component that you wish to add.</param>
-        /// <returns></returns>
-        public Component PostComponent(Component component){
-            var overrideUrl = _issuesUrl + "components/";
-            return _sharpBucketV1.Post(component, overrideUrl);
-        }
-
-        /// <summary>
-        /// Get a specific component of the current repository.
-        /// </summary>
-        /// <param name="component">The component that you wish to get.</param>
-        /// <returns></returns>
-        public Component GetComponent(Component component){
-            var overrideUrl = _issuesUrl + "components/" + component.id;
-            return _sharpBucketV1.Get(component, overrideUrl);
-        }
-
-        /// <summary>
-        /// Get a specific component of the current repository.
-        /// </summary>
-        /// <param name="componentId">The Id of the component that you wish to get.</param>
-        /// <returns></returns>
-        public Component GetComponent(int? componentId){
-            return GetComponent(new Component{id = componentId});
-        }
-
-        /// <summary>
-        /// Update a specific component of the current repository.
-        /// </summary>
-        /// <param name="component"></param>
-        /// <returns></returns>
-        public Component PutComponent(Component component){
-            var overrideUrl = _issuesUrl + "components/" + component.id;
-            return _sharpBucketV1.Put(component, overrideUrl);
-        }
-
-        /// <summary>
-        /// Delete a specific component of the current repository.
-        /// </summary>
-        /// <param name="component">The component that you wish to delete.</param>
-        /// <returns></returns>
-        public Component DeleteComponent(Component component){
-            var overrideUrl = _issuesUrl + "components/" + component.id;
-            return _sharpBucketV1.Delete(component, overrideUrl);
-        }
-
-        /// <summary>
-        /// Delete a specific component of the current repository.
-        /// </summary>
-        /// <param name="componentId">The Id of the component that you wish to delete.</param>
-        /// <returns></returns>
-        public Component DeleteComponent(int? componentId){
-            return DeleteComponent(new Component{id = componentId});
-        }
-
-        /// <summary>
-        /// List the milestones of the current repository.
-        /// </summary>
-        /// <returns></returns>
-        public List<Milestone> ListMilestones(){
-            var overrideUrl = _issuesUrl + "milestones/";
-            return _sharpBucketV1.Get(new List<Milestone>(), overrideUrl);
-        }
-
-        /// <summary>
-        /// Add a new milestone to the current repository.
-        /// </summary>
-        /// <param name="milestone">The milestone that you wish to add.</param>
-        /// <returns></returns>
-        public Milestone PostMilestone(Milestone milestone){
-            var overrideUrl = _issuesUrl + "milestones/";
-            return _sharpBucketV1.Post(milestone, overrideUrl);
-        }
-
-        /// <summary>
-        /// Get a specific milestone of the current repository.
-        /// </summary>
-        /// <param name="milestone"></param>
-        /// <returns></returns>
-        public Milestone GetMilestone(Milestone milestone){
-            var overrideUrl = _issuesUrl + "milestones/" + milestone.id;
-            return _sharpBucketV1.Get(milestone, overrideUrl);
-        }
-
-        /// <summary>
-        /// Get a specific milestone of the current repository.
-        /// </summary>
-        /// <param name="milestoneId">The Id of the milestone you wish to get.</param>
-        /// <returns></returns>
-        public Milestone GetMilestone(int? milestoneId){
-            return GetMilestone(new Milestone{id = milestoneId});
-        }
-
-        /// <summary>
-        /// Delete a specific milestone of the current repository.
-        /// </summary>
-        /// <param name="milestone">The milestone that you wish to delete.</param>
-        /// <returns>The response from the BitBucket API.</returns>
-        public Milestone DeleteMilestone(Milestone milestone){
-            var overrideUrl = _issuesUrl + "milestones/" + milestone.id;
-            return _sharpBucketV1.Delete(milestone, overrideUrl);
-        }
-
-        /// <summary>
-        /// Delete a specific milestone of the current repository.
-        /// </summary>
-        /// <param name="milestoneId">The Id of the milestone that you wish to delete.</param>
-        /// <returns>The response from the BitBucket API.</returns>
-        public Milestone DeleteMilestone(int? milestoneId){
-            return DeleteMilestone(new Milestone{id = milestoneId});
-        }
-
-        /// <summary>
-        /// Update a specific milestone of the current repository.
-        /// </summary>
-        /// <param name="milestone">The milestone you wish to update.</param>
-        /// <returns>The response from the BitBucket API.</returns>
-        public Milestone PutMilestone(Milestone milestone){
-            var overrideUrl = _issuesUrl + "milestones/" + milestone.id;
-            return _sharpBucketV1.Put(milestone, overrideUrl);
-        }
-
-        /// <summary>
-        /// List all the versions for the current repository.
-        /// </summary>
-        /// <returns></returns>
-        public List<Version> ListVersions(){
-            var overrideUrl = _issuesUrl + "versions/";
-            return _sharpBucketV1.Get(new List<Version>(), overrideUrl);
-        }
-
-        /// <summary>
-        /// Add a new version to the current repository.
-        /// </summary>
-        /// <param name="version">The version you wish to add.</param>
-        /// <returns>The response from the BitBucket API.</returns>
-        public Version PostVersion(Version version){
-            var overrideUrl = _issuesUrl + "versions/";
-            return _sharpBucketV1.Post(version, overrideUrl);
-        }
-
-        /// <summary>
-        /// Get a specific version of the current repository.
-        /// </summary>
-        /// <param name="versionId">The Id of the version you wish to get.</param>
-        /// <returns></returns>
-        public Version GetVersion(Version version){
-            var overrideUrl = _issuesUrl + "versions/" + version.id;
-            return _sharpBucketV1.Get(version, overrideUrl);
-        }
-
-        /// <summary>
-        /// Get a specific version of the current repository.
-        /// </summary>
-        /// <param name="versionId">The Id of the version you wish to get.</param>
-        /// <returns></returns>
-        public Version GetVersion(int? versionId){
-            return GetVersion(new Version{id = versionId});
-        }
-
-        /// <summary>
-        /// Update a specific version.
-        /// </summary>
-        /// <param name="version">The version you wish to update.</param>
-        /// <returns>The response from the BitBucket API.</returns>
-        public Version PutVersion(Version version){
-            var overrideUrl = _issuesUrl + "versions/" + version.id;
-            return _sharpBucketV1.Put(version, overrideUrl);
-        }
-
-        /// <summary>
-        /// Delete a specific version.
-        /// </summary>
-        /// <param name="version">The version that you wish to delete.</param>
-        /// <returns>The response from the BitBucket API.</returns>
-        public Version DeleteVersion(Version version){
-            var overrideUrl = _issuesUrl + "versions/" + version.id;
-            return _sharpBucketV1.Delete(version, overrideUrl);
-        }
-
-        /// <summary>
-        /// Delete a specific version.
-        /// </summary>
-        /// <param name="version">The version that you wish to delete.</param>
-        /// <returns>The response from the BitBucket API.</returns>
-        public Version DeleteVersion(int? versionId){
-            return DeleteVersion(new Version{id = versionId});
-        }
-
-        /// <summary>
-        /// List all the tags of the current repository.
-        /// </summary>
-        /// <returns></returns>
         public IDictionary<string, Tag> ListTags(){
             var overrideUrl = _baserUrl + "tags/";
             return _sharpBucketV1.Get(new Dictionary<string, Tag>(), overrideUrl);
         }
 
-        /// <summary>
-        /// List all the branches of the current repository.
-        /// </summary>
-        /// <returns></returns>
         public Dictionary<string, BranchInfo> ListBranches(){
             var overrideUrl = _baserUrl + "branches/";
             return _sharpBucketV1.Get(new Dictionary<string, BranchInfo>(), overrideUrl);
@@ -678,5 +240,221 @@ namespace SharpBucket.V1.EndPoints{
             var overrideUrl = _baserUrl + "deploy-keys/" + key.pk + "/";
             return _sharpBucketV1.Delete(key, overrideUrl);
         }
+
+        #endregion
+
+        #region Issues
+
+        /// <summary>
+        /// The issues resource provides functionality for getting information on issues in an issue tracker, 
+        /// creating new issues, updating them and deleting them. 
+        /// You can access public issues without authentication, but you will only receive a subset of information, 
+        /// and you can't gain access to private repositories' issues. By authenticating, you will get a more detailed set of information, 
+        /// the ability to create issues, as well as access to updating data or deleting issues you have access to.
+        /// </summary>
+        /// <returns></returns>
+        public IssuesResourceV1 Issues(){
+            return new IssuesResourceV1(this);
+        }
+
+        internal IssuesInfo ListIssues(){
+            return _sharpBucketV1.Get(new IssuesInfo(), _issuesUrl);
+        }
+
+        private Issue GetIssue(Issue issue){
+            var overrideUrl = String.Format(_issuesIdUrl, issue.local_id);
+            return _sharpBucketV1.Get(issue, overrideUrl);
+        }
+
+        internal Issue GetIssue(int? issueId){
+            return GetIssue(new Issue{local_id = issueId});
+        }
+
+        internal IssueFollowers ListIssueFollowers(Issue issue){
+            var overrideUrl = String.Format(_issuesIdUrl + "followers", issue.local_id);
+            return _sharpBucketV1.Get(new IssueFollowers(), overrideUrl);
+        }
+
+        internal IssueFollowers ListIssueFollowers(int? issueId){
+            return ListIssueFollowers(new Issue{local_id = issueId});
+        }
+
+        internal Issue PostIssue(Issue issue){
+            return _sharpBucketV1.Post(issue, _issuesUrl);
+        }
+
+        internal Issue PutIssue(Issue issue){
+            var overrideUrl = String.Format(_issuesIdUrl, issue.local_id);
+            return _sharpBucketV1.Put(issue, overrideUrl);
+        }
+
+        internal Issue DeleteIssue(Issue issue){
+            var overrideUrl = String.Format(_issuesIdUrl, issue.local_id);
+            return _sharpBucketV1.Delete(issue, overrideUrl);
+        }
+
+        internal Issue DeleteIssue(int? issueId){
+            return DeleteIssue(new Issue{local_id = issueId});
+        }
+
+        internal List<Comment> ListIssueComments(Issue issue){
+            var overrideUrl = String.Format(_issuesIdUrl + "comments", issue.local_id);
+            return _sharpBucketV1.Get(new List<Comment>(), overrideUrl);
+        }
+
+        internal List<Comment> ListIssueComments(int issueId){
+            return ListIssueComments(new Issue{local_id = issueId});
+        }
+
+        private Comment GetIssueComment(int issueId, Comment comment){
+            var overrideUrl = String.Format(_issuesIdUrl + "comments/{1}", issueId, comment.comment_id);
+            return _sharpBucketV1.Get(comment, overrideUrl);
+        }
+
+        internal Comment GetIssueComment(Issue issue, int? commentId){
+            var overrideUrl = String.Format(_issuesIdUrl + "comments/{1}", issue.local_id, commentId);
+            return _sharpBucketV1.Get(new Comment{comment_id = commentId}, overrideUrl);
+        }
+
+        internal Comment GetIssueComment(int issueId, int? commentId){
+            return GetIssueComment(issueId, new Comment{comment_id = commentId});
+        }
+
+        internal Comment PostIssueComment(Issue issue, Comment comment){
+            var overrideUrl = String.Format(_issuesIdUrl + "comments", issue.local_id);
+            return _sharpBucketV1.Post(comment, overrideUrl);
+        }
+
+        internal Comment PostIssueComment(int issueId, Comment comment){
+            return PostIssueComment(new Issue{local_id = issueId}, comment);
+        }
+
+        internal Comment PutIssueComment(Issue issue, Comment comment){
+            var overrideUrl = String.Format(_issuesIdUrl + "comments/{1}", issue.local_id, comment.comment_id);
+            return _sharpBucketV1.Put(comment, overrideUrl);
+        }
+
+        internal Comment PutIssueComment(int issueId, Comment comment){
+            var overrideUrl = String.Format(_issuesIdUrl + "comments/{1}", issueId, comment.comment_id);
+            return _sharpBucketV1.Put(comment, overrideUrl);
+        }
+
+        internal Comment DeleteIssueComment(Issue issue, Comment comment){
+            var overrideUrl = String.Format(_issuesIdUrl + "comments/{1}", issue.local_id, comment.comment_id);
+            return _sharpBucketV1.Delete(comment, overrideUrl);
+        }
+
+        internal Comment DeleteIssueComment(Issue issue, int? commentId){
+            return DeleteIssueComment(issue, new Comment{comment_id = commentId});
+        }
+
+        internal Comment DeleteIssueComment(int? issueId, Comment comment){
+            return DeleteIssueComment(new Issue{local_id = issueId}, comment);
+        }
+
+        internal Comment DeleteIssueComment(int? issueId, int? commentId){
+            return DeleteIssueComment(issueId, new Comment{comment_id = commentId});
+        }
+
+        internal List<Component> ListComponents(){
+            var overrideUrl = _issuesUrl + "components/";
+            return _sharpBucketV1.Get(new List<Component>(), overrideUrl);
+        }
+
+        private Component GetComponent(Component component){
+            var overrideUrl = _issuesUrl + "components/" + component.id;
+            return _sharpBucketV1.Get(component, overrideUrl);
+        }
+
+        internal Component GetComponent(int? componentId){
+            return GetComponent(new Component{id = componentId});
+        }
+
+        internal Component PostComponent(Component component){
+            var overrideUrl = _issuesUrl + "components/";
+            return _sharpBucketV1.Post(component, overrideUrl);
+        }
+
+        internal Component PutComponent(Component component){
+            var overrideUrl = _issuesUrl + "components/" + component.id;
+            return _sharpBucketV1.Put(component, overrideUrl);
+        }
+
+        internal Component DeleteComponent(Component component){
+            var overrideUrl = _issuesUrl + "components/" + component.id;
+            return _sharpBucketV1.Delete(component, overrideUrl);
+        }
+
+        internal Component DeleteComponent(int? componentId){
+            return DeleteComponent(new Component{id = componentId});
+        }
+
+        internal List<Version> ListVersions(){
+            var overrideUrl = _issuesUrl + "versions/";
+            return _sharpBucketV1.Get(new List<Version>(), overrideUrl);
+        }
+
+        private Version GetVersion(Version version){
+            var overrideUrl = _issuesUrl + "versions/" + version.id;
+            return _sharpBucketV1.Get(version, overrideUrl);
+        }
+
+        internal Version GetVersion(int? versionId){
+            return GetVersion(new Version{id = versionId});
+        }
+
+        internal Version PostVersion(Version version){
+            var overrideUrl = _issuesUrl + "versions/";
+            return _sharpBucketV1.Post(version, overrideUrl);
+        }
+
+        internal Version PutVersion(Version version){
+            var overrideUrl = _issuesUrl + "versions/" + version.id;
+            return _sharpBucketV1.Put(version, overrideUrl);
+        }
+
+        internal Version DeleteVersion(Version version){
+            var overrideUrl = _issuesUrl + "versions/" + version.id;
+            return _sharpBucketV1.Delete(version, overrideUrl);
+        }
+
+        internal Version DeleteVersion(int? versionId){
+            return DeleteVersion(new Version{id = versionId});
+        }
+
+        internal List<Milestone> ListMilestones(){
+            var overrideUrl = _issuesUrl + "milestones/";
+            return _sharpBucketV1.Get(new List<Milestone>(), overrideUrl);
+        }
+
+        private Milestone GetMilestone(Milestone milestone){
+            var overrideUrl = _issuesUrl + "milestones/" + milestone.id;
+            return _sharpBucketV1.Get(milestone, overrideUrl);
+        }
+
+        internal Milestone GetMilestone(int? milestoneId){
+            return GetMilestone(new Milestone{id = milestoneId});
+        }
+
+        internal Milestone PostMilestone(Milestone milestone){
+            var overrideUrl = _issuesUrl + "milestones/";
+            return _sharpBucketV1.Post(milestone, overrideUrl);
+        }
+
+        internal Milestone PutMilestone(Milestone milestone){
+            var overrideUrl = _issuesUrl + "milestones/" + milestone.id;
+            return _sharpBucketV1.Put(milestone, overrideUrl);
+        }
+
+        internal Milestone DeleteMilestone(Milestone milestone){
+            var overrideUrl = _issuesUrl + "milestones/" + milestone.id;
+            return _sharpBucketV1.Delete(milestone, overrideUrl);
+        }
+
+        internal Milestone DeleteMilestone(int? milestoneId){
+            return DeleteMilestone(new Milestone{id = milestoneId});
+        }
+
+        #endregion
     }
 }
