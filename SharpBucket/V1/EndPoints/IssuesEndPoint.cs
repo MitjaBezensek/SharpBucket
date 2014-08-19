@@ -2,12 +2,16 @@
 using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.EndPoints{
+    /// <summary>
+    /// A "Virtual" End Point that offers easier manipulation of issues of a repository.
+    /// </summary>
     public class IssuesEndPoint{
         private readonly RepositoriesEndPointV1 _repositoriesEndPointV1;
 
         /// <summary>
-        /// Use this method to access the end point of a specific issue.
-        /// It offers a more succinct access to specific, issue only related, api calls.
+        /// Get Issue End Point.
+        /// BitBucket does not have this End Point to this is a "Virtual" end point
+        /// which offers easier access to issue specific information.
         /// </summary>
         /// <param name="issueId">The Id of the issue that you wish to get.</param>
         /// <returns>And end point to the issue you requested.</returns>
