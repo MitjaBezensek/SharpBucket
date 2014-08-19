@@ -11,7 +11,7 @@ namespace SharpBucket.V1.EndPoints{
         /// <summary>
         /// Get the Issue End Point.
         /// BitBucket does not have this End Point so this is a "Virtual" end point
-        /// which offers easier access to issue specific information.
+        /// which offers easier access manipulation of the specified issue.
         /// </summary>
         /// <param name="issueId">The Id of the issue whose End Point you wish to get.</param>
         /// <returns></returns>
@@ -283,7 +283,7 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Get a specific milestone of the current repositotry.
+        /// Get a specific milestone of the current repository.
         /// </summary>
         /// <param name="milestoneId">The Id of the milestone you wish to get.</param>
         /// <returns></returns>

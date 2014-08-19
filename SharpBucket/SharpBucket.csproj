@@ -48,7 +48,7 @@
     <Compile Include="Authentication\OAuthentication3Legged.cs" />
     <Compile Include="Authentication\RequestExecutor.cs" />
     <Compile Include="Authentication\LowerCaseSerializer.cs" />
-    <Compile Include="V1\EndPoints\IssueEndPoint.cs" />
+    <Compile Include="V1\EndPoints\IssueEndPointV1.cs" />
     <Compile Include="V1\EndPoints\PrivilegesEndPointV1.cs" />
     <Compile Include="V1\Pocos\Followers.cs" />
     <Compile Include="V1\Pocos\Link.cs" />
@@ -96,7 +96,7 @@
     <Compile Include="SharpBucket.cs" />
     <Compile Include="V2\EndPoints\TeamsEndPointV2.cs" />
     <Compile Include="V2\EndPoints\UsersEndpointV2.cs" />
-    <Compile Include="V1\EndPoints\IssuesEndPoint.cs" />
+    <Compile Include="V1\EndPoints\IssuesEndPointV1.cs" />
     <Compile Include="V1\EndPoints\RepositoriesEndPointV1.cs" />
     <Compile Include="V1\EndPoints\UserEndPointV1.cs" />
     <Compile Include="V1\EndPoints\UsersEndpointV1.cs" />
