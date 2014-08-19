@@ -52,7 +52,7 @@ namespace SharpBucket.V1.EndPoints{
         /// Any user with admin access to the account can invite someone to a group. 
         /// This call requires authorization and the caller must have administrative rights on the account.
         /// </summary>
-        /// <param name="email">The email address to get invitations for.</param>
+        /// <param name="email">The email.</param>
         /// <returns></returns>
         public object GetInvitationsFor(string email){
             var overrideUrl = _baseUrl + "invitations/" + email;

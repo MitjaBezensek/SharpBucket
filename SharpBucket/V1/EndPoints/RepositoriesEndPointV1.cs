@@ -24,62 +24,14 @@ namespace SharpBucket.V1.EndPoints{
             _issuesIdUrl = _issuesUrl + "{0}/";
         }
 
-        #region Repositories
+        #region Repositories End Point
 
-        public IDictionary<string, Tag> ListTags(){
-            var overrideUrl = _baserUrl + "tags/";
-            return _sharpBucketV1.Get(new Dictionary<string, Tag>(), overrideUrl);
-        }
-
-        public Dictionary<string, BranchInfo> ListBranches(){
-            var overrideUrl = _baserUrl + "branches/";
-            return _sharpBucketV1.Get(new Dictionary<string, BranchInfo>(), overrideUrl);
-        }
+        #region Change Set Resource
 
         /// <summary>
-        /// Get the main branch of the current repository.
-        /// </summary>
-        /// <returns></returns>
-        public MainBranch GetMainBranch(){
-            var overrideUrl = _baserUrl + "main-branch/";
-            return _sharpBucketV1.Get(new MainBranch(), overrideUrl);
-        }
-
-        /// <summary>
-        /// Get a specific wiki page.
-        /// </summary>
-        /// <param name="page">The page that you wish to get.</param>
-        /// <returns></returns>
-        public Wiki GetWiki(string page){
-            var overrideUrl = _baserUrl + "wiki/" + page;
-            return _sharpBucketV1.Get(new Wiki(), overrideUrl);
-        }
-
-        // TODO:  Doesnt work, 500 server error, same for put
-        /// <summary>
-        /// Add a new wiki page.
-        /// </summary>
-        /// <param name="newPage">The page that you wish to add.</param>
-        /// <param name="location">The location of the page.</param>
-        /// <returns></returns>
-        public Wiki PostWiki(Wiki newPage, string location){
-            var overrideUrl = _baserUrl + "wiki/" + location;
-            return _sharpBucketV1.Post(newPage, overrideUrl);
-        }
-
-        /// <summary>
-        /// Update a specific wiki page.
-        /// </summary>
-        /// <param name="updatedPage">The updated page.</param>
-        /// <param name="location">The location of the updated page.</param>
-        /// <returns></returns>
-        public Wiki PutWiki(Wiki updatedPage, string location){
-            var overrideUrl = _baserUrl + "wiki/" + location;
-            return _sharpBucketV1.Put(updatedPage, overrideUrl);
-        }
-
-        /// <summary>
-        /// List of all of the change sets for the current repository.
+        /// Gets a list of change sets associated with a repository. By default, this call returns the 15 most recent changesets. 
+        /// It also returns the count which is the total number of changesets on the repository. 
+        /// Private repositories require the caller to authenticate. 
         /// </summary>
         /// <returns></returns>
         public ChangesetInfo ListChangeset(){
@@ -88,122 +40,72 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Get a specific change set for the current repository.
+        /// Gets a specific changeset node. Private repositories require the caller to authenticate. 
         /// </summary>
-        /// <param name="changeset">The change set that you wish to get</param>
+        /// <param name="changeset">The change set.</param>
         /// <returns></returns>
-        public Changeset GetChangeset(Changeset changeset){
+        private Changeset GetChangeset(Changeset changeset){
             var overrideUrl = _baserUrl + "changesets/" + changeset.node;
             return _sharpBucketV1.Get(changeset, overrideUrl);
         }
 
         /// <summary>
-        /// Get a specific change set for the current repository.
+        /// Gets a specific changeset  node. Private repositories require the caller to authenticate. 
         /// </summary>
-        /// <param name="node">The hash of the change set you wish to get.</param>
+        /// <param name="node">The node changeset identifier.</param>
         /// <returns></returns>
         public Changeset GetChangeset(string node){
             return GetChangeset(new Changeset{node = node});
         }
 
         /// <summary>
-        /// Get the diff stat of a specific change set.
+        /// List containing statistics on changed file associated with a particular node in a change set. 
+        /// Private repositories require the caller to authenticate. 
         /// </summary>
         /// <param name="changeset">The change set whose diff stat you wish to get.</param>
         /// <returns></returns>
-        public List<DiffstatInfo> GetChangesetDiffstat(Changeset changeset){
+        private List<DiffstatInfo> GetChangesetDiffstat(Changeset changeset){
             var overrideUrl = _baserUrl + "changesets/" + changeset.node + "/diffstat/";
             return _sharpBucketV1.Get(new List<DiffstatInfo>(), overrideUrl);
         }
 
         /// <summary>
-        /// Get the diff stat of a specific change set.
+        /// List containing statistics on changed file associated with a particular node in a change set. 
+        /// Private repositories require the caller to authenticate. 
         /// </summary>
-        /// <param name="changeset">The hash of the change set whose diff stat you wish to get.</param>
+        /// <param name="node">The node changeset identifier.</param>
         /// <returns></returns>
         public List<DiffstatInfo> GetChangesetDiffstat(string node){
             return GetChangesetDiffstat(new Changeset{node = node});
         }
 
         /// <summary>
-        /// Get the diff of a specific change set.
+        /// Gets the actual diff associated with the changeset node. 
+        /// This call returns the output as a string containing JSON. Private repositories require the caller to authenticate.
         /// </summary>
-        /// <param name="changeset">The change set whose diff you wish to get.</param>
+        /// <param name="changeset">The changeset.</param>
         /// <returns></returns>
-        public Changeset GetChangesetDiff(Changeset changeset){
+        private Changeset GetChangesetDiff(Changeset changeset){
             var overrideUrl = _baserUrl + "changesets/" + changeset.node + "/diff/";
             return _sharpBucketV1.Get(changeset, overrideUrl);
         }
 
         /// <summary>
-        /// Get the diff of a specific change set.
+        /// Gets the actual diff associated with the changeset node. 
+        /// This call returns the output as a string containing JSON. Private repositories require the caller to authenticate.
         /// </summary>
-        /// <param name="node">The hash of the change set whose diff you wish to get.</param>
+        /// <param name="node">The node changeset identifier.</param>
         /// <returns></returns>
         public Changeset GetChangesetDiff(string node){
             return GetChangesetDiff(new Changeset{node = node});
         }
 
-        /// <summary>
-        /// List of all the events for the current repository.
-        /// </summary>
-        /// <returns></returns>
-        public EventInfo ListEvents(){
-            var overrideUrl = _baserUrl + "events/";
-            return _sharpBucketV1.Get(new EventInfo(), overrideUrl);
-        }
+        #endregion
+
+        #region Deploy keys Resource
 
         /// <summary>
-        /// List of all the Links for the current repository.
-        /// </summary>
-        /// <returns></returns>
-        public List<Link> ListLinks(){
-            var overrideUrl = _baserUrl + "links/";
-            return _sharpBucketV1.Get(new List<Link>(), overrideUrl);
-        }
-
-        /// <summary>
-        /// Get the information for a specific link of the current repository.
-        /// </summary>
-        /// <param name="link">The link whose information you wish to get.</param>
-        /// <returns></returns>
-        public Link PostLink(Link link){
-            var overrideUrl = _baserUrl + "links/";
-            return _sharpBucketV1.Post(link, overrideUrl);
-        }
-
-        /// <summary>
-        /// Get the information for a specific link of the current repository.
-        /// </summary>
-        /// <param name="linkId">The Id of the link whose information you wish to get.</param>
-        /// <returns></returns>
-        public Link GetLink(int? linkId){
-            var overrideUrl = _baserUrl + "links/" + linkId + "/";
-            return _sharpBucketV1.Get(new Link(), overrideUrl);
-        }
-
-        /// <summary>
-        /// Update a link of the current repository.
-        /// </summary>
-        /// <param name="link">The link that you wish to update.</param>
-        /// <returns></returns>
-        public Link PutLink(Link link){
-            var overrideUrl = _baserUrl + "links/" + link.id + "/";
-            return _sharpBucketV1.Put(link, overrideUrl);
-        }
-
-        /// <summary>
-        /// Delete a link of the current repository.
-        /// </summary>
-        /// <param name="link">The link that you wish to delete.</param>
-        /// <returns></returns>
-        public Link DeleteLink(Link link){
-            var overrideUrl = _baserUrl + "links/" + link.id + "/";
-            return _sharpBucketV1.Delete(link, overrideUrl);
-        }
-
-        /// <summary>
-        /// List all the deploy keys for the current repository.
+        /// List all of the keys associated with an repository.
         /// </summary>
         /// <returns></returns>
         public List<SSH> ListDeployKeys(){
@@ -212,19 +114,9 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Add a deploy key to the current repository.
+        /// Gets the content of the specified key_id. This call requires authentication. 
         /// </summary>
-        /// <param name="key">The key that you wish to add.</param>
-        /// <returns></returns>
-        public SSH PostDeployKey(SSH key){
-            var overrideUrl = _baserUrl + "deploy-keys/";
-            return _sharpBucketV1.Post(key, overrideUrl);
-        }
-
-        /// <summary>
-        /// Get a specific key of the current repository.
-        /// </summary>
-        /// <param name="pk">The identifier of the deploy key that you wish to get.</param>
+        /// <param name="pk">The key identifier assigned by Bitbucket. Use the GET call to obtain this value.</param>
         /// <returns></returns>
         public SSH GetDeployKey(int? pk){
             var overrideUrl = _baserUrl + "deploy-keys/" + pk + "/";
@@ -232,9 +124,21 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Delete a specific deploy key of the current repository.
+        /// Creates a key on the specified account. You must supply a valid key that is unique across the Bitbucket service. 
+        /// A public key contains characters need to be escaped before sending it as a POST data. So, use the proper escaping ( urlencode ), 
+        /// if you are testing to add a key via your terminal. This call requires authentication. 
         /// </summary>
-        /// <param name="key">The key that you wish to delete</param>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
+        public SSH PostDeployKey(SSH key){
+            var overrideUrl = _baserUrl + "deploy-keys/";
+            return _sharpBucketV1.Post(key, overrideUrl);
+        }
+
+        /// <summary>
+        /// Deletes the key specified by the key_id value. This call requires authentication. 
+        /// </summary>
+        /// <param name="key">The key identifier assigned by Bitbucket. Use the GET call to obtain this value.</param>
         /// <returns></returns>
         public SSH DeleteDeployKey(SSH key){
             var overrideUrl = _baserUrl + "deploy-keys/" + key.pk + "/";
@@ -243,7 +147,20 @@ namespace SharpBucket.V1.EndPoints{
 
         #endregion
 
-        #region Issues
+        #region Events resource
+
+        /// <summary>
+        /// List all events of a repository's events associated with the specified repo_slug. By default, this call returns the top 25 events. 
+        /// </summary>
+        /// <returns></returns>
+        public EventInfo ListEvents(){
+            var overrideUrl = _baserUrl + "events/";
+            return _sharpBucketV1.Get(new EventInfo(), overrideUrl);
+        }
+
+        #endregion
+
+        #region Issues Resource
 
         /// <summary>
         /// The issues resource provides functionality for getting information on issues in an issue tracker, 
@@ -454,6 +371,132 @@ namespace SharpBucket.V1.EndPoints{
         internal Milestone DeleteMilestone(int? milestoneId){
             return DeleteMilestone(new Milestone{id = milestoneId});
         }
+
+        #endregion
+
+        #region Links Resource
+
+        /// <summary>
+        /// List all the links associated with a repository. The caller must authenticate as a user with administrative access to the repository.
+        /// </summary>
+        /// <returns></returns>
+        public List<Link> ListLinks(){
+            var overrideUrl = _baserUrl + "links/";
+            return _sharpBucketV1.Get(new List<Link>(), overrideUrl);
+        }
+
+        /// <summary>
+        /// Gets an individual link on a repository. The caller must authenticate as a user with administrative access to the repository. 
+        /// </summary>
+        /// <param name="linkId">The link id.</param>
+        /// <returns></returns>
+        public Link GetLink(int? linkId){
+            var overrideUrl = _baserUrl + "links/" + linkId + "/";
+            return _sharpBucketV1.Get(new Link(), overrideUrl);
+        }
+
+        /// <summary>
+        /// Creates a new link on the repository. 
+        /// </summary>
+        /// <param name="link">The link.</param>
+        /// <returns></returns>
+        public Link PostLink(Link link){
+            var overrideUrl = _baserUrl + "links/";
+            return _sharpBucketV1.Post(link, overrideUrl);
+        }
+
+        /// <summary>
+        /// Update a repository link. 
+        /// </summary>
+        /// <param name="link">The link.</param>
+        /// <returns></returns>
+        public Link PutLink(Link link){
+            var overrideUrl = _baserUrl + "links/" + link.id + "/";
+            return _sharpBucketV1.Put(link, overrideUrl);
+        }
+
+        /// <summary>
+        /// Deletes the repository link identified by the object_id. The caller must authenticate as a user with administrative access to the repository. 
+        /// </summary>
+        /// <param name="link">The link.</param>
+        /// <returns></returns>
+        public Link DeleteLink(Link link){
+            var overrideUrl = _baserUrl + "links/" + link.id + "/";
+            return _sharpBucketV1.Delete(link, overrideUrl);
+        }
+
+        #endregion
+
+        #region Repository Resource
+
+        /// <summary>
+        /// Gets a list of branches associated with a repository. 
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, BranchInfo> ListBranches(){
+            var overrideUrl = _baserUrl + "branches/";
+            return _sharpBucketV1.Get(new Dictionary<string, BranchInfo>(), overrideUrl);
+        }
+
+        /// <summary>
+        /// Gets the main-branch associated with the repository. 
+        /// You set the main branch from a repository's Repository details page.
+        /// </summary>
+        /// <returns></returns>
+        public MainBranch GetMainBranch(){
+            var overrideUrl = _baserUrl + "main-branch/";
+            return _sharpBucketV1.Get(new MainBranch(), overrideUrl);
+        }
+
+        /// <summary>
+        /// Use this resource to list the tags and branches for a given repository. 
+        /// </summary>
+        /// <returns></returns>
+        public IDictionary<string, Tag> ListTags(){
+            var overrideUrl = _baserUrl + "tags/";
+            return _sharpBucketV1.Get(new Dictionary<string, Tag>(), overrideUrl);
+        }
+
+        #endregion
+
+        #region Wiki Resource
+
+        /// <summary>
+        /// Gets the contents of a wiki page and the current revision. 
+        /// You must supply the title of a page to get.  When getting a page, do not include the extension .wiki. 
+        /// If you do not supply a page value, the default is the Home page
+        /// </summary>
+        /// <param name="page">Title of the page.</param>
+        /// <returns></returns>
+        public Wiki GetWiki(string page){
+            var overrideUrl = _baserUrl + "wiki/" + page;
+            return _sharpBucketV1.Get(new Wiki(), overrideUrl);
+        }
+
+        // TODO:  Doesnt work, 500 server error, same for put
+        /// <summary>
+        /// Creates a new wiki page. 
+        /// </summary>
+        /// <param name="newPage">Title of the page.</param>
+        /// <param name="location">Path to the page.</param>
+        /// <returns></returns>
+        public Wiki PostWiki(Wiki newPage, string location){
+            var overrideUrl = _baserUrl + "wiki/" + location;
+            return _sharpBucketV1.Post(newPage, overrideUrl);
+        }
+
+        /// <summary>
+        /// Updates an existng wiki page.
+        /// </summary>
+        /// <param name="updatedPage">Title of the page.</param>
+        /// <param name="location">Path to the page.</param>
+        /// <returns></returns>
+        public Wiki PutWiki(Wiki updatedPage, string location){
+            var overrideUrl = _baserUrl + "wiki/" + location;
+            return _sharpBucketV1.Put(updatedPage, overrideUrl);
+        }
+
+        #endregion
 
         #endregion
     }

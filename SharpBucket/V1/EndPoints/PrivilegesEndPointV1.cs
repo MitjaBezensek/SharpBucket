@@ -28,7 +28,7 @@ namespace SharpBucket.V1.EndPoints{
         /// If a repository has no individual users with privileges, the method returns an [] empty array.  
         /// To get privileges for groups, use the group-privileges Endpoint.
         /// </summary>
-        /// <param name="repository">The repository whose privileges you wish to get.</param>
+        /// <param name="repository">Repository identifier.</param>
         /// <returns></returns>
         public List<RepositoryPrivileges> ListRepositoryPrivileges(string repository){
             string overrideUrl = _baseUrl + repository + "/";
