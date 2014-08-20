@@ -16,7 +16,7 @@ namespace SharpBucket.V2{
         /// </summary>
         /// <param name="teamName">The team whose team End Point you wish to get.</param>
         /// <returns></returns>
-        public TeamsEndPoint Teams(string teamName){
+        public TeamsEndPoint TeamsEndPoint(string teamName){
             return new TeamsEndPoint(this, teamName);
         }
 
@@ -24,16 +24,16 @@ namespace SharpBucket.V2{
         /// Get the Repositories End point.
         /// </summary>
         /// <returns></returns>
-        public RepositoriesEndPoint Repositories(){
+        public RepositoriesEndPoint RepositoriesEndPoint(){
             return new RepositoriesEndPoint(this);
         }
 
         /// <summary>
-        /// Get the Users End Point.
+        /// Get the UsersEndPoint End Point.
         /// </summary>
-        /// <param name="accountName">The account for which you wish to get the Users End Point.</param>
+        /// <param name="accountName">The account for which you wish to get the UsersEndPoint End Point.</param>
         /// <returns></returns>
-        public UsersEndpoint Users(string accountName){
+        public UsersEndpoint UsersEndPoint(string accountName){
             return new UsersEndpoint(accountName, this);
         }
     }

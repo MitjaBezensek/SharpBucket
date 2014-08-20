@@ -3,7 +3,7 @@ using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints{
     /// <summary>
-    /// The Users End Point gets a user account's profile information.
+    /// The UsersEndPoint End Point gets a user account's profile information.
     /// More info:
     /// https://confluence.atlassian.com/display/BITBUCKET/users+Endpoint
     /// </summary>

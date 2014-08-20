@@ -168,9 +168,11 @@ namespace SharpBucket.V1.EndPoints{
         /// You can access public issues without authentication, but you will only receive a subset of information, 
         /// and you can't gain access to private repositories' issues. By authenticating, you will get a more detailed set of information, 
         /// the ability to create issues, as well as access to updating data or deleting issues you have access to.
+        /// More info:
+        /// https://confluence.atlassian.com/display/BITBUCKET/issues+Resource
         /// </summary>
         /// <returns></returns>
-        public IssuesResource IssuesResourceV1(){
+        public IssuesResource IssuesResource(){
             return new IssuesResource(this);
         }
 

@@ -14,6 +14,20 @@ namespace SharpBucket.V1.EndPoints{
             _repositoriesEndPoint = repositoriesEndPoint;
         }
 
+        public Issue GetIssue(){
+            return _repositoriesEndPoint.GetIssue(_issueId);
+        }
+
+        /// <summary>
+        /// Gets the followers for an individual issue from a repository. 
+        /// authorization is not required for public repositories with a public issue tracker. 
+        /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate access.
+        /// </summary>
+        /// <returns></returns>
+        public IssueFollowers ListFollowers(){
+            return _repositoriesEndPoint.ListIssueFollowers(_issueId);
+        }
+
         /// <summary>
         /// List all the comments of the issue. 
         /// </summary>
@@ -47,15 +61,6 @@ namespace SharpBucket.V1.EndPoints{
         /// <returns>Response from the BitBucket API.</returns>
         public Comment PutIssueComment(Comment comment){
             return _repositoriesEndPoint.PutIssueComment(_issueId, comment);
-        }
-
-        /// <summary>
-        /// Update a specific comment of the issue.
-        /// </summary>
-        /// <param name="comment">The comment.</param>
-        /// <returns>Response from the BitBucket API.</returns>
-        public Comment DeleteIssueComment(Comment comment){
-            return _repositoriesEndPoint.DeleteIssueComment(_issueId, comment);
         }
 
         /// <summary>

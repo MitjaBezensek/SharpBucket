@@ -12,16 +12,7 @@ namespace SharpBucket.V1.EndPoints{
     public class IssuesResource{
         private readonly RepositoriesEndPoint _repositoriesEndPoint;
 
-        /// <summary>
-        /// Get the issue resource.
-        /// BitBucket does not have this resource so this is a "virtual" resource
-        /// which offers easier access manipulation of the specified issue.
-        /// </summary>
-        /// <param name="issueId">The Id of the issue whose resource you wish to get.</param>
-        /// <returns></returns>
-        public IssueResource Issue(int issueId){
-            return new IssueResource(_repositoriesEndPoint, issueId);
-        }
+        #region Issues Resource
 
         public IssuesResource(RepositoriesEndPoint repositoriesEndPoint){
             _repositoriesEndPoint = repositoriesEndPoint;
@@ -49,28 +40,6 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Gets the followers for an individual issue from a repository. 
-        /// authorization is not required for public repositories with a public issue tracker. 
-        /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate access.
-        /// </summary>
-        /// <param name="issue">The issue.</param>
-        /// <returns></returns>
-        public IssueFollowers ListIssueFollowers(Issue issue){
-            return _repositoriesEndPoint.ListIssueFollowers(issue);
-        }
-
-        /// <summary>
-        /// Gets the followers for an individual issue from a repository. 
-        /// authorization is not required for public repositories with a public issue tracker. 
-        /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate access.
-        /// </summary>
-        /// <param name="issueId">The issue identifier.</param>
-        /// <returns></returns>
-        public IssueFollowers ListIssueFollowers(int? issueId){
-            return _repositoriesEndPoint.ListIssueFollowers(issueId);
-        }
-
-        /// <summary>
         /// Creates a new issue in a repository. This call requires authentication. 
         /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
         /// The authenticated user is used for the issue's reported_by field.
@@ -93,15 +62,6 @@ namespace SharpBucket.V1.EndPoints{
         }
 
         /// <summary>
-        /// Delete an issue from the current repository.
-        /// </summary>
-        /// <param name="issue">The issue.</param>
-        /// <returns>Response from the BitBucket API.</returns>
-        public Issue DeleteIssue(Issue issue){
-            return _repositoriesEndPoint.DeleteIssue(issue);
-        }
-
-        /// <summary>
         /// Deletes the specified issue_id. 
         /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate access. 
         /// </summary>
@@ -109,124 +69,6 @@ namespace SharpBucket.V1.EndPoints{
         /// <returns>Response from the BitBucket API.</returns>
         public Issue DeleteIssue(int? issueId){
             return _repositoriesEndPoint.DeleteIssue(issueId);
-        }
-
-        /// <summary>
-        /// List all the comments on the specified issue. 
-        /// </summary>
-        /// <param name="issue">The issue.</param>
-        /// <returns></returns>
-        public List<Comment> ListIssueComments(Issue issue){
-            return _repositoriesEndPoint.ListIssueComments(issue);
-        }
-
-        /// <summary>
-        /// List all the comments on the specified issue. 
-        /// </summary>
-        /// <param name="issueId">The issue identifier.</param>
-        /// <returns></returns>
-        public List<Comment> ListIssueComments(int issueId){
-            return _repositoriesEndPoint.ListIssueComments(issueId);
-        }
-
-        /// <summary>
-        /// Get a specific comment of an issue.
-        /// </summary>
-        /// <param name="issue">The issue.</param>
-        /// <param name="commentId">The comment identifier.</param>
-        /// <returns></returns>
-        public Comment GetIssueComment(Issue issue, int? commentId){
-            return _repositoriesEndPoint.GetIssueComment(issue, commentId);
-        }
-
-        /// <summary>
-        /// Get a specific comment of an issue.
-        /// </summary>
-        /// <param name="issueId">The issue identifier.</param>
-        /// <param name="commentId">The comment identifier.</param>
-        /// <returns></returns>
-        public Comment GetIssueComment(int issueId, int? commentId){
-            return _repositoriesEndPoint.GetIssueComment(issueId, commentId);
-        }
-
-        /// <summary>
-        /// Post a comment to the selected issue.
-        /// </summary>
-        /// <param name="issue">The issue.</param>
-        /// <param name="comment">The comment.</param>
-        /// <returns>Response from the BitBucket API.</returns>
-        public Comment PostIssueComment(Issue issue, Comment comment){
-            return _repositoriesEndPoint.PostIssueComment(issue, comment);
-        }
-
-        /// <summary>
-        /// Post a comment to the selected issue.
-        /// </summary>
-        /// <param name="issueId">The issue identifier.</param>
-        /// <param name="comment">The comment.</param>
-        /// <returns>Response from the BitBucket API.</returns>
-        public Comment PostIssueComment(int issueId, Comment comment){
-            return _repositoriesEndPoint.PostIssueComment(issueId, comment);
-        }
-
-        /// <summary>
-        /// Update a specific comment of an issue.
-        /// </summary>
-        /// <param name="issue">The issue.</param>
-        /// <param name="comment">The comment.</param>
-        /// <returns>The response of BitBucket API.</returns>
-        public Comment PutIssueComment(Issue issue, Comment comment){
-            return _repositoriesEndPoint.PutIssueComment(issue, comment);
-        }
-
-        /// <summary>
-        /// Update a specific comment of an issue.
-        /// </summary>
-        /// <param name="issueId">The issue identifier.</param>
-        /// <param name="comment">The comment.</param>
-        /// <returns>The response of BitBucket API.</returns>
-        public Comment PutIssueComment(int issueId, Comment comment){
-            return _repositoriesEndPoint.PutIssueComment(issueId, comment);
-        }
-
-        /// <summary>
-        /// Delete a specific comment of an issue.
-        /// </summary>
-        /// <param name="issue">The issue.</param>
-        /// <param name="comment">The comment.</param>
-        /// <returns>The response of BitBucket API.</returns>
-        public Comment DeleteIssueComment(Issue issue, Comment comment){
-            return _repositoriesEndPoint.DeleteIssueComment(issue, comment);
-        }
-
-        /// <summary>
-        /// Delete a specific comment of an issue.
-        /// </summary>
-        /// <param name="issue">The issue.</param>
-        /// <param name="commentId">The comment identifier.</param>
-        /// <returns>The response of BitBucket API.</returns>
-        public Comment DeleteIssueComment(Issue issue, int? commentId){
-            return _repositoriesEndPoint.DeleteIssueComment(issue, commentId);
-        }
-
-        /// <summary>
-        /// Delete a specific comment of an issue.
-        /// </summary>
-        /// <param name="issueId">The issue identifier.</param>
-        /// <param name="commentId">The comment identifier.</param>
-        /// <returns>The response of BitBucket API.</returns>
-        public Comment DeleteIssueComment(int? issueId, int? commentId){
-            return _repositoriesEndPoint.DeleteIssueComment(issueId, commentId);
-        }
-
-        /// <summary>
-        /// Delete a specific comment of an issue.
-        /// </summary>
-        /// <param name="issueId">The issue identifier.</param>
-        /// <param name="comment">The comment.</param>
-        /// <returns>The response of BitBucket API.</returns>
-        public Comment DeleteIssueComment(int? issueId, Comment comment){
-            return _repositoriesEndPoint.DeleteIssueComment(issueId, comment);
         }
 
         /// <summary>
@@ -268,16 +110,6 @@ namespace SharpBucket.V1.EndPoints{
         /// <returns>The response from the BitBucket API.</returns>
         public Component PutComponent(Component component){
             return _repositoriesEndPoint.PutComponent(component);
-        }
-
-        /// <summary>
-        /// Deletes a component in an issue tracker. Keep in mind that the component can be in use on existing issues. 
-        /// To delete a component, public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
-        /// </summary>
-        /// <param name="component">The component.</param>
-        /// <returns>The response from the BitBucket API.</returns>
-        public Component DeleteComponent(Component component){
-            return _repositoriesEndPoint.DeleteComponent(component);
         }
 
         /// <summary>
@@ -327,16 +159,6 @@ namespace SharpBucket.V1.EndPoints{
         /// <returns>The response from the BitBucket API.</returns>
         public Version PutVersion(Version version){
             return _repositoriesEndPoint.PutVersion(version);
-        }
-
-        /// <summary>
-        /// Deletes a version in an issue tracker. Keep in mind that the version can be in use on existing issues. 
-        /// To delete a version, public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
-        /// </summary>
-        /// <param name="version">The version.</param>
-        /// <returns>The response from the BitBucket API.</returns>
-        public Version DeleteVersion(Version version){
-            return _repositoriesEndPoint.DeleteVersion(version);
         }
 
         /// <summary>
@@ -393,20 +215,140 @@ namespace SharpBucket.V1.EndPoints{
         /// Deletes a milestone in an issue tracker. Keep in mind that the milestone can be in use on existing issues. 
         /// To delete a milestone, public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
         /// </summary>
-        /// <param name="milestone">The milestone .</param>
-        /// <returns>The response from the BitBucket API.</returns>
-        public Milestone DeleteMilestone(Milestone milestone){
-            return _repositoriesEndPoint.DeleteMilestone(milestone);
-        }
-
-        /// <summary>
-        /// Deletes a milestone in an issue tracker. Keep in mind that the milestone can be in use on existing issues. 
-        /// To delete a milestone, public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
-        /// </summary>
         /// <param name="milestoneId">The milestone identifier.</param>
         /// <returns>The response from the BitBucket API.</returns>
         public Milestone DeleteMilestone(int? milestoneId){
             return _repositoriesEndPoint.DeleteMilestone(milestoneId);
         }
+
+        #endregion
+
+        #region Issue Resource
+
+        /// <summary>
+        /// Get the issue resource.
+        /// BitBucket does not have this resource so this is a "virtual" resource
+        /// which offers easier access manipulation of the specified issue.
+        /// </summary>
+        /// <param name="issueId">The Id of the issue whose resource you wish to get.</param>
+        /// <returns></returns>
+        public IssueResource IssueResource(int issueId){
+            return new IssueResource(_repositoriesEndPoint, issueId);
+        }
+
+        internal List<Comment> ListIssueComments(Issue issue){
+            return _repositoriesEndPoint.ListIssueComments(issue);
+        }
+
+        /// <summary>
+        /// List all the comments on the specified issue. 
+        /// </summary>
+        /// <param name="issueId">The issue identifier.</param>
+        /// <returns></returns>
+        internal List<Comment> ListIssueComments(int issueId){
+            return _repositoriesEndPoint.ListIssueComments(issueId);
+        }
+
+        /// <summary>
+        /// Get a specific comment of an issue.
+        /// </summary>
+        /// <param name="issue">The issue.</param>
+        /// <param name="commentId">The comment identifier.</param>
+        /// <returns></returns>
+        internal Comment GetIssueComment(Issue issue, int? commentId){
+            return _repositoriesEndPoint.GetIssueComment(issue, commentId);
+        }
+
+        /// <summary>
+        /// Get a specific comment of an issue.
+        /// </summary>
+        /// <param name="issueId">The issue identifier.</param>
+        /// <param name="commentId">The comment identifier.</param>
+        /// <returns></returns>
+        internal Comment GetIssueComment(int issueId, int? commentId){
+            return _repositoriesEndPoint.GetIssueComment(issueId, commentId);
+        }
+
+        /// <summary>
+        /// Post a comment to the selected issue.
+        /// </summary>
+        /// <param name="issue">The issue.</param>
+        /// <param name="comment">The comment.</param>
+        /// <returns>Response from the BitBucket API.</returns>
+        internal Comment PostIssueComment(Issue issue, Comment comment){
+            return _repositoriesEndPoint.PostIssueComment(issue, comment);
+        }
+
+        /// <summary>
+        /// Post a comment to the selected issue.
+        /// </summary>
+        /// <param name="issueId">The issue identifier.</param>
+        /// <param name="comment">The comment.</param>
+        /// <returns>Response from the BitBucket API.</returns>
+        internal Comment PostIssueComment(int issueId, Comment comment){
+            return _repositoriesEndPoint.PostIssueComment(issueId, comment);
+        }
+
+        /// <summary>
+        /// Update a specific comment of an issue.
+        /// </summary>
+        /// <param name="issue">The issue.</param>
+        /// <param name="comment">The comment.</param>
+        /// <returns>The response of BitBucket API.</returns>
+        internal Comment PutIssueComment(Issue issue, Comment comment){
+            return _repositoriesEndPoint.PutIssueComment(issue, comment);
+        }
+
+        /// <summary>
+        /// Update a specific comment of an issue.
+        /// </summary>
+        /// <param name="issueId">The issue identifier.</param>
+        /// <param name="comment">The comment.</param>
+        /// <returns>The response of BitBucket API.</returns>
+        internal Comment PutIssueComment(int issueId, Comment comment){
+            return _repositoriesEndPoint.PutIssueComment(issueId, comment);
+        }
+
+        /// <summary>
+        /// Delete a specific comment of an issue.
+        /// </summary>
+        /// <param name="issue">The issue.</param>
+        /// <param name="comment">The comment.</param>
+        /// <returns>The response of BitBucket API.</returns>
+        internal Comment DeleteIssueComment(Issue issue, Comment comment){
+            return _repositoriesEndPoint.DeleteIssueComment(issue, comment);
+        }
+
+        /// <summary>
+        /// Delete a specific comment of an issue.
+        /// </summary>
+        /// <param name="issue">The issue.</param>
+        /// <param name="commentId">The comment identifier.</param>
+        /// <returns>The response of BitBucket API.</returns>
+        internal Comment DeleteIssueComment(Issue issue, int? commentId){
+            return _repositoriesEndPoint.DeleteIssueComment(issue, commentId);
+        }
+
+        /// <summary>
+        /// Delete a specific comment of an issue.
+        /// </summary>
+        /// <param name="issueId">The issue identifier.</param>
+        /// <param name="commentId">The comment identifier.</param>
+        /// <returns>The response of BitBucket API.</returns>
+        internal Comment DeleteIssueComment(int? issueId, int? commentId){
+            return _repositoriesEndPoint.DeleteIssueComment(issueId, commentId);
+        }
+
+        /// <summary>
+        /// Delete a specific comment of an issue.
+        /// </summary>
+        /// <param name="issueId">The issue identifier.</param>
+        /// <param name="comment">The comment.</param>
+        /// <returns>The response of BitBucket API.</returns>
+        internal Comment DeleteIssueComment(int? issueId, Comment comment){
+            return _repositoriesEndPoint.DeleteIssueComment(issueId, comment);
+        }
+
+        #endregion
     }
 }

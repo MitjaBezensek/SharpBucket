@@ -79,19 +79,19 @@ namespace SharpBucket{
             return response;
         }
 
-        public T Get<T>(T body, string overrideUrl){
+        internal T Get<T>(T body, string overrideUrl){
             return Send(body, Method.GET, overrideUrl);
         }
 
-        public T Post<T>(T body, string overrideUrl){
+        internal T Post<T>(T body, string overrideUrl){
             return Send(body, Method.POST, overrideUrl);
         }
 
-        public T Put<T>(T body, string overrideUrl){
+        internal T Put<T>(T body, string overrideUrl){
             return Send(body, Method.PUT, overrideUrl);
         }
 
-        public T Delete<T>(T body, string overrideUrl){
+        internal T Delete<T>(T body, string overrideUrl){
             return Send(body, Method.DELETE, overrideUrl);
         }
     }
