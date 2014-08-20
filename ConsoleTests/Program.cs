@@ -305,7 +305,7 @@ namespace ConsoleTests{
             var commentId = 10;
             var pullRequestComment = repositoriesEP.GetPullRequestComment(accountName, repository, pullRequestId, commentId);
 
-            var pullRequestsEP = repositoriesEP.PullReqests(accountName, repository);
+            var pullRequestsEP = repositoriesEP.PullReqestsResource(accountName, repository);
             var PRs = pullRequestsEP.ListPullRequests();
             var newPR = pullRequestsEP.PostPullRequest(new PullRequest());
             var updatedPR = pullRequestsEP.PutPullRequest(new PullRequest());

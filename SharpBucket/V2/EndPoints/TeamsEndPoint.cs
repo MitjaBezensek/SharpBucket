@@ -7,11 +7,11 @@ namespace SharpBucket.V2.EndPoints{
     /// More info:
     /// https://confluence.atlassian.com/display/BITBUCKET/teams+Endpoint
     /// </summary>
-    public class TeamsEndPointV2{
+    public class TeamsEndPoint{
         private readonly SharpBucketV2 _sharpBucketV2;
         private readonly string _baseUrl;
 
-        public TeamsEndPointV2(SharpBucketV2 sharpBucketV2, string teamName){
+        public TeamsEndPoint(SharpBucketV2 sharpBucketV2, string teamName){
             _sharpBucketV2 = sharpBucketV2;
             _baseUrl = "teams/" + teamName + "/";
         }
