@@ -17,8 +17,8 @@ namespace ConsoleTests{
 
         private static void Main(){
             // Decide which version you wish to test
-            //TestApiV1();
-            TestApiV2();
+            TestApiV1();
+            //TestApiV2();
         }
 
         private static void TestApiV1(){

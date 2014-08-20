@@ -42,12 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\BasicAuthentication.cs" />
-    <Compile Include="Authentication\LowerCaseResolver.cs" />
     <Compile Include="Authentication\OauthAuthentication.cs" />
     <Compile Include="Authentication\OAuthentication2Legged.cs" />
     <Compile Include="Authentication\OAuthentication3Legged.cs" />
     <Compile Include="Authentication\RequestExecutor.cs" />
-    <Compile Include="Authentication\LowerCaseSerializer.cs" />
     <Compile Include="V1\EndPoints\IssueResource.cs" />
     <Compile Include="V1\EndPoints\PrivilegesEndPoint.cs" />
     <Compile Include="V1\Pocos\Followers.cs" />
