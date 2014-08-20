@@ -8,11 +8,11 @@ namespace SharpBucket.V1.EndPoints{
     /// More info here:
     /// https://confluence.atlassian.com/display/BITBUCKET/users+Endpoint+-+1.0
     /// </summary>
-    public class UsersEndPointV1{
+    public class UsersEndPoint{
         private readonly SharpBucketV1 _sharpBucketV1;
         private readonly string _baseUrl;
 
-        public UsersEndPointV1(string accountName, SharpBucketV1 sharpBucketV1){
+        public UsersEndPoint(string accountName, SharpBucketV1 sharpBucketV1){
             _sharpBucketV1 = sharpBucketV1;
             _baseUrl = "users/" + accountName + "/";
         }

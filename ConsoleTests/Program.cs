@@ -42,10 +42,10 @@ namespace ConsoleTests{
 
             // of if you saved the tokens you can simply use those
             // var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oauthtoken", "oauthtokensecret");
-            //TestUserEndPoint(sharpBucket);
-            //TestIssuesEndPoint(sharpBucket);
-            //TestRepositoriesEndPoint(sharpBucket);
-            //TestUsersEndPoint(sharpBucket);
+            TestUserEndPoint(sharpBucket);
+            TestIssuesEndPoint(sharpBucket);
+            TestRepositoriesEndPoint(sharpBucket);
+            TestUsersEndPoint(sharpBucket);
             TestPrivilegesEndPoint(sharpBucket);
         }
 
@@ -100,7 +100,7 @@ namespace ConsoleTests{
         }
 
         private static void TestIssuesEndPoint(SharpBucketV1 sharpBucket){
-            var issuesEP = sharpBucket.Repositories(accountName, repository).Issues();
+            var issuesEP = sharpBucket.Repositories(accountName, repository).IssuesResourceV1();
             int ISSUE_ID = 5;
 
             // Issues

@@ -12,11 +12,11 @@ namespace SharpBucket.V1.EndPoints{
     /// More info here:
     /// https://confluence.atlassian.com/display/BITBUCKET/privileges+Endpoint
     /// </summary>
-    public class PrivilegesEndPointV1{
+    public class PrivilegesEndPoint{
         private readonly string _baseUrl;
         private readonly SharpBucketV1 _sharpBucketV1;
 
-        public PrivilegesEndPointV1(string accountName, SharpBucketV1 sharpBucketV1){
+        public PrivilegesEndPoint(string accountName, SharpBucketV1 sharpBucketV1){
             _sharpBucketV1 = sharpBucketV1;
             _baseUrl = "privileges/" + accountName + "/";
         }
@@ -31,7 +31,7 @@ namespace SharpBucket.V1.EndPoints{
         /// <param name="repository">Repository identifier.</param>
         /// <returns></returns>
         public List<RepositoryPrivileges> ListRepositoryPrivileges(string repository){
-            string overrideUrl = _baseUrl + repository + "/";
+            var overrideUrl = _baseUrl + repository + "/";
             return _sharpBucketV1.Get(new List<RepositoryPrivileges>(), overrideUrl);
         }
 
@@ -44,7 +44,7 @@ namespace SharpBucket.V1.EndPoints{
         /// <param name="accountName">The account name whose privileges you wish to get.</param>
         /// <returns></returns>
         public RepositoryPrivilegesUser GetPrivilegesForAccount(string repository, string accountName){
-            string overrideUrl = _baseUrl + repository + "/" + accountName;
+            var overrideUrl = _baseUrl + repository + "/" + accountName;
             return _sharpBucketV1.Get(new RepositoryPrivilegesUser(), overrideUrl);
         }
     }

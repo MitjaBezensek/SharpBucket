@@ -11,13 +11,13 @@ namespace SharpBucket.V1.EndPoints{
     /// More info here:
     /// https://confluence.atlassian.com/display/BITBUCKET/repositories+Endpoint+-+1.0
     /// </summary>
-    public class RepositoriesEndPointV1{
+    public class RepositoriesEndPoint{
         private readonly SharpBucketV1 _sharpBucketV1;
         private readonly string _baserUrl;
         private readonly string _issuesUrl;
         private readonly string _issuesIdUrl;
 
-        public RepositoriesEndPointV1(string accountName, string repository, SharpBucketV1 sharpBucketV1){
+        public RepositoriesEndPoint(string accountName, string repository, SharpBucketV1 sharpBucketV1){
             _sharpBucketV1 = sharpBucketV1;
             _baserUrl = "repositories/" + accountName + "/" + repository + "/";
             _issuesUrl = _baserUrl + "issues/";
@@ -170,8 +170,8 @@ namespace SharpBucket.V1.EndPoints{
         /// the ability to create issues, as well as access to updating data or deleting issues you have access to.
         /// </summary>
         /// <returns></returns>
-        public IssuesResourceV1 Issues(){
-            return new IssuesResourceV1(this);
+        public IssuesResource IssuesResourceV1(){
+            return new IssuesResource(this);
         }
 
         internal IssuesInfo ListIssues(){

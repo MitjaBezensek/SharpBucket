@@ -5,13 +5,13 @@ namespace SharpBucket.V1.EndPoints{
     /// <summary>
     /// A "Virtual" End Point that offers easier manipulation of a specific issue.
     /// </summary>
-    public class IssueResourceV1{
-        private readonly RepositoriesEndPointV1 _repositoriesEndPointV1;
+    public class IssueResource{
+        private readonly RepositoriesEndPoint _repositoriesEndPoint;
         private readonly int _issueId;
 
-        public IssueResourceV1(RepositoriesEndPointV1 repositoriesEndPointV1, int issueId){
+        public IssueResource(RepositoriesEndPoint repositoriesEndPoint, int issueId){
             _issueId = issueId;
-            _repositoriesEndPointV1 = repositoriesEndPointV1;
+            _repositoriesEndPoint = repositoriesEndPoint;
         }
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace SharpBucket.V1.EndPoints{
         /// </summary>
         /// <returns></returns>
         public List<Comment> ListComments(){
-            return _repositoriesEndPointV1.ListIssueComments(_issueId);
+            return _repositoriesEndPoint.ListIssueComments(_issueId);
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace SharpBucket.V1.EndPoints{
         /// <param name="commentId">The comment identifier.</param>
         /// <returns></returns>
         public Comment GetIssueComment(int? commentId){
-            return _repositoriesEndPointV1.GetIssueComment(_issueId, commentId);
+            return _repositoriesEndPoint.GetIssueComment(_issueId, commentId);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace SharpBucket.V1.EndPoints{
         /// <param name="comment">The comment you wish to post.</param>
         /// <returns>Response from the BitBucket API.</returns>
         public Comment PostComment(Comment comment){
-            return _repositoriesEndPointV1.PostIssueComment(_issueId, comment);
+            return _repositoriesEndPoint.PostIssueComment(_issueId, comment);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace SharpBucket.V1.EndPoints{
         /// <param name="comment">The comment that you wish to update.</param>
         /// <returns>Response from the BitBucket API.</returns>
         public Comment PutIssueComment(Comment comment){
-            return _repositoriesEndPointV1.PutIssueComment(_issueId, comment);
+            return _repositoriesEndPoint.PutIssueComment(_issueId, comment);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace SharpBucket.V1.EndPoints{
         /// <param name="comment">The comment.</param>
         /// <returns>Response from the BitBucket API.</returns>
         public Comment DeleteIssueComment(Comment comment){
-            return _repositoriesEndPointV1.DeleteIssueComment(_issueId, comment);
+            return _repositoriesEndPoint.DeleteIssueComment(_issueId, comment);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace SharpBucket.V1.EndPoints{
         /// <param name="commentId">The comment identifier.</param>
         /// <returns>Response from the BitBucket API.</returns>
         public Comment DeleteIssueComment(int? commentId){
-            return _repositoriesEndPointV1.DeleteIssueComment(_issueId, commentId);
+            return _repositoriesEndPoint.DeleteIssueComment(_issueId, commentId);
         }
     }
 }
