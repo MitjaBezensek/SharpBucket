@@ -6,15 +6,15 @@ namespace SharpBucket.V2.EndPoints{
     /// More info:
     /// https://confluence.atlassian.com/display/BITBUCKET/pullrequests+Resource
     /// </summary>
-    public class PullRequestsResourceV2{
-        private readonly RepositoriesEndPointV2 _repositoriesEndPointV2;
+    public class PullRequestsResource{
+        private readonly RepositoriesEndPoint _repositoriesEndPoint;
         private readonly string _repository;
         private readonly string _accountName;
 
-        public PullRequestsResourceV2(string accountName, string repository, RepositoriesEndPointV2 repositoriesEndPointV2){
+        public PullRequestsResource(string accountName, string repository, RepositoriesEndPoint repositoriesEndPoint){
             _accountName = accountName;
             _repository = repository;
-            _repositoriesEndPointV2 = repositoriesEndPointV2;
+            _repositoriesEndPoint = repositoriesEndPoint;
         }
 
         /// <summary>
@@ -24,8 +24,8 @@ namespace SharpBucket.V2.EndPoints{
         /// </summary>
         /// <param name="pullRequestId"></param>
         /// <returns></returns>
-        public PullRequestResourceV2 PullRequestResource(int pullRequestId){
-            return new PullRequestResourceV2(_accountName, _repository, pullRequestId, _repositoriesEndPointV2);
+        public PullRequestResource PullRequestResource(int pullRequestId){
+            return new PullRequestResource(_accountName, _repository, pullRequestId, _repositoriesEndPoint);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace SharpBucket.V2.EndPoints{
         /// </summary>
         /// <returns></returns>
         public PullRequestsInfo ListPullRequests(){
-            return _repositoriesEndPointV2.ListPullRequests(_accountName, _repository);
+            return _repositoriesEndPoint.ListPullRequests(_accountName, _repository);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace SharpBucket.V2.EndPoints{
         /// <param name="pullRequest">The pull request that you wish to add.</param>
         /// <returns></returns>
         public object PostPullRequest(PullRequest pullRequest){
-            return _repositoriesEndPointV2.PostPullRequest(_accountName, _repository, pullRequest);
+            return _repositoriesEndPoint.PostPullRequest(_accountName, _repository, pullRequest);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace SharpBucket.V2.EndPoints{
         /// <param name="pullRequest">The pull request that you wish to update.</param>
         /// <returns></returns>
         public object PutPullRequest(PullRequest pullRequest){
-            return _repositoriesEndPointV2.PutPullRequest(_accountName, _repository, pullRequest);
+            return _repositoriesEndPoint.PutPullRequest(_accountName, _repository, pullRequest);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace SharpBucket.V2.EndPoints{
         /// <param name="pullRequestId">The Id of the pull request that you wish to get.</param>
         /// <returns></returns>
         public object GetPullRequest(int pullRequestId){
-            return _repositoriesEndPointV2.GetPullRequest(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.GetPullRequest(_accountName, _repository, pullRequestId);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace SharpBucket.V2.EndPoints{
         /// <param name="pullRequestId">The Id of the pull request whose commits you wish to get.</param>
         /// <returns></returns>
         public object ListPullRequestCommits(int pullRequestId){
-            return _repositoriesEndPointV2.ListPullRequestCommits(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.ListPullRequestCommits(_accountName, _repository, pullRequestId);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace SharpBucket.V2.EndPoints{
         /// <param name="pullRequestId">The Id of the pull request that you wish to approve.</param>
         /// <returns></returns>
         public object ApprovePullRequest(int pullRequestId){
-            return _repositoriesEndPointV2.ApprovePullRequest(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.ApprovePullRequest(_accountName, _repository, pullRequestId);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace SharpBucket.V2.EndPoints{
         /// <param name="pullRequestId">The Id of the pull request whose approval you wish to remove.</param>
         /// <returns></returns>
         public object RemovePullRequestApproval(int pullRequestId){
-            return _repositoriesEndPointV2.RemovePullRequestApproval(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.RemovePullRequestApproval(_accountName, _repository, pullRequestId);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace SharpBucket.V2.EndPoints{
         /// <param name="pullRequestId">The Id of the pull request whose diff you wish to get.</param>
         /// <returns></returns>
         public object GetDiffForPullRequest(int pullRequestId){
-            return _repositoriesEndPointV2.GetDiffForPullRequest(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.GetDiffForPullRequest(_accountName, _repository, pullRequestId);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace SharpBucket.V2.EndPoints{
         /// </summary>
         /// <returns></returns>
         public object GetPullRequestLog(){
-            return _repositoriesEndPointV2.GetPullRequestLog(_accountName, _repository);
+            return _repositoriesEndPoint.GetPullRequestLog(_accountName, _repository);
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace SharpBucket.V2.EndPoints{
         /// <param name="pullRequestId">The Id of the pull request whose activity you wish to get.</param>
         /// <returns></returns>
         public object GetPullRequestActivity(int pullRequestId){
-            return _repositoriesEndPointV2.GetPullRequestActivity(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.GetPullRequestActivity(_accountName, _repository, pullRequestId);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace SharpBucket.V2.EndPoints{
         /// <param name="pullRequestId">The Id of the pull request that you wish to accept and merge.</param>
         /// <returns></returns>
         public object AcceptAndMergePullRequest(int pullRequestId){
-            return _repositoriesEndPointV2.AcceptAndMergePullRequest(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.AcceptAndMergePullRequest(_accountName, _repository, pullRequestId);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace SharpBucket.V2.EndPoints{
         /// <param name="pullRequestId">The Id of the pull request that you wish to decline.</param>
         /// <returns></returns>
         public object DeclinePullRequest(int pullRequestId){
-            return _repositoriesEndPointV2.DeclinePullRequest(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.DeclinePullRequest(_accountName, _repository, pullRequestId);
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace SharpBucket.V2.EndPoints{
         /// <param name="pullRequestId">The Id of the pull request whose comments you wish to get.</param>
         /// <returns></returns>
         public object ListPullRequestComments(int pullRequestId){
-            return _repositoriesEndPointV2.ListPullRequestComments(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.ListPullRequestComments(_accountName, _repository, pullRequestId);
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace SharpBucket.V2.EndPoints{
         /// <param name="commentId">The Id of the comment that you wish to get.</param>
         /// <returns></returns>
         public object GetPullRequestComment(int pullRequestId, int commentId){
-            return _repositoriesEndPointV2.GetPullRequestComment(_accountName, _repository, pullRequestId, commentId);
+            return _repositoriesEndPoint.GetPullRequestComment(_accountName, _repository, pullRequestId, commentId);
         }
     }
 }

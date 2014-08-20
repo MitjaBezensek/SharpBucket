@@ -9,12 +9,12 @@ namespace SharpBucket.V2.EndPoints{
     /// More info:
     /// https://confluence.atlassian.com/display/BITBUCKET/repository+Resource
     /// </summary>
-    public class RepositoryResourceV2{
+    public class RepositoryResource{
         private readonly RepositoriesEndPointV2 _repositoriesEndPointV2;
         private readonly string _accountName;
         private readonly string _repository;
 
-        public RepositoryResourceV2(string accountName, string repository, RepositoriesEndPointV2 repositoriesEndPointV2){
+        public RepositoryResource(string accountName, string repository, RepositoriesEndPointV2 repositoriesEndPointV2){
             _repository = repository;
             _accountName = accountName;
             _repositoriesEndPointV2 = repositoriesEndPointV2;
@@ -24,8 +24,8 @@ namespace SharpBucket.V2.EndPoints{
         /// Get the Pull Requests Resource for the current repository.
         /// </summary>
         /// <returns></returns>
-        public PullRequestsResourceV2 PullRequests(){
-            return new PullRequestsResourceV2(_accountName, _repository, _repositoriesEndPointV2);
+        public PullRequestsResource PullRequests(){
+            return new PullRequestsResource(_accountName, _repository, _repositoriesEndPointV2);
         }
 
         /// <summary>

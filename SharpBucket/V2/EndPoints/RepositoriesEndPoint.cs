@@ -26,8 +26,8 @@ namespace SharpBucket.V2.EndPoints{
         /// <param name="accountName">The account whose pull requst resource you wish to get.</param>
         /// <param name="repository">The repository whose pull request resource you wish to get.</param>
         /// <returns></returns>
-        public PullRequestsResourceV2 PullReqests(string accountName, string repository){
-            return new PullRequestsResourceV2(accountName, repository, this);
+        public PullRequestsResource PullReqests(string accountName, string repository){
+            return new PullRequestsResource(accountName, repository, this);
         }
 
         /// <summary>
@@ -36,8 +36,8 @@ namespace SharpBucket.V2.EndPoints{
         /// <param name="accountName"></param>
         /// <param name="repository"></param>
         /// <returns></returns>
-        public RepositoryResourceV2 Repository(string accountName, string repository){
-            return new RepositoryResourceV2(accountName, repository, this);
+        public RepositoryResource Repository(string accountName, string repository){
+            return new RepositoryResource(accountName, repository, this);
         }
 
         /// <summary>

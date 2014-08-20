@@ -2,16 +2,16 @@
     /// <summary>
     /// A "Virtual" resource that offers easier manipulation of the pull request.
     /// </summary>
-    public class PullRequestResourceV2{
+    public class PullRequestResource{
         private readonly int _pullRequestId;
-        private readonly RepositoriesEndPointV2 _repositoriesEndPointV2;
+        private readonly RepositoriesEndPoint _repositoriesEndPoint;
         private readonly string _repository;
         private readonly string _accountName;
 
-        public PullRequestResourceV2(string accountName, string repository, int pullRequestId, RepositoriesEndPointV2 repositoriesEndPointV2){
+        public PullRequestResource(string accountName, string repository, int pullRequestId, RepositoriesEndPoint repositoriesEndPoint){
             _accountName = accountName;
             _repository = repository;
-            _repositoriesEndPointV2 = repositoriesEndPointV2;
+            _repositoriesEndPoint = repositoriesEndPoint;
             _pullRequestId = pullRequestId;
         }
 
@@ -20,7 +20,7 @@
         /// </summary>
         /// <returns></returns>
         public object GetPullRequest(){
-            return _repositoriesEndPointV2.GetPullRequest(_accountName, _repository, _pullRequestId);
+            return _repositoriesEndPoint.GetPullRequest(_accountName, _repository, _pullRequestId);
         }
 
         /// <summary>
@@ -28,7 +28,7 @@
         /// </summary>
         /// <returns></returns>
         public object ListPullRequestCommits(){
-            return _repositoriesEndPointV2.ListPullRequestCommits(_accountName, _repository, _pullRequestId);
+            return _repositoriesEndPoint.ListPullRequestCommits(_accountName, _repository, _pullRequestId);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@
         /// </summary>
         /// <returns></returns>
         public object ApprovePullRequest(){
-            return _repositoriesEndPointV2.ApprovePullRequest(_accountName, _repository, _pullRequestId);
+            return _repositoriesEndPoint.ApprovePullRequest(_accountName, _repository, _pullRequestId);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@
         /// </summary>
         /// <returns></returns>
         public object RemovePullRequestApproval(){
-            return _repositoriesEndPointV2.RemovePullRequestApproval(_accountName, _repository, _pullRequestId);
+            return _repositoriesEndPoint.RemovePullRequestApproval(_accountName, _repository, _pullRequestId);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@
         /// </summary>
         /// <returns></returns>
         public object GetDiffForPullRequest(){
-            return _repositoriesEndPointV2.GetDiffForPullRequest(_accountName, _repository, _pullRequestId);
+            return _repositoriesEndPoint.GetDiffForPullRequest(_accountName, _repository, _pullRequestId);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@
         /// </summary>
         /// <returns></returns>
         public object GetPullRequestActivity(){
-            return _repositoriesEndPointV2.GetPullRequestActivity(_accountName, _repository, _pullRequestId);
+            return _repositoriesEndPoint.GetPullRequestActivity(_accountName, _repository, _pullRequestId);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@
         /// </summary>
         /// <returns></returns>
         public object AcceptAndMergePullRequest(){
-            return _repositoriesEndPointV2.AcceptAndMergePullRequest(_accountName, _repository, _pullRequestId);
+            return _repositoriesEndPoint.AcceptAndMergePullRequest(_accountName, _repository, _pullRequestId);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@
         /// </summary>
         /// <returns></returns>
         public object DeclinePullRequest(){
-            return _repositoriesEndPointV2.DeclinePullRequest(_accountName, _repository, _pullRequestId);
+            return _repositoriesEndPoint.DeclinePullRequest(_accountName, _repository, _pullRequestId);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@
         /// </summary>
         /// <returns></returns>
         public object ListPullRequestComments(){
-            return _repositoriesEndPointV2.ListPullRequestComments(_accountName, _repository, _pullRequestId);
+            return _repositoriesEndPoint.ListPullRequestComments(_accountName, _repository, _pullRequestId);
         }
 
         /// <summary>
@@ -93,7 +93,7 @@
         /// <param name="commentId">The Id of the comment that you wish to get.</param>
         /// <returns></returns>
         public object GetPullRequestComment(int commentId){
-            return _repositoriesEndPointV2.GetPullRequestComment(_accountName, _repository, _pullRequestId, commentId);
+            return _repositoriesEndPoint.GetPullRequestComment(_accountName, _repository, _pullRequestId, commentId);
         }
     }
 }
