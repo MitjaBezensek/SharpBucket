@@ -20,7 +20,9 @@ sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
 
 There are various end points you can use. Lets take a look at User end point:
 ```CSharp
+// getting the User end point
 var userEndPoint = sharpBucket.UserEndPoint();
+// querying the BitBucket API for various info
 var info = userEndPoint.GetInfo();
 var privileges = userEndPoint.ListPrivileges();
 var follows = userEndPoint.ListFollows();
@@ -30,8 +32,11 @@ var userRepos = userEndPoint.ListRepositories();
 Similarly for the Issues resource, let's get all the issues of a specific repository:
 
 ```CSharp
+// getting the Repository end point
 var repositoryEndPoint = sharpBucket.RepositoriesEndPoint(accountName, repository);
+// getting the Issue resource for this specific repository
 var issuesResource = respositoryEndPoint.IssuesResource();
+// getting the list of all the issues of the repository
 var issues = issuesResource.ListIssues();
 ```
 Sending information is just as easy.
@@ -49,20 +54,6 @@ SharpBucket uses a strict naming convention:
 - methods starting with Put are used for updating the objects
 - methods starting with Delete will delete the objects
 
-### End points
-
-We might add aditional endpoints if needed. Current ones represent the BitBucket end points. But in some cases it might be better to introduce new ones. Compare the current implementation with a possible upgrade. Existing one:
-```CSharp
-var newComment = new Comment{content = "This bug is really annoying!"};
-// Issues endpoint needs to know the id of the issue we want to comment
-var newCommentResult = issues.PostIssueComment(ISSUE_ID, newComment);
-```
-Maybe this would be better:
-```CSharp
-var newComment = new Comment{content = "This bug is really annoying!"};
-var issue = issues.GetIssue(ISSUE_ID);
-var newCommentResult = issue.PostComment(newComment);
-```
 ## Authentication
 There are two ways you can authenticate with SharpBucket
 - via the Oauth 1.0a, which is preferred
