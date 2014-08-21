@@ -51,8 +51,9 @@ var newIssueResult = issuesResource.PostIssue(newIssue);
 SharpBucket uses a strict naming convention:
 - methods starting with List will return a collection of items (ListIssues() returns a list of issues)
 - methods starting with Get will return an item (GetIssue(10) will return an issue with the id 10)
-- methods starting with Put are used for updating the objects
-- methods starting with Delete will delete the objects
+- methods starting with Post are used for adding the item
+- methods starting with Put are used for updating the item
+- methods starting with Delete will delete the item
 
 ## Authentication
 There are two ways you can authenticate with SharpBucket
