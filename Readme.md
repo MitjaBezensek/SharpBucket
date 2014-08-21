@@ -20,19 +20,19 @@ sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
 
 There are various end points you can use. Lets take a look at User end point:
 ```CSharp
-var user = sharpBucket.User();
-var info = user.GetInfo();
-var privileges = user.GetPrivileges();
-var follows = user.ListFollows();
-var userRepos = user.ListRepositories();
+var userEndPoint = sharpBucket.UserEndPoint();
+var info = userEndPoint.GetInfo();
+var privileges = userEndPoint.ListPrivileges();
+var follows = userEndPoint.ListFollows();
+var userRepos = userEndPoint.ListRepositories();
 ```
 
-Similarly for the Issues end point:
+Similarly for the Issues resource, let's get all the issues of a specific repository:
 
 ```CSharp
-var issues = sharpBucket.Repository(accountName, repository).Issues();
-var issuesList = issues.ListIssues();
-var issueComments = issues.ListIssueComments(ISSUE_ID);
+var repositoryEndPoint = sharpBucket.RepositoriesEndPoint(accountName, repository);
+var issuesResource = respositoryEndPoint.IssuesResource();
+var issues = issuesResource.ListIssues();
 ```
 Sending information is just as easy.
 
@@ -40,7 +40,7 @@ Sending information is just as easy.
 var newIssue = new Issue{title = "I have this little bug", 
                          content = "that is really annoying",
                          status = "new"};
-var newIssueResult = issues.PostIssue(newIssue);
+var newIssueResult = issuesResource.PostIssue(newIssue);
 ```
 
 SharpBucket uses a strict naming convention:
