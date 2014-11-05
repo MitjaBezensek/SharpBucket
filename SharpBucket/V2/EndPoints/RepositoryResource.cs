@@ -165,7 +165,7 @@ namespace SharpBucket.V2.EndPoints{
         /// </summary>
         /// <param name="revision">The commit's SHA1.</param>
         /// <returns></returns>
-        public object GetCommit(string revision){
+        public Commit GetCommit(string revision){
             return _repositoriesEndPoint.GetCommit(_accountName, _repository, revision);
         }
 
