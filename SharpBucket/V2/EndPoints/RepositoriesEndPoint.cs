@@ -221,14 +221,14 @@ namespace SharpBucket.V2.EndPoints{
 
         #region Commits Resource
 
-        internal object ListCommits(string accountName, string repository){
+        internal CommitInfo ListCommits(string accountName, string repository){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/");
-            return _sharpBucketV2.Get(new object(), overrideUrl);
+            return _sharpBucketV2.Get(new CommitInfo(), overrideUrl);
         }
 
-        internal object GetCommit(string accountName, string repository, string revision){
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + revision);
-            return _sharpBucketV2.Get(new object(), overrideUrl);
+        internal Commit GetCommit(string accountName, string repository, string revision){
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision);
+            return _sharpBucketV2.Get(new Commit(), overrideUrl);
         }
 
         internal List<object> ListCommitComments(string accountName, string repository, string revision){
