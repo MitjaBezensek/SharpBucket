@@ -9,5 +9,11 @@ namespace SharpBucket.Authentication{
             var generic = executeMethod.MakeGenericMethod(typeof (T));
             return (T) generic.Invoke(this, new object[]{url, method, body, client});
         }
+
+        public virtual string GetResponse(string url, Method method)
+        {
+            var executeMethod = typeof(RequestExecutor).GetMethod("ExecuteRequest2");
+            return (string)executeMethod.Invoke(this, new object[] { url, method, client });
+        }
     }
 }
