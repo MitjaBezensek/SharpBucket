@@ -5,6 +5,7 @@
         public string priority { get; set; }
         public string status { get; set; }
         public User reported_by { get; set; }
+        public User responsible { get; set; }
         public string kind { get; set; }
         public string utc_last_updated { get; set; }
         public int? comment_count { get; set; }
