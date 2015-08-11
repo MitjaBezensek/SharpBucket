@@ -221,15 +221,11 @@ namespace SharpBucket.V2.EndPoints{
 
         #region Commits Resource
 
-        internal CommitInfo ListCommits(string accountName, string repository, string branchortag = null )
-        {
+        internal CommitInfo ListCommits(string accountName, string repository, string branchortag = null ){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/");
-
-            if ( !string.IsNullOrEmpty( branchortag ))
-            {
+            if ( !string.IsNullOrEmpty( branchortag )){
                 overrideUrl += branchortag;
             }
-
             return _sharpBucketV2.Get(new CommitInfo(), overrideUrl);
         }
 
