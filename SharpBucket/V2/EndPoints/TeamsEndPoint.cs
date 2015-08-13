@@ -7,13 +7,12 @@ namespace SharpBucket.V2.EndPoints{
     /// More info:
     /// https://confluence.atlassian.com/display/BITBUCKET/teams+Endpoint
     /// </summary>
-    public class TeamsEndPoint{
-        private readonly SharpBucketV2 _sharpBucketV2;
-        private readonly string _baseUrl;
+    public class TeamsEndPoint : EndPoint {
 
         public TeamsEndPoint(SharpBucketV2 sharpBucketV2, string teamName){
             _sharpBucketV2 = sharpBucketV2;
-            _baseUrl = "teams/" + teamName + "/";
+           // _baseUrl = "teams/" + teamName + "/";
+            _baseUrl = teamName;
         }
 
         /// <summary>
@@ -58,8 +57,9 @@ namespace SharpBucket.V2.EndPoints{
         /// </summary>
         /// <returns></returns>
         public List<Repository> ListRepositories(){
-            var overrideUrl = _baseUrl + "repositories/";
-            return _sharpBucketV2.Get(new List<Repository>(), overrideUrl);
+            var overrideUrl = "repositories/" + _baseUrl + "/";// _baseUrl + "repositories/";
+
+            return GetAllValues<Repository, RepositoryInfo>(overrideUrl);
         }
     }
 }

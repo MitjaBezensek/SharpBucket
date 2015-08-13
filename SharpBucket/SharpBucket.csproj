@@ -56,6 +56,7 @@
     <Compile Include="V1\Pocos\RepositoryPrivileges.cs" />
     <Compile Include="V1\Pocos\RepositoryPrivilegesUser.cs" />
     <Compile Include="V1\Pocos\RepositorySimple.cs" />
+    <Compile Include="V2\EndPoints\EndPoint.cs" />
     <Compile Include="V2\EndPoints\PullRequestResource.cs" />
     <Compile Include="V2\EndPoints\PullRequestsResource.cs" />
     <Compile Include="V2\EndPoints\RepositoryResource.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="V2\Pocos\Parent.cs" />
     <Compile Include="V2\Pocos\Activity.cs" />
     <Compile Include="V2\Pocos\ActivityInfo.cs" />
+    <Compile Include="V2\Pocos\ResourceInfo.cs" />
     <Compile Include="V2\Pocos\Update.cs" />
     <Compile Include="V2\Pocos\Comment.cs" />
     <Compile Include="V2\Pocos\CommentsInfo.cs" />

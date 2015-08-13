@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using SharpBucket.V2.Pocos;
 using Comment = SharpBucket.V2.Pocos.Comment;
 using Repository = SharpBucket.V2.Pocos.Repository;
@@ -11,9 +12,8 @@ namespace SharpBucket.V2.EndPoints{
     /// More info:
     /// https://confluence.atlassian.com/display/BITBUCKET/repositories+Endpoint
     /// </summary>
-    public class RepositoriesEndPoint{
-        private readonly SharpBucketV2 _sharpBucketV2;
-        private readonly string _baseUrl;
+    public class RepositoriesEndPoint : EndPoint {
+
 
         #region Repositories End Point
 
@@ -31,7 +31,7 @@ namespace SharpBucket.V2.EndPoints{
         /// <returns></returns>
         public List<Repository> ListRepositories(string accountName){
             var overrideUrl = _baseUrl + accountName + "/";
-            return _sharpBucketV2.Get(new RepositoryInfo(), overrideUrl).values;
+            return GetAllValues<Repository, RepositoryInfo>(overrideUrl);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace SharpBucket.V2.EndPoints{
         /// </summary>
         /// <returns></returns>
         public List<Repository> ListPublicRepositories(){
-            return _sharpBucketV2.Get(new RepositoryInfo(), _baseUrl).values;
+            return GetAllValues<Repository, RepositoryInfo>(_baseUrl);
         }
 
         #endregion
