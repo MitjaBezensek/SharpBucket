@@ -12,6 +12,13 @@ namespace SharpBucket.Authentication{
             return result.Data;
         }
 
+        public static string ExecuteRequest2(string url, Method method, RestClient client)
+        {
+            var request = new RestRequest(url, method);
+            var result = client.Execute(request);
+            return result.Content;
+        }
+
         private static bool ShouldAddBody(Method method){
             return method == Method.PUT || method == Method.POST;
         }

@@ -79,11 +79,33 @@ namespace SharpBucket{
             return response;
         }
 
+        private string Send(Method method, string overrideUrl = null)
+        {
+            var relativeUrl = overrideUrl;
+            string response;
+            try
+            {
+                response = authenticator.GetResponse(relativeUrl, method);
+            }
+            catch (WebException ex)
+            {
+                Console.WriteLine(ex.Message);
+                response = string.Empty;
+            }
+            return response;
+        }
+
         internal T Get<T>(T body, string overrideUrl){
             return Send(body, Method.GET, overrideUrl);
         }
 
-        internal T Post<T>(T body, string overrideUrl){
+        internal string Get(string overrideUrl)
+        {
+            return Send(Method.GET, overrideUrl);
+        }
+
+        internal T Post<T>(T body, string overrideUrl)
+        {
             return Send(body, Method.POST, overrideUrl);
         }
 
