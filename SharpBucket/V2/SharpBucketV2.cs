@@ -7,8 +7,11 @@ namespace SharpBucket.V2{
     /// https://confluence.atlassian.com/display/BITBUCKET/Version+2
     /// </summary>
     public sealed class SharpBucketV2 : SharpBucket{
+
+        internal const string BITBUCKET_URL = "https://bitbucket.org/api/2.0/";
+
         public SharpBucketV2(){
-            _baseUrl = "https://bitbucket.org/api/2.0/";
+            _baseUrl = BITBUCKET_URL;
         }
 
         /// <summary>

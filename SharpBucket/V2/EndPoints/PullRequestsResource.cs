@@ -1,4 +1,5 @@
-﻿using SharpBucket.V2.Pocos;
+﻿using System.Collections.Generic;
+using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints{
    /// <summary>
@@ -23,7 +24,7 @@ namespace SharpBucket.V2.EndPoints{
       /// List all of a repository's open pull requests.
       /// </summary>
       /// <returns></returns>
-      public PullRequestsInfo ListPullRequests(){
+      public List<PullRequest> ListPullRequests(){
          return _repositoriesEndPoint.ListPullRequests(_accountName, _repository);
       }
 

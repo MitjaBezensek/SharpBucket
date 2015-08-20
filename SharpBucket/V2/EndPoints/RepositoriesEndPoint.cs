@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using SharpBucket.V2.Pocos;
 using Comment = SharpBucket.V2.Pocos.Comment;
 using Repository = SharpBucket.V2.Pocos.Repository;
@@ -14,12 +13,10 @@ namespace SharpBucket.V2.EndPoints{
     /// </summary>
     public class RepositoriesEndPoint : EndPoint {
 
-
         #region Repositories End Point
 
-        public RepositoriesEndPoint(SharpBucketV2 sharpBucketV2){
-            _sharpBucketV2 = sharpBucketV2;
-            _baseUrl = "repositories/";
+        public RepositoriesEndPoint (SharpBucketV2 sharpBucketV2)
+            : base(sharpBucketV2, "repositories/") {
         }
 
         /// <summary>
@@ -28,10 +25,11 @@ namespace SharpBucket.V2.EndPoints{
         /// Otherwise, this method returns a collection of the public repositories. 
         /// </summary>
         /// <param name="accountName">The account whose repositories you wish to get.</param>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<Repository> ListRepositories(string accountName){
+        public List<Repository> ListRepositories(string accountName, int max = 0){
             var overrideUrl = _baseUrl + accountName + "/";
-            return GetAllValues<Repository, RepositoryInfo>(overrideUrl);
+            return GetPaginatedValues<Repository>(overrideUrl, max);
         }
 
         /// <summary>
@@ -39,9 +37,10 @@ namespace SharpBucket.V2.EndPoints{
         /// Pagination only goes forward (it's not possible to navigate to previous pages) and navigation is done by following the URL for the next page.
         /// The returned repositories are ordered by creation date, oldest repositories first. Only public repositories are returned.
         /// </summary>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<Repository> ListPublicRepositories(){
-            return GetAllValues<Repository, RepositoryInfo>(_baseUrl);
+        public List<Repository> ListPublicRepositories(int max = 0){
+            return GetPaginatedValues<Repository>(_baseUrl, max);
         }
 
         #endregion
@@ -81,14 +80,14 @@ namespace SharpBucket.V2.EndPoints{
             return string.Format(format, accountName, repository, append);
         }
 
-        internal List<Watcher> ListWatchers(string accountName, string repository){
+        internal List<Watcher> ListWatchers(string accountName, string repository, int max = 0){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "watchers");
-            return _sharpBucketV2.Get(new WatcherInfo(), overrideUrl).values;
+            return GetPaginatedValues<Watcher>(overrideUrl, max);
         }
 
-        internal List<Fork> ListForks(string accountName, string repository){
+        internal List<Fork> ListForks(string accountName, string repository, int max = 0){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "forks");
-            return _sharpBucketV2.Get(new ForkInfo(), overrideUrl).values;
+            return GetPaginatedValues<Fork>(overrideUrl, max);
         }
 
         #endregion
@@ -99,9 +98,9 @@ namespace SharpBucket.V2.EndPoints{
             return new PullRequestsResource(accountName, repository, this);
         }
 
-        internal PullRequestsInfo ListPullRequests(string accountName, string repository){
+        internal List<PullRequest> ListPullRequests(string accountName, string repository, int max = 0) {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/");
-            return _sharpBucketV2.Get(new PullRequestsInfo(), overrideUrl);
+            return GetPaginatedValues<PullRequest>(overrideUrl, max);
         }
 
         internal PullRequest PostPullRequest(string accountName, string repository, PullRequest pullRequest){
@@ -114,9 +113,9 @@ namespace SharpBucket.V2.EndPoints{
             return _sharpBucketV2.Put(pullRequest, overrideUrl);
         }
 
-        internal ActivityInfo GetPullRequestLog(string accountName, string repository){
+        internal List<Activity> GetPullRequestLog(string accountName, string repository, int max = 0){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/activity/");
-            return _sharpBucketV2.Get(new ActivityInfo(), overrideUrl);
+            return GetPaginatedValues<Activity>(overrideUrl, max);
         }
 
         #endregion
@@ -128,12 +127,12 @@ namespace SharpBucket.V2.EndPoints{
             return _sharpBucketV2.Get(new PullRequest(), overrideUrl);
         }
 
-        internal CommitInfo ListPullRequestCommits(string accountName, string repository, int pullRequestId){
+        internal List<Commit> ListPullRequestCommits(string accountName, string repository, int pullRequestId, int max = 0){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/commits/");
-            return _sharpBucketV2.Get(new CommitInfo(), overrideUrl);
+            return GetPaginatedValues<Commit>(overrideUrl, max);
         }
 
-        internal PullRequestInfo ApprovePullRequest(string accountName, string repository, int pullRequestId){
+        internal PullRequestInfo ApprovePullRequest(string accountName, string repository, int pullRequestId) {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/approve/");
             return _sharpBucketV2.Post(new PullRequestInfo(), overrideUrl);
         }
@@ -148,9 +147,9 @@ namespace SharpBucket.V2.EndPoints{
             return _sharpBucketV2.Get(new Object(), overrideUrl);
         }
 
-        internal ActivityInfo GetPullRequestActivity(string accountName, string repository, int pullRequestId){
+        internal List<Activity> GetPullRequestActivity(string accountName, string repository, int pullRequestId, int max = 0) {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/activity/");
-            return _sharpBucketV2.Get(new ActivityInfo(), overrideUrl);
+            return GetPaginatedValues<Activity>(overrideUrl, max);
         }
 
         internal Merge AcceptAndMergePullRequest(string accountName, string repository, int pullRequestId){
@@ -163,9 +162,9 @@ namespace SharpBucket.V2.EndPoints{
             return _sharpBucketV2.Get(new Merge(), overrideUrl);
         }
 
-        internal object ListPullRequestComments(string accountName, string repository, int pullRequestId){
+        internal List<Comment> ListPullRequestComments(string accountName, string repository, int pullRequestId, int max = 0){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/comments/");
-            return _sharpBucketV2.Get(new ActivityInfo(), overrideUrl);
+            return GetPaginatedValues<Comment>(overrideUrl, max);
         }
 
         internal Comment GetPullRequestComment(string accountName, string repository, int pullRequestId, int commentId){
@@ -177,10 +176,9 @@ namespace SharpBucket.V2.EndPoints{
 
         #region Branch Restrictions resource
 
-        internal List<BranchRestriction> ListBranchRestrictions(string accountName, string repository){
+        internal List<BranchRestriction> ListBranchRestrictions(string accountName, string repository, int max = 0){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/");
-            var branchRestrictions = _sharpBucketV2.Get(new BranchRestrictionInfo(), overrideUrl);
-            return branchRestrictions == null ? null : branchRestrictions.values;
+            return GetPaginatedValues<BranchRestriction>(overrideUrl, max);
         }
 
         internal BranchRestriction PostBranchRestriction(string accountName, string repository, BranchRestriction restriction){
@@ -221,12 +219,12 @@ namespace SharpBucket.V2.EndPoints{
 
         #region Commits Resource
 
-        internal CommitInfo ListCommits(string accountName, string repository, string branchortag = null ){
+        internal List<Commit> ListCommits(string accountName, string repository, string branchortag = null, int max = 0){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/");
             if ( !string.IsNullOrEmpty( branchortag )){
                 overrideUrl += branchortag;
             }
-            return _sharpBucketV2.Get(new CommitInfo(), overrideUrl);
+            return GetPaginatedValues<Commit>(overrideUrl, max);
         }
 
         internal Commit GetCommit(string accountName, string repository, string revision){
@@ -234,9 +232,9 @@ namespace SharpBucket.V2.EndPoints{
             return _sharpBucketV2.Get(new Commit(), overrideUrl);
         }
 
-        internal List<object> ListCommitComments(string accountName, string repository, string revision){
+        internal List<Comment> ListCommitComments(string accountName, string repository, string revision, int max = 0){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + revision + "/comments/");
-            return _sharpBucketV2.Get(new List<object>(), overrideUrl);
+            return GetPaginatedValues<Comment>(overrideUrl, max);
         }
 
         internal object GetCommitComment(string accountName, string repository, string revision, int commentId){
