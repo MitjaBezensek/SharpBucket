@@ -156,10 +156,10 @@ namespace SharpBucket.V2.EndPoints{
         /// By default, this call returns all the commits across all branches, bookmarks, and tags. The newest commit is first. 
         /// </summary>
         /// <param name="branchortag">The branch or tag to get, for example, master or default.</param>
+        /// <param name="max">Values greater than 0 will set a maximum number of records to return. 0 or less returns all.</param>
         /// <returns></returns>
-        public object ListCommits(string branchortag = null)
-        {
-            return _repositoriesEndPoint.ListCommits(_accountName, _repository, branchortag);
+        public List<Commit> ListCommits(string branchortag = null, int max = 0) {
+            return _repositoriesEndPoint.ListCommits(_accountName, _repository, branchortag, max);
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace SharpBucket.V2.EndPoints{
         /// </summary>
         /// <param name="revision">The commit's SHA1.</param>
         /// <returns></returns>
-        public object ListCommitComments(string revision){
+        public List<Comment> ListCommitComments(string revision){
             return _repositoriesEndPoint.ListCommitComments(_accountName, _repository, revision);
         }
 

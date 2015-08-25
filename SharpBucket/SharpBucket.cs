@@ -11,6 +11,10 @@ namespace SharpBucket{
     /// </summary>
     public class SharpBucket{
         private Authenticate authenticator;
+
+        /// <summary>
+        /// The base URL exposing the BitBucket API.
+        /// </summary>
         protected string _baseUrl;
 
         /// <summary>   

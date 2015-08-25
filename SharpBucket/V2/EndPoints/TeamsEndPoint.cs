@@ -7,13 +7,10 @@ namespace SharpBucket.V2.EndPoints{
     /// More info:
     /// https://confluence.atlassian.com/display/BITBUCKET/teams+Endpoint
     /// </summary>
-    public class TeamsEndPoint{
-        private readonly SharpBucketV2 _sharpBucketV2;
-        private readonly string _baseUrl;
+    public class TeamsEndPoint : EndPoint {
 
-        public TeamsEndPoint(SharpBucketV2 sharpBucketV2, string teamName){
-            _sharpBucketV2 = sharpBucketV2;
-            _baseUrl = "teams/" + teamName + "/";
+        public TeamsEndPoint(SharpBucketV2 sharpBucketV2, string teamName)
+            : base(sharpBucketV2, "teams/" + teamName + "/") {
         }
 
         /// <summary>
@@ -26,40 +23,44 @@ namespace SharpBucket.V2.EndPoints{
         }
 
         /// <summary>
-        /// Gets the team's members. By default, this call returns the first 50 members of the team. 
+        /// Gets the team's members.
         /// </summary>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public User ListMembers(){
+        public List<Team> ListMembers(int max = 0){
             var overrideUrl = _baseUrl + "members/";
-            return _sharpBucketV2.Get(new User(), overrideUrl);
+            return GetPaginatedValues<Team>(overrideUrl, max);
         }
 
         /// <summary>
         /// Gets the list of accounts following the team.
         /// </summary>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public TeamProfile ListFollowers(){
+        public List<Team> ListFollowers(int max = 0) {
             var overrideUrl = _baseUrl + "followers/";
-            return _sharpBucketV2.Get(new TeamProfile(), overrideUrl);
+            return GetPaginatedValues<Team>(overrideUrl, max);
         }
 
         /// <summary>
-        /// Gets a list of accounts the team is following. 
+        /// Gets a list of accounts the team is following.
         /// </summary>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public TeamProfile ListFollowing(){
+        public List<Team> ListFollowing(int max = 0) {
             var overrideUrl = _baseUrl + "following/";
-            return _sharpBucketV2.Get(new TeamProfile(), overrideUrl);
+            return GetPaginatedValues<Team>(overrideUrl, max);
         }
 
         /// <summary>
         /// Gets the list of the team's repositories. 
         /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
         /// </summary>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<Repository> ListRepositories(){
+        public List<Repository> ListRepositories(int max = 0) {
             var overrideUrl = _baseUrl + "repositories/";
-            return _sharpBucketV2.Get(new List<Repository>(), overrideUrl);
+            return GetPaginatedValues<Repository>(overrideUrl, max);
         }
     }
 }

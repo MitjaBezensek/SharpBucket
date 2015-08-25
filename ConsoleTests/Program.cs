@@ -1,10 +1,17 @@
 ﻿using SharpBucket.V1;
 using SharpBucket.V1.Pocos;
 using SharpBucket.V2;
+using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Runtime.InteropServices;
 using Comment = SharpBucket.V1.Pocos.Comment;
 using Repository = SharpBucket.V2.Pocos.Repository;
 using Version = SharpBucket.V1.Pocos.Version;
+using System.Diagnostics.Contracts;
 
 namespace ConsoleTests{
     internal class Program{
@@ -56,6 +63,7 @@ namespace ConsoleTests{
             //TestUsersEndPoint(sharpBucket);
             //TestTeamsEndPoint(sharpBucket);
             TestRestRepositoriesEndPoint(sharpBucket);
+            TestV2Pagination(sharpBucket);
         }
 
         private static void ReadTestDataOauth(){
@@ -327,6 +335,49 @@ namespace ConsoleTests{
             //var PR2Comments = pullRequestEP.ListPullRequestComments();
             //var cId2 = 10;
             //var PR2Comment = pullRequestEP.GetPullRequestComment(cId2);
+        }
+
+        private static void TestV2Pagination (SharpBucketV2 sharpBucket) {
+            RepositoriesEndPoint repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
+            Contract.Assert(repositoriesEndPoint != null);
+
+            List<Repository> repositories = repositoriesEndPoint.ListRepositories("mirror");
+            Contract.Assert(repositories != null && repositories.Count > 10);
+
+            var repositoryResource = repositoriesEndPoint.RepositoryResource("mirror", "mercurial");
+            Contract.Assert(repositoryResource != null);
+
+            var testRepository = repositoryResource.GetRepository();
+            Contract.Assert(testRepository != null);
+            Contract.Assert(testRepository.name == "mercurial");
+
+            var watchers = repositoryResource.ListWatchers();
+            Contract.Assert(watchers.Count > 10);
+
+            HashSet<string> uniqueNames = new HashSet<string>();
+
+            foreach (var watcher in watchers) {
+                Contract.Assert(watcher != null);
+                string id = watcher.username + watcher.display_name;
+                Contract.Assert(!uniqueNames.Contains(id));
+                uniqueNames.Add(id);
+            }
+
+            uniqueNames.Clear();
+
+            var forks = repositoryResource.ListForks();
+            Contract.Assert(forks.Count > 10);
+
+            foreach (var fork in forks) {
+                Contract.Assert(fork != null);
+                Contract.Assert(!uniqueNames.Contains(fork.full_name));
+                uniqueNames.Add(fork.full_name);
+            }
+
+            var commits = repositoryResource.ListCommits(max: 3);
+            Contract.Assert(commits.Count == 3);
+            commits = repositoryResource.ListCommits(max: 501);
+            Contract.Assert(commits.Count == 501);
         }
     }
 }
