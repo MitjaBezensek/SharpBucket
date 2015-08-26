@@ -500,6 +500,32 @@ namespace SharpBucket.V1.EndPoints{
 
         #endregion
 
+        #region Revision Resource
+
+        /// <summary>
+        /// Lists the source files for a given revision and path.
+        /// </summary>
+        /// <param name="revision">Revision to get.</param>
+        /// <param name="path">File to get.</param>
+        /// <returns></returns>
+        public List<Revision> GetRevisionSrc(string revision, string path) {
+           var overrideUrl = _baserUrl + "src/" + revision + "/" + path;
+           return _sharpBucketV1.Get(new List<Revision>(), overrideUrl);
+        }
+
+        /// <summary>
+        /// Retrieves file contents. 
+        /// </summary>
+        /// <param name="revision">Revision to get.</param>
+        /// <param name="path">File to get.</param>
+        /// <returns></returns>
+        public String GetRevisionRaw(string revision, string path) {
+           var overrideUrl = _baserUrl + "raw/" + revision + "/" + path;
+           return _sharpBucketV1.Get(new object(), overrideUrl) as String;
+        }
+
+        #endregion
+
         #endregion
     }
 }
