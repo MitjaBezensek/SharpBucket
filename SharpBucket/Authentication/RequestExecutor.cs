@@ -9,11 +9,20 @@ namespace SharpBucket.Authentication{
                 request.AddObject(body);
             }
             var result = client.Execute<T>(request);
+            // This is a hack in order to allow this method to work for simple types as well
+            // one example of this is the GetRevisionRaw method
+            if (RequestingSimpleType<T>()){
+              return result.Content as dynamic;
+            }
             return result.Data;
         }
 
-        private static bool ShouldAddBody(Method method){
+       private static bool ShouldAddBody(Method method){
             return method == Method.PUT || method == Method.POST;
-        }
+       }
+
+       private static bool RequestingSimpleType<T>() where T : new(){
+          return typeof(T) == typeof(object);
+       }
     }
 }
