@@ -8,26 +8,28 @@ namespace SharBucketTests.V2.EndPoints{
    [TestFixture]
    internal class RepositoryResourceTests{
       private SharpBucketV2 sharpBucket;
+      private RepositoryResource repositoryResource;
+      private const string ACCOUNT_NAME = "mirror";
+      private const string REPOSITORY_NAME = "mercurial";
 
       [SetUp]
       public void Init(){
          sharpBucket = TestHelpers.GetV2ClientAuthenticatedWithBasicAuthentication();
+         var repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
+         repositoryResource = repositoriesEndPoint.RepositoryResource(ACCOUNT_NAME, REPOSITORY_NAME);
       }
 
       [Test]
       public void GetRepository_FromMercurialRepo_CorrectlyFetchesTheRepoInfo(){
-         var repositoryResource = GetRepositoryResource();
          repositoryResource.ShouldNotBe(null);
-
          var testRepository = repositoryResource.GetRepository();
          testRepository.ShouldNotBe(null);
-         testRepository.name.ShouldBe("mercurial");
+         testRepository.name.ShouldBe(REPOSITORY_NAME);
       }
 
       [Test]
       public void ListWatchers_FromMercurialRepo_ShouldReturnMoreThan10UniqueWatchers(){
-         var repositoryResource = GetRepositoryResource();
-
+         repositoryResource.ShouldNotBe(null);
          var watchers = repositoryResource.ListWatchers();
          watchers.ShouldNotBe(null);
          watchers.Count.ShouldBeGreaterThan(10);
@@ -43,8 +45,7 @@ namespace SharBucketTests.V2.EndPoints{
 
       [Test]
       public void ListForks_FromMercurialRepo_ShouldReturnMoreThan10UniqueForks(){
-         var repositoryResource = GetRepositoryResource();
-
+         repositoryResource.ShouldNotBe(null);
          var forks = repositoryResource.ListForks();
          forks.ShouldNotBe(null);
          forks.Count.ShouldBeGreaterThan(10);
@@ -61,17 +62,9 @@ namespace SharBucketTests.V2.EndPoints{
       [TestCase(501)]
       [Test]
       public void ListCommits_FromMercurialRepoWithSpecifiedMax_ShouldReturnSpecifiedNumberOfCommits(int max){
-         var repositoryResource = GetRepositoryResource();
-
+         repositoryResource.ShouldNotBe(null);
          var commits = repositoryResource.ListCommits(max: max);
          commits.Count.ShouldBe(max);
-      }
-
-      private RepositoryResource GetRepositoryResource(){
-         var repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
-
-         var repositoryResource = repositoriesEndPoint.RepositoryResource("mirror", "mercurial");
-         return repositoryResource;
       }
    }
 }
