@@ -199,23 +199,6 @@ namespace ConsoleTests{
             var privilege = privilegesEndPoint.GetPrivilegesForAccount(repository, accountName);
         }
 
-        private static void TestUsersEndPoint(SharpBucketV2 sharpBucket){
-            var usersEndPoint = sharpBucket.UsersEndPoint(accountName);
-            var profile = usersEndPoint.GetProfile();
-            var followers = usersEndPoint.ListFollowers();
-            var following = usersEndPoint.ListFollowing();
-            var repositories = usersEndPoint.ListRepositories();
-        }
-
-        private static void TestTeamsEndPoint(SharpBucketV2 sharpBucket){
-            var TEAM_NAME = "";
-            var teamsEndPoint = sharpBucket.TeamsEndPoint(TEAM_NAME);
-            var teamProfile = teamsEndPoint.GetProfile();
-            var teamMembers = teamsEndPoint.ListMembers();
-            var teamFollowers = teamsEndPoint.ListFollowers();
-            var teamFollowing = teamsEndPoint.ListFollowing();
-        }
-
         private static void TestRestRepositoriesEndPoint(SharpBucketV2 sharpBucket){
             var repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
             var repositories = repositoriesEndPoint.ListRepositories(accountName);

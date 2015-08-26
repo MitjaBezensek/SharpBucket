@@ -65,6 +65,8 @@
     <Compile Include="TestHelpers.cs" />
     <Compile Include="V2\EndPoints\RepositoriesEndPointTests.cs" />
     <Compile Include="V2\EndPoints\RepositoryResourceTests.cs" />
+    <Compile Include="V2\EndPoints\TeamsEndPointTests.cs" />
+    <Compile Include="V2\EndPoints\UsersEndPointTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
