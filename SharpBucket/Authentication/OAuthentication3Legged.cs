@@ -1,4 +1,7 @@
-﻿using RestSharp;
+﻿using System;
+using System.Diagnostics.Contracts;
+using System.Net;
+using RestSharp;
 using RestSharp.Authenticators;
 using RestSharp.Contrib;
 
@@ -33,6 +36,24 @@ namespace SharpBucket.Authentication{
         }
 
         /// <summary>
+        /// Sets the authentication tokens.
+        /// </summary>
+        /// <param name="client">The client.</param>
+        /// <exception cref="System.Net.WebException">REST client encountered an error:  + response.ErrorMessage</exception>
+        private void SetAuthTokens(IRestClient client) {
+            var request = new RestRequest(requestUrl, Method.POST);
+            var response = client.Execute(request);
+
+            if (response.ErrorException != null) {
+                throw new WebException("REST client encountered an error: " + response.ErrorMessage, response.ErrorException);
+            }
+
+            var qs = HttpUtility.ParseQueryString(response.Content);
+            OAuthToken = qs["oauth_token"];
+            OauthTokenSecret = qs["oauth_token_secret"];
+        }
+
+        /// <summary>
         /// Start the OAuth authentication process.
         /// The method returns the the URL where the user can authorize your application to act on his/her behalf.
         /// More info:
@@ -40,15 +61,18 @@ namespace SharpBucket.Authentication{
         /// </summary>
         /// <returns></returns>
         public string StartAuthentication(){
-            var restClient = new RestClient(_baseUrl){Authenticator = OAuth1Authenticator.ForRequestToken(ConsumerKey, ConsumerSecret, callback)};
-            var request = new RestRequest(requestUrl, Method.POST);
-            var response = restClient.Execute(request);
+            var restClient = new RestClient(_baseUrl){
+                Authenticator = OAuth1Authenticator.ForRequestToken(ConsumerKey, ConsumerSecret, callback)
+            };
 
-            var qs = HttpUtility.ParseQueryString(response.Content);
-            OAuthToken = qs["oauth_token"];
-            OauthTokenSecret = qs["oauth_token_secret"];
-            request = new RestRequest(userAuthorizeUrl);
+            SetAuthTokens(restClient);
+
+            Contract.Assert(!String.IsNullOrWhiteSpace(OAuthToken) &&
+                            !String.IsNullOrWhiteSpace(OauthTokenSecret));
+
+            var request = new RestRequest(userAuthorizeUrl);
             request.AddParameter("oauth_token", OAuthToken);
+
             return restClient.BuildUri(request).ToString();
         }
 
@@ -59,14 +83,14 @@ namespace SharpBucket.Authentication{
         /// </summary>
         /// <param name="pin">The pin / verifier that was obtained in the previous step.</param>
         public void AuthenticateWithPin(string pin){
-            var request = new RestRequest(accessUrl, Method.POST);
             var restClient = new RestClient(_baseUrl){
                 Authenticator = OAuth1Authenticator.ForAccessToken(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret, pin)
             };
-            var response = restClient.Execute(request);
-            var qs = HttpUtility.ParseQueryString(response.Content);
-            OAuthToken = qs["oauth_token"];
-            OauthTokenSecret = qs["oauth_token_secret"];
+
+            SetAuthTokens(restClient);
+
+            Contract.Assert(!String.IsNullOrWhiteSpace(OAuthToken) &&
+                            !String.IsNullOrWhiteSpace(OauthTokenSecret));
         }
     }
 }
