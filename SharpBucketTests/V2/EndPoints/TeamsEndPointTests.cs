@@ -27,7 +27,7 @@ namespace SharBucketTests.V2.EndPoints {
       public void ListMembers_FromTeamAtlassian_ShouldReturnManyMembers(){
          teamsEndPoint.ShouldNotBe(null);
          var members = teamsEndPoint.ListMembers(35);
-         members.Count.ShouldBe(35);
+         members.Count.ShouldBeGreaterThan(19);
          members[0].display_name.ShouldBe("Steve Streeting");
       }
 
