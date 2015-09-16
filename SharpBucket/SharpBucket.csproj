@@ -31,6 +31,7 @@
     <DocumentationFile>bin\Release\SharpBucket.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -56,6 +57,7 @@
     <Compile Include="V1\Pocos\RepositoryPrivileges.cs" />
     <Compile Include="V1\Pocos\RepositoryPrivilegesUser.cs" />
     <Compile Include="V1\Pocos\RepositorySimple.cs" />
+    <Compile Include="V1\Pocos\Revision.cs" />
     <Compile Include="V2\EndPoints\EndPoint.cs" />
     <Compile Include="V2\EndPoints\PullRequestResource.cs" />
     <Compile Include="V2\EndPoints\PullRequestsResource.cs" />
