@@ -11,7 +11,7 @@
         public bool? has_issues { get; set; }
         public Owner owner { get; set; }
         public string updated_on { get; set; }
-        public int? size { get; set; }
+        public ulong? size { get; set; }
         public bool? is_private { get; set; }
         public string name { get; set; }
     }

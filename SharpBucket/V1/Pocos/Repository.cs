@@ -9,7 +9,7 @@
         public string logo { get; set; }
         public string email_mailinglist { get; set; }
         public bool? is_mq { get; set; }
-        public int? size { get; set; }
+        public ulong? size { get; set; }
         public bool? read_only { get; set; }
         public object fork_of { get; set; }
         public object mq_of { get; set; }
