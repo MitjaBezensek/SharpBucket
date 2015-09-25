@@ -9,6 +9,6 @@ namespace SharpBucket.V2.Pocos {
         public int? pagelen { get; set; }
         public string next { get; set; }
         public List<T> values { get; set; }
-        public int? size { get; set; }
+        public ulong? size { get; set; }
     }
 }
