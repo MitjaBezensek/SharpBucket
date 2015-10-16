@@ -47,7 +47,9 @@
     <Compile Include="Authentication\OauthAuthentication.cs" />
     <Compile Include="Authentication\OAuthentication2Legged.cs" />
     <Compile Include="Authentication\OAuthentication3Legged.cs" />
+    <Compile Include="Authentication\OAuthentication2.cs" />
     <Compile Include="Authentication\RequestExecutor.cs" />
+    <Compile Include="Authentication\Token.cs" />
     <Compile Include="V1\EndPoints\IssueResource.cs" />
     <Compile Include="V1\EndPoints\PrivilegesEndPoint.cs" />
     <Compile Include="V1\Pocos\Followers.cs" />
@@ -139,7 +141,9 @@
     <Compile Include="V1\SharpBucketV1.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="SharpBucket.nuspec">
       <SubType>Designer</SubType>
     </None>

@@ -50,7 +50,8 @@ namespace SharpBucket{
         /// <param name="consumerSecretKey">Your consumer secret API key also obtained from the BitBucket web page.</param>
         /// <param name="callback">Callback URL to which BitBucket will send the pin.</param>
         /// <returns></returns>
-        public OAuthentication3Legged OAuth3LeggedAuthentication(string consumerKey, string consumerSecretKey, string callback = "oob"){
+        public OAuthentication3Legged OAuth3LeggedAuthentication(string consumerKey, string consumerSecretKey,
+            string callback = "oob"){
             authenticator = new OAuthentication3Legged(consumerKey, consumerSecretKey, callback, _baseUrl);
             return (OAuthentication3Legged) authenticator;
         }
@@ -65,9 +66,23 @@ namespace SharpBucket{
         /// <param name="oauthToken">Your OAuth token that was obtained on a previous session.</param>
         /// <param name="oauthTokenSecret">Your OAuth secret token thata was obtained on a previous session.</param>
         /// <returns></returns>
-        public OAuthentication3Legged OAuth3LeggedAuthentication(string consumerKey, string consumerSecretKey, string oauthToken, string oauthTokenSecret){
-            authenticator = new OAuthentication3Legged(consumerKey, consumerSecretKey, oauthToken, oauthTokenSecret, _baseUrl);
+        public OAuthentication3Legged OAuth3LeggedAuthentication(string consumerKey, string consumerSecretKey,
+            string oauthToken, string oauthTokenSecret){
+            authenticator = new OAuthentication3Legged(consumerKey, consumerSecretKey, oauthToken, oauthTokenSecret,
+                _baseUrl);
             return (OAuthentication3Legged) authenticator;
+        }
+
+        /// <summary>
+        /// Use Oauth2 authentication. This is the neweset version and is prefered.
+        /// </summary>
+        /// <param name="consumerKey"></param>
+        /// <param name="consumerSecretKey"></param>
+        /// <returns></returns>
+        public OAuthentication2 OAuthentication2(string consumerKey, string consumerSecretKey){
+            authenticator = new OAuthentication2(consumerKey, consumerSecretKey, _baseUrl);
+            ((OAuthentication2) authenticator).GetToken();
+            return (OAuthentication2) authenticator;
         }
 
         private T Send<T>(T body, Method method, string overrideUrl = null){

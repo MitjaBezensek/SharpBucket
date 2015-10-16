@@ -14,7 +14,7 @@ namespace SharBucketTests.V2.EndPoints{
 
       [SetUp]
       public void Init(){
-         sharpBucket = TestHelpers.GetV2ClientAuthenticatedWithBasicAuthentication();
+         sharpBucket = TestHelpers.GetV2ClientAuthenticatedWithOAuth2();
          var repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
          repositoryResource = repositoriesEndPoint.RepositoryResource(ACCOUNT_NAME, REPOSITORY_NAME);
       }
@@ -59,7 +59,7 @@ namespace SharBucketTests.V2.EndPoints{
       }
 
       [TestCase(3)]
-      [TestCase(501)]
+      [TestCase(103)]
       [Test]
       public void ListCommits_FromMercurialRepoWithSpecifiedMax_ShouldReturnSpecifiedNumberOfCommits(int max){
          repositoryResource.ShouldNotBe(null);

@@ -11,7 +11,7 @@ namespace SharBucketTests.V2.EndPoints{
 
       [SetUp]
       public void Init(){
-         sharpBucket = TestHelpers.GetV2ClientAuthenticatedWithBasicAuthentication();
+         sharpBucket = TestHelpers.GetV2ClientAuthenticatedWithOAuth2(); 
          repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
       }
 
