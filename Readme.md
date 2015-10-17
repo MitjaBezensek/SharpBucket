@@ -96,11 +96,7 @@ var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumer
 While a complete coverage of the API is preferred SharpBucket currently does not support everything yet. But the main functionality is [covered](https://github.com/MitjaBezensek/SharpBucket/blob/master/Coverage.md) and the rest should also get covered sooner or later.
 
 ## Contributing
-Contributions are always welcome. You can check the issues or look which api calls [are still missing](https://github.com/MitjaBezensek/SharpBucket/blob/master/Coverage.md). A few topics that still need to be covered:
-- V2 of the api
-- async calls?
-- paging
-- logo!
+Contributions are always welcome! [Here is some short information](https://github.com/MitjaBezensek/SharpBucket/blob/master/Contribution.md) about how and where to get started.
 
 ## Continuous Integration from AppVeyor
 The project is using [AppVeyor's](http://www.appveyor.com/) Continuous Integration
