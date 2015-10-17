@@ -1,5 +1,5 @@
 # SharpBucket
-SharpBucket is a .Net wrapper for the BitBucket's REST API. It is written in in C#. With it you can have all the data of your repositories / issues at your fingertips.
+SharpBucket is a .Net wrapper for the Bitbucket's REST API. It is written in in C#. With it you can have all the data of your repositories / issues at your fingertips.
 
 ## How to get started
 ### Installation
@@ -12,7 +12,7 @@ See the [Console Test Project][1] to see how to use the wrapper. Here's just a b
 
 First lets set your entry point to the API
 ```CSharp
-// your main entry to the BitBucket API, this one is for V1
+// your main entry to the Bitbucket API, this one is for V1
 var sharpBucket = new SharpBucketV1();
 // authenticate with OAuth keys
 sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
@@ -22,7 +22,7 @@ There are various end points you can use. Lets take a look at User end point:
 ```CSharp
 // getting the User end point
 var userEndPoint = sharpBucket.UserEndPoint();
-// querying the BitBucket API for various info
+// querying the Bitbucket API for various info
 var info = userEndPoint.GetInfo();
 var privileges = userEndPoint.ListPrivileges();
 var follows = userEndPoint.ListFollows();
@@ -58,7 +58,7 @@ SharpBucket uses a strict naming convention:
 ## Authentication
 There are two ways you can authenticate with SharpBucket
 - via the Oauth 1.0a, which is preferred
-- via BitBucket's username and password
+- via Bitbucket's username and password
 
 Here is how you can use them:
 ### Basic authentication
@@ -75,7 +75,7 @@ With OAuth you can choose between [2 legged and 3 legged authentication](http://
 // authenticate with OAuth keys
 sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
 ```
-**The three legged** one requires an additional step for getting the pin / verifier from the BitBucket. If you dont supply a callback url (or use "oob") you will get a BitBucket's url that will promt your user to allow access for your application and supply you with the pin / verifier. Here is a simple example of how you could manually copy paste the pin from the browser:
+**The three legged** one requires an additional step for getting the pin / verifier from the Bitbucket. If you dont supply a callback url (or use "oob") you will get a Bitbucket's url that will promt your user to allow access for your application and supply you with the pin / verifier. Here is a simple example of how you could manually copy paste the pin from the browser:
 ```CSharp
 var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oob");
 var uri = authenticator.StartAuthentication();
@@ -84,7 +84,7 @@ var pin = Console.ReadLine();
 // we can now do the final step by using the pin to get our access tokens
 authenticator.AuthenticateWithPin(pin);
 ```
-If you had a server waiting from BitBucket's response, you would simply use your server's url as the callback and then wait for BitBucket to send you the pin to that address.
+If you had a server waiting from Bitbucket's response, you would simply use your server's url as the callback and then wait for Bitbucket to send you the pin to that address.
 
 If you already have the tokens you can simply skip the authentication process:
 ```CSharp
