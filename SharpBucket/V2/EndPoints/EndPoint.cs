@@ -2,7 +2,6 @@ using SharpBucket.V2.Pocos;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net;
 
 namespace SharpBucket.V2.EndPoints {
     public class EndPoint {
@@ -23,22 +22,21 @@ namespace SharpBucket.V2.EndPoints {
         /// <param name="overrideUrl"></param>
         /// <param name="pageLen"></param>
         /// <returns></returns>
-        protected IEnumerable<List<TValue>> IteratePages<TValue>(string overrideUrl, int pageLen = DEFAULT_PAGE_LEN) {
+        private IEnumerable<List<TValue>> IteratePages<TValue>(string overrideUrl, int pageLen = DEFAULT_PAGE_LEN) {
             Debug.Assert(!String.IsNullOrEmpty(overrideUrl));
             Debug.Assert(!overrideUrl.Contains("?"));
 
-            overrideUrl += "?pagelen=" + pageLen;
-
-            IteratorBasedPage<TValue> response = null;
-
+            var requestParameters = new Dictionary<string, object> {{"pagelen", pageLen}};
+            IteratorBasedPage<TValue> response;
+            int page = 1;
             do {
-                response = _sharpBucketV2.Get(new IteratorBasedPage<TValue>(), overrideUrl.Replace(SharpBucketV2.BITBUCKET_URL, ""));
+                response = _sharpBucketV2.Get(new IteratorBasedPage<TValue>(), overrideUrl.Replace(SharpBucketV2.BITBUCKET_URL, ""), requestParameters);
                 if (response == null) { break; }
 
                 yield return response.values;
-
-                overrideUrl = response.next;
-            } while (!String.IsNullOrEmpty(overrideUrl));
+                
+                requestParameters["page"] = ++page;
+            } while (!String.IsNullOrEmpty(response.next));
         }
 
         /// <summary>

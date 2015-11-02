@@ -1,10 +1,16 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using RestSharp;
 
 namespace SharpBucket.Authentication{
     internal class RequestExecutor{
-        public static T ExecuteRequest<T>(string url, Method method, T body, RestClient client) where T : new(){
+        public static T ExecuteRequest<T>(string url, Method method, T body, RestClient client, Dictionary<string, object> requestParameters) where T : new(){
             var request = new RestRequest(url, method);
+            if (requestParameters != null){
+                foreach (var requestParameter in requestParameters){
+                    request.AddParameter(requestParameter.Key, requestParameter.Value);
+                }
+            }
             if (ShouldAddBody(method)){
                 request.RequestFormat = DataFormat.Json;
                 request.AddObject(body);

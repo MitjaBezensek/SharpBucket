@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using RestSharp;
 using SharpBucket.Authentication;
@@ -85,11 +86,11 @@ namespace SharpBucket{
             return (OAuthentication2) authenticator;
         }
 
-        private T Send<T>(T body, Method method, string overrideUrl = null){
+        private T Send<T>(T body, Method method, string overrideUrl = null, Dictionary<string, object> requestParameters = null) {
             var relativeUrl = overrideUrl;
             T response;
             try{
-                response = authenticator.GetResponse(relativeUrl, method, body);
+                response = authenticator.GetResponse(relativeUrl, method, body, requestParameters);
             }
             catch (WebException ex){
                 Console.WriteLine(ex.Message);
@@ -98,8 +99,8 @@ namespace SharpBucket{
             return response;
         }
 
-        internal T Get<T>(T body, string overrideUrl){
-            return Send(body, Method.GET, overrideUrl);
+        internal T Get<T>(T body, string overrideUrl, Dictionary<string, object> requestParameters = null){
+            return Send(body, Method.GET, overrideUrl, requestParameters);
         }
 
         internal T Post<T>(T body, string overrideUrl){
