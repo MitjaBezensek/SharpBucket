@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace SharpBucket.V2.Pocos{
+﻿namespace SharpBucket.V2.Pocos{
     public class CommitInfo : IteratorBasedPage<Commit> {
     }
 }
