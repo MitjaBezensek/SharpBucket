@@ -43,6 +43,19 @@ namespace SharpBucket.V2.EndPoints{
             return GetPaginatedValues<Repository>(_baseUrl, max);
         }
 
+        /// <summary>
+        /// Create repository under the provided accountName
+        /// </summary>
+        /// <param name="accountName">The owner of the repository.</param>
+        /// <param name="repository">The repository slug.</param>
+        /// <param name="configuration">Configuration parameters for repository creation. If not supplied, <see href="https://confluence.atlassian.com/bitbucket/repository-resource-423626331.html">defaults</see> are used</param>
+        /// <returns></returns>
+        public RepositoryResource CreateRepository(string accountName, string repository, RepositoryCreationParameters configuration = null)
+        {
+            PostRepository(accountName, repository, configuration ?? new RepositoryCreationParameters());
+            return new RepositoryResource(accountName, repository, this);
+        }
+
         #endregion
 
         #region Repository resource
@@ -80,6 +93,11 @@ namespace SharpBucket.V2.EndPoints{
             return string.Format(format, accountName, repository, append);
         }
 
+        private string GetRepositoryUrl(string accountName, string repository){
+            var format = _baseUrl + "{0}/{1}";
+            return string.Format(format, accountName, repository);
+        }
+
         internal List<Watcher> ListWatchers(string accountName, string repository, int max = 0){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "watchers");
             return GetPaginatedValues<Watcher>(overrideUrl, max);
@@ -88,6 +106,11 @@ namespace SharpBucket.V2.EndPoints{
         internal List<Fork> ListForks(string accountName, string repository, int max = 0){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "forks");
             return GetPaginatedValues<Fork>(overrideUrl, max);
+        }
+
+        internal RepositoryCreationParameters PostRepository(string accountName, string repository, RepositoryCreationParameters configuration){
+            var overrideUrl = GetRepositoryUrl(accountName, repository);
+            return _sharpBucketV2.Post(configuration, overrideUrl);
         }
 
         #endregion
