@@ -99,12 +99,29 @@ namespace SharpBucket{
             return response;
         }
 
+        private T SendAndExamine<T>(T body, Method method, string overrideUrl = null, Dictionary<string, object> requestParameters = null, Action<IRestResponseExaminer> onResponse = null){
+            var relativeUrl = overrideUrl;
+            T response;
+            try {
+                response = authenticator.GetAndExamineResponse(relativeUrl, method, body, requestParameters, onResponse);
+            }
+            catch (WebException ex){
+                Console.WriteLine(ex.Message);
+                response = default(T);
+            }
+            return response;
+        }
+
         internal T Get<T>(T body, string overrideUrl, Dictionary<string, object> requestParameters = null){
             return Send(body, Method.GET, overrideUrl, requestParameters);
         }
 
         internal T Post<T>(T body, string overrideUrl){
             return Send(body, Method.POST, overrideUrl);
+        }
+
+        internal T PostAndExamine<T>(T body, string overrideUrl, Action<IRestResponseExaminer> onResponse){
+            return SendAndExamine(body, Method.POST, overrideUrl, onResponse: onResponse);
         }
 
         internal T Put<T>(T body, string overrideUrl){

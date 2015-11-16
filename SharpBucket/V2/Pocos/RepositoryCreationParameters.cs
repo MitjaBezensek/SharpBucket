@@ -1,7 +1,6 @@
 ﻿namespace SharpBucket.V2.Pocos
 {
-    public class RepositoryCreationParameters
-    {
+    public class RepositoryCreationParameters {
         public string scm { get; set; }
         public string name { get; set; }
         public bool is_private { get; set; }

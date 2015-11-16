@@ -44,11 +44,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\BasicAuthentication.cs" />
+    <Compile Include="Authentication\IRestResponseExaminer.cs" />
     <Compile Include="Authentication\OauthAuthentication.cs" />
     <Compile Include="Authentication\OAuthentication2Legged.cs" />
     <Compile Include="Authentication\OAuthentication3Legged.cs" />
     <Compile Include="Authentication\OAuthentication2.cs" />
     <Compile Include="Authentication\RequestExecutor.cs" />
+    <Compile Include="Authentication\ResponseExaminer.cs" />
+    <Compile Include="Authentication\RestClientRestResponseExaminer.cs" />
     <Compile Include="Authentication\Token.cs" />
     <Compile Include="V1\EndPoints\IssueResource.cs" />
     <Compile Include="V1\EndPoints\PrivilegesEndPoint.cs" />

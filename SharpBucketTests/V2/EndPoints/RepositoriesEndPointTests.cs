@@ -34,14 +34,13 @@ namespace SharBucketTests.V2.EndPoints{
       }
         
         [Test]
-        public void PostRepository_CreatesAndReturns_Repository()
-        {
-            var repositoryToCreate = Guid.NewGuid().ToString().Replace("-", string.Empty);
-            var repositoryResource = repositoriesEndPoint.CreateRepository(ACCOUNT_NAME, repositoryToCreate);
-            var repositoryFromSut = repositoryResource.GetRepository();
-            repositoryFromSut.name.ShouldBe(repositoryToCreate);
+      public void PostRepository_CreatesAndReturns_Repository(){
+        var repositoryToCreate = Guid.NewGuid().ToString().Replace("-", string.Empty);
+        var repositoryResource = repositoriesEndPoint.CreateRepository(ACCOUNT_NAME, repositoryToCreate);
+        var repositoryFromSut = repositoryResource.GetRepository();
+        repositoryFromSut.name.ShouldBe(repositoryToCreate);
 
-            TestHelpers.SwallowException(() => repositoryResource.DeleteRepository());
-        }        
+        TestHelpers.SwallowException(() => repositoryResource.DeleteRepository());
+      }        
     }
 }

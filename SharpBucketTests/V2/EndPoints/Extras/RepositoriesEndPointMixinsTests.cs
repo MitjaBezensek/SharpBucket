@@ -18,11 +18,19 @@ namespace SharBucketTests.V2.EndPoints.Extras{
          repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
       }
 
-      [Test]
+        [Test]
+        public void CreatingRepositoryWithoutSufficientRightsThrows(){
+            var repositoryToCreate = Guid.NewGuid().ToString().Replace("-", string.Empty);
+
+            Assert.Throws<InvalidOperationException>(() => {                
+                    repositoriesEndPoint.CreateRepository("tutorials", repositoryToCreate);
+            });
+        }
+
+        [Test]
       public void CanCreatePrivateNonForkableCSharpRepository(){
          var repositoryToCreate = Guid.NewGuid().ToString().Replace("-", string.Empty);
-          var repositoryResource = repositoriesEndPoint.CreateRepository(ACCOUNT_NAME, repositoryToCreate, c =>
-          {
+          var repositoryResource = repositoriesEndPoint.CreateRepository(ACCOUNT_NAME, repositoryToCreate, c =>{
               c.MakePrivate();
               c.SetLanguage("c#");
               c.SetForkPolicy(ForkWord.NoForks);
