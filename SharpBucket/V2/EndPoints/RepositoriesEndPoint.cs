@@ -70,6 +70,12 @@ namespace SharpBucket.V2.EndPoints{
             return _sharpBucketV2.Put(repo, overrideUrl);
         }
 
+        internal Repository PostRepository(Repository repo, string accountName){
+            var overrideUrl = GetRepositoryUrl(accountName, repo.name, null);
+            return _sharpBucketV2.Post(repo, overrideUrl);
+        }
+        
+
         internal Repository DeleteRepository(string accountName, string repository){
             var overrideUrl = GetRepositoryUrl(accountName, repository, null);
             return _sharpBucketV2.Delete(new Repository(), overrideUrl);

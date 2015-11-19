@@ -38,6 +38,10 @@ namespace SharpBucket.V2.EndPoints{
             return _repositoriesEndPoint.DeleteRepository(_accountName, _repository);
         }
 
+        public Repository PostRepository(Repository repository){
+            return _repositoriesEndPoint.PostRepository(repository, _accountName);
+        }
+
         /// <summary>
         /// Gets the list of accounts watching a repository. 
         /// </summary>
