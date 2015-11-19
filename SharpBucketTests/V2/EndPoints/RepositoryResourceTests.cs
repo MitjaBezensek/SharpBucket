@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
+using SharpBucket.V2.Pocos;
 using Shouldly;
 
 namespace SharBucketTests.V2.EndPoints{
@@ -9,13 +11,14 @@ namespace SharBucketTests.V2.EndPoints{
    internal class RepositoryResourceTests{
       private SharpBucketV2 sharpBucket;
       private RepositoryResource repositoryResource;
+      private RepositoriesEndPoint repositoriesEndPoint;
       private const string ACCOUNT_NAME = "mirror";
       private const string REPOSITORY_NAME = "mercurial";
 
       [SetUp]
       public void Init(){
          sharpBucket = TestHelpers.GetV2ClientAuthenticatedWithOAuth();
-         var repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
+         repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
          repositoryResource = repositoriesEndPoint.RepositoryResource(ACCOUNT_NAME, REPOSITORY_NAME);
       }
 
@@ -65,6 +68,25 @@ namespace SharBucketTests.V2.EndPoints{
          repositoryResource.ShouldNotBe(null);
          var commits = repositoryResource.ListCommits(max: max);
          commits.Count.ShouldBe(max);
+      }
+
+      [Test]
+      public void CreatRepository_NewPublicRepoistory_CorrectlyCreatesTheRepository(){
+         var accountName = Environment.GetEnvironmentVariable("SB_ACCOUNT_NAME");
+         var repositoryName = Guid.NewGuid().ToString().Replace("-", string.Empty);
+         var repositoryResource = repositoriesEndPoint.RepositoryResource(accountName, repositoryName);
+          var repository = new Repository{
+              name = repositoryName,
+              language = "c#",
+              scm = "git"
+          };
+
+         var repositoryFromSut = repositoryResource.PostRepository(repository);
+
+         var createdRepo = repositoryResource.GetRepository();
+         createdRepo.name.ShouldBe(repositoryName);
+         createdRepo.scm.ShouldBe("git");
+         repositoryResource.DeleteRepository();
       }
    }
 }
