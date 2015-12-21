@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Net;
 using RestSharp;
 using RestSharp.Authenticators;
-using RestSharp.Contrib;
+using RestSharp.Extensions.MonoHttp;
 
 namespace SharpBucket.Authentication{
     /// <summary>
