@@ -20,3 +20,5 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 *sln.dotsettings
+/packages/
+!packages/repositories.config
