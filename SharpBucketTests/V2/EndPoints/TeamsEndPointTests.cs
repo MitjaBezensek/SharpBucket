@@ -37,7 +37,7 @@ namespace SharBucketTests.V2.EndPoints {
          teamsEndPoint.ShouldNotBe(null);
          var followers = teamsEndPoint.ListFollowers(8);
          followers.Count.ShouldBe(8);
-         followers[0].display_name.ShouldBe("Hector Miuler Malpica Gallegos");
+         followers[0].display_name.ShouldBe("Hector Malpica");
       }
    }
 }
