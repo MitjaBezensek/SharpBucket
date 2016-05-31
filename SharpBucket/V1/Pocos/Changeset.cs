@@ -12,6 +12,6 @@ namespace SharpBucket.V1.Pocos{
         public string branch { get; set; }
         public string message { get; set; }
         public object revision { get; set; }
-        public ulong? size { get; set; }
+        public long? size { get; set; }
     }
 }
