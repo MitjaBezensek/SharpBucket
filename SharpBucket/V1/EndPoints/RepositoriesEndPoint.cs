@@ -508,9 +508,9 @@ namespace SharpBucket.V1.EndPoints{
         /// <param name="revision">Revision to get.</param>
         /// <param name="path">File to get.</param>
         /// <returns></returns>
-        public List<Revision> GetRevisionSrc(string revision, string path) {
+        public Revision GetRevisionSrc(string revision, string path) {
            var overrideUrl = _baserUrl + "src/" + revision + "/" + path;
-           return _sharpBucketV1.Get(new List<Revision>(), overrideUrl);
+           return _sharpBucketV1.Get(new Revision(), overrideUrl);
         }
 
         /// <summary>
@@ -523,6 +523,13 @@ namespace SharpBucket.V1.EndPoints{
            var overrideUrl = _baserUrl + "raw/" + revision + "/" + path;
            return _sharpBucketV1.Get(new object(), overrideUrl) as String;
         }
+
+        public Repository GetDetails()
+        {
+            return _sharpBucketV1.Get(new Repository(), _baserUrl) as Repository;
+
+        }
+
 
         #endregion
 

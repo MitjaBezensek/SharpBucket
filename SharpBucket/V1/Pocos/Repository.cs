@@ -4,6 +4,7 @@
         public bool? has_wiki { get; set; }
         public string last_updated { get; set; }
         public bool? no_forks { get; set; }
+        public int fork_count { get; set; }
         public string created_on { get; set; }
         public string owner { get; set; }
         public string logo { get; set; }
@@ -28,5 +29,6 @@
         public bool? no_public_forks { get; set; }
         public object creator { get; set; }
         public string resource_uri { get; set; }
+        public int followers_count { get; set; }
     }
 }

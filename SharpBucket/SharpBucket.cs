@@ -86,32 +86,37 @@ namespace SharpBucket{
             return (OAuthentication2) authenticator;
         }
 
-        private T Send<T>(T body, Method method, string overrideUrl = null, Dictionary<string, object> requestParameters = null) {
+        private T Send<T>(T body, Method method, string overrideUrl = null, Dictionary<string, object> requestParameters = null) where T : new()
+        {
             var relativeUrl = overrideUrl;
-            T response;
-            try{
-                response = authenticator.GetResponse(relativeUrl, method, body, requestParameters);
+            try
+            {
+                return authenticator.GetResponse(relativeUrl, method, body, requestParameters);
             }
-            catch (WebException ex){
+            catch (WebException ex)
+            {
                 Console.WriteLine(ex.Message);
-                response = default(T);
+                throw;
             }
-            return response;
         }
 
-        internal T Get<T>(T body, string overrideUrl, Dictionary<string, object> requestParameters = null){
+        internal T Get<T>(T body, string overrideUrl, Dictionary<string, object> requestParameters = null) where T : new()
+        {
             return Send(body, Method.GET, overrideUrl, requestParameters);
         }
 
-        internal T Post<T>(T body, string overrideUrl){
+        internal T Post<T>(T body, string overrideUrl) where T : new()
+        {
             return Send(body, Method.POST, overrideUrl);
         }
 
-        internal T Put<T>(T body, string overrideUrl){
+        internal T Put<T>(T body, string overrideUrl) where T : new()
+        {
             return Send(body, Method.PUT, overrideUrl);
         }
 
-        internal T Delete<T>(T body, string overrideUrl){
+        internal T Delete<T>(T body, string overrideUrl) where T : new()
+        {
             return Send(body, Method.DELETE, overrideUrl);
         }
     }

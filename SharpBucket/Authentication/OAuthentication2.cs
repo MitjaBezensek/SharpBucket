@@ -25,6 +25,7 @@ namespace SharpBucket.Authentication {
             client = new RestClient (_baseUrl) {
                 Authenticator = new OAuth2AuthorizationRequestHeaderAuthenticator(_token, TokenType)
             };
+            client.AddHandler("text/plain", new PlainTextSerializationStrategy());
         }
     }
 }
