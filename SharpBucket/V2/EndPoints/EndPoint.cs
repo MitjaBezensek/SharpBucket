@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace SharpBucket.V2.EndPoints {
     public class EndPoint {
         // vanilla page length in many cases is 10, requiring lots of requests for larger collections
-        private const int DEFAULT_PAGE_LEN = 100;
+        private const int DEFAULT_PAGE_LEN = 50;
         protected readonly SharpBucketV2 _sharpBucketV2;
         protected readonly string _baseUrl;
 
