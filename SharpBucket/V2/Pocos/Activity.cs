@@ -3,5 +3,6 @@
         public Update update { get; set; }
         public PullRequest pull_request { get; set; }
         public Comment comment { get; set; }
+        public Approval approval { get; set; }
     }
 }

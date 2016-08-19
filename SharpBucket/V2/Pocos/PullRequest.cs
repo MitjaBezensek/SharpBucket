@@ -1,4 +1,6 @@
-﻿namespace SharpBucket.V2.Pocos{
+﻿using System.Collections.Generic;
+
+namespace SharpBucket.V2.Pocos{
     public class PullRequest {
         public string description { get; set; }
         public Links links { get; set; }
@@ -14,5 +16,6 @@
         public string updated_on { get; set; }
         public object merge_commit { get; set; }
         public int? id { get; set; }
+        public List<UserShort> reviewers { get; set; }
     }
 }
