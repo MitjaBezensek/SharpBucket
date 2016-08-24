@@ -147,5 +147,5 @@ It is quite limited compared to the API v1. So it has been postponed for later.
   [26]: https://confluence.atlassian.com/display/BITBUCKET/invitations+Endpoint
   [27]: https://confluence.atlassian.com/display/BITBUCKET/Version+2
   [28]: https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket
-  [29]: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/default-reviewers
+  [29]: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/default-reviewers/%7Btarget_username%7D
   
