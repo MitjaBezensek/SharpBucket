@@ -226,6 +226,9 @@ namespace ConsoleTests{
             var commitApproval = repositoryResource.ApproveCommit(commitId);
             var deleteApproval = repositoryResource.DeleteCommitApproval(commitId);
 
+            var targetUsername = "";
+            var defaultReviewer = repositoryResource.PutDefaultReviewer(targetUsername);
+
             var r = repositoriesEndPoint.RepositoryResource(accountName, repository);
             var dr = r.DeleteRepository();
             var w = r.ListWatchers();

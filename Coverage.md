@@ -94,6 +94,9 @@
 - POST a new page  **(seems bugged)**
 - PUT a page update  **(seems bugged)**
 
+### [Default-Reviewers Resource][29]
+- PUT a default reviewer onto a repository
+
 ## [User endpoint][22] 
 - GET a user profile **(done)**
 - Update a user **(missing)**
@@ -144,3 +147,5 @@ It is quite limited compared to the API v1. So it has been postponed for later.
   [26]: https://confluence.atlassian.com/display/BITBUCKET/invitations+Endpoint
   [27]: https://confluence.atlassian.com/display/BITBUCKET/Version+2
   [28]: https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket
+  [29]: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/default-reviewers
+  

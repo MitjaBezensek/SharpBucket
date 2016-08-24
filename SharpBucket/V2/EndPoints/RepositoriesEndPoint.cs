@@ -259,5 +259,13 @@ namespace SharpBucket.V2.EndPoints{
         }
 
         #endregion
+
+        #region Default Reviewer Resource
+
+        internal object PutDefaultReviewer(string accountName, string repository, string targetUsername){ 
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "default-reviewers/" + targetUsername);
+            return _sharpBucketV2.Put(new object(), overrideUrl);
+        }
+
+        #endregion
     }
-}

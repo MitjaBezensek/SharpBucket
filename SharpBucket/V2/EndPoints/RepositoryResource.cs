@@ -214,5 +214,18 @@ namespace SharpBucket.V2.EndPoints{
         }
 
         #endregion
+
+        #region Default Reviewer Resource
+
+        /// <summary>
+        /// Adds a user as the default review for pull requests on a repository.
+        /// </summary>
+        /// <param name="targetUsername">The user to add as the default reviewer.</param>
+        /// <returns></returns>
+        public object PutDefaultReviewer(string targetUsername){
+            return _repositoriesEndPoint.PutDefaultReviewer(_accountName, _repository, targetUsername);
+        }
+
+        #endregion
     }
 }
