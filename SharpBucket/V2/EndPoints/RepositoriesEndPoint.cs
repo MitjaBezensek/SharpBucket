@@ -15,7 +15,7 @@ namespace SharpBucket.V2.EndPoints{
 
         #region Repositories End Point
 
-        public RepositoriesEndPoint(SharpBucketV2 sharpBucketV2)
+        public RepositoriesEndPoint (SharpBucketV2 sharpBucketV2)
             : base(sharpBucketV2, "repositories/") {
         }
 
@@ -75,6 +75,7 @@ namespace SharpBucket.V2.EndPoints{
             return _sharpBucketV2.Post(repo, overrideUrl);
         }
 
+
         internal Repository DeleteRepository(string accountName, string repository){
             var overrideUrl = GetRepositoryUrl(accountName, repository, null);
             return _sharpBucketV2.Delete(new Repository(), overrideUrl);
@@ -132,7 +133,7 @@ namespace SharpBucket.V2.EndPoints{
             return _sharpBucketV2.Get(new PullRequest(), overrideUrl);
         }
 
-        internal List<Commit> ListPullRequestCommits(string accountName, string repository, int pullRequestId, int max = 0) {
+        internal List<Commit> ListPullRequestCommits(string accountName, string repository, int pullRequestId, int max = 0){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/commits/");
             return GetPaginatedValues<Commit>(overrideUrl, max);
         }
@@ -191,8 +192,7 @@ namespace SharpBucket.V2.EndPoints{
             return _sharpBucketV2.Post(restriction, overrideUrl);
         }
 
-        internal BranchRestriction GetBranchRestriction(string accountName, string repository, int restrictionId)
-        {
+        internal BranchRestriction GetBranchRestriction(string accountName, string repository, int restrictionId){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restrictionId);
             return _sharpBucketV2.Get(new BranchRestriction(), overrideUrl);
         }
