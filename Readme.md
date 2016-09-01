@@ -1,3 +1,9 @@
+# Sobre esta versión:
+
+Fork para agregar la siguientes funciones o corregir los siguientes problemas:
+
+- Permitir paginación en la obtención Issues. de El api de Bitbucket devuelve 15 incidencias por llamada (o un máximo de 50 si se piden). SharpBucket no implementa paginación.
+
 # SharpBucket
 SharpBucket is a .Net wrapper for the Bitbucket's REST API. It is written in in C#. With it you can have all the data of your repositories / issues at your fingertips.
 
