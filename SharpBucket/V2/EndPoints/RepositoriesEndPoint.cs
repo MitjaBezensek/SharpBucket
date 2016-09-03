@@ -74,7 +74,7 @@ namespace SharpBucket.V2.EndPoints{
             var overrideUrl = GetRepositoryUrl(accountName, repo.name, null);
             return _sharpBucketV2.Post(repo, overrideUrl);
         }
-        
+
 
         internal Repository DeleteRepository(string accountName, string repository){
             var overrideUrl = GetRepositoryUrl(accountName, repository, null);
@@ -256,6 +256,15 @@ namespace SharpBucket.V2.EndPoints{
         internal object DeleteCommitApproval(string accountName, string repository, string revision){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + revision + "/approve/");
             return _sharpBucketV2.Delete(new object(), overrideUrl);
+        }
+
+        #endregion
+
+        #region Default Reviewer Resource
+
+        internal object PutDefaultReviewer(string accountName, string repository, string targetUsername){
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "default-reviewers/" + targetUsername);
+            return _sharpBucketV2.Put(new object(), overrideUrl);
         }
 
         #endregion
