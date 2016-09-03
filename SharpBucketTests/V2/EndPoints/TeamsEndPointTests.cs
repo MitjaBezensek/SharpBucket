@@ -29,7 +29,7 @@ namespace SharBucketTests.V2.EndPoints {
          var members = teamsEndPoint.ListMembers(35);
          members.Count.ShouldBeGreaterThan(19);
          // This test is brittle, it should be updated since the names change
-         members[0].display_name.ShouldBe("Brian McKenna");
+         members[0].display_name.ShouldBe("Brian McKenna λΠ");
       }
 
       [Test]
@@ -37,7 +37,7 @@ namespace SharBucketTests.V2.EndPoints {
          teamsEndPoint.ShouldNotBe(null);
          var followers = teamsEndPoint.ListFollowers(8);
          followers.Count.ShouldBe(8);
-         followers[0].display_name.ShouldBe("Hector Malpica");
+         followers[0].display_name.ShouldBe("Hector Miuler Malpica Gallegos");
       }
    }
 }
