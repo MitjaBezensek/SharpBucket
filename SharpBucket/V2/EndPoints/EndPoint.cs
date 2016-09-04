@@ -2,6 +2,7 @@ using SharpBucket.V2.Pocos;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
 
 namespace SharpBucket.V2.EndPoints {
     public class EndPoint {
@@ -26,7 +27,9 @@ namespace SharpBucket.V2.EndPoints {
             Debug.Assert(!String.IsNullOrEmpty(overrideUrl));
             Debug.Assert(!overrideUrl.Contains("?"));
 
-            var requestParameters = new Dictionary<string, object> {{"pagelen", pageLen}};
+            dynamic requestParameters= new ExpandoObject();
+            requestParameters.pagelen = pageLen;
+
             IteratorBasedPage<TValue> response;
             int page = 1;
             do {
@@ -35,7 +38,7 @@ namespace SharpBucket.V2.EndPoints {
 
                 yield return response.values;
                 
-                requestParameters["page"] = ++page;
+                requestParameters.page = ++page;
             } while (!String.IsNullOrEmpty(response.next));
         }
 
