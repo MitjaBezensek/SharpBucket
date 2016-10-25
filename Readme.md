@@ -56,8 +56,9 @@ SharpBucket uses a strict naming convention:
 - methods starting with Delete will delete the item
 
 ## Authentication
-There are two ways you can authenticate with SharpBucket
-- via the Oauth 1.0a, which is preferred
+There are three ways you can authenticate with SharpBucket
+- via Oauth 2, which is preferred
+- via Oauth 1.0a
 - via Bitbucket's username and password
 
 Here is how you can use them:
