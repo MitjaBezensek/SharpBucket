@@ -32,6 +32,7 @@ namespace SharpBucket.Authentication{
         public override T GetResponse<T>(string url, Method method, T body, Dictionary<string, object> requestParameters) {
             if (client == null){
                 client = new RestClient(_baseUrl);
+                client.AddHandler("text/plain", new PlainTextSerializationStrategy());
             }
             return base.GetResponse(url, method, body, requestParameters);
         }

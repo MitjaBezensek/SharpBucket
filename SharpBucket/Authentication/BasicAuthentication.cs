@@ -10,6 +10,7 @@ namespace SharpBucket.Authentication{
             client = new RestClient(baseUrl){
                 Authenticator = new HttpBasicAuthenticator(username, password)
             };
+            client.AddHandler("text/plain", new PlainTextSerializationStrategy());
         }
     }
 }

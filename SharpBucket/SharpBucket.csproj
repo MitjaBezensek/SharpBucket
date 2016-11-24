@@ -51,6 +51,7 @@
     <Compile Include="Authentication\OAuthentication2.cs" />
     <Compile Include="Authentication\RequestExecutor.cs" />
     <Compile Include="Authentication\Token.cs" />
+    <Compile Include="PlainTextSerializationStrategy.cs" />
     <Compile Include="V1\EndPoints\IssueResource.cs" />
     <Compile Include="V1\EndPoints\PrivilegesEndPoint.cs" />
     <Compile Include="V1\Pocos\Followers.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="V1\Pocos\RepositoryPrivilegesUser.cs" />
     <Compile Include="V1\Pocos\RepositorySimple.cs" />
     <Compile Include="V1\Pocos\Revision.cs" />
+    <Compile Include="V1\Pocos\RevisionFile.cs" />
     <Compile Include="V2\EndPoints\EndPoint.cs" />
     <Compile Include="V2\EndPoints\PullRequestResource.cs" />
     <Compile Include="V2\EndPoints\PullRequestsResource.cs" />
