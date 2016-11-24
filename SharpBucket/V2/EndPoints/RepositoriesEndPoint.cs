@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SharpBucket.Authentication;
 using SharpBucket.V2.Pocos;
 using Comment = SharpBucket.V2.Pocos.Comment;
 using Repository = SharpBucket.V2.Pocos.Repository;
@@ -41,6 +42,18 @@ namespace SharpBucket.V2.EndPoints{
         /// <returns></returns>
         public List<Repository> ListPublicRepositories(int max = 0){
             return GetPaginatedValues<Repository>(_baseUrl, max);
+        }
+
+        /// <summary>
+        /// Create repository under the provided accountName
+        /// </summary>
+        /// <param name="accountName">The owner of the repository.</param>
+        /// <param name="repository">The repository slug.</param>
+        /// <param name="configuration">Configuration parameters for repository creation. If not supplied, <see href="https://confluence.atlassian.com/bitbucket/repository-resource-423626331.html">defaults</see> are used</param>
+        /// <returns></returns>
+        public RepositoryResource CreateRepository(string accountName, string repository, RepositoryCreationParameters configuration = null){
+            PostRepository(accountName, repository, configuration ?? new RepositoryCreationParameters());
+            return new RepositoryResource(accountName, repository, this);
         }
 
         #endregion
@@ -86,6 +99,11 @@ namespace SharpBucket.V2.EndPoints{
             return string.Format(format, accountName, repository, append);
         }
 
+        private string GetRepositoryUrl(string accountName, string repository){
+            var format = _baseUrl + "{0}/{1}";
+            return string.Format(format, accountName, repository);
+        }
+
         internal List<Watcher> ListWatchers(string accountName, string repository, int max = 0){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "watchers");
             return GetPaginatedValues<Watcher>(overrideUrl, max);
@@ -94,6 +112,17 @@ namespace SharpBucket.V2.EndPoints{
         internal List<Fork> ListForks(string accountName, string repository, int max = 0){
             var overrideUrl = GetRepositoryUrl(accountName, repository, "forks");
             return GetPaginatedValues<Fork>(overrideUrl, max);
+        }
+
+        internal RepositoryCreationParameters PostRepository(string accountName, string repository, RepositoryCreationParameters configuration){
+            var responseExaminer = new ResponseExaminer();
+            var overrideUrl = GetRepositoryUrl(accountName, repository);
+            var repositoryResource = _sharpBucketV2.PostAndExamine(configuration, overrideUrl, responseExaminer);
+        
+            if (responseExaminer.StatusCode != 200){                
+                    throw new InvalidOperationException(string.Format("Failed to create repository. HTTP status code: {0}: {1}", responseExaminer.StatusCode, responseExaminer.Body));                
+            }
+            return repositoryResource;            
         }
 
         #endregion

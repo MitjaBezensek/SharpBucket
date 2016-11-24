@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using Shouldly;
@@ -8,6 +9,7 @@ namespace SharBucketTests.V2.EndPoints{
    internal class RepositoriesEndPointTests{
       private SharpBucketV2 sharpBucket;
       private RepositoriesEndPoint repositoriesEndPoint;
+      private const string ACCOUNT_NAME = "mirror";
 
       [SetUp]
       public void Init(){
@@ -30,5 +32,15 @@ namespace SharBucketTests.V2.EndPoints{
          publicRepositories.Count.ShouldBe(30);
          publicRepositories[5].full_name.ShouldBe("vetler/fhtmlmps");
       }
-   }
+        
+        [Test]
+      public void PostRepository_CreatesAndReturns_Repository(){
+        var repositoryToCreate = Guid.NewGuid().ToString().Replace("-", string.Empty);
+        var repositoryResource = repositoriesEndPoint.CreateRepository(ACCOUNT_NAME, repositoryToCreate);
+        var repositoryFromSut = repositoryResource.GetRepository();
+        repositoryFromSut.name.ShouldBe(repositoryToCreate);
+
+        TestHelpers.SwallowException(() => repositoryResource.DeleteRepository());
+      }        
+    }
 }

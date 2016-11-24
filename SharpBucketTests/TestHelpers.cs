@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using SharpBucket.V2;
 
@@ -23,7 +24,8 @@ namespace SharBucketTests{
             return sharpbucket;
         }
 
-        public static SharpBucketV2 GetV2ClientAuthenticatedWithOAuth(){
+        public static SharpBucketV2 GetV2ClientAuthenticatedWithOAuth()
+        {
             var consumerKey = Environment.GetEnvironmentVariable(SbConsumerKey);
             var consumerSecretKey = Environment.GetEnvironmentVariable(SbConsumerSecretKey);
             var sharpbucket = new SharpBucketV2();
@@ -37,6 +39,15 @@ namespace SharBucketTests{
             var sharpbucket = new SharpBucketV2();
             sharpbucket.OAuthentication2(consumerKey, consumerSecretKey);
             return sharpbucket;
+        }
+
+        internal static void SwallowException(Action actionToExecute){
+            try{
+                actionToExecute();
+            }
+            catch (Exception e){
+                Debug.WriteLine(e);
+            }
         }
     }
 }
