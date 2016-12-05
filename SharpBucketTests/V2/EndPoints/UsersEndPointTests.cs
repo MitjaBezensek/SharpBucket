@@ -37,7 +37,7 @@ namespace SharBucketTests.V2.EndPoints {
          usersEndPoint.ShouldNotBe(null);
          var following = usersEndPoint.ListFollowing();
          following.Count.ShouldBe(1);
-         following[0].display_name.ShouldBe("Jesper Nøhr");
+         following[0].display_name.ShouldBe("Jesper Noehr");
       }
 
       [Test]
