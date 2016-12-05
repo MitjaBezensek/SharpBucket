@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using RestSharp;
 using SharpBucket.Authentication;
+using SharpBucket.Utility;
 
 namespace SharpBucket{
     /// <summary>
@@ -99,8 +100,10 @@ namespace SharpBucket{
             return response;
         }
 
-        internal T Get<T>(T body, string overrideUrl, Dictionary<string, object> requestParameters = null){
-            return Send(body, Method.GET, overrideUrl, requestParameters);
+        internal T Get<T>(T body, string overrideUrl, object requestParameters = null){
+            //Convert to dictionary to avoid refactoring the Send method.
+            var parameterDictionary = requestParameters.ToDictionary();
+            return Send(body, Method.GET, overrideUrl, parameterDictionary);
         }
 
         internal T Post<T>(T body, string overrideUrl){

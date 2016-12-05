@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SharpBucket.V1.Pocos;
+using System.Dynamic;
 
 namespace SharpBucket.V1.EndPoints{
     /// <summary>
@@ -24,8 +25,8 @@ namespace SharpBucket.V1.EndPoints{
         /// If you filter this call, the count value contains the total number of issues that meet the filter criteria.
         /// </summary>
         /// <returns></returns>
-        public IssuesInfo ListIssues(){
-            return _repositoriesEndPoint.ListIssues();
+        public IssuesInfo ListIssues(IssueSearchParameters parameters = null){
+            return _repositoriesEndPoint.ListIssues(parameters);
         }
 
         /// <summary>
