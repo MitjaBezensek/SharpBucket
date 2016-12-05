@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SharpBucket.V1.Pocos;
 using Version = SharpBucket.V1.Pocos.Version;
+using System.Dynamic;
 
 namespace SharpBucket.V1.EndPoints{
     /// <summary>
@@ -176,8 +177,8 @@ namespace SharpBucket.V1.EndPoints{
             return new IssuesResource(this);
         }
 
-        internal IssuesInfo ListIssues(){
-            return _sharpBucketV1.Get(new IssuesInfo(), _issuesUrl);
+        internal IssuesInfo ListIssues(IssueSearchParameters parameters = null){
+            return _sharpBucketV1.Get(new IssuesInfo(), _issuesUrl, parameters);
         }
 
         private Issue GetIssue(Issue issue){
