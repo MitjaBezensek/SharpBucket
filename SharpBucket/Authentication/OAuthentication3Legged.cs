@@ -41,8 +41,8 @@ namespace SharpBucket.Authentication{
         /// </summary>
         /// <param name="client">The client.</param>
         /// <exception cref="System.Net.WebException">REST client encountered an error:  + response.ErrorMessage</exception>
-        private void SetAuthTokens(IRestClient client) {
-            var request = new RestRequest(requestUrl, Method.POST);
+        private void SetAuthTokens(IRestClient client, string method) {
+            var request = new RestRequest(method, Method.POST);
             var response = client.Execute(request);
 
             if (response.ErrorException != null) {
@@ -66,7 +66,7 @@ namespace SharpBucket.Authentication{
                 Authenticator = OAuth1Authenticator.ForRequestToken(ConsumerKey, ConsumerSecret, callback)
             };
 
-            SetAuthTokens(restClient);
+            SetAuthTokens(restClient, requestUrl);
 
             Contract.Assert(!String.IsNullOrWhiteSpace(OAuthToken) &&
                             !String.IsNullOrWhiteSpace(OauthTokenSecret));
@@ -88,7 +88,7 @@ namespace SharpBucket.Authentication{
                 Authenticator = OAuth1Authenticator.ForAccessToken(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret, pin)
             };
 
-            SetAuthTokens(restClient);
+            SetAuthTokens(restClient, accessUrl);
 
             Contract.Assert(!String.IsNullOrWhiteSpace(OAuthToken) &&
                             !String.IsNullOrWhiteSpace(OauthTokenSecret));
