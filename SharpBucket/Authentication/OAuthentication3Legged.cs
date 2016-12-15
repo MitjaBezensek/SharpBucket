@@ -29,10 +29,9 @@ namespace SharpBucket.Authentication{
             OauthTokenSecret = oauthTokenSecret;
         }
 
-        public override T GetResponse<T>(string url, Method method, T body, Dictionary<string, object> requestParameters) {
+        public override T GetResponse<T>(string url, Method method, T body, Dictionary<string, object> requestParameters){
             if (client == null){
-                client = new RestClient(_baseUrl)
-                {
+                client = new RestClient(_baseUrl){
                     Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)
                 };
             }
