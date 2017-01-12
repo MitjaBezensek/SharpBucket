@@ -24,8 +24,8 @@ namespace SharpBucket.V2.EndPoints{
       /// List all of a repository's open pull requests.
       /// </summary>
       /// <returns></returns>
-      public List<PullRequest> ListPullRequests(){
-         return _repositoriesEndPoint.ListPullRequests(_accountName, _repository);
+      public List<PullRequest> ListPullRequests(int max = 100){
+         return _repositoriesEndPoint.ListPullRequests(_accountName, _repository, max);
       }
 
       /// <summary>
