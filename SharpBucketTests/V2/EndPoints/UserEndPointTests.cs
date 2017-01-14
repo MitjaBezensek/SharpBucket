@@ -20,7 +20,6 @@ namespace SharBucketTests.V2.EndPoints {
          userEndPoint.ShouldNotBe(null);
          var user = userEndPoint.GetUser();
          user.ShouldNotBe(null);
-         user.username.ShouldBe(TestHelpers.GetTestInformation().AccountName);
       }
    }
 }
