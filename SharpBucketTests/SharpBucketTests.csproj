@@ -65,6 +65,7 @@
     <Compile Include="Authentication\OAuthentication2Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelpers.cs" />
+    <Compile Include="V2\EndPoints\UserEndPointTests.cs" />
     <Compile Include="V2\EndPoints\RepositoriesEndPointTests.cs" />
     <Compile Include="V2\EndPoints\RepositoryResourceTests.cs" />
     <Compile Include="V2\EndPoints\TeamsEndPointTests.cs" />

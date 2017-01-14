@@ -9,17 +9,9 @@ namespace SharBucketTests{
         private const string SbConsumerSecretKey = "SB_CONSUMER_SECRET_KEY";
 
         public static SharpBucketV2 GetV2ClientAuthenticatedWithBasicAuthentication(){
+            var testInformation = GetTestInformation();
             var sharpbucket = new SharpBucketV2();
-            // Reads test data information from a file, you should structure it like this:
-            // By default it reads from c:\
-            // Username:yourUsername
-            // Password:yourPassword
-            // AccountName:yourAccountName
-            // Repository:testRepository
-            var lines = File.ReadAllLines(TestInformationPath);
-            var email = lines[0].Split(':')[1];
-            var password = lines[1].Split(':')[1];
-            sharpbucket.BasicAuthentication(email, password);
+            sharpbucket.BasicAuthentication(testInformation.Username, testInformation.Password);
             return sharpbucket;
         }
 
@@ -38,5 +30,32 @@ namespace SharBucketTests{
             sharpbucket.OAuthentication2(consumerKey, consumerSecretKey);
             return sharpbucket;
         }
+
+        public static TestInformation GetTestInformation(){
+            // Reads test data information from a file, you should structure it like this:
+            // By default it reads from c:\
+            // Username:yourUsername
+            // Password:yourPassword
+            // AccountName:yourAccountName
+            // Repository:testRepository
+            var lines = File.ReadAllLines(TestInformationPath);
+
+            return new TestInformation
+            {
+                Username = lines[0].Split(':')[1],
+                Password = lines[1].Split(':')[1],
+                AccountName = lines[2].Split(':')[1],
+                Repository = lines[3].Split(':')[1]
+            };
+        }
     }
+
+    public class TestInformation
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string AccountName { get; set; }
+        public string Repository { get; set; }
+    }
+
 }

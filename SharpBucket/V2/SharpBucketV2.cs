@@ -39,5 +39,9 @@ namespace SharpBucket.V2{
         public UsersEndpoint UsersEndPoint(string accountName){
             return new UsersEndpoint(accountName, this);
         }
+
+        public UserEndpoint UserEndPoint(){
+            return new UserEndpoint(this);
+        }
     }
 }
