@@ -17,8 +17,11 @@ namespace SharBucketTests{
             // AccountName:yourAccountName
             // Repository:testRepository
             var lines = File.ReadAllLines(TestInformationPath);
-            var email = lines[0].Split(':')[1];
+            var email= lines[0].Split(':')[1];
             var password = lines[1].Split(':')[1];
+            var accountName = lines[2].Split(':')[1];
+            var repository = lines[3].Split(':')[1];
+
             sharpbucket.BasicAuthentication(email, password);
             return sharpbucket;
         }
