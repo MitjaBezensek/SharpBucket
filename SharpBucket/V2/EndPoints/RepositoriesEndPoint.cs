@@ -104,7 +104,7 @@ namespace SharpBucket.V2.EndPoints{
             return new PullRequestsResource(accountName, repository, this);
         }
 
-        internal List<PullRequest> ListPullRequests(string accountName, string repository, int max = 0) {
+        internal List<PullRequest> ListPullRequests(string accountName, string repository, int max) {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/");
             return GetPaginatedValues<PullRequest>(overrideUrl, max);
         }
