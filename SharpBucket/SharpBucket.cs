@@ -87,7 +87,7 @@ namespace SharpBucket{
             return (OAuthentication2) authenticator;
         }
 
-        private T Send<T>(T body, Method method, string overrideUrl = null, Dictionary<string, object> requestParameters = null) {
+        private T Send<T>(T body, Method method, string overrideUrl = null, IDictionary<string, object> requestParameters = null) {
             var relativeUrl = overrideUrl;
             T response;
             try{

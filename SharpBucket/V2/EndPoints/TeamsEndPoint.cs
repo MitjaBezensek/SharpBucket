@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Dynamic;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints{
@@ -11,6 +12,14 @@ namespace SharpBucket.V2.EndPoints{
 
         public TeamsEndPoint(SharpBucketV2 sharpBucketV2, string teamName)
             : base(sharpBucketV2, "teams/" + teamName + "/") {
+        }
+
+        public List<Team> GetUserTeams(int max = 0)
+        {
+            dynamic parameters = new ExpandoObject();
+            parameters.role = "member";
+            return GetPaginatedValues<Team>("teams/", max, parameters);
+            //return _sharpBucketV2.Get<List<Team>>(null, "teams/", parameters);
         }
 
         /// <summary>
