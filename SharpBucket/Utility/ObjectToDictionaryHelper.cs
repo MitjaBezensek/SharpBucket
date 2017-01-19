@@ -5,8 +5,7 @@ using System.ComponentModel;
 namespace SharpBucket.Utility{
     public static class ObjectToDictionaryHelper{
         //http://stackoverflow.com/questions/11576886/how-to-convert-object-to-dictionarytkey-tvalue-in-c
-        public static IDictionary<string, object> ToDictionary(this object source)
-        {
+        public static IDictionary<string, object> ToDictionary(this object source) {
             var dictionary = source as IDictionary<string, object>;
             return dictionary ?? source.ToDictionary<object>();
         }

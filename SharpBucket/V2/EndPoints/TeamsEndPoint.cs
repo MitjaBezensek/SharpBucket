@@ -14,8 +14,7 @@ namespace SharpBucket.V2.EndPoints{
             : base(sharpBucketV2, "teams/" + teamName + "/") {
         }
 
-        public List<Team> GetUserTeams(int max = 0)
-        {
+        public List<Team> GetUserTeams(int max = 0) {
             dynamic parameters = new ExpandoObject();
             parameters.role = "member";
             return GetPaginatedValues<Team>("teams/", max, parameters);

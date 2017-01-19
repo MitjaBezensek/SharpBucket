@@ -41,8 +41,7 @@ namespace SharBucketTests.V2.EndPoints {
       }
 
         [Test]
-        public void GetTeams_FromLoggedUser_ShouldReturnManyTeams()
-        {
+        public void GetTeams_FromLoggedUser_ShouldReturnManyTeams(){
             teamsEndPoint.ShouldNotBe(null);
             var teams = teamsEndPoint.GetUserTeams();
             teams.Count.ShouldBeGreaterThan(0);
