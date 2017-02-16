@@ -39,5 +39,13 @@ namespace SharBucketTests.V2.EndPoints {
          followers.Count.ShouldBe(8);
          followers[0].display_name.ShouldBe("Hector Miuler Malpica Gallegos");
       }
-   }
+
+        [Test]
+        public void GetTeams_FromLoggedUser_ShouldReturnManyTeams(){
+            teamsEndPoint.ShouldNotBe(null);
+            var teams = teamsEndPoint.GetUserTeams();
+            teams.Count.ShouldBeGreaterThan(0);
+        }
+
+    }
 }

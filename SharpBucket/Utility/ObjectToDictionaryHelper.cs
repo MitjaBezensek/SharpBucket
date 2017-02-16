@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
 
 namespace SharpBucket.Utility{
     public static class ObjectToDictionaryHelper{
         //http://stackoverflow.com/questions/11576886/how-to-convert-object-to-dictionarytkey-tvalue-in-c
-        public static Dictionary<string, object> ToDictionary(this object source){
-            if (source is ExpandoObject)
-                return new Dictionary<string, object>(source as ExpandoObject);
-
-            return source.ToDictionary<object>();
+        public static IDictionary<string, object> ToDictionary(this object source) {
+            var dictionary = source as IDictionary<string, object>;
+            return dictionary ?? source.ToDictionary<object>();
         }
 
         public static Dictionary<string, T> ToDictionary<T>(this object source){

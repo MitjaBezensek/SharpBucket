@@ -4,7 +4,7 @@ using RestSharp;
 
 namespace SharpBucket.Authentication{
     internal class RequestExecutor{
-        public static T ExecuteRequest<T>(string url, Method method, T body, RestClient client, Dictionary<string, object> requestParameters) where T : new(){
+        public static T ExecuteRequest<T>(string url, Method method, T body, RestClient client, IDictionary<string, object> requestParameters) where T : new(){
             var request = new RestRequest(url, method);
             if (requestParameters != null){
                 foreach (var requestParameter in requestParameters){
