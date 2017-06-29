@@ -268,5 +268,36 @@ namespace SharpBucket.V2.EndPoints{
         }
 
         #endregion
+
+        #region Branch Resource
+
+        public BranchResource BranchResource(string accountName, string repository)
+        {
+            return new BranchResource(accountName, repository, this);
+        }
+
+        internal List<Branch> ListBranches(string accountName, string repository, int max = 0)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "refs/branches/");
+            return GetPaginatedValues<Branch>(overrideUrl, max);
+        }
+
+        #endregion
+
+        #region Tag Resource
+
+        public TagResource TagResource(string accountName, string repository)
+        {
+            return new TagResource(accountName, repository, this);
+        }
+
+        internal List<Tag> ListTags(string accountName, string repository, int max = 0)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "refs/tags/");
+            return GetPaginatedValues<Tag>(overrideUrl, max);
+        }
+
+        #endregion
+
     }
 }

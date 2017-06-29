@@ -14,5 +14,6 @@
         public ulong? size { get; set; }
         public bool? is_private { get; set; }
         public string name { get; set; }
+        public string uuid { get; set; }
     }
 }
