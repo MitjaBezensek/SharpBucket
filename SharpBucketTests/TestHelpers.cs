@@ -3,7 +3,7 @@ using System.IO;
 using SharpBucket.V2;
 
 namespace SharBucketTests{
-    internal class TestHelpers{
+    internal partial class TestHelpers{
         private const string TestInformationPath = "c:\\TestInformation.txt";
         private const string SbConsumerKey = "SB_CONSUMER_KEY";
         private const string SbConsumerSecretKey = "SB_CONSUMER_SECRET_KEY";
