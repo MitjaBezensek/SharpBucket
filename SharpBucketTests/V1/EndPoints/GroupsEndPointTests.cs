@@ -21,49 +21,50 @@ namespace SharBucketTests.V1.EndPoints {
 
         [Test]
         [TestCase("MyGroup")]
-        public IEnumerable<TestCaseData> CreateDefaultGroup_ForLoggedUser_ShouldReturnCreatedGroup(string name) {
+        public void CreateGroup_ForLoggedUser_ShouldReturnCreatedGroup(string name) {
             groupsEndPoint.ShouldNotBe(null);
 
             var group = groupsEndPoint.CreateGroup(name);
 
             group.ShouldNotBe(null);
             group.ShouldBeOfType(typeof(Group));
-            group.name.ShouldBe(name);
+            group.name.ShouldBe("MyGroup");
             group.permission.ShouldBe(null); //test that a default group was created
             group.members.Count.ShouldBe(0);  //test that a default group was created
 
-            return new List<TestCaseData>() { new TestCaseData(group, ACCOUNT_NAME) };
         }
 
         [Test]
-        [TestCaseSource("CreateDefaultGroup_ForLoggedUser_ShouldReturnCreatedGroup")]
-        public IEnumerable<TestCaseData> AddMemberToGroup_ShouldReturnAddedMember(Group group, string membername) {
+        public void AddMemberToGroup_ShouldReturnAddedMember() {
             groupsEndPoint.ShouldNotBe(null);
 
-            var member = groupsEndPoint.AddMemberToGroup(group.slug, membername);
+            var group = new Group() { name = "AdminGroup" };
+            var new_group = groupsEndPoint.CreateGroup(group.name); //create a new group before adding a member to it
+            var member = groupsEndPoint.AddMemberToGroup(new_group.slug, ACCOUNT_NAME);
 
             member.ShouldNotBe(null);
             member.ShouldBeOfType(typeof(User));
-            member.username.ShouldBe(membername);
-
-            return new List<TestCaseData>() { new TestCaseData(member, group.slug) };
+            member.username.ShouldBe(ACCOUNT_NAME);
         }
 
         [Test]
-        [TestCaseSource("AddMemberToGroup_ShouldReturnAddedMember")]
-        public void ListGroupMembers_ShouldCorrectlyListAllMembers(User member, string group_slug) {
+        public void ListGroupMembers_ShouldCorrectlyListAllMembers() {
             groupsEndPoint.ShouldNotBe(null);
 
-            var all_members = groupsEndPoint.ListGroupMembers(group_slug);
+            var group = new Group() { name = "TestGroup" };
+            var new_group = groupsEndPoint.CreateGroup(group.name); //create a new group before 
+            var member = groupsEndPoint.AddMemberToGroup(new_group.slug, ACCOUNT_NAME);
+
+            var all_members = groupsEndPoint.ListGroupMembers(new_group.slug);
 
             all_members.ShouldNotBe(null);
             all_members.ShouldBeOfType(typeof(List<User>));
-
-            all_members.ShouldContain<User>(member); //test the newly created member is listed
+            all_members.Count.ShouldBeGreaterThan(0);
+            all_members.Find(x => x.username == member.username).ShouldNotBe(null); //test the newly created member is listed
         }
 
        [Test]
-        public List<Group> ListAllGroups_FromLoggedUser_ShouldReturnAllGroups() {
+        public void ListAllGroups_FromLoggedUser_ShouldReturnAllGroups() {
             groupsEndPoint.ShouldNotBe(null);
 
             var groups = groupsEndPoint.ListGroups();
@@ -72,19 +73,17 @@ namespace SharBucketTests.V1.EndPoints {
             groups.ShouldBeOfType<List<Group>>();
             groups.Count.ShouldBeGreaterThan(0);
             groups[0].name.ShouldNotBeEmpty();
-
-            return groups;
         }
 
-        [Test, TestCaseSource("ListAllGroups_FromLoggedUser_ShouldReturnAllGroups")]
-        public void GetSingleGroup_FromLoggedUser_ShouldReturnSingleGroup(List<Group> groups) {
+        [Test]
+        public void GetSingleGroup_FromLoggedUser_ShouldReturnSingleGroup() {
             groupsEndPoint.ShouldNotBe(null);
 
-            var singleGroup = groupsEndPoint.GetGroup(groups[0].slug);
+            var singleGroup = groupsEndPoint.GetGroup("admingroup");
 
             singleGroup.ShouldNotBe(null);
             singleGroup.ShouldBeOfType(typeof(Group));
-            singleGroup.name.ShouldBe(groups[0].name);
+            singleGroup.name.ShouldBe("AdminGroup");
         }
 
       
