@@ -35,6 +35,17 @@ namespace SharBucketTests.V1.EndPoints {
         }
 
         [Test]
+        [TestCase("mygroup")]
+        public void DeleteGroup(string slug) {
+            groupsEndPoint.ShouldNotBe(null);
+
+            var group = groupsEndPoint.DeleteGroup(slug);
+
+            group = groupsEndPoint.GetGroup(slug);
+            group.ShouldBe(null);
+        }
+
+        [Test]
         public void AddMemberToGroup_ShouldReturnAddedMember() {
             groupsEndPoint.ShouldNotBe(null);
 
