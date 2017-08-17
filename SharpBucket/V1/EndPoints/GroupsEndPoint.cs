@@ -45,8 +45,8 @@ namespace SharpBucket.V1.EndPoints
         /// <param name="name">The name of the group</param>
         /// <returns></returns>
         public Group CreateGroup(string name) {
-
-            return null;
+            var group = new Group() { name = name };
+            return _sharpBucketV1.Post<Group>(group, _baseUrl);
         }
 
         /// <summary>
@@ -54,17 +54,19 @@ namespace SharpBucket.V1.EndPoints
         /// <param name="group_slug">The group's slug.</param>
         /// <returns></returns>
         public Group DeleteGroup(string group_slug) {
-
-            return null;
+            var overrideUrl = _baseUrl + group_slug;
+            var group = new Group() { slug = group_slug };
+            return _sharpBucketV1.Delete<Group>(group, overrideUrl);
         }
 
         /// <summary>
         /// Updates the specified group
-        /// <param name="group_slug">The group's slug.</param>
+        /// <param name="group_slug">The group's slug to be updated.</param>
+        /// <param name="group">The new group.</param>
         /// <returns></returns>
-        public Group UpdateGroup(string group_slug) {
-
-            return null;
+        public Group UpdateGroup(string group_slug, Group group) {
+            var overrideUrl = _baseUrl + group_slug;
+            return _sharpBucketV1.Put<Group>(group, overrideUrl);
         }
 
         /// <summary>
@@ -75,7 +77,8 @@ namespace SharpBucket.V1.EndPoints
         /// <returns></returns>
         public User AddMemberToGroup(string group_slug, string membername) {
             var overrideUrl = _baseUrl + group_slug + "/members/" + membername;
-            return null;
+            var member = new User() { username = membername };
+            return _sharpBucketV1.Put<User>(member, overrideUrl);
         }
 
         /// <summary>
@@ -96,8 +99,8 @@ namespace SharpBucket.V1.EndPoints
         /// <returns></returns>
         public User DeleteMemberFromGroup(string group_slug, string membername) {
             var overrideUrl = _baseUrl + group_slug + "/members/" + membername;
-
-            return null;
+            var member = new User() { username = membername };
+            return _sharpBucketV1.Delete<User>(member, overrideUrl);
         }
     }
 }
