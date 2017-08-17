@@ -19,6 +19,13 @@ namespace SharBucketTests.V1.EndPoints {
             groupsEndPoint = sharpBucket.GroupsEndPoint(ACCOUNT_NAME);
         }
 
+        [OneTimeTearDown]
+        public void Cleanup() {
+            groupsEndPoint.DeleteGroup("mygroup");
+            groupsEndPoint.DeleteGroup("admingroup");
+            groupsEndPoint.DeleteGroup("testgroup");
+        }
+
         [Test]
         [TestCase("MyGroup")]
         public void CreateGroup_ForLoggedUser_ShouldReturnCreatedGroup(string name) {
@@ -36,12 +43,11 @@ namespace SharBucketTests.V1.EndPoints {
 
         [Test]
         [TestCase("mygroup")]
-        public void DeleteGroup(string slug) {
+        public void DeleteGroup_ShouldNotHaveGroup_WhenGet(string slug) {
             groupsEndPoint.ShouldNotBe(null);
 
-            var group = groupsEndPoint.DeleteGroup(slug);
-
-            group = groupsEndPoint.GetGroup(slug);
+            groupsEndPoint.DeleteGroup(slug);
+            var group = groupsEndPoint.GetGroup(slug);
             group.ShouldBe(null);
         }
 
