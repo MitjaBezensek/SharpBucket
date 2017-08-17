@@ -19,12 +19,12 @@ namespace SharBucketTests.V1.EndPoints {
             groupsEndPoint = sharpBucket.GroupsEndPoint(ACCOUNT_NAME);
         }
 
-        [OneTimeTearDown]
-        public void Cleanup() {
-            groupsEndPoint.DeleteGroup("mygroup");
-            groupsEndPoint.DeleteGroup("admingroup");
-            groupsEndPoint.DeleteGroup("testgroup");
-        }
+        //[OneTimeTearDown]
+        //public void Cleanup() {
+        //    groupsEndPoint.DeleteGroup("mygroup");
+        //    groupsEndPoint.DeleteGroup("admingroup");
+        //    groupsEndPoint.DeleteGroup("testgroup");
+        //}
 
         [Test]
         [TestCase("MyGroup")]
@@ -57,6 +57,8 @@ namespace SharBucketTests.V1.EndPoints {
 
             var group = new Group() { name = "AdminGroup" };
             var new_group = groupsEndPoint.CreateGroup(group.name); //create a new group before adding a member to it
+
+            new_group.ShouldNotBe(null);
             var member = groupsEndPoint.AddMemberToGroup(new_group.slug, ACCOUNT_NAME);
 
             member.ShouldNotBe(null);
@@ -70,6 +72,8 @@ namespace SharBucketTests.V1.EndPoints {
 
             var group = new Group() { name = "TestGroup" };
             var new_group = groupsEndPoint.CreateGroup(group.name); //create a new group before 
+
+            new_group.ShouldNotBe(null);
             var member = groupsEndPoint.AddMemberToGroup(new_group.slug, ACCOUNT_NAME);
 
             var all_members = groupsEndPoint.ListGroupMembers(new_group.slug);
