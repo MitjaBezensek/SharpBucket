@@ -1,10 +1,9 @@
 ﻿using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace SharpBucket.V2.Pocos
 {
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Converters;
-
     public class BuildInfo
     {
         public string name { get; set; }
