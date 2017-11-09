@@ -212,6 +212,38 @@ namespace SharpBucket.V2.EndPoints{
         public object DeleteCommitApproval(string revision){
             return _repositoriesEndPoint.DeleteCommitApproval(_accountName, _repository, revision);
         }
+        /// <summary>
+        /// Creates a new build status against the specified commit. If the specified key already exists, the existing status object will be overwritten.
+        /// </summary>
+        /// <param name="revision">The commit's SHA1</param>
+        /// <param name="buildInfo">The new commit status object</param>
+        /// <returns></returns>
+        public object AddNewBuildStatus(string revision, BuildInfo buildInfo){
+            return _repositoriesEndPoint.AddNewBuildStatus(_accountName, _repository, revision, buildInfo);
+        }
+
+        /// <summary>
+        /// Returns the specified build status for a commit.
+        /// </summary>
+        /// <param name="revision">The commit's SHA1</param>
+        /// <param name="key">The build status' unique key</param>
+        /// <returns></returns>
+        
+        public BuildInfo GetBuildStatusInfo(string revision, string key){
+            return _repositoriesEndPoint.GetBuildStatusInfo(_accountName, _repository, revision, key);
+        }
+
+        /// <summary>
+        /// Used to update the current status of a build status object on the specific commit.
+        /// </summary>
+        /// <param name="revision">The commit's SHA1</param>
+        /// <param name="key">The build status' unique key</param>
+        /// <param name="buildInfo">The new commit status object</param>
+        /// <returns></returns>
+        /// /// <remarks>This operation can also be used to change other properties of the build status: state, name, description, url, refname. The key cannot be changed.</remarks>
+        public object ChangeBuildStatusInfo(string revision, string key, BuildInfo buildInfo){
+            return _repositoriesEndPoint.ChangeBuildStatusInfo(_accountName, _repository, revision, key, buildInfo);
+        }
 
         #endregion
 
