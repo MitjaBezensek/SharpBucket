@@ -159,6 +159,8 @@ namespace ConsoleTests{
             var tags = repositoriesEndPoint.ListTags();
             var branches = repositoriesEndPoint.ListBranches();
             var mainBranch = repositoriesEndPoint.GetMainBranch();
+            var sources = repositoriesEndPoint.ListSources(mainBranch.name, null);
+            var content = repositoriesEndPoint.GetSrcFile(mainBranch.name, sources.files[0].path);
             string WIKI_PAGE = "";
             var wiki = repositoriesEndPoint.GetWiki(WIKI_PAGE);
             var newPage = new Wiki{data = "Hello to my new page"};

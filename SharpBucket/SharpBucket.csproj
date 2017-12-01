@@ -63,6 +63,9 @@
     <Compile Include="V1\Pocos\RepositoryPrivilegesUser.cs" />
     <Compile Include="V1\Pocos\RepositorySimple.cs" />
     <Compile Include="V1\Pocos\Revision.cs" />
+    <Compile Include="V1\Pocos\SrcDirectory.cs" />
+    <Compile Include="V1\Pocos\SrcFile.cs" />
+    <Compile Include="V1\Pocos\SrcFileInfo.cs" />
     <Compile Include="V2\EndPoints\EndPoint.cs" />
     <Compile Include="V2\EndPoints\PullRequestResource.cs" />
     <Compile Include="V2\EndPoints\PullRequestsResource.cs" />
