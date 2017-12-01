@@ -483,7 +483,7 @@ namespace SharpBucket.V1.EndPoints{
         public SrcFile GetSrcFile(string branch, string filepath)
         {
             var overrideUrl = _baserUrl + "src/" + branch + "/" + filepath;
-            return _sharpBucketV1.Get<SrcFile>(null, overrideUrl);
+            return _sharpBucketV1.Get(new SrcFile(), overrideUrl);
         }
 
         #endregion
