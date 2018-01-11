@@ -16,6 +16,11 @@ namespace SharpBucket.V2
             _baseUrl = BITBUCKET_URL;
         }
 
+        public SharpBucketV2(string baseUrl)
+        {
+            _baseUrl = baseUrl;
+        }
+
         /// <summary>
         /// Get the Teams End Point for a specific team.
         /// </summary>
