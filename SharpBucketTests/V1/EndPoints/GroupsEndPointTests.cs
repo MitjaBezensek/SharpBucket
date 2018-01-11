@@ -6,24 +6,26 @@ using Shouldly;
 using System;
 using System.Collections.Generic;
 
-namespace SharBucketTests.V1.EndPoints {
+namespace SharBucketTests.V1.EndPoints
+{
     [TestFixture]
-    public class GroupsEndPointTests {
-
+    public class GroupsEndPointTests
+    {
         private SharpBucketV1 sharpBucket;
         private GroupsEndPoint groupsEndPoint;
         private string accountName;
 
         [SetUp]
-        public void Init() {
+        public void Init()
+        {
             sharpBucket = TestHelpers.GetV1ClientAuthenticatedWithOAuth();
-            accountName = TestHelpers.GetAccountName(); 
+            accountName = TestHelpers.GetAccountName();
             groupsEndPoint = sharpBucket.GroupsEndPoint(accountName);
-
         }
 
         [Test]
-        public void CreateGroup_ForLoggedUser_ShouldReturnCreatedGroup() {
+        public void CreateGroup_ForLoggedUser_ShouldReturnCreatedGroup()
+        {
             groupsEndPoint.ShouldNotBe(null);
 
             var name = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -33,13 +35,13 @@ namespace SharBucketTests.V1.EndPoints {
             group.ShouldBeOfType(typeof(Group));
             group.name.ShouldBe(name);
             group.permission.ShouldBe(null); //test that a default group was created
-            group.members.Count.ShouldBe(0);  //test that a default group was created
+            group.members.Count.ShouldBe(0); //test that a default group was created
             groupsEndPoint.DeleteGroup(name);
-
         }
 
         [Test]
-        public void DeleteGroup_ShouldNotHaveGroup_WhenGet() {
+        public void DeleteGroup_ShouldNotHaveGroup_WhenGet()
+        {
             groupsEndPoint.ShouldNotBe(null);
 
             var name = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -51,7 +53,8 @@ namespace SharBucketTests.V1.EndPoints {
         }
 
         [Test]
-        public void AddMemberToGroup_ShouldReturnAddedMember() {
+        public void AddMemberToGroup_ShouldReturnAddedMember()
+        {
             groupsEndPoint.ShouldNotBe(null);
 
             var name = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -68,7 +71,8 @@ namespace SharBucketTests.V1.EndPoints {
         }
 
         [Test]
-        public void ListGroupMembers_ShouldCorrectlyListAllMembers() {
+        public void ListGroupMembers_ShouldCorrectlyListAllMembers()
+        {
             groupsEndPoint.ShouldNotBe(null);
             var name = Guid.NewGuid().ToString().Replace("-", string.Empty);
             var group = new Group() { name = name };
@@ -86,8 +90,9 @@ namespace SharBucketTests.V1.EndPoints {
             groupsEndPoint.DeleteGroup(name);
         }
 
-       [Test]
-        public void ListAllGroups_FromLoggedUser_ShouldReturnAllGroups() {
+        [Test]
+        public void ListAllGroups_FromLoggedUser_ShouldReturnAllGroups()
+        {
             groupsEndPoint.ShouldNotBe(null);
 
             var groups = groupsEndPoint.ListGroups();
@@ -99,7 +104,8 @@ namespace SharBucketTests.V1.EndPoints {
         }
 
         [Test]
-        public void GetSingleGroup_FromLoggedUser_ShouldReturnSingleGroup() {
+        public void GetSingleGroup_FromLoggedUser_ShouldReturnSingleGroup()
+        {
             groupsEndPoint.ShouldNotBe(null);
             var groupName = "AdminGroup";
             var singleGroup = groupsEndPoint.GetGroup(groupName);
@@ -108,7 +114,5 @@ namespace SharBucketTests.V1.EndPoints {
             singleGroup.ShouldBeOfType(typeof(Group));
             singleGroup.name.ShouldBe(groupName);
         }
-
-      
     }
 }

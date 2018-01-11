@@ -1,4 +1,6 @@
-﻿namespace SharpBucket.V2.Pocos{
-    public class BranchRestrictionInfo : ListBasedPage<BranchRestriction> {
+﻿namespace SharpBucket.V2.Pocos
+{
+    public class BranchRestrictionInfo : ListBasedPage<BranchRestriction>
+    {
     }
 }

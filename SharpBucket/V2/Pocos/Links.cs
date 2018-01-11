@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace SharpBucket.V2.Pocos{
-    public class Links {
+namespace SharpBucket.V2.Pocos
+{
+    public class Links
+    {
         public Link self { get; set; }
         public Link repositories { get; set; }
         public Link link { get; set; }

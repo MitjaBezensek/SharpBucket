@@ -1,5 +1,7 @@
-﻿namespace SharpBucket.V2.Pocos{
-    public class PullRequest {
+﻿namespace SharpBucket.V2.Pocos
+{
+    public class PullRequest
+    {
         public string description { get; set; }
         public Links links { get; set; }
         public User author { get; set; }

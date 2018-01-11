@@ -6,11 +6,13 @@ using RestSharp;
 using RestSharp.Authenticators;
 using RestSharp.Extensions.MonoHttp;
 
-namespace SharpBucket.Authentication{
+namespace SharpBucket.Authentication
+{
     /// <summary>
     /// This class helps you authenticated with the BitBucket REST API via the 3 legged OAuth authentication.
     /// </summary>
-    public class OAuthentication3Legged : OauthAuthentication{
+    public class OAuthentication3Legged : OauthAuthentication
+    {
         private string OAuthToken;
         private string OauthTokenSecret;
         private const string requestUrl = "oauth/request_token";
@@ -19,19 +21,24 @@ namespace SharpBucket.Authentication{
         private readonly string callback;
 
         public OAuthentication3Legged(string consumerKey, string consumerSecret, string callback, string baseUrl)
-            : base(consumerKey, consumerSecret, baseUrl){
+            : base(consumerKey, consumerSecret, baseUrl)
+        {
             this.callback = callback;
         }
 
         public OAuthentication3Legged(string consumerKey, string consumerSecret, string oAuthToken, string oauthTokenSecret, string baseUrl)
-            : base(consumerKey, consumerSecret, baseUrl){
+            : base(consumerKey, consumerSecret, baseUrl)
+        {
             OAuthToken = oAuthToken;
             OauthTokenSecret = oauthTokenSecret;
         }
 
-        public override T GetResponse<T>(string url, Method method, T body, IDictionary<string, object> requestParameters){
-            if (client == null){
-                client = new RestClient(_baseUrl){
+        public override T GetResponse<T>(string url, Method method, T body, IDictionary<string, object> requestParameters)
+        {
+            if (client == null)
+            {
+                client = new RestClient(_baseUrl)
+                {
                     Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)
                 };
             }
@@ -43,11 +50,13 @@ namespace SharpBucket.Authentication{
         /// </summary>
         /// <param name="client">The client.</param>
         /// <exception cref="System.Net.WebException">REST client encountered an error:  + response.ErrorMessage</exception>
-        private void SetAuthTokens(IRestClient client, string method) {
+        private void SetAuthTokens(IRestClient client, string method)
+        {
             var request = new RestRequest(method, Method.POST);
             var response = client.Execute(request);
 
-            if (response.ErrorException != null) {
+            if (response.ErrorException != null)
+            {
                 throw new WebException("REST client encountered an error: " + response.ErrorMessage, response.ErrorException);
             }
 
@@ -63,15 +72,18 @@ namespace SharpBucket.Authentication{
         /// https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket#OAuthonBitbucket-Step3.RedirecttheusertoBitbuckettoauthorizeyourapplication
         /// </summary>
         /// <returns></returns>
-        public string StartAuthentication(){
-            var restClient = new RestClient(_baseUrl){
+        public string StartAuthentication()
+        {
+            var restClient = new RestClient(_baseUrl)
+            {
                 Authenticator = OAuth1Authenticator.ForRequestToken(ConsumerKey, ConsumerSecret, callback)
             };
 
             SetAuthTokens(restClient, requestUrl);
 
-            Contract.Assert(!String.IsNullOrWhiteSpace(OAuthToken) &&
-                            !String.IsNullOrWhiteSpace(OauthTokenSecret));
+            Contract.Assert(
+                !String.IsNullOrWhiteSpace(OAuthToken) &&
+                !String.IsNullOrWhiteSpace(OauthTokenSecret));
 
             var request = new RestRequest(userAuthorizeUrl);
             request.AddParameter("oauth_token", OAuthToken);
@@ -85,15 +97,18 @@ namespace SharpBucket.Authentication{
         /// https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket#OAuthonBitbucket-Step4.RequestanAccessToken
         /// </summary>
         /// <param name="pin">The pin / verifier that was obtained in the previous step.</param>
-        public void AuthenticateWithPin(string pin){
-            var restClient = new RestClient(_baseUrl){
+        public void AuthenticateWithPin(string pin)
+        {
+            var restClient = new RestClient(_baseUrl)
+            {
                 Authenticator = OAuth1Authenticator.ForAccessToken(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret, pin)
             };
 
             SetAuthTokens(restClient, accessUrl);
 
-            Contract.Assert(!String.IsNullOrWhiteSpace(OAuthToken) &&
-                            !String.IsNullOrWhiteSpace(OauthTokenSecret));
+            Contract.Assert(
+                !String.IsNullOrWhiteSpace(OAuthToken) &&
+                !String.IsNullOrWhiteSpace(OauthTokenSecret));
         }
     }
 }

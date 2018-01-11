@@ -1,4 +1,6 @@
-﻿namespace SharpBucket.V2.Pocos {
-    public class ForkInfo : ListBasedPage<Fork> {
+﻿namespace SharpBucket.V2.Pocos
+{
+    public class ForkInfo : ListBasedPage<Fork>
+    {
     }
 }

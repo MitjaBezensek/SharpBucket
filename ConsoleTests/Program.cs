@@ -10,8 +10,10 @@ using Repository = SharpBucket.V2.Pocos.Repository;
 using Tag = SharpBucket.V2.Pocos.Tag;
 using Version = SharpBucket.V1.Pocos.Version;
 
-namespace ConsoleTests{
-    internal class Program{
+namespace ConsoleTests
+{
+    internal class Program
+    {
         private static string email;
         private static string password;
         private static string consumerKey;
@@ -19,13 +21,15 @@ namespace ConsoleTests{
         private static string accountName;
         private static string repository;
 
-        private static void Main(){
+        private static void Main()
+        {
             // Decide which version you wish to test
             TestApiV1();
             //TestApiV2();
         }
 
-        private static void TestApiV1(){
+        private static void TestApiV1()
+        {
             var sharpBucket = new SharpBucketV1();
             // Decide on which authentication you wish to use
             //ReadTestDataBasic();
@@ -53,7 +57,8 @@ namespace ConsoleTests{
             TestPrivilegesEndPoint(sharpBucket);
         }
 
-        private static void TestApiV2(){
+        private static void TestApiV2()
+        {
             var sharpBucket = new SharpBucketV2();
             ReadTestDataOauth();
             sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
@@ -62,7 +67,8 @@ namespace ConsoleTests{
             TestRestRepositoriesEndPoint(sharpBucket);
         }
 
-        private static void ReadTestDataOauth(){
+        private static void ReadTestDataOauth()
+        {
             // Reads test data information from a file, you should structure it like this:
             // By default it reads from c:\
             // ApiKey:yourApiKey
@@ -75,7 +81,8 @@ namespace ConsoleTests{
             ReadAccoutNameAndRepository(lines);
         }
 
-        private static void ReadTestDataBasic(){
+        private static void ReadTestDataBasic()
+        {
             // Reads test data information from a file, you should structure it like this:
             // By default it reads from c:\
             // Username:yourUsername
@@ -88,12 +95,14 @@ namespace ConsoleTests{
             ReadAccoutNameAndRepository(lines);
         }
 
-        private static void ReadAccoutNameAndRepository(string[] lines){
+        private static void ReadAccoutNameAndRepository(string[] lines)
+        {
             accountName = lines[2].Split(':')[1];
             repository = lines[3].Split(':')[1];
         }
 
-        private static void TestUserEndPoint(SharpBucketV1 sharpBucket){
+        private static void TestUserEndPoint(SharpBucketV1 sharpBucket)
+        {
             var userEndPoint = sharpBucket.UserEndPoint();
             var info = userEndPoint.GetInfo();
             var privileges = userEndPoint.ListPrivileges();
@@ -103,23 +112,24 @@ namespace ConsoleTests{
             var userRepositoryDashboard = userEndPoint.GetRepositoryDasboard();
         }
 
-        private static void TestIssuesEndPoint(SharpBucketV1 sharpBucket){
+        private static void TestIssuesEndPoint(SharpBucketV1 sharpBucket)
+        {
             var issuesResource = sharpBucket.RepositoriesEndPoint(accountName, repository).IssuesResource();
 
             int ISSUE_ID = 5;
             // Issues
             var issues = issuesResource.ListIssues();
-            var newIssue = new Issue{title = "Let's add a new issue", content = "Some issue content", status = "new", priority = "trivial", kind = "bug"};
+            var newIssue = new Issue { title = "Let's add a new issue", content = "Some issue content", status = "new", priority = "trivial", kind = "bug" };
             var newIssueResult = issuesResource.PostIssue(newIssue);
             var issue = issuesResource.GetIssue(newIssueResult.local_id);
-            var changedIssue = new Issue{title = "Completely new title", content = "Hi!", status = "new", local_id = issue.local_id};
+            var changedIssue = new Issue { title = "Completely new title", content = "Hi!", status = "new", local_id = issue.local_id };
             var changedIssueResult = issuesResource.PutIssue(changedIssue);
             issuesResource.DeleteIssue(changedIssueResult.local_id);
 
             // Issue comments 
             var issueResource = issuesResource.IssueResource(ISSUE_ID);
             var issueComments = issueResource.ListComments();
-            var newComment = new Comment{content = "This bug is really annoying!"};
+            var newComment = new Comment { content = "This bug is really annoying!" };
             var newCommentResult = issueResource.PostComment(newComment);
             var comment = issueResource.GetIssueComment(newCommentResult.comment_id);
             comment.content = "The bug is still annoying";
@@ -131,7 +141,7 @@ namespace ConsoleTests{
 
             // Components
             var components = issuesResource.ListComponents();
-            var newComponent = new Component{name = "Awesome component"};
+            var newComponent = new Component { name = "Awesome component" };
             var newComponentRes = issuesResource.PostComponent(newComponent);
             var component = issuesResource.GetComponent(newComponentRes.id);
             component.name = "Even more awesome component";
@@ -140,7 +150,7 @@ namespace ConsoleTests{
 
             // Milestones
             var milestones = issuesResource.ListMilestones();
-            var newMilestone = new Milestone{name = "Awesome milestone"};
+            var newMilestone = new Milestone { name = "Awesome milestone" };
             var newMilestoneRes = issuesResource.PostMilestone(newMilestone);
             var milestone = issuesResource.GetMilestone(newMilestoneRes.id);
             milestone.name = "Even more awesome milestone";
@@ -149,7 +159,7 @@ namespace ConsoleTests{
 
             // Versions
             var versions = issuesResource.ListVersions();
-            var newVersion = new Version{name = "Awesome version"};
+            var newVersion = new Version { name = "Awesome version" };
             var newVersionRes = issuesResource.PostVersion(newVersion);
             var version = issuesResource.GetVersion(newVersionRes.id);
             version.name = "Even more awesome version";
@@ -157,7 +167,8 @@ namespace ConsoleTests{
             issuesResource.DeleteVersion(updatedversion.id);
         }
 
-        private static void TestRepositoriesEndPoint(SharpBucketV1 sharpBucket){
+        private static void TestRepositoriesEndPoint(SharpBucketV1 sharpBucket)
+        {
             var repositoriesEndPoint = sharpBucket.RepositoriesEndPoint(accountName, repository);
             var tags = repositoriesEndPoint.ListTags();
             var branches = repositoriesEndPoint.ListBranches();
@@ -166,7 +177,7 @@ namespace ConsoleTests{
             var content = repositoriesEndPoint.GetSrcFile(mainBranch.name, sources.files[0].path);
             string WIKI_PAGE = "";
             var wiki = repositoriesEndPoint.GetWiki(WIKI_PAGE);
-            var newPage = new Wiki{data = "Hello to my new page"};
+            var newPage = new Wiki { data = "Hello to my new page" };
             var newWiki = repositoriesEndPoint.PostWiki(newPage, "NewPage");
             var changeSet = repositoriesEndPoint.ListChangeset();
             var change = changeSet.changesets[4];
@@ -174,7 +185,7 @@ namespace ConsoleTests{
             var diffStats = repositoriesEndPoint.GetChangesetDiffstat(change.node);
             var repoEvents = repositoriesEndPoint.ListEvents();
             var links = repositoriesEndPoint.ListLinks();
-            var newLink = new Link{id = 100};
+            var newLink = new Link { id = 100 };
             var newLinkResponse = repositoriesEndPoint.PostLink(newLink);
             var link = repositoriesEndPoint.GetLink(newLinkResponse.id);
             newLinkResponse.handler.name = "sfsdf";
@@ -182,7 +193,8 @@ namespace ConsoleTests{
             repositoriesEndPoint.DeleteLink(updatedLink);
         }
 
-        private static void TestUsersEndPoint(SharpBucketV1 sharpBucket){
+        private static void TestUsersEndPoint(SharpBucketV1 sharpBucket)
+        {
             var usersEndPoint = sharpBucket.UsersEndPoint(accountName);
             //var userEvents = usersEP.ListUserEvents();
             //var userPrivileges = usersEP.ListUserPrivileges();
@@ -198,13 +210,15 @@ namespace ConsoleTests{
             var getSSH = usersEndPoint.GetSSHKey(PK);
         }
 
-        private static void TestPrivilegesEndPoint(SharpBucketV1 sharpBucket){
+        private static void TestPrivilegesEndPoint(SharpBucketV1 sharpBucket)
+        {
             var privilegesEndPoint = sharpBucket.PrivilegesEndPoint(accountName);
             var privileges = privilegesEndPoint.ListRepositoryPrivileges(repository);
             var privilege = privilegesEndPoint.GetPrivilegesForAccount(repository, accountName);
         }
 
-        private static void TestRestRepositoriesEndPoint(SharpBucketV2 sharpBucket){
+        private static void TestRestRepositoriesEndPoint(SharpBucketV2 sharpBucket)
+        {
             var repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
             var repositories = repositoriesEndPoint.ListRepositories(accountName);
             var publicRepositories = repositoriesEndPoint.ListPublicRepositories();
@@ -253,17 +267,21 @@ namespace ConsoleTests{
 
             var pullRequestsResource = r.PullRequestsResource();
             var pullRequests = pullRequestsResource.ListPullRequests();
-            var source = new Source{
-                branch = new Branch{name = "develop"},
-                repository = new Repository{
+            var source = new Source
+            {
+                branch = new Branch { name = "develop" },
+                repository = new Repository
+                {
                     full_name = repository
                 }
             };
-            var destination = new Source{
-                branch = new Branch{name = "master"},
-                commit = new Commit{hash = "56c3aca"}
+            var destination = new Source
+            {
+                branch = new Branch { name = "master" },
+                commit = new Commit { hash = "56c3aca" }
             };
-            var newRequest = new PullRequest{
+            var newRequest = new PullRequest
+            {
                 title = "testing new one",
                 description = "My new description",
                 source = source,
@@ -322,7 +340,7 @@ namespace ConsoleTests{
 
             var branchResource = repositoriesEndPoint.BranchResource(accountName, repository);
             var branches = branchResource.ListBranches();
-            
+
             var tagResource = repositoriesEndPoint.TagResource(accountName, repository);
             var tags = tagResource.ListTags();
         }

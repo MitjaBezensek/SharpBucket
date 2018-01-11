@@ -1,5 +1,7 @@
-﻿namespace SharpBucket.V1.Pocos{
-    public class Metadata{
+﻿namespace SharpBucket.V1.Pocos
+{
+    public class Metadata
+    {
         public string kind { get; set; }
         public object version { get; set; }
         public object component { get; set; }

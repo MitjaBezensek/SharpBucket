@@ -1,5 +1,7 @@
-﻿namespace SharpBucket.V1.Pocos{
-    public class Consumer {
+﻿namespace SharpBucket.V1.Pocos
+{
+    public class Consumer
+    {
         public string description { get; set; }
         public int? id { get; set; }
         public string key { get; set; }

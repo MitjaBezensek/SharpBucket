@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using SharpBucket.V1.Pocos;
 
-namespace SharpBucket.V1.EndPoints{
+namespace SharpBucket.V1.EndPoints
+{
     /// <summary>
     /// Use the privileges endpoint to manage the user privileges (permissions). 
     /// It allows you to grant specific users access to read, write and or administer your repositories. 
@@ -12,11 +13,13 @@ namespace SharpBucket.V1.EndPoints{
     /// More info here:
     /// https://confluence.atlassian.com/display/BITBUCKET/privileges+Endpoint
     /// </summary>
-    public class PrivilegesEndPoint{
+    public class PrivilegesEndPoint
+    {
         private readonly string _baseUrl;
         private readonly SharpBucketV1 _sharpBucketV1;
 
-        public PrivilegesEndPoint(string accountName, SharpBucketV1 sharpBucketV1){
+        public PrivilegesEndPoint(string accountName, SharpBucketV1 sharpBucketV1)
+        {
             _sharpBucketV1 = sharpBucketV1;
             _baseUrl = "privileges/" + accountName + "/";
         }
@@ -30,7 +33,8 @@ namespace SharpBucket.V1.EndPoints{
         /// </summary>
         /// <param name="repository">Repository identifier.</param>
         /// <returns></returns>
-        public List<RepositoryPrivileges> ListRepositoryPrivileges(string repository){
+        public List<RepositoryPrivileges> ListRepositoryPrivileges(string repository)
+        {
             var overrideUrl = _baseUrl + repository + "/";
             return _sharpBucketV1.Get(new List<RepositoryPrivileges>(), overrideUrl);
         }
@@ -43,7 +47,8 @@ namespace SharpBucket.V1.EndPoints{
         /// <param name="repository">The repository whose privileges you wish to get.</param>
         /// <param name="accountName">The account name whose privileges you wish to get.</param>
         /// <returns></returns>
-        public RepositoryPrivilegesUser GetPrivilegesForAccount(string repository, string accountName){
+        public RepositoryPrivilegesUser GetPrivilegesForAccount(string repository, string accountName)
+        {
             var overrideUrl = _baseUrl + repository + "/" + accountName;
             return _sharpBucketV1.Get(new RepositoryPrivilegesUser(), overrideUrl);
         }

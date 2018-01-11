@@ -1,5 +1,7 @@
-﻿namespace SharpBucket.V1.Pocos{
-    public class Repository{
+﻿namespace SharpBucket.V1.Pocos
+{
+    public class Repository
+    {
         public string scm { get; set; }
         public bool? has_wiki { get; set; }
         public string last_updated { get; set; }

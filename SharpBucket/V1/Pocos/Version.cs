@@ -1,4 +1,6 @@
-﻿namespace SharpBucket.V1.Pocos{
-    public class Version : Component{
+﻿namespace SharpBucket.V1.Pocos
+{
+    public class Version : Component
+    {
     }
 }

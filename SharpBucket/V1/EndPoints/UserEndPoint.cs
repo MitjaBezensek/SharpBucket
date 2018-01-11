@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using SharpBucket.V1.Pocos;
 
-namespace SharpBucket.V1.EndPoints{
+namespace SharpBucket.V1.EndPoints
+{
     /// <summary>
     /// Use the user endpoints to gets information related to the currently authenticated user. 
     /// It is useful for OAuth or other in situations where the username is unknown. 
@@ -10,11 +11,13 @@ namespace SharpBucket.V1.EndPoints{
     /// More info here:
     /// https://confluence.atlassian.com/display/BITBUCKET/user+Endpoint
     /// </summary>
-    public class UserEndPoint{
+    public class UserEndPoint
+    {
         private readonly SharpBucketV1 _sharpBucketV1;
         private readonly string _baseUrl;
 
-        public UserEndPoint(SharpBucketV1 sharpBucketV1){
+        public UserEndPoint(SharpBucketV1 sharpBucketV1)
+        {
             _sharpBucketV1 = sharpBucketV1;
             _baseUrl = "user/";
         }
@@ -23,7 +26,8 @@ namespace SharpBucket.V1.EndPoints{
         /// Gets the basic information associated with an account and a list of all of the repositories owned by the user.
         /// </summary>
         /// <returns></returns>
-        public UserInfo GetInfo(){
+        public UserInfo GetInfo()
+        {
             return _sharpBucketV1.Get(new UserInfo(), _baseUrl);
         }
 
@@ -33,7 +37,8 @@ namespace SharpBucket.V1.EndPoints{
         /// An account can have admin or collaborator (member) privileges. The accountname always has admin privileges on itself. 
         /// </summary>
         /// <returns></returns>
-        public Privileges ListPrivileges(){
+        public Privileges ListPrivileges()
+        {
             var overrideUrl = _baseUrl + "privileges";
             return _sharpBucketV1.Get(new Privileges(), overrideUrl);
         }
@@ -44,7 +49,8 @@ namespace SharpBucket.V1.EndPoints{
         /// An account always "follows" its own repositories. 
         /// </summary>
         /// <returns></returns>
-        public List<Repository> ListFollows(){
+        public List<Repository> ListFollows()
+        {
             var overrideUrl = _baseUrl + "follows";
             return _sharpBucketV1.Get(new List<Repository>(), overrideUrl);
         }
@@ -54,7 +60,8 @@ namespace SharpBucket.V1.EndPoints{
         /// Use this if you're looking for a full list of all of the repositories associated with a user.
         /// </summary>
         /// <returns></returns>
-        public List<Repository> ListRepositories(){
+        public List<Repository> ListRepositories()
+        {
             var overrideUrl = _baseUrl + "repositories";
             return _sharpBucketV1.Get(new List<Repository>(), overrideUrl);
         }
@@ -63,7 +70,8 @@ namespace SharpBucket.V1.EndPoints{
         /// List the repositories the account follows.  This is the same list that appears on the Following tab on your account dashboard.
         /// </summary>
         /// <returns></returns>
-        public RepositoriesOverview RepositoriesOverview(){
+        public RepositoriesOverview RepositoriesOverview()
+        {
             var overrideUrl = _baseUrl + "repositories/overview";
             return _sharpBucketV1.Get(new RepositoriesOverview(), overrideUrl);
         }
@@ -73,7 +81,8 @@ namespace SharpBucket.V1.EndPoints{
         /// List the repositories from the account's dashboard.
         /// </summary>
         /// <returns></returns>
-        public object GetRepositoryDasboard(){
+        public object GetRepositoryDasboard()
+        {
             var overrideUrl = _baseUrl + "repositories/dashboard";
             return _sharpBucketV1.Get(new object(), overrideUrl);
         }

@@ -1,5 +1,7 @@
-﻿namespace SharpBucket.V1.Pocos{
-    public class Comment{
+﻿namespace SharpBucket.V1.Pocos
+{
+    public class Comment
+    {
         public string content { get; set; }
         public User author_info { get; set; }
         public int? comment_id { get; set; }

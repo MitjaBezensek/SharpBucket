@@ -1,18 +1,20 @@
 ﻿using System.Collections.Generic;
 using SharpBucket.V2.Pocos;
 
-namespace SharpBucket.V2.EndPoints{
+namespace SharpBucket.V2.EndPoints
+{
     /// <summary>
     /// The UsersEndPoint End Point gets a user account's profile information.
     /// More info:
     /// https://confluence.atlassian.com/display/BITBUCKET/users+Endpoint
     /// </summary>
-    public class UsersEndpoint : EndPoint {
-
+    public class UsersEndpoint : EndPoint
+    {
         private readonly string _repositoriesUrl;
 
-        public UsersEndpoint(string accountName, SharpBucketV2 sharpBucketV2) : 
-            base(sharpBucketV2, "users/" + accountName + "/") {
+        public UsersEndpoint(string accountName, SharpBucketV2 sharpBucketV2) :
+            base(sharpBucketV2, "users/" + accountName + "/")
+        {
             _repositoriesUrl = "repositories/" + accountName + "/";
         }
 
@@ -21,7 +23,8 @@ namespace SharpBucket.V2.EndPoints{
         /// If the user's profile is private, the caller must be authenticated as the account holder to view this information.  
         /// </summary>
         /// <returns></returns>
-        public User GetProfile(){
+        public User GetProfile()
+        {
             return _sharpBucketV2.Get(new User(), _baseUrl);
         }
 
@@ -30,7 +33,8 @@ namespace SharpBucket.V2.EndPoints{
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<User> ListFollowers(int max = 0){
+        public List<User> ListFollowers(int max = 0)
+        {
             var overrideUrl = _baseUrl + "followers/";
             return GetPaginatedValues<User>(overrideUrl, max);
         }
@@ -40,7 +44,8 @@ namespace SharpBucket.V2.EndPoints{
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<User> ListFollowing(int max = 0) {
+        public List<User> ListFollowing(int max = 0)
+        {
             var overrideUrl = _baseUrl + "following/";
             return GetPaginatedValues<User>(overrideUrl, max);
         }
@@ -52,7 +57,8 @@ namespace SharpBucket.V2.EndPoints{
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<Repository> ListRepositories(int max = 0) {
+        public List<Repository> ListRepositories(int max = 0)
+        {
             return GetPaginatedValues<Repository>(_repositoriesUrl, max);
         }
     }

@@ -1,16 +1,18 @@
 ﻿using SharpBucket.V2.EndPoints;
 
-namespace SharpBucket.V2{
+namespace SharpBucket.V2
+{
     /// <summary>
     /// A client for the V2 of the BitBucket API.
     /// You can read more about the V2 of the API here:
     /// https://confluence.atlassian.com/display/BITBUCKET/Version+2
     /// </summary>
-    public sealed class SharpBucketV2 : SharpBucket{
-
+    public sealed class SharpBucketV2 : SharpBucket
+    {
         internal const string BITBUCKET_URL = "https://bitbucket.org/api/2.0/";
 
-        public SharpBucketV2(){
+        public SharpBucketV2()
+        {
             _baseUrl = BITBUCKET_URL;
         }
 
@@ -19,7 +21,8 @@ namespace SharpBucket.V2{
         /// </summary>
         /// <param name="teamName">The team whose team End Point you wish to get.</param>
         /// <returns></returns>
-        public TeamsEndPoint TeamsEndPoint(string teamName){
+        public TeamsEndPoint TeamsEndPoint(string teamName)
+        {
             return new TeamsEndPoint(this, teamName);
         }
 
@@ -27,7 +30,8 @@ namespace SharpBucket.V2{
         /// Get the Repositories End point.
         /// </summary>
         /// <returns></returns>
-        public RepositoriesEndPoint RepositoriesEndPoint(){
+        public RepositoriesEndPoint RepositoriesEndPoint()
+        {
             return new RepositoriesEndPoint(this);
         }
 
@@ -36,11 +40,13 @@ namespace SharpBucket.V2{
         /// </summary>
         /// <param name="accountName">The account for which you wish to get the UsersEndPoint End Point.</param>
         /// <returns></returns>
-        public UsersEndpoint UsersEndPoint(string accountName){
+        public UsersEndpoint UsersEndPoint(string accountName)
+        {
             return new UsersEndpoint(accountName, this);
         }
 
-        public UserEndpoint UserEndPoint(){
+        public UserEndpoint UserEndPoint()
+        {
             return new UserEndpoint(this);
         }
     }

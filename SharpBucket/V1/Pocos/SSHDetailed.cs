@@ -1,5 +1,7 @@
-﻿namespace SharpBucket.V1.Pocos{
-    public class SSHDetailed {
+﻿namespace SharpBucket.V1.Pocos
+{
+    public class SSHDetailed
+    {
         public string comment { get; set; }
         public object added_on { get; set; }
         public User user { get; set; }

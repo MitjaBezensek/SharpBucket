@@ -1,5 +1,7 @@
-﻿namespace SharpBucket.V2.Pocos{
-    public class Comment {
+﻿namespace SharpBucket.V2.Pocos
+{
+    public class Comment
+    {
         public Parent parent { get; set; }
         public Links links { get; set; }
         public Content content { get; set; }

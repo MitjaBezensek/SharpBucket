@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace SharpBucket.V2.Pocos{
-    public class Merge {
+namespace SharpBucket.V2.Pocos
+{
+    public class Merge
+    {
         public string description { get; set; }
         public Links links { get; set; }
         public string title { get; set; }

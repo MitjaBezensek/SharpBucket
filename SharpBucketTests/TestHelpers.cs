@@ -2,14 +2,17 @@
 using System.IO;
 using SharpBucket.V2;
 
-namespace SharBucketTests{
-    internal partial class TestHelpers{
+namespace SharBucketTests
+{
+    internal partial class TestHelpers
+    {
         private const string TestInformationPath = "c:\\TestInformation.txt";
         private const string SbConsumerKey = "SB_CONSUMER_KEY";
         private const string SbConsumerSecretKey = "SB_CONSUMER_SECRET_KEY";
         private const string SbAccountName = "SB_ACCOUNT_NAME";
 
-        public static SharpBucketV2 GetV2ClientAuthenticatedWithBasicAuthentication(){
+        public static SharpBucketV2 GetV2ClientAuthenticatedWithBasicAuthentication()
+        {
             var sharpbucket = new SharpBucketV2();
             // Reads test data information from a file, you should structure it like this:
             // By default it reads from c:\
@@ -18,7 +21,7 @@ namespace SharBucketTests{
             // AccountName:yourAccountName
             // Repository:testRepository
             var lines = File.ReadAllLines(TestInformationPath);
-            var email= lines[0].Split(':')[1];
+            var email = lines[0].Split(':')[1];
             var password = lines[1].Split(':')[1];
             var accountName = lines[2].Split(':')[1];
             var repository = lines[3].Split(':')[1];
@@ -27,7 +30,8 @@ namespace SharBucketTests{
             return sharpbucket;
         }
 
-        public static SharpBucketV2 GetV2ClientAuthenticatedWithOAuth(){
+        public static SharpBucketV2 GetV2ClientAuthenticatedWithOAuth()
+        {
             var consumerKey = Environment.GetEnvironmentVariable(SbConsumerKey);
             var consumerSecretKey = Environment.GetEnvironmentVariable(SbConsumerSecretKey);
             var sharpbucket = new SharpBucketV2();
@@ -35,7 +39,8 @@ namespace SharBucketTests{
             return sharpbucket;
         }
 
-        public static SharpBucketV2 GetV2ClientAuthenticatedWithOAuth2(){
+        public static SharpBucketV2 GetV2ClientAuthenticatedWithOAuth2()
+        {
             var consumerKey = Environment.GetEnvironmentVariable(SbConsumerKey);
             var consumerSecretKey = Environment.GetEnvironmentVariable(SbConsumerSecretKey);
             var sharpbucket = new SharpBucketV2();

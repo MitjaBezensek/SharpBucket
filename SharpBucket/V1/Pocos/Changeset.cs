@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace SharpBucket.V1.Pocos{
-    public class Changeset{
+namespace SharpBucket.V1.Pocos
+{
+    public class Changeset
+    {
         public string node { get; set; }
         public List<FileInfo> files { get; set; }
         public string raw_author { get; set; }

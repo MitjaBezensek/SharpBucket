@@ -1,5 +1,7 @@
-﻿namespace SharpBucket.V1.Pocos{
-    public class EventData {
+﻿namespace SharpBucket.V1.Pocos
+{
+    public class EventData
+    {
         public object node { get; set; }
         public object description { get; set; }
         public Repository repository { get; set; }

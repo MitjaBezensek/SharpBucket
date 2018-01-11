@@ -1,4 +1,6 @@
-﻿namespace SharpBucket.V2.Pocos{
-    public class CommentsInfo : ListBasedPage<Comment> {
+﻿namespace SharpBucket.V2.Pocos
+{
+    public class CommentsInfo : ListBasedPage<Comment>
+    {
     }
 }

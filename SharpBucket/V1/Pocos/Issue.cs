@@ -1,5 +1,7 @@
-﻿namespace SharpBucket.V1.Pocos{
-    public class Issue{
+﻿namespace SharpBucket.V1.Pocos
+{
+    public class Issue
+    {
         public string title { get; set; }
         public string content { get; set; }
         public string priority { get; set; }

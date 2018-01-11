@@ -1,5 +1,7 @@
-﻿namespace SharpBucket.V2.Pocos{
-    public class Fork {
+﻿namespace SharpBucket.V2.Pocos
+{
+    public class Fork
+    {
         public string scm { get; set; }
         public bool? has_wiki { get; set; }
         public string description { get; set; }

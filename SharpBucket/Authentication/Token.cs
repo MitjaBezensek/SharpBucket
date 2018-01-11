@@ -1,5 +1,7 @@
-﻿namespace SharpBucket.Authentication {
-    internal class Token {
+﻿namespace SharpBucket.Authentication
+{
+    internal class Token
+    {
         public string AccessToken { get; set; }
         public string Scopes { get; set; }
         public int ExpiresIn { get; set; }

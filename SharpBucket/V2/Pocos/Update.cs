@@ -1,5 +1,7 @@
-﻿namespace SharpBucket.V2.Pocos {
-    public class Update {
+﻿namespace SharpBucket.V2.Pocos
+{
+    public class Update
+    {
         public string description { get; set; }
         public string title { get; set; }
         public Source destination { get; set; }
