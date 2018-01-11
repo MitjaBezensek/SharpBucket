@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using SharpBucket.V1;
 using SharpBucket.V1.Pocos;
 using SharpBucket.V2;
@@ -6,6 +7,8 @@ using SharpBucket.V2.Pocos;
 using Comment = SharpBucket.V1.Pocos.Comment;
 using Link = SharpBucket.V1.Pocos.Link;
 using Repository = SharpBucket.V2.Pocos.Repository;
+using Tag = SharpBucket.V2.Pocos.Tag;
+using Version = SharpBucket.V1.Pocos.Version;
 
 namespace ConsoleTests{
     internal class Program{
@@ -316,6 +319,12 @@ namespace ConsoleTests{
             //var PR2Comments = pullRequestEP.ListPullRequestComments();
             //var cId2 = 10;
             //var PR2Comment = pullRequestEP.GetPullRequestComment(cId2);
+
+            var branchResource = repositoriesEndPoint.BranchResource(accountName, repository);
+            var branches = branchResource.ListBranches();
+            
+            var tagResource = repositoriesEndPoint.TagResource(accountName, repository);
+            var tags = tagResource.ListTags();
         }
     }
 }

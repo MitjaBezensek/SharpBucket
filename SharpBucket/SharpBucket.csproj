@@ -68,10 +68,12 @@
     <Compile Include="V1\Pocos\SrcDirectory.cs" />
     <Compile Include="V1\Pocos\SrcFile.cs" />
     <Compile Include="V1\Pocos\SrcFileInfo.cs" />
+    <Compile Include="V2\EndPoints\BranchResource.cs" />
     <Compile Include="V2\EndPoints\EndPoint.cs" />
     <Compile Include="V2\EndPoints\PullRequestResource.cs" />
     <Compile Include="V2\EndPoints\PullRequestsResource.cs" />
     <Compile Include="V2\EndPoints\RepositoryResource.cs" />
+    <Compile Include="V2\EndPoints\TagResource.cs" />
     <Compile Include="V2\EndPoints\UserEndpoint.cs" />
     <Compile Include="V2\Pocos\Author.cs" />
     <Compile Include="V2\Pocos\Branch.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="V2\Pocos\Parent.cs" />
     <Compile Include="V2\Pocos\Activity.cs" />
     <Compile Include="V2\Pocos\ActivityInfo.cs" />
+    <Compile Include="V2\Pocos\Tag.cs" />
     <Compile Include="V2\Pocos\Update.cs" />
     <Compile Include="V2\Pocos\Comment.cs" />
     <Compile Include="V2\Pocos\CommentsInfo.cs" />
