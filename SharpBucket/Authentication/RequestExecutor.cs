@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using RestSharp;
+using RestSharp.Deserializers;
 
 namespace SharpBucket.Authentication{
     internal class RequestExecutor{
@@ -11,10 +12,17 @@ namespace SharpBucket.Authentication{
                     request.AddParameter(requestParameter.Key, requestParameter.Value);
                 }
             }
+
             if (ShouldAddBody(method)){
                 request.RequestFormat = DataFormat.Json;
                 request.AddObject(body);
             }
+
+            //Fixed bug that prevents RestClient for adding custom headers to the request
+            //https://stackoverflow.com/questions/22229393/why-is-restsharp-addheaderaccept-application-json-to-a-list-of-item
+
+            client.ClearHandlers();
+            client.AddHandler("application/json", new JsonDeserializer());
             var result = client.Execute<T>(request);
 
             if (result.ErrorException != null) {

@@ -3,10 +3,11 @@ using System.IO;
 using SharpBucket.V2;
 
 namespace SharBucketTests{
-    internal class TestHelpers{
+    internal partial class TestHelpers{
         private const string TestInformationPath = "c:\\TestInformation.txt";
         private const string SbConsumerKey = "SB_CONSUMER_KEY";
         private const string SbConsumerSecretKey = "SB_CONSUMER_SECRET_KEY";
+        private const string SbAccountName = "SB_ACCOUNT_NAME";
 
         public static SharpBucketV2 GetV2ClientAuthenticatedWithBasicAuthentication(){
             var sharpbucket = new SharpBucketV2();

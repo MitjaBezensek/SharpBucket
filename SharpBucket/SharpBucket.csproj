@@ -52,9 +52,11 @@
     <Compile Include="Authentication\RequestExecutor.cs" />
     <Compile Include="Authentication\Token.cs" />
     <Compile Include="Utility\ObjectToDictionaryHelper.cs" />
+    <Compile Include="V1\EndPoints\GroupsEndPoint.cs" />
     <Compile Include="V1\EndPoints\IssueResource.cs" />
     <Compile Include="V1\EndPoints\PrivilegesEndPoint.cs" />
     <Compile Include="V1\Pocos\Followers.cs" />
+    <Compile Include="V1\Pocos\Group.cs" />
     <Compile Include="V1\Pocos\IssueSearchParameters.cs" />
     <Compile Include="V1\Pocos\Link.cs" />
     <Compile Include="V1\Pocos\LinkInfo.cs" />
