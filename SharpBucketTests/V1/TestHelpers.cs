@@ -15,5 +15,9 @@ namespace SharBucketTests{
             return sharpbucket;
         }
 
+       public static string GetAccountName(){
+          return Environment.GetEnvironmentVariable(SbAccountName);
+       }
+
     }
 }

@@ -11,12 +11,14 @@ namespace SharBucketTests.V1.EndPoints {
 
         private SharpBucketV1 sharpBucket;
         private GroupsEndPoint groupsEndPoint;
-        private const string ACCOUNT_NAME = "mxgod";
+        private string accountName;
 
         [SetUp]
         public void Init() {
             sharpBucket = TestHelpers.GetV1ClientAuthenticatedWithOAuth();
-            groupsEndPoint = sharpBucket.GroupsEndPoint(ACCOUNT_NAME);
+            accountName = TestHelpers.GetAccountName(); 
+            groupsEndPoint = sharpBucket.GroupsEndPoint(accountName);
+
         }
 
         //[OneTimeTearDown]
@@ -59,11 +61,11 @@ namespace SharBucketTests.V1.EndPoints {
             var new_group = groupsEndPoint.CreateGroup(group.name); //create a new group before adding a member to it
 
             new_group.ShouldNotBe(null);
-            var member = groupsEndPoint.AddMemberToGroup(new_group.slug, ACCOUNT_NAME);
+            var member = groupsEndPoint.AddMemberToGroup(new_group.slug, accountName);
 
             member.ShouldNotBe(null);
             member.ShouldBeOfType(typeof(User));
-            member.username.ShouldBe(ACCOUNT_NAME);
+            member.username.ShouldBe(accountName);
         }
 
         [Test]
@@ -74,7 +76,7 @@ namespace SharBucketTests.V1.EndPoints {
             var new_group = groupsEndPoint.CreateGroup(group.name); //create a new group before 
 
             new_group.ShouldNotBe(null);
-            var member = groupsEndPoint.AddMemberToGroup(new_group.slug, ACCOUNT_NAME);
+            var member = groupsEndPoint.AddMemberToGroup(new_group.slug, accountName);
 
             var all_members = groupsEndPoint.ListGroupMembers(new_group.slug);
 
