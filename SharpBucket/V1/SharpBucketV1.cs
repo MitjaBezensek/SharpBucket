@@ -50,5 +50,18 @@ namespace SharpBucket.V1{
       public UsersEndPoint UsersEndPoint(string accountName){
          return new UsersEndPoint(accountName, this);
       }
-   }
+
+        /// <summary>
+        /// The groups endpoint provides functionality for querying information about user groups, 
+        /// creating new ones, updating memberships, and deleting them. Both individual and team accounts can define groups.
+        /// To manage group information on an individual account, the caller must authenticate with administrative rights on the account. 
+        /// More info:
+        /// https://confluence.atlassian.com/bitbucket/groups-endpoint-296093143.html
+        /// </summary>
+        public GroupsEndPoint GroupsEndPoint(string accountName) {
+            return new GroupsEndPoint(accountName, this);
+        }
+
+
+    }
 }
