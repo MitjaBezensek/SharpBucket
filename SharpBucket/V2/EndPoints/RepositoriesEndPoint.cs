@@ -258,6 +258,20 @@ namespace SharpBucket.V2.EndPoints{
             return _sharpBucketV2.Delete(new object(), overrideUrl);
         }
 
+        internal object AddNewBuildStatus(string accountName, string repository, string revision, BuildInfo buildInfo){
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/");
+            return _sharpBucketV2.Post(buildInfo, overrideUrl);
+        }
+
+        internal BuildInfo GetBuildStatusInfo(string accountName, string repository, string revision, string key){
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/" + key);
+            return _sharpBucketV2.Get(new BuildInfo(), overrideUrl);
+        }
+
+        internal object ChangeBuildStatusInfo(string accountName, string repository, string revision, string key, BuildInfo buildInfo){
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/" + key);
+            return _sharpBucketV2.Put(buildInfo, overrideUrl);
+        }
         #endregion
 
         #region Default Reviewer Resource
@@ -268,5 +282,6 @@ namespace SharpBucket.V2.EndPoints{
         }
 
         #endregion
+       
     }
 }

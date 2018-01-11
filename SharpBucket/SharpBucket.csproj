@@ -75,6 +75,7 @@
     <Compile Include="V2\Pocos\Branch.cs" />
     <Compile Include="V2\Pocos\BranchRestriction.cs" />
     <Compile Include="V2\Pocos\BranchRestrictionInfo.cs" />
+    <Compile Include="V2\Pocos\BuildInfo.cs" />
     <Compile Include="V2\Pocos\CommitInfo.cs" />
     <Compile Include="V2\Pocos\Fork.cs" />
     <Compile Include="V2\Pocos\ForkInfo.cs" />
