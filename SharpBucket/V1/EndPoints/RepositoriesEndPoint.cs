@@ -462,6 +462,32 @@ namespace SharpBucket.V1.EndPoints{
 
         #endregion
 
+        #region Sources Resource
+
+        public SrcDirectory ListSources(BranchInfo branch, string directory)
+        {
+            return ListSources(branch.branch, directory);
+        }
+
+        public SrcDirectory ListSources(MainBranch branch, string directory)
+        {
+            return ListSources(branch.name, directory);
+        }
+
+        public SrcDirectory ListSources(string branch, string directory)
+        {
+            var overrideUrl = _baserUrl + "src/" + branch + "/" + directory + "/";
+            return _sharpBucketV1.Get(new SrcDirectory(), overrideUrl);
+        }
+
+        public SrcFile GetSrcFile(string branch, string filepath)
+        {
+            var overrideUrl = _baserUrl + "src/" + branch + "/" + filepath;
+            return _sharpBucketV1.Get(new SrcFile(), overrideUrl);
+        }
+
+        #endregion
+
         #region Wiki Resource
 
         /// <summary>

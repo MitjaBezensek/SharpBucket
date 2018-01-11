@@ -89,6 +89,10 @@
 ### [Repository Resource 1.0][18]
 ### [Services Resource][19]
 ### [Src Resources][20]
+ - GET a list of repo source (listing of a directory content) **(done)**
+ - GET content of a file **(done)**
+ - GET raw content of a file
+
 ### [Wiki Resources][21]
 - GET the raw content of a Wiki page  **(done)**
 - POST a new page  **(seems bugged)**
