@@ -29,7 +29,7 @@ namespace SharBucketTests.V2.EndPoints {
          var members = teamsEndPoint.ListMembers(35);
          members.Count.ShouldBeGreaterThan(19);
          // This test is brittle, it should be updated since the names change
-         members[0].display_name.ShouldBe("Brian McKenna");
+         members[0].display_name.ShouldBe("Ivan Ostafiychuk");
       }
 
       [Test]
