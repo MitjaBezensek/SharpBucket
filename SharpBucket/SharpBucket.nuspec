@@ -11,7 +11,7 @@
     <iconUrl>http://bezensek.com/favicon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>SharpBucket is a .Net wrapper (written in c#) for the BitBucket's REST API. With it you can have all the data of your repositories / issues at your fingertips.</description>
-    <releaseNotes>Added support for getting the current user's teams.</releaseNotes>
+    <releaseNotes>Add support for local BitBucket servers. Fix a problem with getting a diff of a pull request. Fix a typo in PullRequestsResource.</releaseNotes>
     <copyright>Copyright 2014</copyright>
     <tags>BitBucket REST API C#</tags>
   </metadata>
