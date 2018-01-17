@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using RestSharp;
 using RestSharp.Deserializers;
@@ -7,6 +8,8 @@ namespace SharpBucket.Authentication
 {
     internal class RequestExecutor
     {
+        internal const string BITBUCKET_URL_V1 = "https://bitbucket.org/api/1.0";
+        internal const string BITBUCKET_URL_V2 = "https://api.bitbucket.org/2.0";
         public static T ExecuteRequest<T>(string url, Method method, T body, RestClient client, IDictionary<string, object> requestParameters)
             where T : new()
         {
@@ -30,7 +33,7 @@ namespace SharpBucket.Authentication
 
             client.ClearHandlers();
             client.AddHandler("application/json", new JsonDeserializer());
-            var result = client.Execute<T>(request);
+            var result = ExectueRequest<T>(method, client, request);
 
             if (result.ErrorException != null)
             {
@@ -43,6 +46,35 @@ namespace SharpBucket.Authentication
                 return result.Content as dynamic;
             }
             return result.Data;
+        }
+
+        private static IRestResponse<T> ExectueRequest<T>(Method method, RestClient client, RestRequest request)
+            where T : new()
+        {
+            IRestResponse<T> result;
+
+            client.FollowRedirects = false;
+            result = client.Execute<T>(request);
+            if (result.StatusCode == HttpStatusCode.Redirect)
+            {
+                var redirectUrl = GetRedirectUrl(result);
+                request = new RestRequest(redirectUrl, method);
+                result = client.Execute<T>(request);
+            }
+            return result;
+        }
+
+        private static string GetRedirectUrl(IRestResponse result)
+        {
+            var redirectUrl = result.Headers.Where(header => header.Name == "Location").Select(header => header.Value).First().ToString();
+            if (redirectUrl.Contains(BITBUCKET_URL_V1))
+            {
+                return redirectUrl.Replace(BITBUCKET_URL_V1, "");
+            }
+            else
+            {
+                return redirectUrl.Replace(BITBUCKET_URL_V2, "");
+            }
         }
 
         private static bool ShouldAddBody(Method method)
