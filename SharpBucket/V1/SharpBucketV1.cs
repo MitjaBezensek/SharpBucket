@@ -15,6 +15,20 @@ namespace SharpBucket.V1
         }
 
         /// <summary>
+        /// A client for the V1 of the BitBucketAPI.
+        /// You can read more about the V1 of the API here:
+        /// https://confluence.atlassian.com/display/BITBUCKET/Version+1
+        /// </summary>
+        /// <param name="baseUrl">If you are locally hosting your BitBucket repository
+        /// you can use this constructor to set the url of your local Bitbucket server.
+        /// All API requests will then use this url as a base. 
+        /// </param>
+        public SharpBucketV1(string baseUrl)
+        {
+            _baseUrl = baseUrl;
+        }
+
+        /// <summary>
         /// Get the Privileges End Point for a specific account.
         /// </summary>
         /// <param name="accountName">The account for which you wish to get the Privileges End Point.</param>
