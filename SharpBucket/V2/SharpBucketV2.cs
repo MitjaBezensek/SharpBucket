@@ -9,7 +9,7 @@ namespace SharpBucket.V2
     /// </summary>
     public sealed class SharpBucketV2 : SharpBucket
     {
-        internal const string BITBUCKET_URL = "https://bitbucket.org/api/2.0/";
+        internal const string BITBUCKET_URL = "https://api.bitbucket.org/2.0";
 
         public SharpBucketV2()
         {
