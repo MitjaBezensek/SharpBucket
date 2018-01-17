@@ -111,7 +111,7 @@ namespace SharpBucket.V2.EndPoints
 
         #region Pull Requests Resource
 
-        public PullRequestsResource PullReqestsResource(string accountName, string repository)
+        public PullRequestsResource PullRequestsResource(string accountName, string repository)
         {
             return new PullRequestsResource(accountName, repository, this);
         }
