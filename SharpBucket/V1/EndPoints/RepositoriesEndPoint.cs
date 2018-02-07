@@ -70,11 +70,13 @@ namespace SharpBucket.V1.EndPoints
         /// Private repositories require the caller to authenticate. 
         /// </summary>
         /// <param name="changeset">The change set whose diff stat you wish to get.</param>
+        /// <param name="limit">An integer representing how many changesets to return. You can specify a limit between 0 and 50.</param>
+        /// <param name="start">An integer representing the index of the file to start returning results from.</param>
         /// <returns></returns>
-        private List<DiffstatInfo> GetChangesetDiffstat(Changeset changeset)
+        private List<DiffstatInfo> GetChangesetDiffstat(Changeset changeset, int limit, int start)
         {
             var overrideUrl = _baserUrl + "changesets/" + changeset.node + "/diffstat/";
-            return _sharpBucketV1.Get(new List<DiffstatInfo>(), overrideUrl);
+            return _sharpBucketV1.Get(new List<DiffstatInfo>(), overrideUrl, new { limit, start });
         }
 
         /// <summary>
@@ -82,10 +84,12 @@ namespace SharpBucket.V1.EndPoints
         /// Private repositories require the caller to authenticate. 
         /// </summary>
         /// <param name="node">The node changeset identifier.</param>
+        /// <param name="limit">An integer representing how many changesets to return. You can specify a limit between 0 and 50.</param>
+        /// <param name="start">An integer representing the index of the file to start returning results from.</param>
         /// <returns></returns>
-        public List<DiffstatInfo> GetChangesetDiffstat(string node)
+        public List<DiffstatInfo> GetChangesetDiffstat(string node, int limit = 15, int start = 0)
         {
-            return GetChangesetDiffstat(new Changeset { node = node });
+            return GetChangesetDiffstat(new Changeset { node = node }, limit, start);
         }
 
         /// <summary>
