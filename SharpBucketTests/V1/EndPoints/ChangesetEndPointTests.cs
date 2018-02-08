@@ -19,6 +19,10 @@ namespace SharBucketTests.V1.EndPoints
         [SetUp]
         public void Init()
         {
+            Environment.SetEnvironmentVariable("SB_ACCOUNT_NAME", "mirror");
+            Environment.SetEnvironmentVariable("SB_CONSUMER_SECRET_KEY", "yedGsmuE6q4gzh3rqppvE66mfSqnEAKg");
+            Environment.SetEnvironmentVariable("SB_CONSUMER_KEY", "5Y6cBVjaunnx5cS65S");
+
             sharpBucket = TestHelpers.GetV1ClientAuthenticatedWithOAuth();
             accountName = TestHelpers.GetAccountName();
             repositoriesEndPoint = sharpBucket.RepositoriesEndPoint(accountName, REPOSITORY_NAME);
