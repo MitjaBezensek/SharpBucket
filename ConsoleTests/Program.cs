@@ -75,7 +75,7 @@ namespace ConsoleTests
             // SecretApiKey:yourSecretApiKey
             // AccountName:yourAccountName
             // Repository:testRepository
-            var lines = File.ReadAllLines("C:\\Users\\ahnducl\\Desktop\\TestInformationOauth.txt");
+            var lines = File.ReadAllLines("c:\\TestInformationOauth.txt");
             consumerKey = lines[0].Split(':')[1];
             consumerSecretKey = lines[1].Split(':')[1];
             ReadAccoutNameAndRepository(lines);
