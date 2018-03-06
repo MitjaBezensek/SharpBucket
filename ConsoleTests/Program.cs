@@ -75,7 +75,7 @@ namespace ConsoleTests
             // SecretApiKey:yourSecretApiKey
             // AccountName:yourAccountName
             // Repository:testRepository
-            var lines = File.ReadAllLines("c:\\TestInformationOauth.txt");
+            var lines = File.ReadAllLines("C:\\Users\\ahnducl\\Desktop\\TestInformationOauth.txt");
             consumerKey = lines[0].Split(':')[1];
             consumerSecretKey = lines[1].Split(':')[1];
             ReadAccoutNameAndRepository(lines);
@@ -124,7 +124,7 @@ namespace ConsoleTests
             var issue = issuesResource.GetIssue(newIssueResult.local_id);
             var changedIssue = new Issue { title = "Completely new title", content = "Hi!", status = "new", local_id = issue.local_id };
             var changedIssueResult = issuesResource.PutIssue(changedIssue);
-            issuesResource.DeleteIssue(changedIssueResult.local_id);
+
 
             // Issue comments 
             var issueResource = issuesResource.IssueResource(ISSUE_ID);
@@ -135,6 +135,7 @@ namespace ConsoleTests
             comment.content = "The bug is still annoying";
             var updatedCommentRes = issueResource.PutIssueComment(comment);
             issueResource.DeleteIssueComment(updatedCommentRes.comment_id);
+            issuesResource.DeleteIssue(changedIssueResult.local_id);
 
             // Issue followers
             var issueFollowers = issueResource.ListFollowers();
