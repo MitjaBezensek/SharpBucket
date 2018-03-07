@@ -46,10 +46,10 @@ namespace SharpBucket.V1.EndPoints
         /// This call requires authorization and the caller must have administrative rights on the account.
         /// </summary>
         /// <returns></returns>
-        public InvitationsInfo ListInvitations()
+        public List<InvitationsInfo> ListInvitations()
         {
             var overrideUrl = _baseUrl + "invitations/";
-            return _sharpBucketV1.Get(new InvitationsInfo(), overrideUrl);
+            return _sharpBucketV1.Get(new List<InvitationsInfo>(), overrideUrl);
         }
 
         // TODO: Serialization

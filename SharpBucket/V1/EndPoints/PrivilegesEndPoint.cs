@@ -47,10 +47,10 @@ namespace SharpBucket.V1.EndPoints
         /// <param name="repository">The repository whose privileges you wish to get.</param>
         /// <param name="accountName">The account name whose privileges you wish to get.</param>
         /// <returns></returns>
-        public RepositoryPrivilegesUser GetPrivilegesForAccount(string repository, string accountName)
+        public List<RepositoryPrivilegesUser> GetPrivilegesForAccount(string repository, string accountName)
         {
             var overrideUrl = _baseUrl + repository + "/" + accountName;
-            return _sharpBucketV1.Get(new RepositoryPrivilegesUser(), overrideUrl);
+            return _sharpBucketV1.Get(new List<RepositoryPrivilegesUser>(), overrideUrl);
         }
     }
 }
