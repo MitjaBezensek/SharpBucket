@@ -116,6 +116,7 @@ namespace ConsoleTests
         {
             var issuesResource = sharpBucket.RepositoriesEndPoint(accountName, repository).IssuesResource();
 
+            // You need a fifth issue in the repository.
             int ISSUE_ID = 5;
             // Issues
             var issues = issuesResource.ListIssues();
@@ -124,8 +125,8 @@ namespace ConsoleTests
             var issue = issuesResource.GetIssue(newIssueResult.local_id);
             var changedIssue = new Issue { title = "Completely new title", content = "Hi!", status = "new", local_id = issue.local_id };
             var changedIssueResult = issuesResource.PutIssue(changedIssue);
-
-
+            issuesResource.DeleteIssue(changedIssueResult.local_id);
+            
             // Issue comments 
             var issueResource = issuesResource.IssueResource(ISSUE_ID);
             var issueComments = issueResource.ListComments();
@@ -135,7 +136,6 @@ namespace ConsoleTests
             comment.content = "The bug is still annoying";
             var updatedCommentRes = issueResource.PutIssueComment(comment);
             issueResource.DeleteIssueComment(updatedCommentRes.comment_id);
-            issuesResource.DeleteIssue(changedIssueResult.local_id);
 
             // Issue followers
             var issueFollowers = issueResource.ListFollowers();
@@ -181,12 +181,18 @@ namespace ConsoleTests
             var newPage = new Wiki { data = "Hello to my new page" };
             var newWiki = repositoriesEndPoint.PostWiki(newPage, "NewPage");
             var changeSet = repositoriesEndPoint.ListChangeset();
+            // You need at least 5 changesets in your repository.
             var change = changeSet.changesets[4];
             var getChange = repositoriesEndPoint.GetChangeset(change.node);
             var diffStats = repositoriesEndPoint.GetChangesetDiffstat(change.node);
             var repoEvents = repositoriesEndPoint.ListEvents();
             var links = repositoriesEndPoint.ListLinks();
-            var newLink = new Link { id = 100 };
+            var newLink = new Link2
+            {
+                handler = "custom",
+                link_key = "PROJ",
+                link_url = "http://yourjira.com/"
+            };
             var newLinkResponse = repositoriesEndPoint.PostLink(newLink);
             var link = repositoriesEndPoint.GetLink(newLinkResponse.id);
             newLinkResponse.handler.name = "sfsdf";
