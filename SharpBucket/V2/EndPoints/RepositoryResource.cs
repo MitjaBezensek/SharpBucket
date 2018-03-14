@@ -43,9 +43,24 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.DeleteRepository(_accountName, _repository);
         }
 
+        /// <summary>
+        /// Post a new repository
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <returns></returns>
         public Repository PostRepository(Repository repository)
         {
             return _repositoriesEndPoint.PostRepository(repository, _accountName);
+        }
+
+        /// <summary>
+        /// Put a specific repository
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <returns></returns>
+        public Repository PutRepository(Repository repository)
+        {
+            return _repositoriesEndPoint.PutRepository(repository, _accountName, repository.name.ToLowerInvariant());
         }
 
         /// <summary>
@@ -94,7 +109,7 @@ namespace SharpBucket.V2.EndPoints
         /// List the information associated with a repository's branch restrictions. 
         /// </summary>
         /// <returns></returns>
-        public object ListBranchRestrictions()
+        public List<BranchRestriction> ListBranchRestrictions()
         {
             return _repositoriesEndPoint.ListBranchRestrictions(_accountName, _repository);
         }
@@ -285,5 +300,23 @@ namespace SharpBucket.V2.EndPoints
         }
 
         #endregion
+
+        /// <summary>
+        /// Posts a new branch for the specific repository
+        /// </summary>
+        /// <param name="branch"></param>
+        public void PostBranch(Branch branch)
+        {
+            _repositoriesEndPoint.PostBranch(_accountName, _repository, branch);
+        }
+
+        /// <summary>
+        /// Returns a list of branches for the specific repository
+        /// </summary>
+        /// <returns></returns>
+        public List<Branch> ListBranches()
+        {
+            return _repositoriesEndPoint.ListBranches(_accountName, _repository);
+        }
     }
 }

@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2026
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpBucket", "SharpBucket\SharpBucket.csproj", "{F7C8FEF8-4ADB-4175-A4D8-2A0598B78786}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTests", "ConsoleTests\ConsoleTests.csproj", "{75ABB5EC-D168-4EFE-A046-39D42544D13B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpBucketTests", "SharpBucketTests\SharpBucketTests.csproj", "{384E236F-5D19-46C5-8705-F0DBA5E239F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POC", "POC\POC.csproj", "{1FBD99A1-0DBB-4B75-B798-C1A0B01685D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,8 +29,15 @@ Global
 		{384E236F-5D19-46C5-8705-F0DBA5E239F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{384E236F-5D19-46C5-8705-F0DBA5E239F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{384E236F-5D19-46C5-8705-F0DBA5E239F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FBD99A1-0DBB-4B75-B798-C1A0B01685D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FBD99A1-0DBB-4B75-B798-C1A0B01685D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FBD99A1-0DBB-4B75-B798-C1A0B01685D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FBD99A1-0DBB-4B75-B798-C1A0B01685D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1081CC83-5E04-4629-9356-3B2C707ED55A}
 	EndGlobalSection
 EndGlobal

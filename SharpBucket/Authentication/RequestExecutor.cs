@@ -25,7 +25,7 @@ namespace SharpBucket.Authentication
             if (ShouldAddBody(method))
             {
                 request.RequestFormat = DataFormat.Json;
-                request.AddObject(body);
+                request.AddJsonBody(body);
             }
 
             //Fixed bug that prevents RestClient for adding custom headers to the request

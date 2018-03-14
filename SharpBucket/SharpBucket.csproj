@@ -83,11 +83,13 @@
     <Compile Include="V2\Pocos\CommitInfo.cs" />
     <Compile Include="V2\Pocos\Fork.cs" />
     <Compile Include="V2\Pocos\ForkInfo.cs" />
+    <Compile Include="V2\Pocos\Group.cs" />
     <Compile Include="V2\Pocos\IteratorBasedPage.cs" />
     <Compile Include="V2\Pocos\ListBasedPage.cs" />
     <Compile Include="V2\Pocos\Parent.cs" />
     <Compile Include="V2\Pocos\Activity.cs" />
     <Compile Include="V2\Pocos\ActivityInfo.cs" />
+    <Compile Include="V2\Pocos\Project.cs" />
     <Compile Include="V2\Pocos\Tag.cs" />
     <Compile Include="V2\Pocos\Update.cs" />
     <Compile Include="V2\Pocos\Comment.cs" />

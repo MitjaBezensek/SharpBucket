@@ -78,5 +78,28 @@ namespace SharpBucket.V2.EndPoints
             var overrideUrl = _baseUrl + "repositories/";
             return GetPaginatedValues<Repository>(overrideUrl, max);
         }
+
+        /// <summary>
+        /// Get's the list of the team's projects.
+        /// A paginated list of projects that belong to the specified team.
+        /// </summary>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public List<Project> ListProjects(int max = 0)
+        {
+            var overrideUrl = _baseUrl + "projects/";
+            return GetPaginatedValues<Project>(overrideUrl, max);
+        }
+
+        /// <summary>
+        /// Post a new project
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns></returns>
+        public Project PostProject(Project project)
+        {
+            var overrideUrl = _baseUrl + "projects/";
+            return _sharpBucketV2.Post(project, overrideUrl);
+        }
     }
 }
