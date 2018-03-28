@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Deserializers;
+using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.Authentication
 {
@@ -24,15 +26,25 @@ namespace SharpBucket.Authentication
 
             if (ShouldAddBody(method))
             {
-                request.RequestFormat = DataFormat.Json;
-                request.AddObject(body);
+                if (body.GetType() != typeof(Branch))
+                {
+                    request.RequestFormat = DataFormat.Json;
+                    request.AddBody(body);
+                }
+                else
+                {
+                    request.AddObject(body);
+                    request.AddHeader("Content-Type", "multipart/form-data");
+                }
             }
 
             //Fixed bug that prevents RestClient for adding custom headers to the request
             //https://stackoverflow.com/questions/22229393/why-is-restsharp-addheaderaccept-application-json-to-a-list-of-item
 
             client.ClearHandlers();
+
             client.AddHandler("application/json", new JsonDeserializer());
+
             var result = ExectueRequest<T>(method, client, request);
 
             if (result.ErrorException != null)
@@ -55,6 +67,7 @@ namespace SharpBucket.Authentication
 
             client.FollowRedirects = false;
             result = client.Execute<T>(request);
+
             if (result.StatusCode == HttpStatusCode.Redirect)
             {
                 var redirectUrl = GetRedirectUrl(result);

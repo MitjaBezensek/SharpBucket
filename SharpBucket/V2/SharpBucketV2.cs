@@ -7,7 +7,7 @@ namespace SharpBucket.V2
     /// You can read more about the V2 of the API here:
     /// https://confluence.atlassian.com/display/BITBUCKET/Version+2
     /// </summary>
-    public sealed class SharpBucketV2 : SharpBucket
+    public sealed class SharpBucketV2 : SharpBucket, ISharpBucketV2
     {
         internal const string BITBUCKET_URL = "https://api.bitbucket.org/2.0";
 

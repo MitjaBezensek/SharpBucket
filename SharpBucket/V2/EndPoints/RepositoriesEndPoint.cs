@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using SharpBucket.V2.Pocos;
 using Comment = SharpBucket.V2.Pocos.Comment;
 using Repository = SharpBucket.V2.Pocos.Repository;
@@ -79,18 +80,19 @@ namespace SharpBucket.V2.EndPoints
 
         internal Repository PostRepository(Repository repo, string accountName)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repo.name, null);
+            var overrideUrl = GetRepositoryUrl(accountName, repo.name.ToLowerInvariant(), null);
             return _sharpBucketV2.Post(repo, overrideUrl);
         }
 
-        internal Repository DeleteRepository(string accountName, string repository)
+        internal HttpStatusCode DeleteRepository(string accountName, string repository)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, null);
-            return _sharpBucketV2.Delete(new Repository(), overrideUrl);
+            return _sharpBucketV2.Delete(new HttpStatusCode(), overrideUrl);
         }
 
         private string GetRepositoryUrl(string accountName, string repository, string append)
         {
+            repository = System.Text.RegularExpressions.Regex.Replace(repository, @"\s+", "-");
             var format = _baseUrl + "{0}/{1}/{2}";
             return string.Format(format, accountName, repository, append);
         }
@@ -357,5 +359,20 @@ namespace SharpBucket.V2.EndPoints
         }
 
         #endregion
+
+
+        /// <summary>
+        /// Post a new branch
+        /// </summary>
+        /// <param name="accountName"></param>
+        /// <param name="repository"></param>
+        /// <param name="branch"></param>
+        /// <returns></returns>
+        public Branch PostBranch(string accountName, string repository, Branch branch)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "src/");
+            return _sharpBucketV2.Post(branch, overrideUrl);
+        }
+
     }
 }

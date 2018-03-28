@@ -6,6 +6,7 @@ using SharpBucket.V2;
 using SharpBucket.V2.Pocos;
 using Comment = SharpBucket.V1.Pocos.Comment;
 using Link = SharpBucket.V1.Pocos.Link;
+using LinkPostParams = SharpBucket.V1.Pocos.LinkPostParams;
 using Repository = SharpBucket.V2.Pocos.Repository;
 using Tag = SharpBucket.V2.Pocos.Tag;
 using Version = SharpBucket.V1.Pocos.Version;
@@ -24,8 +25,8 @@ namespace ConsoleTests
         private static void Main()
         {
             // Decide which version you wish to test
-            TestApiV1();
-            //TestApiV2();
+            //TestApiV1();
+            TestApiV2();
         }
 
         private static void TestApiV1()
@@ -50,11 +51,11 @@ namespace ConsoleTests
 
             // of if you saved the tokens you can simply use those
             // var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oauthtoken", "oauthtokensecret");
-            TestUserEndPoint(sharpBucket);
-            TestIssuesEndPoint(sharpBucket);
+            //TestUserEndPoint(sharpBucket);
+            //TestIssuesEndPoint(sharpBucket);
             TestRepositoriesEndPoint(sharpBucket);
-            TestUsersEndPoint(sharpBucket);
-            TestPrivilegesEndPoint(sharpBucket);
+            //TestUsersEndPoint(sharpBucket);
+            //TestPrivilegesEndPoint(sharpBucket);
         }
 
         private static void TestApiV2()
@@ -75,7 +76,7 @@ namespace ConsoleTests
             // SecretApiKey:yourSecretApiKey
             // AccountName:yourAccountName
             // Repository:testRepository
-            var lines = File.ReadAllLines("c:\\TestInformationOauth.txt");
+            var lines = File.ReadAllLines("C:\\Users\\ahnducl\\Desktop\\TestInformationOauth.txt");
             consumerKey = lines[0].Split(':')[1];
             consumerSecretKey = lines[1].Split(':')[1];
             ReadAccoutNameAndRepository(lines);
@@ -116,6 +117,7 @@ namespace ConsoleTests
         {
             var issuesResource = sharpBucket.RepositoriesEndPoint(accountName, repository).IssuesResource();
 
+            // You need at least 5 issues in the repository.
             int ISSUE_ID = 5;
             // Issues
             var issues = issuesResource.ListIssues();
@@ -125,7 +127,7 @@ namespace ConsoleTests
             var changedIssue = new Issue { title = "Completely new title", content = "Hi!", status = "new", local_id = issue.local_id };
             var changedIssueResult = issuesResource.PutIssue(changedIssue);
             issuesResource.DeleteIssue(changedIssueResult.local_id);
-
+            
             // Issue comments 
             var issueResource = issuesResource.IssueResource(ISSUE_ID);
             var issueComments = issueResource.ListComments();
@@ -180,12 +182,18 @@ namespace ConsoleTests
             var newPage = new Wiki { data = "Hello to my new page" };
             var newWiki = repositoriesEndPoint.PostWiki(newPage, "NewPage");
             var changeSet = repositoriesEndPoint.ListChangeset();
+            // You need at least 5 changesets in your repository.
             var change = changeSet.changesets[4];
             var getChange = repositoriesEndPoint.GetChangeset(change.node);
             var diffStats = repositoriesEndPoint.GetChangesetDiffstat(change.node);
             var repoEvents = repositoriesEndPoint.ListEvents();
             var links = repositoriesEndPoint.ListLinks();
-            var newLink = new Link { id = 100 };
+            var newLink = new LinkPostParams
+            {
+                handler = "custom",
+                link_key = "PROJ",
+                link_url = "http://yourjira.com/"
+            };
             var newLinkResponse = repositoriesEndPoint.PostLink(newLink);
             var link = repositoriesEndPoint.GetLink(newLinkResponse.id);
             newLinkResponse.handler.name = "sfsdf";
@@ -220,9 +228,12 @@ namespace ConsoleTests
         private static void TestRestRepositoriesEndPoint(SharpBucketV2 sharpBucket)
         {
             var repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
+            var r = repositoriesEndPoint.RepositoryResource(accountName, repository);
+            var dr = r.DeleteRepository();
             var repositories = repositoriesEndPoint.ListRepositories(accountName);
             var publicRepositories = repositoriesEndPoint.ListPublicRepositories();
             var repositoryResource = repositoriesEndPoint.RepositoryResource(accountName, repository);
+         
             //var repoInfo = new RepositoryInfo();
             //var newRepository = repositoriesEndPoint.PutRepository(repo, accountName, repository);
             //var deletedRepository = repositoriesEndPoint.DeleteRepository(newRepository, accountName, repository);
@@ -248,8 +259,8 @@ namespace ConsoleTests
             var targetUsername = "";
             var defaultReviewer = repositoryResource.PutDefaultReviewer(targetUsername);
 
-            var r = repositoriesEndPoint.RepositoryResource(accountName, repository);
-            var dr = r.DeleteRepository();
+            //var r = repositoriesEndPoint.RepositoryResource(accountName, repository);
+            //var dr = r.DeleteRepository();
             var w = r.ListWatchers();
             var f = r.ListForks();
             var br = r.ListBranchRestrictions();
