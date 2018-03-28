@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Net;
+using RestSharp;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -38,7 +40,7 @@ namespace SharpBucket.V2.EndPoints
         /// Removes a repository.  
         /// </summary>
         /// <returns></returns>
-        public Repository DeleteRepository()
+        public HttpStatusCode DeleteRepository()
         {
             return _repositoriesEndPoint.DeleteRepository(_accountName, _repository);
         }
@@ -318,5 +320,6 @@ namespace SharpBucket.V2.EndPoints
         {
             return _repositoriesEndPoint.ListBranches(_accountName, _repository);
         }
+
     }
 }

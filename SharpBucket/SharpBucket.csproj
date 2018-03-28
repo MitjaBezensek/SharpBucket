@@ -69,6 +69,8 @@
     <Compile Include="V1\Pocos\SrcFile.cs" />
     <Compile Include="V1\Pocos\SrcFileInfo.cs" />
     <Compile Include="V2\EndPoints\BranchResource.cs" />
+    <Compile Include="V2\ISharpBucketV2.cs" />
+    <Compile Include="V2\Pocos\Email.cs" />
     <Compile Include="V2\EndPoints\EndPoint.cs" />
     <Compile Include="V2\EndPoints\PullRequestResource.cs" />
     <Compile Include="V2\EndPoints\PullRequestsResource.cs" />
@@ -86,10 +88,12 @@
     <Compile Include="V2\Pocos\Group.cs" />
     <Compile Include="V2\Pocos\IteratorBasedPage.cs" />
     <Compile Include="V2\Pocos\ListBasedPage.cs" />
+    <Compile Include="V2\Pocos\Member.cs" />
     <Compile Include="V2\Pocos\Parent.cs" />
     <Compile Include="V2\Pocos\Activity.cs" />
     <Compile Include="V2\Pocos\ActivityInfo.cs" />
     <Compile Include="V2\Pocos\Project.cs" />
+    <Compile Include="V2\Pocos\ProjectPostParams.cs" />
     <Compile Include="V2\Pocos\Tag.cs" />
     <Compile Include="V2\Pocos\Update.cs" />
     <Compile Include="V2\Pocos\Comment.cs" />

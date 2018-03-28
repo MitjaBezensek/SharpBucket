@@ -39,10 +39,10 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<Team> ListMembers(int max = 0)
+        public List<Member> ListMembers(int max = 0)
         {
             var overrideUrl = _baseUrl + "members/";
-            return GetPaginatedValues<Team>(overrideUrl, max);
+            return GetPaginatedValues<Member>(overrideUrl, max);
         }
 
         /// <summary>
@@ -92,14 +92,25 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// Post a new project
+        /// ProjectPostParams contains solely the required parameters for posting a project
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public Project PostProject(Project project)
+        public ProjectPostParams PostProject(ProjectPostParams project)
         {
             var overrideUrl = _baseUrl + "projects/";
             return _sharpBucketV2.Post(project, overrideUrl);
+        }
+
+        /// <summary>
+        /// Get a project by using 
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns></returns>
+        public Project GetProject(string projectKey)
+        {
+            var overrideUrl = _baseUrl + "projects/" + projectKey;
+            return _sharpBucketV2.Get(new Project(), overrideUrl);
         }
     }
 }
