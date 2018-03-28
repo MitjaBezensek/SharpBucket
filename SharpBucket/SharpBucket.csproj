@@ -60,6 +60,7 @@
     <Compile Include="V1\Pocos\IssueSearchParameters.cs" />
     <Compile Include="V1\Pocos\Link.cs" />
     <Compile Include="V1\Pocos\LinkInfo.cs" />
+    <Compile Include="V1\Pocos\LinkPostParams.cs" />
     <Compile Include="V1\Pocos\MainBranch.cs" />
     <Compile Include="V1\Pocos\RepositoryPrivileges.cs" />
     <Compile Include="V1\Pocos\RepositoryPrivilegesUser.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="V2\Pocos\ForkInfo.cs" />
     <Compile Include="V2\Pocos\Group.cs" />
     <Compile Include="V2\Pocos\IteratorBasedPage.cs" />
+    <Compile Include="V2\Pocos\LinkPostParams.cs" />
     <Compile Include="V2\Pocos\ListBasedPage.cs" />
     <Compile Include="V2\Pocos\Member.cs" />
     <Compile Include="V2\Pocos\Parent.cs" />
