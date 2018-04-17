@@ -2,24 +2,25 @@
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using Shouldly;
+using Xunit;
 
 namespace SharBucketTests.V2.EndPoints
 {
-    [TestFixture]
-    class TeamsEndPointTests
+   
+    public class TeamsEndPointTests
     {
         private SharpBucketV2 sharpBucket;
         private TeamsEndPoint teamsEndPoint;
         private const string TEAM_NAME = "atlassian";
 
-        [SetUp]
-        public void Init()
+
+        public TeamsEndPointTests()
         {
             sharpBucket = TestHelpers.GetV2ClientAuthenticatedWithOAuth();
             teamsEndPoint = sharpBucket.TeamsEndPoint(TEAM_NAME);
         }
 
-        [Test]
+        [Fact]
         public void GetProfile_FromTeamAtlassian_ReturnsAtlassianProfile()
         {
             teamsEndPoint.ShouldNotBe(null);
@@ -27,7 +28,7 @@ namespace SharBucketTests.V2.EndPoints
             profile.display_name.ShouldBe("Atlassian");
         }
 
-        [Test]
+        [Fact]
         public void ListMembers_FromTeamAtlassian_ShouldReturnManyMembers()
         {
             teamsEndPoint.ShouldNotBe(null);
@@ -37,7 +38,7 @@ namespace SharBucketTests.V2.EndPoints
             members[0].display_name.ShouldBe("Ivan Ostafiychuk");
         }
 
-        [Test]
+        [Fact]
         public void ListFollowers_FromTeamAtlassian_ShouldReturnManyFollowers()
         {
             teamsEndPoint.ShouldNotBe(null);
@@ -46,7 +47,7 @@ namespace SharBucketTests.V2.EndPoints
             followers[0].display_name.ShouldBe("Hector Miuler Malpica Gallegos");
         }
 
-        [Test]
+        [Fact]
         public void GetTeams_FromLoggedUser_ShouldReturnManyTeams()
         {
             teamsEndPoint.ShouldNotBe(null);

@@ -2,24 +2,23 @@
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using Shouldly;
+using Xunit;
 
 namespace SharBucketTests.V2.EndPoints
 {
-    [TestFixture]
-    class UsersEndPointTests
+    public class UsersEndPointTests
     {
         private SharpBucketV2 sharpBucket;
         private UsersEndpoint usersEndPoint;
         private const string ACCOUNT_NAME = "mirror";
 
-        [SetUp]
-        public void Init()
+       public UsersEndPointTests()
         {
             sharpBucket = TestHelpers.GetV2ClientAuthenticatedWithOAuth();
             usersEndPoint = sharpBucket.UsersEndPoint(ACCOUNT_NAME);
         }
 
-        [Test]
+        [Fact]
         public void GetProfile_FromMirrorAccount_ShouldReturnTheMirrorProfile()
         {
             usersEndPoint.ShouldNotBe(null);
@@ -28,7 +27,7 @@ namespace SharBucketTests.V2.EndPoints
             profile.created_on.ShouldBe("2008-06-26T13:58:38+00:00");
         }
 
-        [Test]
+        [Fact]
         public void ListFollowers_FromMirrorAccount_ShouldReturnMirrorsFollowers()
         {
             usersEndPoint.ShouldNotBe(null);
@@ -37,7 +36,7 @@ namespace SharBucketTests.V2.EndPoints
             followers[0].display_name.ShouldBe("z19");
         }
 
-        [Test]
+        [Fact]
         public void ListFollowing_FromMirrorAccount_ShouldReturnMirrorMembers()
         {
             usersEndPoint.ShouldNotBe(null);
@@ -46,7 +45,7 @@ namespace SharBucketTests.V2.EndPoints
             following[0].display_name.ShouldBe("Jesper Noehr");
         }
 
-        [Test]
+        [Fact]
         public void ListRepositories_FromMirrorAccount_ShouldReturnMirrorsRepositories()
         {
             usersEndPoint.ShouldNotBe(null);

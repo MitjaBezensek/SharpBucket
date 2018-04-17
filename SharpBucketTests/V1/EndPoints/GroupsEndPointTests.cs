@@ -5,25 +5,26 @@ using SharpBucket.V1.Pocos;
 using Shouldly;
 using System;
 using System.Collections.Generic;
+using Xunit;
 
 namespace SharBucketTests.V1.EndPoints
 {
-    [TestFixture]
+   
     public class GroupsEndPointTests
     {
         private SharpBucketV1 sharpBucket;
         private GroupsEndPoint groupsEndPoint;
         private string accountName;
 
-        [SetUp]
-        public void Init()
+     
+        public GroupsEndPointTests()
         {
             sharpBucket = TestHelpers.GetV1ClientAuthenticatedWithOAuth();
             accountName = TestHelpers.GetAccountName();
             groupsEndPoint = sharpBucket.GroupsEndPoint(accountName);
         }
 
-        [Test]
+        [Fact]
         public void CreateGroup_ForLoggedUser_ShouldReturnCreatedGroup()
         {
             groupsEndPoint.ShouldNotBe(null);
@@ -39,7 +40,7 @@ namespace SharBucketTests.V1.EndPoints
             groupsEndPoint.DeleteGroup(name);
         }
 
-        [Test]
+        [Fact]
         public void DeleteGroup_ShouldNotHaveGroup_WhenGet()
         {
             groupsEndPoint.ShouldNotBe(null);
@@ -52,7 +53,7 @@ namespace SharBucketTests.V1.EndPoints
             group.ShouldBe(null);
         }
 
-        [Test]
+        [Fact]
         public void AddMemberToGroup_ShouldReturnAddedMember()
         {
             groupsEndPoint.ShouldNotBe(null);
@@ -70,7 +71,7 @@ namespace SharBucketTests.V1.EndPoints
             groupsEndPoint.DeleteGroup(name);
         }
 
-        [Test]
+        [Fact]
         public void ListGroupMembers_ShouldCorrectlyListAllMembers()
         {
             groupsEndPoint.ShouldNotBe(null);
@@ -90,7 +91,7 @@ namespace SharBucketTests.V1.EndPoints
             groupsEndPoint.DeleteGroup(name);
         }
 
-        [Test]
+        [Fact]
         public void ListAllGroups_FromLoggedUser_ShouldReturnAllGroups()
         {
             groupsEndPoint.ShouldNotBe(null);
@@ -103,7 +104,7 @@ namespace SharBucketTests.V1.EndPoints
             groups[0].name.ShouldNotBeEmpty();
         }
 
-        [Test]
+        [Fact]
         public void GetSingleGroup_FromLoggedUser_ShouldReturnSingleGroup()
         {
             groupsEndPoint.ShouldNotBe(null);

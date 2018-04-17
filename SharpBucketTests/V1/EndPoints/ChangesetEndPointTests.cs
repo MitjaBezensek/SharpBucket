@@ -4,10 +4,11 @@ using SharpBucket.V1.EndPoints;
 using Shouldly;
 using System;
 using System.Linq;
+using Xunit;
 
 namespace SharBucketTests.V1.EndPoints
 {
-    [TestFixture]
+    
     public class ChangesetEndPointTests
     {
         private SharpBucketV1 sharpBucket;
@@ -16,15 +17,14 @@ namespace SharBucketTests.V1.EndPoints
 
         private const string REPOSITORY_NAME = "mercurial";
 
-        [SetUp]
-        public void Init()
+        public ChangesetEndPointTests()
         {
             sharpBucket = TestHelpers.GetV1ClientAuthenticatedWithOAuth();
             accountName = "mirror";
             repositoriesEndPoint = sharpBucket.RepositoriesEndPoint(accountName, REPOSITORY_NAME);
         }
 
-        [Test]
+        [Fact]
         public void GetChangesetDiffstat_when_limit_is_specified_should_return_that_number_of_diffsets()
         {
             repositoriesEndPoint.ShouldNotBe(null);
@@ -40,7 +40,7 @@ namespace SharBucketTests.V1.EndPoints
             stats.Count().ShouldBe(1);
         }
 
-        [Test]
+        [Fact]
         public void GetChangesetDiffstat_when_start_is_specified_should_return_from_that_index()
         {
             repositoriesEndPoint.ShouldNotBe(null);

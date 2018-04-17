@@ -2,23 +2,24 @@
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using Shouldly;
+using Xunit;
 
 namespace SharBucketTests.V2.EndPoints
 {
-    [TestFixture]
-    internal class RepositoriesEndPointTests
+    
+    public class RepositoriesEndPointTests
     {
         private SharpBucketV2 sharpBucket;
         private RepositoriesEndPoint repositoriesEndPoint;
 
-        [SetUp]
-        public void Init()
+       
+        public RepositoriesEndPointTests()
         {
             sharpBucket = TestHelpers.GetV2ClientAuthenticatedWithOAuth();
             repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
         }
 
-        [Test]
+        [Fact]
         public void ListRepositories_WithNoMaxSet_ReturnsAtLeast10Repositories()
         {
             repositoriesEndPoint.ShouldNotBe(null);
@@ -28,7 +29,7 @@ namespace SharBucketTests.V2.EndPoints
             repositories.Count.ShouldBeGreaterThan(10);
         }
 
-        [Test]
+        [Fact]
         public void ListPublicRepositories_With30AsMax_Returns30PublicRepositories()
         {
             var publicRepositories = repositoriesEndPoint.ListPublicRepositories(30);

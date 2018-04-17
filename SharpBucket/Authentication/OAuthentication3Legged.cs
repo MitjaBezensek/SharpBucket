@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Net;
+using System.Web;
 using RestSharp;
 using RestSharp.Authenticators;
-using RestSharp.Extensions.MonoHttp;
 
 namespace SharpBucket.Authentication
 {

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
 using Shouldly;
+using Xunit;
 
 namespace SharBucketTests.V2.EndPoints
 {
-    [TestFixture]
-    internal class RepositoryResourceTests
+   
+    public class RepositoryResourceTests
     {
         private SharpBucketV2 sharpBucket;
         private RepositoryResource repositoryResource;
@@ -17,15 +17,15 @@ namespace SharBucketTests.V2.EndPoints
         private const string ACCOUNT_NAME = "mirror";
         private const string REPOSITORY_NAME = "mercurial";
 
-        [SetUp]
-        public void Init()
+
+        public RepositoryResourceTests()
         {
             sharpBucket = TestHelpers.GetV2ClientAuthenticatedWithOAuth();
             repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
             repositoryResource = repositoriesEndPoint.RepositoryResource(ACCOUNT_NAME, REPOSITORY_NAME);
         }
 
-        [Test]
+        [Fact]
         public void GetRepository_FromMercurialRepo_CorrectlyFetchesTheRepoInfo()
         {
             repositoryResource.ShouldNotBe(null);
@@ -34,7 +34,7 @@ namespace SharBucketTests.V2.EndPoints
             testRepository.name.ShouldBe(REPOSITORY_NAME);
         }
 
-        [Test]
+        [Fact]
         public void ListWatchers_FromMercurialRepo_ShouldReturnMoreThan10UniqueWatchers()
         {
             repositoryResource.ShouldNotBe(null);
@@ -52,7 +52,7 @@ namespace SharBucketTests.V2.EndPoints
             }
         }
 
-        [Test]
+        [Fact]
         public void ListForks_FromMercurialRepo_ShouldReturnMoreThan10UniqueForks()
         {
             repositoryResource.ShouldNotBe(null);
@@ -69,9 +69,9 @@ namespace SharBucketTests.V2.EndPoints
             }
         }
 
-        [TestCase(3)]
-        [TestCase(103)]
-        [Test]
+        [InlineData(3)]
+        [InlineData(103)]
+        [Theory]
         public void ListCommits_FromMercurialRepoWithSpecifiedMax_ShouldReturnSpecifiedNumberOfCommits(int max)
         {
             repositoryResource.ShouldNotBe(null);
@@ -79,7 +79,7 @@ namespace SharBucketTests.V2.EndPoints
             commits.Count.ShouldBe(max);
         }
 
-        [Test]
+        [Fact]
         public void CreatRepository_NewPublicRepoistory_CorrectlyCreatesTheRepository()
         {
             var accountName = Environment.GetEnvironmentVariable("SB_ACCOUNT_NAME");
