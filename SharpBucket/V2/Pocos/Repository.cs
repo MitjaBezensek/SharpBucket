@@ -11,7 +11,7 @@
         public string created_on { get; set; }
         public string full_name { get; set; }
         public bool? has_issues { get; set; }
-        public string owner { get; set; }
+        public Owner owner { get; set; }
         public string updated_on { get; set; }
         public ulong? size { get; set; }
         public bool? is_private { get; set; }

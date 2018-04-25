@@ -9,5 +9,7 @@
         public Links links { get; set; }
         public string created_on { get; set; }
         public string location { get; set; }
+        public string type { get; set; }
+        public string uuid { get; set; }
     }
 }

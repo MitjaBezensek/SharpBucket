@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Dynamic;
+using Serilog;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -25,6 +26,20 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// With Logging
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public List<Team> GetUserTeams(ILogger logger, int max = 0)
+        {
+            dynamic parameters = new ExpandoObject();
+            parameters.role = "member";
+            return GetPaginatedValues<Team>(logger, "teams/", max, parameters);
+            //return _sharpBucketV2.Get<List<Team>>(null, "teams/", parameters);
+        }
+
+        /// <summary>
         /// Gets the public information associated with a team. 
         /// If the team's profile is private, the caller must be authenticated and authorized to view this information. 
         /// </summary>
@@ -32,6 +47,18 @@ namespace SharpBucket.V2.EndPoints
         public Team GetProfile()
         {
             return _sharpBucketV2.Get(new Team(), _baseUrl);
+        }
+
+        /// <summary>
+        /// Gets the public information associated with a team. 
+        /// If the team's profile is private, the caller must be authenticated and authorized to view this information. 
+        /// With Logging
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <returns></returns>
+        public Team GetProfile(ILogger logger)
+        {
+            return _sharpBucketV2.Get(logger, new Team(), _baseUrl);
         }
 
         /// <summary>
@@ -46,6 +73,19 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Gets the team's members.
+        /// With Logging
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
+        /// <returns></returns>
+        public List<Team> ListMembers(ILogger logger, int max = 0)
+        {
+            var overrideUrl = _baseUrl + "members/";
+            return GetPaginatedValues<Team>(logger, overrideUrl, max);
+        }
+
+        /// <summary>
         /// Gets the list of accounts following the team.
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
@@ -54,6 +94,19 @@ namespace SharpBucket.V2.EndPoints
         {
             var overrideUrl = _baseUrl + "followers/";
             return GetPaginatedValues<Team>(overrideUrl, max);
+        }
+
+        /// <summary>
+        /// Gets the list of accounts following the team.
+        /// With Logging
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
+        /// <returns></returns>
+        public List<Team> ListFollowers(ILogger logger, int max = 0)
+        {
+            var overrideUrl = _baseUrl + "followers/";
+            return GetPaginatedValues<Team>(logger, overrideUrl, max);
         }
 
         /// <summary>
@@ -68,6 +121,19 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Gets a list of accounts the team is following.
+        /// With Logging
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
+        /// <returns></returns>
+        public List<Team> ListFollowing(ILogger logger, int max = 0)
+        {
+            var overrideUrl = _baseUrl + "following/";
+            return GetPaginatedValues<Team>(logger, overrideUrl, max);
+        }
+
+        /// <summary>
         /// Gets the list of the team's repositories. 
         /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
         /// </summary>
@@ -77,6 +143,92 @@ namespace SharpBucket.V2.EndPoints
         {
             var overrideUrl = _baseUrl + "repositories/";
             return GetPaginatedValues<Repository>(overrideUrl, max);
+        }
+
+        /// <summary>
+        /// Gets the list of the team's repositories. 
+        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
+        /// With Logging
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
+        /// <returns></returns>
+        public List<Repository> ListRepositories(ILogger logger, int max = 0)
+        {
+            var overrideUrl = _baseUrl + "repositories/";
+            return GetPaginatedValues<Repository>(logger, overrideUrl, max);
+        }
+
+        /// <summary>
+        /// Get's the list of the team's projects.
+        /// A paginated list of projects that belong to the specified team.
+        /// </summary>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public List<Project> ListProjects(int max = 0)
+        {
+            var overrideUrl = _baseUrl + "projects/";
+            return GetPaginatedValues<Project>(overrideUrl, max);
+        }
+
+        /// <summary>
+        /// With Logging
+        /// Get's the list of the team's projects.
+        /// A paginated list of projects that belong to the specified team.
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public List<Project> ListProjects(ILogger logger, int max = 0)
+        {
+            var overrideUrl = _baseUrl + "projects/";
+            return GetPaginatedValues<Project>(logger, overrideUrl, max);
+        }
+        /// <summary>
+        /// ProjectPostParams contains solely the required parameters for posting a project
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns></returns>
+        public ProjectPostParams PostProject(ProjectPostParams project)
+        {
+            var overrideUrl = _baseUrl + "projects/";
+            return _sharpBucketV2.Post(project, overrideUrl);
+        }
+
+        /// <summary>
+        /// With Logging
+        /// ProjectPostParams contains solely the required parameters for posting a project
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="project"></param>
+        /// <returns></returns>
+        public ProjectPostParams PostProject(ILogger logger, ProjectPostParams project)
+        {
+            var overrideUrl = _baseUrl + "projects/";
+            return _sharpBucketV2.Post(logger, project, overrideUrl);
+        }
+        /// <summary>
+        /// Get a project by using 
+        /// </summary>
+        /// <param name="projectKey"></param>
+        /// <returns></returns>
+        public Project GetProject(string projectKey)
+        {
+            var overrideUrl = _baseUrl + "projects/" + projectKey;
+            return _sharpBucketV2.Get(new Project(), overrideUrl);
+        }
+
+        /// <summary>
+        /// With Logging
+        /// Get a project by using project key
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="projectKey"></param>
+        /// <returns></returns>
+        public Project GetProject(ILogger logger, string projectKey)
+        {
+            var overrideUrl = _baseUrl + "projects/" + projectKey;
+            return _sharpBucketV2.Get(logger, new Project(), overrideUrl);
         }
     }
 }
