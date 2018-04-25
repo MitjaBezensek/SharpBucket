@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using Serilog;
 using SharpBucket.V2.Pocos;
 using Comment = SharpBucket.V2.Pocos.Comment;
@@ -153,10 +154,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Post(logger, repo, overrideUrl);
         }
 
-        internal Repository DeleteRepository(string accountName, string repository)
+        internal HttpStatusCode DeleteRepository(string accountName, string repository)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, null);
-            return _sharpBucketV2.Delete(new Repository(), overrideUrl);
+            return _sharpBucketV2.Delete(new HttpStatusCode(), overrideUrl);
         }
 
         /// <summary>
@@ -166,10 +167,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="accountName"></param>
         /// <param name="repository"></param>
         /// <returns></returns>
-        internal Repository DeleteRepository(ILogger logger, string accountName, string repository)
+        internal HttpStatusCode DeleteRepository(ILogger logger, string accountName, string repository)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, null);
-            return _sharpBucketV2.Delete(logger, new Repository(), overrideUrl);
+            return _sharpBucketV2.Delete(logger, new HttpStatusCode(), overrideUrl);
         }
 
 
@@ -596,10 +597,10 @@ namespace SharpBucket.V2.EndPoints
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restriction.id);
             return _sharpBucketV2.Put(logger, restriction, overrideUrl);
         }
-        internal BranchRestriction DeleteBranchRestriction(string accountName, string repository, int restrictionId)
+        internal HttpStatusCode DeleteBranchRestriction(string accountName, string repository, int restrictionId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restrictionId);
-            return _sharpBucketV2.Delete(new BranchRestriction(), overrideUrl);
+            return _sharpBucketV2.Delete(new HttpStatusCode(), overrideUrl);
         }
 
         /// <summary>
@@ -610,10 +611,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="repository"></param>
         /// <param name="restrictionId"></param>
         /// <returns></returns>
-        internal BranchRestriction DeleteBranchRestriction(ILogger logger, string accountName, string repository, int restrictionId)
+        internal HttpStatusCode DeleteBranchRestriction(ILogger logger, string accountName, string repository, int restrictionId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restrictionId);
-            return _sharpBucketV2.Delete(logger, new BranchRestriction(), overrideUrl);
+            return _sharpBucketV2.Delete(logger, new HttpStatusCode(), overrideUrl);
         }
 
         #endregion
