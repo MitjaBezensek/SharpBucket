@@ -78,6 +78,36 @@ namespace SharpBucket.V2.EndPoints
         {
             return GetPaginatedValues<Repository>(logger, _baseUrl, max);
         }
+
+
+        /// <summary>
+        /// Post a new branch
+        /// </summary>
+        /// <param name="accountName"></param>
+        /// <param name="repository"></param>
+        /// <param name="branch"></param>
+        /// <returns></returns>
+        public Branch PostBranch(string accountName, string repository, Branch branch)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "src/");
+            return _sharpBucketV2.Post(branch, overrideUrl);
+        }
+
+
+        /// <summary>
+        /// Post a new branch with Logging
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="accountName"></param>
+        /// <param name="repository"></param>
+        /// <param name="branch"></param>
+        /// <returns></returns>
+        public Branch PostBranch(ILogger logger, string accountName, string repository, Branch branch)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "src/");
+            return _sharpBucketV2.Post(logger, branch, overrideUrl);
+        }
+
         #endregion
 
         #region Repository resource
@@ -263,7 +293,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="repository"></param>
         /// <param name="pullRequest"></param>
         /// <returns></returns>
-        internal PullRequest PostPullRequest(ILogger logger, string accountName, string repository, PullRequest pullRequest)
+        internal PullRequest PostPullRequest(ILogger logger, string accountName, string repository,
+            PullRequest pullRequest)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/");
             return _sharpBucketV2.Post(logger, pullRequest, overrideUrl);
@@ -283,7 +314,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="repository"></param>
         /// <param name="pullRequest"></param>
         /// <returns></returns>
-        internal PullRequest PutPullRequest(ILogger logger, string accountName, string repository, PullRequest pullRequest)
+        internal PullRequest PutPullRequest(ILogger logger, string accountName, string repository,
+            PullRequest pullRequest)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/");
             return _sharpBucketV2.Put(logger, pullRequest, overrideUrl);
@@ -334,7 +366,8 @@ namespace SharpBucket.V2.EndPoints
         }
 
 
-        internal List<Commit> ListPullRequestCommits(string accountName, string repository, int pullRequestId, int max = 0)
+        internal List<Commit> ListPullRequestCommits(string accountName, string repository, int pullRequestId,
+            int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/commits/");
             return GetPaginatedValues<Commit>(overrideUrl, max);
@@ -349,7 +382,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="pullRequestId"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        internal List<Commit> ListPullRequestCommits(ILogger logger, string accountName, string repository, int pullRequestId, int max = 0)
+        internal List<Commit> ListPullRequestCommits(ILogger logger, string accountName, string repository,
+            int pullRequestId, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/commits/");
             return GetPaginatedValues<Commit>(logger, overrideUrl, max);
@@ -370,7 +404,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="repository"></param>
         /// <param name="pullRequestId"></param>
         /// <returns></returns>
-        internal PullRequestInfo ApprovePullRequest(ILogger logger, string accountName, string repository, int pullRequestId)
+        internal PullRequestInfo ApprovePullRequest(ILogger logger, string accountName, string repository,
+            int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/approve/");
             return _sharpBucketV2.Post(logger, new PullRequestInfo(), overrideUrl);
@@ -381,6 +416,7 @@ namespace SharpBucket.V2.EndPoints
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/approve/");
             return _sharpBucketV2.Delete(new PullRequestInfo(), overrideUrl);
         }
+
         /// <summary>
         /// With Logging
         /// </summary>
@@ -389,7 +425,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="repository"></param>
         /// <param name="pullRequestId"></param>
         /// <returns></returns>
-        internal object RemovePullRequestApproval(ILogger logger, string accountName, string repository, int pullRequestId)
+        internal object RemovePullRequestApproval(ILogger logger, string accountName, string repository,
+            int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/approve/");
             return _sharpBucketV2.Delete(logger, new PullRequestInfo(), overrideUrl);
@@ -400,6 +437,7 @@ namespace SharpBucket.V2.EndPoints
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/diff/");
             return _sharpBucketV2.Get(new Object(), overrideUrl);
         }
+
         /// <summary>
         /// With Logging
         /// </summary>
@@ -414,11 +452,13 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get(logger, new Object(), overrideUrl);
         }
 
-        internal List<Activity> GetPullRequestActivity(string accountName, string repository, int pullRequestId, int max = 0)
+        internal List<Activity> GetPullRequestActivity(string accountName, string repository, int pullRequestId,
+            int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/activity/");
             return GetPaginatedValues<Activity>(overrideUrl, max);
         }
+
         /// <summary>
         /// With Logging
         /// </summary>
@@ -428,7 +468,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="pullRequestId"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        internal List<Activity> GetPullRequestActivity(ILogger logger, string accountName, string repository, int pullRequestId, int max = 0)
+        internal List<Activity> GetPullRequestActivity(ILogger logger, string accountName, string repository,
+            int pullRequestId, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/activity/");
             return GetPaginatedValues<Activity>(logger, overrideUrl, max);
@@ -439,6 +480,7 @@ namespace SharpBucket.V2.EndPoints
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/merge/");
             return _sharpBucketV2.Post(new Merge(), overrideUrl);
         }
+
         /// <summary>
         /// With Logging
         /// </summary>
@@ -447,7 +489,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="repository"></param>
         /// <param name="pullRequestId"></param>
         /// <returns></returns>
-        internal Merge AcceptAndMergePullRequest(ILogger logger, string accountName, string repository, int pullRequestId)
+        internal Merge AcceptAndMergePullRequest(ILogger logger, string accountName, string repository,
+            int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/merge/");
             return _sharpBucketV2.Post(logger, new Merge(), overrideUrl);
@@ -458,6 +501,7 @@ namespace SharpBucket.V2.EndPoints
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/decline/");
             return _sharpBucketV2.Get(new Merge(), overrideUrl);
         }
+
         /// <summary>
         /// With Logging
         /// </summary>
@@ -472,7 +516,8 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get(logger, new Merge(), overrideUrl);
         }
 
-        internal List<Comment> ListPullRequestComments(string accountName, string repository, int pullRequestId, int max = 0)
+        internal List<Comment> ListPullRequestComments(string accountName, string repository, int pullRequestId,
+            int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/comments/");
             return GetPaginatedValues<Comment>(overrideUrl, max);
@@ -487,7 +532,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="pullRequestId"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        internal List<Comment> ListPullRequestComments(ILogger logger, string accountName, string repository, int pullRequestId, int max = 0)
+        internal List<Comment> ListPullRequestComments(ILogger logger, string accountName, string repository,
+            int pullRequestId, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/comments/");
             return GetPaginatedValues<Comment>(logger, overrideUrl, max);
@@ -495,7 +541,8 @@ namespace SharpBucket.V2.EndPoints
 
         internal Comment GetPullRequestComment(string accountName, string repository, int pullRequestId, int commentId)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/comments/" + commentId + "/");
+            var overrideUrl = GetRepositoryUrl(accountName, repository,
+                "pullrequests/" + pullRequestId + "/comments/" + commentId + "/");
             return _sharpBucketV2.Get(new Comment(), overrideUrl);
         }
 
@@ -508,9 +555,11 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="pullRequestId"></param>
         /// <param name="commentId"></param>
         /// <returns></returns>
-        internal Comment GetPullRequestComment(ILogger logger, string accountName, string repository, int pullRequestId, int commentId)
+        internal Comment GetPullRequestComment(ILogger logger, string accountName, string repository, int pullRequestId,
+            int commentId)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/comments/" + commentId + "/");
+            var overrideUrl = GetRepositoryUrl(accountName, repository,
+                "pullrequests/" + pullRequestId + "/comments/" + commentId + "/");
             return _sharpBucketV2.Get(logger, new Comment(), overrideUrl);
         }
 
@@ -532,13 +581,15 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="repository"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        internal List<BranchRestriction> ListBranchRestrictions(ILogger logger, string accountName, string repository, int max = 0)
+        internal List<BranchRestriction> ListBranchRestrictions(ILogger logger, string accountName, string repository,
+            int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/");
             return GetPaginatedValues<BranchRestriction>(logger, overrideUrl, max);
         }
 
-        internal BranchRestriction PostBranchRestriction(string accountName, string repository, BranchRestriction restriction)
+        internal BranchRestriction PostBranchRestriction(string accountName, string repository,
+            BranchRestriction restriction)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/");
             return _sharpBucketV2.Post(restriction, overrideUrl);
@@ -552,7 +603,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="repository"></param>
         /// <param name="restriction"></param>
         /// <returns></returns>
-        internal BranchRestriction PostBranchRestriction(ILogger logger, string accountName, string repository, BranchRestriction restriction)
+        internal BranchRestriction PostBranchRestriction(ILogger logger, string accountName, string repository,
+            BranchRestriction restriction)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/");
             return _sharpBucketV2.Post(logger, restriction, overrideUrl);
@@ -572,13 +624,15 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="repository"></param>
         /// <param name="restrictionId"></param>
         /// <returns></returns>
-        internal BranchRestriction GetBranchRestriction(ILogger logger, string accountName, string repository, int restrictionId)
+        internal BranchRestriction GetBranchRestriction(ILogger logger, string accountName, string repository,
+            int restrictionId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restrictionId);
             return _sharpBucketV2.Get(logger, new BranchRestriction(), overrideUrl);
         }
 
-        internal BranchRestriction PutBranchRestriction(string accountName, string repository, BranchRestriction restriction)
+        internal BranchRestriction PutBranchRestriction(string accountName, string repository,
+            BranchRestriction restriction)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restriction.id);
             return _sharpBucketV2.Put(restriction, overrideUrl);
@@ -592,11 +646,13 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="repository"></param>
         /// <param name="restriction"></param>
         /// <returns></returns>
-        internal BranchRestriction PutBranchRestriction(ILogger logger, string accountName, string repository, BranchRestriction restriction)
+        internal BranchRestriction PutBranchRestriction(ILogger logger, string accountName, string repository,
+            BranchRestriction restriction)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restriction.id);
             return _sharpBucketV2.Put(logger, restriction, overrideUrl);
         }
+
         internal HttpStatusCode DeleteBranchRestriction(string accountName, string repository, int restrictionId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restrictionId);
@@ -611,7 +667,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="repository"></param>
         /// <param name="restrictionId"></param>
         /// <returns></returns>
-        internal HttpStatusCode DeleteBranchRestriction(ILogger logger, string accountName, string repository, int restrictionId)
+        internal HttpStatusCode DeleteBranchRestriction(ILogger logger, string accountName, string repository,
+            int restrictionId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restrictionId);
             return _sharpBucketV2.Delete(logger, new HttpStatusCode(), overrideUrl);
@@ -672,6 +729,7 @@ namespace SharpBucket.V2.EndPoints
             {
                 overrideUrl += branchortag;
             }
+
             return GetPaginatedValues<Commit>(overrideUrl, max);
         }
 
@@ -684,13 +742,15 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="branchortag"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        internal List<Commit> ListCommits(ILogger logger, string accountName, string repository, string branchortag = null, int max = 0)
+        internal List<Commit> ListCommits(ILogger logger, string accountName, string repository,
+            string branchortag = null, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/");
             if (!string.IsNullOrEmpty(branchortag))
             {
                 overrideUrl += branchortag;
             }
+
             return GetPaginatedValues<Commit>(logger, overrideUrl, max);
         }
 
@@ -729,7 +789,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        internal List<Comment> ListCommitComments(ILogger logger, string accountName, string repository, string revision, int max = 0)
+        internal List<Comment> ListCommitComments(ILogger logger, string accountName, string repository,
+            string revision, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + revision + "/comments/");
             return GetPaginatedValues<Comment>(logger, overrideUrl, max);
@@ -737,7 +798,8 @@ namespace SharpBucket.V2.EndPoints
 
         internal object GetCommitComment(string accountName, string repository, string revision, int commentId)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + revision + "/comments/" + revision + "/" + commentId + "/");
+            var overrideUrl = GetRepositoryUrl(accountName, repository,
+                "commits/" + revision + "/comments/" + revision + "/" + commentId + "/");
             return _sharpBucketV2.Get(new object(), overrideUrl);
         }
 
@@ -750,9 +812,11 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision"></param>
         /// <param name="commentId"></param>
         /// <returns></returns>
-        internal object GetCommitComment(ILogger logger, string accountName, string repository, string revision, int commentId)
+        internal object GetCommitComment(ILogger logger, string accountName, string repository, string revision,
+            int commentId)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + revision + "/comments/" + revision + "/" + commentId + "/");
+            var overrideUrl = GetRepositoryUrl(accountName, repository,
+                "commits/" + revision + "/comments/" + revision + "/" + commentId + "/");
             return _sharpBucketV2.Get(logger, new object(), overrideUrl);
         }
 
@@ -811,7 +875,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision"></param>
         /// <param name="buildInfo"></param>
         /// <returns></returns>
-        internal object AddNewBuildStatus(ILogger logger, string accountName, string repository, string revision, BuildInfo buildInfo)
+        internal object AddNewBuildStatus(ILogger logger, string accountName, string repository, string revision,
+            BuildInfo buildInfo)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/");
             return _sharpBucketV2.Post(logger, buildInfo, overrideUrl);
@@ -819,7 +884,8 @@ namespace SharpBucket.V2.EndPoints
 
         internal BuildInfo GetBuildStatusInfo(string accountName, string repository, string revision, string key)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/" + key);
+            var overrideUrl =
+                GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/" + key);
             return _sharpBucketV2.Get(new BuildInfo(), overrideUrl);
         }
 
@@ -832,15 +898,19 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        internal BuildInfo GetBuildStatusInfo(ILogger logger, string accountName, string repository, string revision, string key)
+        internal BuildInfo GetBuildStatusInfo(ILogger logger, string accountName, string repository, string revision,
+            string key)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/" + key);
+            var overrideUrl =
+                GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/" + key);
             return _sharpBucketV2.Get(logger, new BuildInfo(), overrideUrl);
         }
 
-        internal object ChangeBuildStatusInfo(string accountName, string repository, string revision, string key, BuildInfo buildInfo)
+        internal object ChangeBuildStatusInfo(string accountName, string repository, string revision, string key,
+            BuildInfo buildInfo)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/" + key);
+            var overrideUrl =
+                GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/" + key);
             return _sharpBucketV2.Put(buildInfo, overrideUrl);
         }
 
@@ -854,9 +924,11 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="key"></param>
         /// <param name="buildInfo"></param>
         /// <returns></returns>
-        internal object ChangeBuildStatusInfo(ILogger logger, string accountName, string repository, string revision, string key, BuildInfo buildInfo)
+        internal object ChangeBuildStatusInfo(ILogger logger, string accountName, string repository, string revision,
+            string key, BuildInfo buildInfo)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/" + key);
+            var overrideUrl =
+                GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/" + key);
             return _sharpBucketV2.Put(logger, buildInfo, overrideUrl);
         }
 
@@ -942,5 +1014,6 @@ namespace SharpBucket.V2.EndPoints
         }
 
         #endregion
+
     }
 }

@@ -82,6 +82,28 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.PostRepository(logger, repository, _accountName);
         }
 
+
+        /// <summary>
+        /// Put a specific repository
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <returns></returns>
+        public Repository PutRepository(Repository repository)
+        {
+            return _repositoriesEndPoint.PutRepository(repository, _accountName, repository.name.ToLowerInvariant());
+        }
+
+        /// <summary>
+        /// Put a specific repository
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="repository"></param>
+        /// <returns></returns>
+        public Repository PutRepository(ILogger logger, Repository repository)
+        {
+            return _repositoriesEndPoint.PutRepository(logger, repository, _accountName, repository.name.ToLowerInvariant());
+        }
+
         /// <summary>
         /// Gets the list of accounts watching a repository. 
         /// </summary>
@@ -551,5 +573,7 @@ namespace SharpBucket.V2.EndPoints
         }
 
         #endregion
+
+
     }
 }
