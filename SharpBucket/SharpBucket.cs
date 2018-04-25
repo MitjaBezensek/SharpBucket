@@ -145,7 +145,7 @@ namespace SharpBucket
             }
             return response;
         }
-        
+
         internal T Get<T>(T body, string overrideUrl, object requestParameters = null)
         {
             //Convert to dictionary to avoid refactoring the Send method.
