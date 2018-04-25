@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using RestSharp;
+using Serilog;
 using SharpBucket.Authentication;
 using SharpBucket.Utility;
 
@@ -119,6 +120,32 @@ namespace SharpBucket
             return response;
         }
 
+        /// <summary>
+        /// With Logging
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="logger"></param>
+        /// <param name="body"></param>
+        /// <param name="method"></param>
+        /// <param name="overrideUrl"></param>
+        /// <param name="requestParameters"></param>
+        /// <returns></returns>
+        private T Send<T>(ILogger logger, T body, Method method, string overrideUrl = null, IDictionary<string, object> requestParameters = null)
+        {
+            var relativeUrl = overrideUrl;
+            T response;
+            try
+            {
+                response = authenticator.GetResponse(logger, relativeUrl, method, body, requestParameters);
+            }
+            catch (WebException ex)
+            {
+                Console.WriteLine(ex.Message);
+                response = default(T);
+            }
+            return response;
+        }
+        
         internal T Get<T>(T body, string overrideUrl, object requestParameters = null)
         {
             //Convert to dictionary to avoid refactoring the Send method.
@@ -126,9 +153,38 @@ namespace SharpBucket
             return Send(body, Method.GET, overrideUrl, parameterDictionary);
         }
 
+        /// <summary>
+        /// With Logging
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="logger"></param>
+        /// <param name="body"></param>
+        /// <param name="overrideUrl"></param>
+        /// <param name="requestParameters"></param>
+        /// <returns></returns>
+        internal T Get<T>(ILogger logger, T body, string overrideUrl, object requestParameters = null)
+        {
+            //Convert to dictionary to avoid refactoring the Send method.
+            var parameterDictionary = requestParameters.ToDictionary();
+            return Send(logger, body, Method.GET, overrideUrl, parameterDictionary);
+        }
+
         internal T Post<T>(T body, string overrideUrl)
         {
             return Send(body, Method.POST, overrideUrl);
+        }
+
+        /// <summary>
+        /// With Logging
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="logger"></param>
+        /// <param name="body"></param>
+        /// <param name="overrideUrl"></param>
+        /// <returns></returns>
+        internal T Post<T>(ILogger logger, T body, string overrideUrl)
+        {
+            return Send(logger, body, Method.POST, overrideUrl);
         }
 
         internal T Put<T>(T body, string overrideUrl)
@@ -136,9 +192,35 @@ namespace SharpBucket
             return Send(body, Method.PUT, overrideUrl);
         }
 
+        /// <summary>
+        /// With Logging
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="logger"></param>
+        /// <param name="body"></param>
+        /// <param name="overrideUrl"></param>
+        /// <returns></returns>
+        internal T Put<T>(ILogger logger, T body, string overrideUrl)
+        {
+            return Send(logger, body, Method.PUT, overrideUrl);
+        }
+
         internal T Delete<T>(T body, string overrideUrl)
         {
             return Send(body, Method.DELETE, overrideUrl);
+        }
+
+        /// <summary>
+        /// With Logging
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="logger"></param>
+        /// <param name="body"></param>
+        /// <param name="overrideUrl"></param>
+        /// <returns></returns>
+        internal T Delete<T>(ILogger logger, T body, string overrideUrl)
+        {
+            return Send(logger, body, Method.DELETE, overrideUrl);
         }
     }
 }
