@@ -116,6 +116,7 @@ namespace ConsoleTests
         {
             var issuesResource = sharpBucket.RepositoriesEndPoint(accountName, repository).IssuesResource();
 
+            // TODO: You need at least 5 issues in the test repository.
             int ISSUE_ID = 5;
             // Issues
             var issues = issuesResource.ListIssues();
@@ -180,6 +181,7 @@ namespace ConsoleTests
             var newPage = new Wiki { data = "Hello to my new page" };
             var newWiki = repositoriesEndPoint.PostWiki(newPage, "NewPage");
             var changeSet = repositoriesEndPoint.ListChangeset();
+            // TODO: You need at least 5 changesets in your repository.
             var change = changeSet.changesets[4];
             var getChange = repositoriesEndPoint.GetChangeset(change.node);
             var diffStats = repositoriesEndPoint.GetChangesetDiffstat(change.node);
