@@ -148,7 +148,8 @@ namespace SharpBucket.Authentication
                 return result.Content as dynamic;
             }
 
-            logger.Debug($"{result.StatusCode}: {result.StatusDescription}");
+            logger.Debug($"{result.StatusCode}");
+            logger.Verbose($"{result.Content}");
             return result.Data;
         }
     }

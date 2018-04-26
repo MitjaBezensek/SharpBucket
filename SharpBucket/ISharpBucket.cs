@@ -68,7 +68,7 @@ namespace SharpBucket
         T Put<T>(T body, string overrideUrl);
         T Delete<T>(T body, string overrideUrl);
 
-        T Get<T>(ILogger logger, T body, string overrideUrl, object requestParameters = null);
+        T Get<T>(ILogger logger,T body, string overrideUrl, object requestParameters = null);
         T Post<T>(ILogger logger, T body, string overrideUrl);
         T Put<T>(ILogger logger, T body, string overrideUrl);
         T Delete<T>(ILogger logger, T body, string overrideUrl);
