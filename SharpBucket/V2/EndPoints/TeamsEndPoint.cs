@@ -16,6 +16,11 @@ namespace SharpBucket.V2.EndPoints
             : base(sharpBucketV2, "teams/" + teamName + "/")
         {
         }
+        public TeamsEndPoint(ISharpBucketV2 sharpBucketV2, string teamName)
+            : base(sharpBucketV2, "teams/" + teamName + "/")
+        {
+        }
+
 
         public List<Team> GetUserTeams(int max = 0)
         {
