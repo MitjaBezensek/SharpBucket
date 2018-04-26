@@ -110,7 +110,7 @@ namespace SharpBucket
             return response;
         }
 
-        internal T Get<T>(T body, string overrideUrl, object requestParameters = null)
+        public T Get<T>(T body, string overrideUrl, object requestParameters = null)
         {
             //Convert to dictionary to avoid refactoring the Send method.
             var parameterDictionary = requestParameters.ToDictionary();
@@ -126,14 +126,14 @@ namespace SharpBucket
         /// <param name="overrideUrl"></param>
         /// <param name="requestParameters"></param>
         /// <returns></returns>
-        internal T Get<T>(ILogger logger, T body, string overrideUrl, object requestParameters = null)
+        public T Get<T>(ILogger logger, T body, string overrideUrl, object requestParameters = null)
         {
             //Convert to dictionary to avoid refactoring the Send method.
             var parameterDictionary = requestParameters.ToDictionary();
             return Send(logger, body, Method.GET, overrideUrl, parameterDictionary);
         }
 
-        internal T Post<T>(T body, string overrideUrl)
+        public T Post<T>(T body, string overrideUrl)
         {
             return Send(body, Method.POST, overrideUrl);
         }
@@ -146,12 +146,12 @@ namespace SharpBucket
         /// <param name="body"></param>
         /// <param name="overrideUrl"></param>
         /// <returns></returns>
-        internal T Post<T>(ILogger logger, T body, string overrideUrl)
+        public T Post<T>(ILogger logger, T body, string overrideUrl)
         {
             return Send(logger, body, Method.POST, overrideUrl);
         }
 
-        internal T Put<T>(T body, string overrideUrl)
+        public T Put<T>(T body, string overrideUrl)
         {
             return Send(body, Method.PUT, overrideUrl);
         }
@@ -164,12 +164,12 @@ namespace SharpBucket
         /// <param name="body"></param>
         /// <param name="overrideUrl"></param>
         /// <returns></returns>
-        internal T Put<T>(ILogger logger, T body, string overrideUrl)
+        public T Put<T>(ILogger logger, T body, string overrideUrl)
         {
             return Send(logger, body, Method.PUT, overrideUrl);
         }
 
-        internal T Delete<T>(T body, string overrideUrl)
+        public T Delete<T>(T body, string overrideUrl)
         {
             return Send(body, Method.DELETE, overrideUrl);
         }
@@ -182,7 +182,7 @@ namespace SharpBucket
         /// <param name="body"></param>
         /// <param name="overrideUrl"></param>
         /// <returns></returns>
-        internal T Delete<T>(ILogger logger, T body, string overrideUrl)
+        public T Delete<T>(ILogger logger, T body, string overrideUrl)
         {
             return Send(logger, body, Method.DELETE, overrideUrl);
         }

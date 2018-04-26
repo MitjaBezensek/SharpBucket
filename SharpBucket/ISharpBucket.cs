@@ -1,4 +1,5 @@
-﻿using SharpBucket.Authentication;
+﻿using Serilog;
+using SharpBucket.Authentication;
 
 namespace SharpBucket
 {
@@ -61,5 +62,15 @@ namespace SharpBucket
         /// <param name="consumerSecretKey"></param>
         /// <returns></returns>
         OAuthentication2 OAuthentication2(string consumerKey, string consumerSecretKey);
+
+        T Get<T>(T body, string overrideUrl, object requestParameters = null);
+        T Post<T>(T body, string overrideUrl);
+        T Put<T>(T body, string overrideUrl);
+        T Delete<T>(T body, string overrideUrl);
+
+        T Get<T>(ILogger logger, T body, string overrideUrl, object requestParameters = null);
+        T Post<T>(ILogger logger, T body, string overrideUrl);
+        T Put<T>(ILogger logger, T body, string overrideUrl);
+        T Delete<T>(ILogger logger, T body, string overrideUrl);
     }
 }

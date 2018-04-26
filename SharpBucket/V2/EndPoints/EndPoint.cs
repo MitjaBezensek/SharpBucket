@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Dynamic;
+using System.Net;
+using RestSharp;
+using SharpBucket.Utility;
 using Serilog;
 
 namespace SharpBucket.V2.EndPoints
@@ -12,7 +15,7 @@ namespace SharpBucket.V2.EndPoints
         // vanilla page length in many cases is 10, requiring lots of requests for larger collections
         private const int DEFAULT_PAGE_LEN = 50;
 
-        protected readonly SharpBucketV2 _sharpBucketV2;
+        protected readonly ISharpBucketV2 _sharpBucketV2;
         protected readonly string _baseUrl;
 
         public EndPoint(SharpBucketV2 sharpBucketV2, string resourcePath)
@@ -23,7 +26,7 @@ namespace SharpBucket.V2.EndPoints
 
         public EndPoint(ISharpBucketV2 sharpBucketV2, string resourcePath)
         {
-            _sharpBucketV2 = (SharpBucketV2)sharpBucketV2;
+            _sharpBucketV2 = sharpBucketV2;
             _baseUrl = resourcePath;
         }
 
