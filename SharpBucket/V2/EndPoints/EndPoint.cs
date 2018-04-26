@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Dynamic;
+using System.Net;
+using RestSharp;
+using SharpBucket.Utility;
 
 namespace SharpBucket.V2.EndPoints
 {
@@ -11,7 +14,7 @@ namespace SharpBucket.V2.EndPoints
         // vanilla page length in many cases is 10, requiring lots of requests for larger collections
         private const int DEFAULT_PAGE_LEN = 50;
 
-        protected readonly SharpBucketV2 _sharpBucketV2;
+        protected readonly ISharpBucketV2 _sharpBucketV2;
         protected readonly string _baseUrl;
 
         public EndPoint(SharpBucketV2 sharpBucketV2, string resourcePath)
@@ -22,7 +25,7 @@ namespace SharpBucket.V2.EndPoints
 
         public EndPoint(ISharpBucketV2 sharpBucketV2, string resourcePath)
         {
-            _sharpBucketV2 = (SharpBucketV2)sharpBucketV2;
+            _sharpBucketV2 = sharpBucketV2;
             _baseUrl = resourcePath;
         }
 
@@ -50,7 +53,7 @@ namespace SharpBucket.V2.EndPoints
             int page = 1;
             do
             {
-                response = _sharpBucketV2.Get(new IteratorBasedPage<TValue>(), overrideUrl.Replace(SharpBucketV2.BITBUCKET_URL, ""), requestParameters);
+                response = Get(new IteratorBasedPage<TValue>(), overrideUrl.Replace(SharpBucketV2.BITBUCKET_URL, ""), requestParameters);
                 if (response == null)
                 {
                     break;
@@ -99,6 +102,26 @@ namespace SharpBucket.V2.EndPoints
             }
 
             return values;
+        }
+
+        protected T Get<T>(T body, string overrideUrl, object requestParameters = null)
+        {
+            return ((SharpBucketV2)_sharpBucketV2).Get(body, overrideUrl, requestParameters);
+        }
+
+        protected T Post<T>(T body, string overrideUrl)
+        {
+            return ((SharpBucketV2) _sharpBucketV2).Post(body, overrideUrl);
+        }
+
+        protected T Put<T>(T body, string overrideUrl)
+        {
+            return ((SharpBucketV2)_sharpBucketV2).Put(body, overrideUrl);
+        }
+
+        protected T Delete<T>(T body, string overrideUrl)
+        {
+            return ((SharpBucketV2)_sharpBucketV2).Delete(body, overrideUrl);
         }
     }
 }

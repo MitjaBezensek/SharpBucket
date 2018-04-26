@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>$version$</version>
+    <version>0.7.2.10</version>
     <title>SharpBucket</title>
     <authors>Mitja Bezenšek</authors>
     <owners>Mitja Bezenšek</owners>

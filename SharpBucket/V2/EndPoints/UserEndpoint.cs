@@ -15,7 +15,7 @@ namespace SharpBucket.V2.EndPoints
 
         public User GetUser()
         {
-            return _sharpBucketV2.Get<User>(null, _baseUrl);
+            return Get<User>(null, _baseUrl);
         }
     }
 }

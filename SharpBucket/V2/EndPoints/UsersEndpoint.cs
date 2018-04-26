@@ -31,7 +31,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public User GetProfile()
         {
-            return _sharpBucketV2.Get(new User(), _baseUrl);
+            return Get(new User(), _baseUrl);
         }
 
         /// <summary>
