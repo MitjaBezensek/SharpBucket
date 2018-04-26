@@ -21,35 +21,25 @@ namespace SharpBucket.V2
             _baseUrl = baseUrl;
         }
 
-        /// <summary>
-        /// Get the Teams End Point for a specific team.
-        /// </summary>
-        /// <param name="teamName">The team whose team End Point you wish to get.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public TeamsEndPoint TeamsEndPoint(string teamName)
         {
             return new TeamsEndPoint(this, teamName);
         }
 
-        /// <summary>
-        /// Get the Repositories End point.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public RepositoriesEndPoint RepositoriesEndPoint()
         {
             return new RepositoriesEndPoint(this);
         }
 
-        /// <summary>
-        /// Get the UsersEndPoint End Point.
-        /// </summary>
-        /// <param name="accountName">The account for which you wish to get the UsersEndPoint End Point.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public UsersEndpoint UsersEndPoint(string accountName)
         {
             return new UsersEndpoint(accountName, this);
         }
 
+        /// <inheritdoc />
         public UserEndpoint UserEndPoint()
         {
             return new UserEndpoint(this);
