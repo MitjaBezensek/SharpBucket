@@ -22,3 +22,5 @@ _ReSharper*/
 *sln.dotsettings
 /packages/
 !packages/repositories.config
+/.vs/SharpBucket/v15/Server/sqlite3
+*.nupkg

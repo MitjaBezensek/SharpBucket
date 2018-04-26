@@ -3,6 +3,8 @@ using System.Linq;
 using System.Net;
 using RestSharp;
 using RestSharp.Deserializers;
+using Serilog;
+using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.Authentication
 {
@@ -86,6 +88,68 @@ namespace SharpBucket.Authentication
             where T : new()
         {
             return typeof(T) == typeof(object);
+        }
+
+
+        /// <summary>
+        /// With Logging
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="logger"></param>
+        /// <param name="url"></param>
+        /// <param name="method"></param>
+        /// <param name="body"></param>
+        /// <param name="client"></param>
+        /// <param name="requestParameters"></param>
+        /// <returns></returns>
+        public static T ExecuteRequestWithLogging<T>(ILogger logger, string url, Method method, T body, RestClient client, IDictionary<string, object> requestParameters)
+            where T : new()
+        {
+            var request = new RestRequest(url, method);
+            if (requestParameters != null)
+            {
+                foreach (var requestParameter in requestParameters)
+                {
+                    request.AddParameter(requestParameter.Key, requestParameter.Value);
+                }
+            }
+
+            if (ShouldAddBody(method))
+            {
+                if (body.GetType() != typeof(Branch))
+                {
+                    request.RequestFormat = DataFormat.Json;
+                    request.AddBody(body);
+                }
+                else
+                {
+                    request.AddObject(body);
+                    request.AddHeader("Content-Type", "multipart/form-data");
+                }
+            }
+
+            //Fixed bug that prevents RestClient for adding custom headers to the request
+            //https://stackoverflow.com/questions/22229393/why-is-restsharp-addheaderaccept-application-json-to-a-list-of-item
+
+            client.ClearHandlers();
+
+            client.AddHandler("application/json", new JsonDeserializer());
+
+            var result = ExectueRequest<T>(method, client, request);
+
+            if (result.ErrorException != null)
+            {
+                throw new WebException("REST client encountered an error: " + result.ErrorMessage, result.ErrorException);
+            }
+            // This is a hack in order to allow this method to work for simple types as well
+            // one example of this is the GetRevisionRaw method
+            if (RequestingSimpleType<T>())
+            {
+                return result.Content as dynamic;
+            }
+
+            logger.Debug($"{result.StatusCode}: {result.StatusDescription}");
+            return result.Data;
         }
     }
 }
