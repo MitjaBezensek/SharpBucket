@@ -12,7 +12,7 @@ namespace SharpBucket
     /// More info:
     /// https://confluence.atlassian.com/display/BITBUCKET/Use+the+Bitbucket+REST+APIs
     /// </summary>
-    public class SharpBucket
+    public class SharpBucket : ISharpBucket
     {
         private Authenticate authenticator;
 

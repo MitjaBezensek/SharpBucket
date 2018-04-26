@@ -18,6 +18,12 @@ namespace SharpBucket.V2.EndPoints
             _repositoriesUrl = "repositories/" + accountName + "/";
         }
 
+        public UsersEndpoint(string accountName, ISharpBucketV2 sharpBucketV2) :
+            base(sharpBucketV2, "users/" + accountName + "/")
+        {
+            _repositoriesUrl = "repositories/" + accountName + "/";
+        }
+
         /// <summary>
         /// Gets the public information associated with a user. 
         /// If the user's profile is private, the caller must be authenticated as the account holder to view this information.  

@@ -21,6 +21,11 @@ namespace SharpBucket.V2.EndPoints
         {
         }
 
+        public RepositoriesEndPoint(ISharpBucketV2 sharpBucketV2)
+            : base(sharpBucketV2, "repositories/")
+        {
+        }
+
         /// <summary>
         /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
         /// this method returns a collection containing public and private repositories. 

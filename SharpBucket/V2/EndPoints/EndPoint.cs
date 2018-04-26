@@ -20,6 +20,12 @@ namespace SharpBucket.V2.EndPoints
             _baseUrl = resourcePath;
         }
 
+        public EndPoint(ISharpBucketV2 sharpBucketV2, string resourcePath)
+        {
+            _sharpBucketV2 = (SharpBucketV2)sharpBucketV2;
+            _baseUrl = resourcePath;
+        }
+
         /// <summary>
         /// Generator that allows lazy access to paginated resources.
         /// </summary>

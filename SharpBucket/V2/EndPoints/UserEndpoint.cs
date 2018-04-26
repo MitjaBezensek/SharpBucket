@@ -8,6 +8,10 @@ namespace SharpBucket.V2.EndPoints
             : base(sharpBucketV2, "user/")
         {
         }
+        public UserEndpoint(ISharpBucketV2 sharpBucketV2)
+            : base(sharpBucketV2, "user/")
+        {
+        }
 
         public User GetUser()
         {

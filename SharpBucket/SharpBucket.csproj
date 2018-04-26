@@ -51,6 +51,7 @@
     <Compile Include="Authentication\OAuthentication2.cs" />
     <Compile Include="Authentication\RequestExecutor.cs" />
     <Compile Include="Authentication\Token.cs" />
+    <Compile Include="ISharpBucket.cs" />
     <Compile Include="Utility\ObjectToDictionaryHelper.cs" />
     <Compile Include="V1\EndPoints\GroupsEndPoint.cs" />
     <Compile Include="V1\EndPoints\IssueResource.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="V2\EndPoints\RepositoryResource.cs" />
     <Compile Include="V2\EndPoints\TagResource.cs" />
     <Compile Include="V2\EndPoints\UserEndpoint.cs" />
+    <Compile Include="V2\ISharpBucketV2.cs" />
     <Compile Include="V2\Pocos\Author.cs" />
     <Compile Include="V2\Pocos\Branch.cs" />
     <Compile Include="V2\Pocos\BranchRestriction.cs" />
