@@ -167,7 +167,7 @@ namespace SharpBucket.V2.EndPoints
 
         internal Repository PostRepository(Repository repo, string accountName)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repo.name, null);
+            var overrideUrl = GetRepositoryUrl(accountName, repo.name.ToLowerInvariant(), null);
             return _sharpBucketV2.Post(repo, overrideUrl);
         }
 
@@ -180,7 +180,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         internal Repository PostRepository(ILogger logger, Repository repo, string accountName)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repo.name, null);
+            var overrideUrl = GetRepositoryUrl(accountName, repo.name.ToLowerInvariant(), null);
             return _sharpBucketV2.Post(logger, repo, overrideUrl);
         }
 
