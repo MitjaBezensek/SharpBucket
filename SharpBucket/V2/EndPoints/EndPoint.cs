@@ -53,7 +53,7 @@ namespace SharpBucket.V2.EndPoints
             int page = 1;
             do
             {
-                response = Get(new IteratorBasedPage<TValue>(), overrideUrl.Replace(SharpBucketV2.BITBUCKET_URL, ""), requestParameters);
+                response = _sharpBucketV2.Get(new IteratorBasedPage<TValue>(), overrideUrl.Replace(SharpBucketV2.BITBUCKET_URL, ""), requestParameters);
                 if (response == null)
                 {
                     break;
@@ -103,25 +103,5 @@ namespace SharpBucket.V2.EndPoints
 
             return values;
         }
-
-        protected T Get<T>(T body, string overrideUrl, object requestParameters = null)
-        {
-            return ((SharpBucketV2)_sharpBucketV2).Get(body, overrideUrl, requestParameters);
         }
-
-        protected T Post<T>(T body, string overrideUrl)
-        {
-            return ((SharpBucketV2) _sharpBucketV2).Post(body, overrideUrl);
-        }
-
-        protected T Put<T>(T body, string overrideUrl)
-        {
-            return ((SharpBucketV2)_sharpBucketV2).Put(body, overrideUrl);
-        }
-
-        protected T Delete<T>(T body, string overrideUrl)
-        {
-            return ((SharpBucketV2)_sharpBucketV2).Delete(body, overrideUrl);
-        }
-    }
 }

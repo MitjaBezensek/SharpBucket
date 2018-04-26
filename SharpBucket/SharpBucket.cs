@@ -83,24 +83,24 @@ namespace SharpBucket
             return response;
         }
 
-        internal T Get<T>(T body, string overrideUrl, object requestParameters = null)
+        public T Get<T>(T body, string overrideUrl, object requestParameters = null)
         {
             //Convert to dictionary to avoid refactoring the Send method.
             var parameterDictionary = requestParameters.ToDictionary();
             return Send(body, Method.GET, overrideUrl, parameterDictionary);
         }
 
-        internal T Post<T>(T body, string overrideUrl)
+        public T Post<T>(T body, string overrideUrl)
         {
             return Send(body, Method.POST, overrideUrl);
         }
 
-        internal T Put<T>(T body, string overrideUrl)
+        public T Put<T>(T body, string overrideUrl)
         {
             return Send(body, Method.PUT, overrideUrl);
         }
 
-        internal T Delete<T>(T body, string overrideUrl)
+        public T Delete<T>(T body, string overrideUrl)
         {
             return Send(body, Method.DELETE, overrideUrl);
         }

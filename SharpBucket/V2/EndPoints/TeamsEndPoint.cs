@@ -36,7 +36,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public Team GetProfile()
         {
-            return Get(new Team(), _baseUrl);
+            return _sharpBucketV2.Get(new Team(), _baseUrl);
         }
 
         /// <summary>
