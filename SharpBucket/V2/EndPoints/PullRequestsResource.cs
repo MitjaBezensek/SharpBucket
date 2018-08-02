@@ -131,6 +131,11 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.GetPullRequestComment(_accountName, _repository, pullRequestId, commentId);
         }
 
+        internal Comment PostPullRequstComment(int pullRequestId, Comment comment)
+        {
+            return _repositoriesEndPoint.PostPullRequestComment(_accountName, _repository, pullRequestId, comment);
+        }
+
         #endregion
     }
 }
