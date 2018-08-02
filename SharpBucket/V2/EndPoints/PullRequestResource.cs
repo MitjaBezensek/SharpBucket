@@ -1,4 +1,6 @@
-﻿namespace SharpBucket.V2.EndPoints
+﻿using SharpBucket.V2.Pocos;
+
+namespace SharpBucket.V2.EndPoints
 {
     /// <summary>
     /// A "Virtual" resource that offers easier manipulation of the pull request.
@@ -108,6 +110,11 @@
         public object GetPullRequestComment(int commentId)
         {
             return _repositoriesEndPoint.GetPullRequestComment(_accountName, _repository, _pullRequestId, commentId);
+        }
+
+        public Comment PostPullRequstComment(Comment comment)
+        {
+            return _repositoriesEndPoint.PostPullRequestComment(_accountName, _repository, _pullRequestId, comment);
         }
     }
 }
