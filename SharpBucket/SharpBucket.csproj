@@ -94,6 +94,7 @@
     <Compile Include="V2\Pocos\CommentsInfo.cs" />
     <Compile Include="V2\Pocos\Commit.cs" />
     <Compile Include="V2\Pocos\Content.cs" />
+    <Compile Include="V2\Pocos\UserRole.cs" />
     <Compile Include="V2\Pocos\UserShort.cs" />
     <Compile Include="V2\Pocos\UsersInfo.cs" />
     <Compile Include="V2\Pocos\Link.cs" />
