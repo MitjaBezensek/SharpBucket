@@ -94,7 +94,7 @@ namespace SharpBucket.V2.EndPoints
         /// List the information associated with a repository's branch restrictions. 
         /// </summary>
         /// <returns></returns>
-        public object ListBranchRestrictions()
+        public List<BranchRestriction> ListBranchRestrictions()
         {
             return _repositoriesEndPoint.ListBranchRestrictions(_accountName, _repository);
         }
@@ -114,7 +114,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="restrictionId">The restriction's identifier.</param>
         /// <returns></returns>
-        public object GetBranchRestriction(int restrictionId)
+        public BranchRestriction GetBranchRestriction(int restrictionId)
         {
             return _repositoriesEndPoint.GetBranchRestriction(_accountName, _repository, restrictionId);
         }
@@ -134,7 +134,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="restrictionId">The restriction's identifier.</param>
         /// <returns></returns>
-        public object DeleteBranchRestriction(int restrictionId)
+        public BranchRestriction DeleteBranchRestriction(int restrictionId)
         {
             return _repositoriesEndPoint.DeleteBranchRestriction(_accountName, _repository, restrictionId);
         }
@@ -209,7 +209,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision">The commit's SHA1.</param>
         /// <param name="commentId">The comment identifier.</param>
         /// <returns></returns>
-        public object GetCommitComment(string revision, int commentId)
+        public Comment GetCommitComment(string revision, int commentId)
         {
             return _repositoriesEndPoint.GetCommitComment(_accountName, _repository, revision, commentId);
         }
@@ -220,9 +220,9 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="revision">The commit's SHA1.</param>
         /// <returns></returns>
-        public object ApproveCommit(string revision)
+        public void ApproveCommit(string revision)
         {
-            return _repositoriesEndPoint.ApproveCommit(_accountName, _repository, revision);
+            _repositoriesEndPoint.ApproveCommit(_accountName, _repository, revision);
         }
 
         /// <summary>
@@ -230,9 +230,9 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="revision">The commit's SHA1.</param>
         /// <returns></returns>
-        public object DeleteCommitApproval(string revision)
+        public void DeleteCommitApproval(string revision)
         {
-            return _repositoriesEndPoint.DeleteCommitApproval(_accountName, _repository, revision);
+            _repositoriesEndPoint.DeleteCommitApproval(_accountName, _repository, revision);
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision">The commit's SHA1</param>
         /// <param name="buildInfo">The new commit status object</param>
         /// <returns></returns>
-        public object AddNewBuildStatus(string revision, BuildInfo buildInfo)
+        public BuildInfo AddNewBuildStatus(string revision, BuildInfo buildInfo)
         {
             return _repositoriesEndPoint.AddNewBuildStatus(_accountName, _repository, revision, buildInfo);
         }
@@ -265,7 +265,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="buildInfo">The new commit status object</param>
         /// <returns></returns>
         /// /// <remarks>This operation can also be used to change other properties of the build status: state, name, description, url, refname. The key cannot be changed.</remarks>
-        public object ChangeBuildStatusInfo(string revision, string key, BuildInfo buildInfo)
+        public BuildInfo ChangeBuildStatusInfo(string revision, string key, BuildInfo buildInfo)
         {
             return _repositoriesEndPoint.ChangeBuildStatusInfo(_accountName, _repository, revision, key, buildInfo);
         }
@@ -279,9 +279,9 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="targetUsername">The user to add as the default reviewer.</param>
         /// <returns></returns>
-        public object PutDefaultReviewer(string targetUsername)
+        public void PutDefaultReviewer(string targetUsername)
         {
-            return _repositoriesEndPoint.PutDefaultReviewer(_accountName, _repository, targetUsername);
+            _repositoriesEndPoint.PutDefaultReviewer(_accountName, _repository, targetUsername);
         }
 
         #endregion
