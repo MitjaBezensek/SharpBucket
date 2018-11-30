@@ -286,10 +286,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get(new Comment(), overrideUrl);
         }
 
-        internal void ApproveCommit(string accountName, string repository, string revision)
+        internal object ApproveCommit(string accountName, string repository, string revision)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + revision + "/approve/");
-            _sharpBucketV2.Post(new object(), overrideUrl);
+            return _sharpBucketV2.Post(new object(), overrideUrl);
         }
 
         internal void DeleteCommitApproval(string accountName, string repository, string revision)
