@@ -222,7 +222,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public object ApproveCommit(string revision)
         {
-            _repositoriesEndPoint.ApproveCommit(_accountName, _repository, revision);
+            return _repositoriesEndPoint.ApproveCommit(_accountName, _repository, revision);
         }
 
         /// <summary>
