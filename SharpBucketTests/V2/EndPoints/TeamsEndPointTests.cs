@@ -28,13 +28,17 @@ namespace SharBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void ListMembers_FromTeamAtlassian_ShouldReturnManyMembers()
+        public void ListMembers_FromFirstTeamOfLoggedUser_ShouldReturnManyMembers()
         {
             teamsEndPoint.ShouldNotBe(null);
-            var members = teamsEndPoint.ListMembers(35);
-            members.Count.ShouldBeGreaterThan(19);
-            // This test is brittle, it should be updated since the names change
-            members[0].display_name.ShouldBe("Ivan Ostafiychuk");
+            var teams = teamsEndPoint.GetUserTeams();
+            teams.Count.ShouldBeGreaterThan(0);
+
+            var firstTeamEndPoint = sharpBucket.TeamsEndPoint(teams[0].username);
+            var members = firstTeamEndPoint.ListMembers(35);
+            members.Count.ShouldBeGreaterThan(0);
+            var userName = sharpBucket.UserEndPoint().GetUser().username;
+            members.ShouldContain(m => m.username == userName);
         }
 
         [Test]
