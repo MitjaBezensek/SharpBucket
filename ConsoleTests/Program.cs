@@ -242,7 +242,7 @@ namespace ConsoleTests
             var commitComments = repositoryResource.ListCommitComments(commitId);
             int commentId = 10;
             var commitComment = repositoryResource.GetCommitComment(commitId, commentId);
-            repositoryResource.ApproveCommit(commitId);
+            var approveCommit = repositoryResource.ApproveCommit(commitId);
             repositoryResource.DeleteCommitApproval(commitId);
 
             var targetUsername = "";
