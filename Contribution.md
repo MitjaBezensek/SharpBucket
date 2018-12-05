@@ -6,6 +6,13 @@ After that create two environment variables for the key and the secret key. They
 - SB_CONSUMER_KEY
 - SB_CONSUMER_SECRET_KEY
 
+Also create an environment variable with your user name
+- SB_ACCOUNT_NAME
+
+Other prerequisites in your Bitbucket test account:
+- You should create at least one team (or be member of an existing one)
+- You should create a group named "AdminGroup" in the account referenced by SB_ACCOUNT_NAME
+
 # Where to get started
 
 The best way to get started is to implement a part of the API that you need but is not covered yet. 

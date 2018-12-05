@@ -22,4 +22,4 @@ _ReSharper*/
 *sln.dotsettings
 /packages/
 !packages/repositories.config
-.vs/*
+/.vs/
