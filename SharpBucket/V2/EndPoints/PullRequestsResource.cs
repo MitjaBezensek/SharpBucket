@@ -38,7 +38,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="pullRequest">The pull request.</param>
         /// <returns></returns>
-        public object PostPullRequest(PullRequest pullRequest)
+        public PullRequest PostPullRequest(PullRequest pullRequest)
         {
             return _repositoriesEndPoint.PostPullRequest(_accountName, _repository, pullRequest);
         }
@@ -51,7 +51,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="pullRequest">The pull request.</param>
         /// <returns></returns>
-        public object PutPullRequest(PullRequest pullRequest)
+        public PullRequest PutPullRequest(PullRequest pullRequest)
         {
             return _repositoriesEndPoint.PutPullRequest(_accountName, _repository, pullRequest);
         }
@@ -60,7 +60,7 @@ namespace SharpBucket.V2.EndPoints
         /// Returns all the pull request activity for a repository. This call returns a historical log of all the pull request activity within a repository.
         /// </summary>
         /// <returns></returns>
-        public object GetPullRequestLog()
+        public List<Activity> GetPullRequestLog()
         {
             return _repositoriesEndPoint.GetPullRequestLog(_accountName, _repository);
         }
@@ -81,22 +81,22 @@ namespace SharpBucket.V2.EndPoints
             return new PullRequestResource(_accountName, _repository, pullRequestId, _repositoriesEndPoint);
         }
 
-        internal object GetPullRequest(int pullRequestId)
+        internal PullRequest GetPullRequest(int pullRequestId)
         {
             return _repositoriesEndPoint.GetPullRequest(_accountName, _repository, pullRequestId);
         }
 
-        internal object ListPullRequestCommits(int pullRequestId)
+        internal List<Commit> ListPullRequestCommits(int pullRequestId)
         {
             return _repositoriesEndPoint.ListPullRequestCommits(_accountName, _repository, pullRequestId);
         }
 
-        internal object ApprovePullRequest(int pullRequestId)
+        internal PullRequestInfo ApprovePullRequest(int pullRequestId)
         {
             return _repositoriesEndPoint.ApprovePullRequest(_accountName, _repository, pullRequestId);
         }
 
-        internal object RemovePullRequestApproval(int pullRequestId)
+        internal PullRequestInfo RemovePullRequestApproval(int pullRequestId)
         {
             return _repositoriesEndPoint.RemovePullRequestApproval(_accountName, _repository, pullRequestId);
         }
@@ -106,27 +106,27 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.GetDiffForPullRequest(_accountName, _repository, pullRequestId);
         }
 
-        internal object GetPullRequestActivity(int pullRequestId)
+        internal List<Activity> GetPullRequestActivity(int pullRequestId)
         {
             return _repositoriesEndPoint.GetPullRequestActivity(_accountName, _repository, pullRequestId);
         }
 
-        internal object AcceptAndMergePullRequest(int pullRequestId)
+        internal Merge AcceptAndMergePullRequest(int pullRequestId)
         {
             return _repositoriesEndPoint.AcceptAndMergePullRequest(_accountName, _repository, pullRequestId);
         }
 
-        internal object DeclinePullRequest(int pullRequestId)
+        internal Merge DeclinePullRequest(int pullRequestId)
         {
             return _repositoriesEndPoint.DeclinePullRequest(_accountName, _repository, pullRequestId);
         }
 
-        internal object ListPullRequestComments(int pullRequestId)
+        internal List<Comment> ListPullRequestComments(int pullRequestId)
         {
             return _repositoriesEndPoint.ListPullRequestComments(_accountName, _repository, pullRequestId);
         }
 
-        internal object GetPullRequestComment(int pullRequestId, int commentId)
+        internal Comment GetPullRequestComment(int pullRequestId, int commentId)
         {
             return _repositoriesEndPoint.GetPullRequestComment(_accountName, _repository, pullRequestId, commentId);
         }
