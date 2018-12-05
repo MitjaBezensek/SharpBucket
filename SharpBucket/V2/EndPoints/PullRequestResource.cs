@@ -113,7 +113,7 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.GetPullRequestComment(_accountName, _repository, _pullRequestId, commentId);
         }
 
-        public Comment PostPullRequstComment(Comment comment)
+        public Comment PostPullRequestComment(Comment comment)
         {
             return _repositoriesEndPoint.PostPullRequestComment(_accountName, _repository, _pullRequestId, comment);
         }
