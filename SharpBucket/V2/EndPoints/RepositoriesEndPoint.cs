@@ -211,6 +211,12 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get(new Comment(), overrideUrl);
         }
 
+        internal Comment PostPullRequestComment(string accountName, string repository, int pullRequestId, Comment comment)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/comments/");
+            return _sharpBucketV2.Post(comment, overrideUrl);
+        }
+
         #endregion
 
         #region Branch Restrictions resource

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -111,6 +111,11 @@ namespace SharpBucket.V2.EndPoints
         public Comment GetPullRequestComment(int commentId)
         {
             return _repositoriesEndPoint.GetPullRequestComment(_accountName, _repository, _pullRequestId, commentId);
+        }
+
+        public Comment PostPullRequestComment(Comment comment)
+        {
+            return _repositoriesEndPoint.PostPullRequestComment(_accountName, _repository, _pullRequestId, comment);
         }
     }
 }
