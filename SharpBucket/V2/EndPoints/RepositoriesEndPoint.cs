@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using SharpBucket.V2.Pocos;
 using Comment = SharpBucket.V2.Pocos.Comment;
 using Repository = SharpBucket.V2.Pocos.Repository;
@@ -89,10 +90,16 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Delete(new Repository(), overrideUrl);
         }
 
+        private string ParseSlug(string repositoryName)
+        {
+            var slugRegex = new Regex(@"[^a-zA-Z\.\-_0-9]+");
+            return slugRegex.Replace(repositoryName, "-").ToLowerInvariant();
+        }
+
         private string GetRepositoryUrl(string accountName, string repository, string append)
         {
             var format = _baseUrl + "{0}/{1}/{2}";
-            return string.Format(format, accountName, repository, append);
+            return string.Format(format, accountName, ParseSlug(repository), append);
         }
 
         internal List<Watcher> ListWatchers(string accountName, string repository, int max = 0)
@@ -162,7 +169,7 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Post(new PullRequestInfo(), overrideUrl);
         }
 
-        internal object RemovePullRequestApproval(string accountName, string repository, int pullRequestId)
+        internal PullRequestInfo RemovePullRequestApproval(string accountName, string repository, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/approve/");
             return _sharpBucketV2.Delete(new PullRequestInfo(), overrideUrl);
@@ -202,6 +209,12 @@ namespace SharpBucket.V2.EndPoints
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/comments/" + commentId + "/");
             return _sharpBucketV2.Get(new Comment(), overrideUrl);
+        }
+
+        internal Comment PostPullRequestComment(string accountName, string repository, int pullRequestId, Comment comment)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/comments/");
+            return _sharpBucketV2.Post(comment, overrideUrl);
         }
 
         #endregion
@@ -280,10 +293,10 @@ namespace SharpBucket.V2.EndPoints
             return GetPaginatedValues<Comment>(overrideUrl, max);
         }
 
-        internal object GetCommitComment(string accountName, string repository, string revision, int commentId)
+        internal Comment GetCommitComment(string accountName, string repository, string revision, int commentId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + revision + "/comments/" + revision + "/" + commentId + "/");
-            return _sharpBucketV2.Get(new object(), overrideUrl);
+            return _sharpBucketV2.Get(new Comment(), overrideUrl);
         }
 
         internal object ApproveCommit(string accountName, string repository, string revision)
@@ -292,13 +305,13 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Post(new object(), overrideUrl);
         }
 
-        internal object DeleteCommitApproval(string accountName, string repository, string revision)
+        internal void DeleteCommitApproval(string accountName, string repository, string revision)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + revision + "/approve/");
-            return _sharpBucketV2.Delete(new object(), overrideUrl);
+            _sharpBucketV2.Delete(new object(), overrideUrl);
         }
 
-        internal object AddNewBuildStatus(string accountName, string repository, string revision, BuildInfo buildInfo)
+        internal BuildInfo AddNewBuildStatus(string accountName, string repository, string revision, BuildInfo buildInfo)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/");
             return _sharpBucketV2.Post(buildInfo, overrideUrl);
@@ -310,7 +323,7 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get(new BuildInfo(), overrideUrl);
         }
 
-        internal object ChangeBuildStatusInfo(string accountName, string repository, string revision, string key, BuildInfo buildInfo)
+        internal BuildInfo ChangeBuildStatusInfo(string accountName, string repository, string revision, string key, BuildInfo buildInfo)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/" + key);
             return _sharpBucketV2.Put(buildInfo, overrideUrl);
@@ -320,10 +333,10 @@ namespace SharpBucket.V2.EndPoints
 
         #region Default Reviewer Resource
 
-        internal object PutDefaultReviewer(string accountName, string repository, string targetUsername)
+        internal void PutDefaultReviewer(string accountName, string repository, string targetUsername)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "default-reviewers/" + targetUsername);
-            return _sharpBucketV2.Put(new object(), overrideUrl);
+            _sharpBucketV2.Put(new object(), overrideUrl);
         }
 
         #endregion

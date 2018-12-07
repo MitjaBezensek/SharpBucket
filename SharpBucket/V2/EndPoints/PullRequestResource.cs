@@ -1,4 +1,7 @@
-﻿namespace SharpBucket.V2.EndPoints
+using System.Collections.Generic;
+using SharpBucket.V2.Pocos;
+
+namespace SharpBucket.V2.EndPoints
 {
     /// <summary>
     /// A "Virtual" resource that offers easier manipulation of the pull request.
@@ -22,7 +25,7 @@
         /// List all the pull requests info for the repository.
         /// </summary>
         /// <returns></returns>
-        public object GetPullRequest()
+        public PullRequest GetPullRequest()
         {
             return _repositoriesEndPoint.GetPullRequest(_accountName, _repository, _pullRequestId);
         }
@@ -31,7 +34,7 @@
         /// List of the commits associated with a specific pull request, follow the pull request's commits link. This returns a paginated response.
         /// </summary>
         /// <returns></returns>
-        public object ListPullRequestCommits()
+        public List<Commit> ListPullRequestCommits()
         {
             return _repositoriesEndPoint.ListPullRequestCommits(_accountName, _repository, _pullRequestId);
         }
@@ -41,7 +44,7 @@
         /// This returns the participant object for the current user.
         /// </summary>
         /// <returns></returns>
-        public object ApprovePullRequest()
+        public PullRequestInfo ApprovePullRequest()
         {
             return _repositoriesEndPoint.ApprovePullRequest(_accountName, _repository, _pullRequestId);
         }
@@ -50,7 +53,7 @@
         /// Revoke your approval on a pull request. You can remove approvals on behalf of the authenticated account.
         /// </summary>
         /// <returns></returns>
-        public object RemovePullRequestApproval()
+        public PullRequestInfo RemovePullRequestApproval()
         {
             return _repositoriesEndPoint.RemovePullRequestApproval(_accountName, _repository, _pullRequestId);
         }
@@ -69,7 +72,7 @@
         /// Gets a log of the activity for a specific pull request.
         /// </summary>
         /// <returns></returns>
-        public object GetPullRequestActivity()
+        public List<Activity> GetPullRequestActivity()
         {
             return _repositoriesEndPoint.GetPullRequestActivity(_accountName, _repository, _pullRequestId);
         }
@@ -78,7 +81,7 @@
         /// Accept a pull request and merges into the destination branch. This requires write access on the destination repository.
         /// </summary>
         /// <returns></returns>
-        public object AcceptAndMergePullRequest()
+        public Merge AcceptAndMergePullRequest()
         {
             return _repositoriesEndPoint.AcceptAndMergePullRequest(_accountName, _repository, _pullRequestId);
         }
@@ -87,7 +90,7 @@
         /// Rejects a pull request. This requires write access on the destination repository.
         /// </summary>
         /// <returns></returns>
-        public object DeclinePullRequest()
+        public Merge DeclinePullRequest()
         {
             return _repositoriesEndPoint.DeclinePullRequest(_accountName, _repository, _pullRequestId);
         }
@@ -96,7 +99,7 @@
         /// List of comments on the specified pull request. 
         /// </summary>
         /// <returns></returns>
-        public object ListPullRequestComments()
+        public List<Comment> ListPullRequestComments()
         {
             return _repositoriesEndPoint.ListPullRequestComments(_accountName, _repository, _pullRequestId);
         }
@@ -105,9 +108,14 @@
         /// Gets an individual comment on an request. Private repositories require authorization with an account that has appropriate access.
         /// </summary>
         /// <param name="commentId">The comment identifier.</param>      /// <returns></returns>
-        public object GetPullRequestComment(int commentId)
+        public Comment GetPullRequestComment(int commentId)
         {
             return _repositoriesEndPoint.GetPullRequestComment(_accountName, _repository, _pullRequestId, commentId);
+        }
+
+        public Comment PostPullRequestComment(Comment comment)
+        {
+            return _repositoriesEndPoint.PostPullRequestComment(_accountName, _repository, _pullRequestId, comment);
         }
     }
 }

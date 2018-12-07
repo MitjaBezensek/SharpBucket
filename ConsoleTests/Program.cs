@@ -242,11 +242,11 @@ namespace ConsoleTests
             var commitComments = repositoryResource.ListCommitComments(commitId);
             int commentId = 10;
             var commitComment = repositoryResource.GetCommitComment(commitId, commentId);
-            var commitApproval = repositoryResource.ApproveCommit(commitId);
-            var deleteApproval = repositoryResource.DeleteCommitApproval(commitId);
+            var approveCommit = repositoryResource.ApproveCommit(commitId);
+            repositoryResource.DeleteCommitApproval(commitId);
 
             var targetUsername = "";
-            var defaultReviewer = repositoryResource.PutDefaultReviewer(targetUsername);
+            repositoryResource.PutDefaultReviewer(targetUsername);
 
             var r = repositoriesEndPoint.RepositoryResource(accountName, repository);
             var dr = r.DeleteRepository();
@@ -262,8 +262,8 @@ namespace ConsoleTests
             var commit2 = r.GetCommit(commitId);
             var commitComments2 = r.ListCommitComments(commitId);
             var commitComment2 = r.GetCommitComment(commitId, commentId);
-            var commitApproval2 = r.ApproveCommit(commitId);
-            var deleteApproval2 = r.DeleteCommitApproval(commitId);
+            r.ApproveCommit(commitId);
+            r.DeleteCommitApproval(commitId);
 
             var pullRequestsResource = r.PullRequestsResource();
             var pullRequests = pullRequestsResource.ListPullRequests();
