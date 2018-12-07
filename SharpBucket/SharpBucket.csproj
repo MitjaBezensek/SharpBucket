@@ -2,6 +2,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
+    <Version>0.8.0</Version>
+    <Authors>Mitja Bezenšek</Authors>
+    <Company>Mitja Bezenšek</Company>
+    <Product>SharpBucket</Product>
+    <Copyright>Copyright 2014-2018</Copyright>
+    <PackageProjectUrl>https://github.com/MitjaBezensek/SharpBucket</PackageProjectUrl>
+    <PackageIconUrl>http://bezensek.com/favicon.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/MitjaBezensek/SharpBucket/blob/master/LICENSE</PackageLicenseUrl>
+    <Description>A .Net wrapper for the BitBucket REST API.</Description>
+    <PackageDescription>SharpBucket is a .Net wrapper (written in c#) for the BitBucket's REST API. With it you can have all the data of your repositories / issues at your fingertips.</PackageDescription>
+    <PackageTags>BitBucket REST API C#</PackageTags>
+    <PackageReleaseNotes>Support of netstandard2.0</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
