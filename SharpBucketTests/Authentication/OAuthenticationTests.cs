@@ -1,14 +1,14 @@
-﻿using Shouldly;
-using Xunit;
+﻿using NUnit.Framework;
+using Shouldly;
 
 namespace SharBucketTests.Authentication
 {
-   
-    public class OAuthenticationTests
+    [TestFixture]
+    internal class OAuthenticationTests
     {
         private const int Expected = 300;
 
-        [Fact]
+        [Test]
         public void OAuth_RequestWithParameters_GetsPublicRepositories()
         {
             var sharpbucket = TestHelpers.GetV2ClientAuthenticatedWithOAuth();
