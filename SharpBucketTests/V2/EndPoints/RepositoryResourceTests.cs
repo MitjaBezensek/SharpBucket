@@ -80,7 +80,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void CreatRepository_NewPublicRepoistory_CorrectlyCreatesTheRepository()
+        public void CreateRepository_NewPublicRepository_CorrectlyCreatesTheRepository()
         {
             var accountName = Environment.GetEnvironmentVariable("SB_ACCOUNT_NAME");
             var repositoryName = Guid.NewGuid().ToString().Replace("-", string.Empty);
