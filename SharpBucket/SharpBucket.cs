@@ -73,7 +73,7 @@ namespace SharpBucket
         /// <param name="consumerKey">Your consumer API key obtained from the BitBucket web page.</param>
         /// <param name="consumerSecretKey">Your consumer secret API key also obtained from the BitBucket web page.</param>
         /// <param name="oauthToken">Your OAuth token that was obtained on a previous session.</param>
-        /// <param name="oauthTokenSecret">Your OAuth secret token thata was obtained on a previous session.</param>
+        /// <param name="oauthTokenSecret">Your OAuth secret token that was obtained on a previous session.</param>
         /// <returns></returns>
         public OAuthentication3Legged OAuth3LeggedAuthentication(
             string consumerKey,
@@ -91,7 +91,7 @@ namespace SharpBucket
         }
 
         /// <summary>
-        /// Use Oauth2 authentication. This is the neweset version and is prefered.
+        /// Use Oauth2 authentication. This is the newest version and is preferred.
         /// </summary>
         /// <param name="consumerKey"></param>
         /// <param name="consumerSecretKey"></param>

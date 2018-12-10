@@ -186,7 +186,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Gets the information associated with an individual commit. 
         /// </summary>
-        /// <param name="revision">The commit's SHA1.</param>
+        /// <param name="revision">The SHA1 of the commit.</param>
         /// <returns></returns>
         public Commit GetCommit(string revision)
         {
@@ -196,7 +196,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// List of comments on the specified commit.
         /// </summary>
-        /// <param name="revision">The commit's SHA1.</param>
+        /// <param name="revision">The SHA1 of the commit.</param>
         /// <returns></returns>
         public List<Comment> ListCommitComments(string revision)
         {
@@ -206,7 +206,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// To get an individual commit comment, just follow the object's self link.
         /// </summary>
-        /// <param name="revision">The commit's SHA1.</param>
+        /// <param name="revision">The SHA1 of the commit.</param>
         /// <param name="commentId">The comment identifier.</param>
         /// <returns></returns>
         public Comment GetCommitComment(string revision, int commentId)
@@ -218,7 +218,7 @@ namespace SharpBucket.V2.EndPoints
         /// Give your approval on a commit.  
         /// You can only approve a comment on behalf of the authenticated account.  This returns the participant object for the current user.
         /// </summary>
-        /// <param name="revision">The commit's SHA1.</param>
+        /// <param name="revision">The SHA1 of the commit.</param>
         /// <returns></returns>
         public object ApproveCommit(string revision)
         {
@@ -228,7 +228,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Revoke your approval of a commit. You can remove approvals on behalf of the authenticated account. 
         /// </summary>
-        /// <param name="revision">The commit's SHA1.</param>
+        /// <param name="revision">The SHA1 of the commit.</param>
         /// <returns></returns>
         public void DeleteCommitApproval(string revision)
         {
@@ -238,7 +238,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Creates a new build status against the specified commit. If the specified key already exists, the existing status object will be overwritten.
         /// </summary>
-        /// <param name="revision">The commit's SHA1</param>
+        /// <param name="revision">The SHA1 of the commit</param>
         /// <param name="buildInfo">The new commit status object</param>
         /// <returns></returns>
         public BuildInfo AddNewBuildStatus(string revision, BuildInfo buildInfo)
@@ -249,7 +249,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Returns the specified build status for a commit.
         /// </summary>
-        /// <param name="revision">The commit's SHA1</param>
+        /// <param name="revision">The SHA1 of the commit</param>
         /// <param name="key">The build status' unique key</param>
         /// <returns></returns>
         public BuildInfo GetBuildStatusInfo(string revision, string key)
@@ -260,7 +260,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Used to update the current status of a build status object on the specific commit.
         /// </summary>
-        /// <param name="revision">The commit's SHA1</param>
+        /// <param name="revision">The SHA1 of the commit</param>
         /// <param name="key">The build status' unique key</param>
         /// <param name="buildInfo">The new commit status object</param>
         /// <returns></returns>

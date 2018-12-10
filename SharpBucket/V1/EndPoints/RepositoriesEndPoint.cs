@@ -574,7 +574,7 @@ namespace SharpBucket.V1.EndPoints
             return _sharpBucketV1.Get(new Wiki(), overrideUrl);
         }
 
-        // TODO:  Doesnt work, 500 server error, same for put
+        // TODO: Doesn't work, 500 server error, same for put
         /// <summary>
         /// Creates a new wiki page. 
         /// </summary>
@@ -588,7 +588,7 @@ namespace SharpBucket.V1.EndPoints
         }
 
         /// <summary>
-        /// Updates an existng wiki page.
+        /// Updates an existing wiki page.
         /// </summary>
         /// <param name="updatedPage">Title of the page.</param>
         /// <param name="location">Path to the page.</param>
