@@ -6,7 +6,7 @@ using Shouldly;
 using System;
 using System.Collections.Generic;
 
-namespace SharBucketTests.V1.EndPoints
+namespace SharpBucketTests.V1.EndPoints
 {
     [TestFixture]
     public class GroupsEndPointTests

@@ -3,7 +3,7 @@ using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using Shouldly;
 
-namespace SharBucketTests.V2.EndPoints
+namespace SharpBucketTests.V2.EndPoints
 {
     [TestFixture]
     class UsersEndPointTests

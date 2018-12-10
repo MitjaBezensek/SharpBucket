@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using Shouldly;
 
-namespace SharBucketTests.Authentication
+namespace SharpBucketTests.Authentication
 {
     [TestFixture]
     internal class OAuthenticationTests

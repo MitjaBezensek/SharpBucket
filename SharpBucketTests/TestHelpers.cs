@@ -2,7 +2,7 @@
 using System.IO;
 using SharpBucket.V2;
 
-namespace SharBucketTests
+namespace SharpBucketTests
 {
     internal partial class TestHelpers
     {

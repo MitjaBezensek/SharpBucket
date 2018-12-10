@@ -5,7 +5,7 @@ using Shouldly;
 using System;
 using System.Linq;
 
-namespace SharBucketTests.V1.EndPoints
+namespace SharpBucketTests.V1.EndPoints
 {
     [TestFixture]
     public class ChangesetEndPointTests

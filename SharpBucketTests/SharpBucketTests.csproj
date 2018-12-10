@@ -6,8 +6,8 @@
     <ProjectGuid>{384E236F-5D19-46C5-8705-F0DBA5E239F2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SharBucketTests</RootNamespace>
-    <AssemblyName>SharBucketTests</AssemblyName>
+    <RootNamespace>SharpBucketTests</RootNamespace>
+    <AssemblyName>SharpBucketTests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

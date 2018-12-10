@@ -6,7 +6,7 @@ using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
 using Shouldly;
 
-namespace SharBucketTests.V2.EndPoints
+namespace SharpBucketTests.V2.EndPoints
 {
     [TestFixture]
     internal class RepositoryResourceTests

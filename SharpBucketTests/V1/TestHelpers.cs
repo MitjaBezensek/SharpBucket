@@ -1,7 +1,7 @@
 ﻿using System;
 using SharpBucket.V1;
 
-namespace SharBucketTests
+namespace SharpBucketTests
 {
     internal partial class TestHelpers
     {
