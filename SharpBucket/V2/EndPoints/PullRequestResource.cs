@@ -22,9 +22,8 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// List all the pull requests info for the repository.
+        /// Gets the <see cref="PullRequest"/>
         /// </summary>
-        /// <returns></returns>
         public PullRequest GetPullRequest()
         {
             return _repositoriesEndPoint.GetPullRequest(_accountName, _repository, _pullRequestId);
