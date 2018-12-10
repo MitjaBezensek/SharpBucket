@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using SharpBucket.V1.Pocos;
 using Version = SharpBucket.V1.Pocos.Version;
-using System.Dynamic;
 
 namespace SharpBucket.V1.EndPoints
 {

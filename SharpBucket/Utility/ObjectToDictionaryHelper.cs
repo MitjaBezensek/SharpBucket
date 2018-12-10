@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace SharpBucket.Utility
 {
     public static class ObjectToDictionaryHelper
     {
-        //http://stackoverflow.com/questions/11576886/how-to-convert-object-to-dictionarytkey-tvalue-in-c
+        // http://stackoverflow.com/questions/11576886/how-to-convert-object-to-dictionarytkey-tvalue-in-c
         public static IDictionary<string, object> ToDictionary(this object source)
         {
             var dictionary = source as IDictionary<string, object>;
@@ -18,7 +17,7 @@ namespace SharpBucket.Utility
             if (source == null) return null;
 
             var dictionary = new Dictionary<string, T>();
-            foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(source)) AddPropertyToDictionary<T>(property, source, dictionary);
+            foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(source)) AddPropertyToDictionary(property, source, dictionary);
             return dictionary;
         }
 
@@ -31,11 +30,6 @@ namespace SharpBucket.Utility
         private static bool IsOfType<T>(object value)
         {
             return value is T;
-        }
-
-        private static void ThrowExceptionWhenSourceArgumentIsNull()
-        {
-            throw new ArgumentNullException("source", "Unable to convert object to a dictionary. The source object is null.");
         }
     }
 }

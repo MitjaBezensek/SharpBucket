@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.EndPoints

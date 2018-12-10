@@ -2,7 +2,6 @@
 using SharpBucket.V1;
 using SharpBucket.V1.EndPoints;
 using Shouldly;
-using System;
 using System.Linq;
 
 namespace SharpBucketTests.V1.EndPoints
@@ -37,7 +36,7 @@ namespace SharpBucketTests.V1.EndPoints
 
             var stats = repositoriesEndPoint.GetChangesetDiffstat(commit.node, 1);
 
-            stats.Count().ShouldBe(1);
+            stats.Count.ShouldBe(1);
         }
 
         [Test]
