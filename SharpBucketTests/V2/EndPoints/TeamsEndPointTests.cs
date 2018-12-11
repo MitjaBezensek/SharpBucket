@@ -15,7 +15,7 @@ namespace SharpBucketTests.V2.EndPoints
         [SetUp]
         public void Init()
         {
-            sharpBucket = TestHelpers.GetV2ClientAuthenticatedWithOAuth();
+            sharpBucket = TestHelpers.SharpBucketV2;
             teamsEndPoint = sharpBucket.TeamsEndPoint(TEAM_NAME);
         }
 

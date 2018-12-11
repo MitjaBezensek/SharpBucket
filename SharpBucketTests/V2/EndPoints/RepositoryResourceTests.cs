@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using SharpBucket.V2;
-using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
 using Shouldly;
 
@@ -11,32 +9,20 @@ namespace SharpBucketTests.V2.EndPoints
     [TestFixture]
     internal class RepositoryResourceTests
     {
-        private SharpBucketV2 sharpBucket;
-        private RepositoryResource repositoryResource;
-        private RepositoriesEndPoint repositoriesEndPoint;
-        private const string ACCOUNT_NAME = "mirror";
-        private const string REPOSITORY_NAME = "mercurial";
-
-        [SetUp]
-        public void Init()
-        {
-            sharpBucket = TestHelpers.GetV2ClientAuthenticatedWithOAuth();
-            repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
-            repositoryResource = repositoriesEndPoint.RepositoryResource(ACCOUNT_NAME, REPOSITORY_NAME);
-        }
-
         [Test]
         public void GetRepository_FromMercurialRepo_CorrectlyFetchesTheRepoInfo()
         {
+            var repositoryResource = SampleRepositories.MercurialRepository;
             repositoryResource.ShouldNotBe(null);
             var testRepository = repositoryResource.GetRepository();
             testRepository.ShouldNotBe(null);
-            testRepository.name.ShouldBe(REPOSITORY_NAME);
+            testRepository.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
         }
 
         [Test]
         public void ListWatchers_FromMercurialRepo_ShouldReturnMoreThan10UniqueWatchers()
         {
+            var repositoryResource = SampleRepositories.MercurialRepository;
             repositoryResource.ShouldNotBe(null);
             var watchers = repositoryResource.ListWatchers();
             watchers.ShouldNotBe(null);
@@ -55,6 +41,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void ListForks_FromMercurialRepo_ShouldReturnMoreThan10UniqueForks()
         {
+            var repositoryResource = SampleRepositories.MercurialRepository;
             repositoryResource.ShouldNotBe(null);
             var forks = repositoryResource.ListForks();
             forks.ShouldNotBe(null);
@@ -74,6 +61,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void ListCommits_FromMercurialRepoWithSpecifiedMax_ShouldReturnSpecifiedNumberOfCommits(int max)
         {
+            var repositoryResource = SampleRepositories.MercurialRepository;
             repositoryResource.ShouldNotBe(null);
             var commits = repositoryResource.ListCommits(max: max);
             commits.Count.ShouldBe(max);
@@ -82,9 +70,9 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void CreateRepository_NewPublicRepository_CorrectlyCreatesTheRepository()
         {
-            var accountName = Environment.GetEnvironmentVariable("SB_ACCOUNT_NAME");
+            var accountName = TestHelpers.GetAccountName();
             var repositoryName = Guid.NewGuid().ToString().Replace("-", string.Empty);
-            var repositoryResource = repositoriesEndPoint.RepositoryResource(accountName, repositoryName);
+            var repositoryResource = SampleRepositories.RepositoriesEndPoint.RepositoryResource(accountName, repositoryName);
             var repository = new Repository
             {
                 name = repositoryName,
@@ -92,11 +80,19 @@ namespace SharpBucketTests.V2.EndPoints
                 scm = "git"
             };
 
-            var repositoryFromSut = repositoryResource.PostRepository(repository);
+            var repositoryFromPost = repositoryResource.PostRepository(repository);
+            repositoryFromPost.name.ShouldBe(repositoryName);
+            repositoryFromPost.scm.ShouldBe("git");
+            repositoryFromPost.scm.ShouldBe("git");
 
-            var createdRepo = repositoryResource.GetRepository();
-            createdRepo.name.ShouldBe(repositoryName);
-            createdRepo.scm.ShouldBe("git");
+            var repositoryFromGet = repositoryResource.GetRepository();
+            repositoryFromGet.name.ShouldBe(repositoryName);
+            repositoryFromGet.scm.ShouldBe("git");
+            repositoryFromGet.scm.ShouldBe("git");
+
+            repositoryFromPost.full_name.ShouldBe(repositoryFromGet.full_name);
+            repositoryFromPost.uuid.ShouldBe(repositoryFromGet.uuid);
+
             repositoryResource.DeleteRepository();
         }
     }

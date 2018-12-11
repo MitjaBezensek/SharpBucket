@@ -68,6 +68,15 @@ namespace SharpBucket.V2.EndPoints
 
         #endregion
 
+        #region BranchResource
+
+        private BranchResource _branchesResource;
+
+        public BranchResource BranchesResource => this._branchesResource ??
+                                                (_branchesResource = new BranchResource(_accountName, _repository, _repositoriesEndPoint));
+
+        #endregion
+
         #region Pull Requests Resource
 
         /// <summary>
