@@ -273,7 +273,7 @@ This table list [all the routes of the API V2](https://developer.atlassian.com/b
 | /teams/{username}/pipelines_config/variables/{variable_uuid} | `GET` `PUT` `DELETE` | none | no
 | /teams/{username}/projects/ | `GET` `POST` | none | no
 | /teams/{username}/projects/{project_key} | `GET` `PUT` `DELETE` | none | no
-| /teams/{username}/repositories | `GET` | TeamsEndPoint.ListRepositories(int) | no
+| /teams/{username}/repositories | `GET` | TeamsEndPoint.ListRepositories(int) | yes
 | /teams/{username}/search/code | `GET` | none | no
 | /user | `GET` | UserEndpoint.GetUser() | yes
 | /user/emails | `GET` | none | no
