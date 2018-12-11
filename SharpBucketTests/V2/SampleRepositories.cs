@@ -46,6 +46,11 @@ namespace SharpBucketTests.V2
         public static RepositoryResource MercurialRepository => _mercurialRepository ??
                                                              (_mercurialRepository = RepositoriesEndPoint.RepositoryResource(MERCURIAL_ACCOUNT_NAME, MERCURIAL_REPOSITORY_NAME));
 
+        private static RepositoryResource _notExistingRepository;
+
+        public static RepositoryResource NotExistingRepository => _notExistingRepository ??
+                                                                (_notExistingRepository = RepositoriesEndPoint.RepositoryResource(TestHelpers.GetAccountName(), "not_existing_repository"));
+
         [OneTimeTearDown]
         protected void OneTimeTearDown()
         {
