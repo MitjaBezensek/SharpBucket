@@ -214,9 +214,9 @@ This table list [all the routes of the API V2](https://developer.atlassian.com/b
 | /repositories/{username}/{repo_slug}/pipelines_config/variables/ | `GET` `POST` | none | no
 | /repositories/{username}/{repo_slug}/pipelines_config/variables/{variable_uuid} | `GET` `PUT` `DELETE` | none | no
 | /repositories/{username}/{repo_slug}/properties/{app_key}/{property_name} | `GET` `PUT` `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/pullrequests | `GET` | PullRequestsResource.ListPullRequests(int) | no
+| /repositories/{username}/{repo_slug}/pullrequests | `GET` | PullRequestsResource.ListPullRequests(int) | yes
 | /repositories/{username}/{repo_slug}/pullrequests | `POST` | PullRequestsResource.PostPullRequest(PullRequest) | no
-| /repositories/{username}/{repo_slug}/pullrequests/activity | `GET` | PullRequestsResource.GetPullRequestLog() | no
+| /repositories/{username}/{repo_slug}/pullrequests/activity | `GET` | PullRequestsResource.GetPullRequestLog() | yes
 | /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id} | `GET` | PullRequestResource.GetPullRequest() | yes
 | /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id} | `PUT` | none | no
 | /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/activity | `GET` | PullRequestResource.GetPullRequestActivity() | yes
