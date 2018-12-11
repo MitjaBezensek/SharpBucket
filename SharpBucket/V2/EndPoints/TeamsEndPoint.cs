@@ -11,17 +11,43 @@ namespace SharpBucket.V2.EndPoints
     /// </summary>
     public class TeamsEndPoint : EndPoint
     {
+        private readonly string _repositoriesUrl;
+
         public TeamsEndPoint(SharpBucketV2 sharpBucketV2, string teamName)
             : base(sharpBucketV2, "teams/" + teamName + "/")
         {
+            _repositoriesUrl = "repositories/" + teamName + "/";
         }
 
+        /// <summary>
+        /// Returns a list of all the teams which the caller is a member of at least one team group or repository owned by the team
+        /// </summary>
         public List<Team> GetUserTeams(int max = 0)
         {
             dynamic parameters = new ExpandoObject();
             parameters.role = "member";
             return GetPaginatedValues<Team>("teams/", max, parameters);
             //return _sharpBucketV2.Get<List<Team>>(null, "teams/", parameters);
+        }
+
+        /// <summary>
+        /// Returns a list of teams which the caller has write access to at least one repository owned by the team.
+        /// </summary>
+        public List<Team> GetUserTeamsWithContributorRole(int max = 0)
+        {
+            dynamic parameters = new ExpandoObject();
+            parameters.role = "contributor";
+            return GetPaginatedValues<Team>("teams/", max, parameters);
+        }
+
+        /// <summary>
+        /// Returns a list teams which the caller has team administrator access.
+        /// </summary>
+        public List<Team> GetUserTeamsWithAdminRole(int max = 0)
+        {
+            dynamic parameters = new ExpandoObject();
+            parameters.role = "admin";
+            return GetPaginatedValues<Team>("teams/", max, parameters);
         }
 
         /// <summary>
@@ -75,8 +101,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public List<Repository> ListRepositories(int max = 0)
         {
-            var overrideUrl = _baseUrl + "repositories/";
-            return GetPaginatedValues<Repository>(overrideUrl, max);
+            return GetPaginatedValues<Repository>(_repositoriesUrl, max);
         }
     }
 }
