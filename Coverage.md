@@ -235,7 +235,7 @@ This table list [all the routes of the API V2](https://developer.atlassian.com/b
 | /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/patch | `GET` | none | no
 | /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/statuses | `GET` | none | no
 | /repositories/{username}/{repo_slug}/refs | `GET` | none | no
-| /repositories/{username}/{repo_slug}/refs/branches | `GET` | BranchResource.ListBranches() | no
+| /repositories/{username}/{repo_slug}/refs/branches | `GET` | BranchResource.ListBranches() | yes
 | /repositories/{username}/{repo_slug}/refs/branches | `POST` | none | no
 | /repositories/{username}/{repo_slug}/refs/branches/{name} | `GET` `DELETE` | none | no
 | /repositories/{username}/{repo_slug}/refs/tags | `GET` | TagResource.ListTags() | no
