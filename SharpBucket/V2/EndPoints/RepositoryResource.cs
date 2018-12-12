@@ -229,7 +229,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="revision">The SHA1 of the commit.</param>
         /// <returns></returns>
-        public object ApproveCommit(string revision)
+        public UserRole ApproveCommit(string revision)
         {
             return _repositoriesEndPoint.ApproveCommit(_accountName, _repository, revision);
         }
