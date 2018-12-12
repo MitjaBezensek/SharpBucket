@@ -17,27 +17,27 @@ namespace SharpBucketTests.V2
         public static RepositoriesEndPoint RepositoriesEndPoint => _repositoriesEndPoint
                                                                    ?? (_repositoriesEndPoint = TestHelpers.SharpBucketV2.RepositoriesEndPoint());
 
-        private static RepositoryResource _emptyPrivateRepository;
+        private static RepositoryResource _emptyTestRepository;
 
-        public static RepositoryResource EmptyPrivateRepository
+        public static RepositoryResource EmptyTestRepository
         {
             get
             {
-                if (_emptyPrivateRepository == null)
+                if (_emptyTestRepository == null)
                 {
                     var accountName = TestHelpers.GetAccountName();
                     var repositoryName = Guid.NewGuid().ToString().Replace("-", string.Empty);
-                    _emptyPrivateRepository = RepositoriesEndPoint.RepositoryResource(accountName, repositoryName);
+                    _emptyTestRepository = RepositoriesEndPoint.RepositoryResource(accountName, repositoryName);
                     var repository = new Repository
                     {
                         name = repositoryName,
                         language = "c#",
                         scm = "git"
                     };
-                    _emptyPrivateRepository.PostRepository(repository);
+                    _emptyTestRepository.PostRepository(repository);
                 }
 
-                return _emptyPrivateRepository;
+                return _emptyTestRepository;
             }
         }
 
@@ -54,7 +54,7 @@ namespace SharpBucketTests.V2
         [OneTimeTearDown]
         protected void OneTimeTearDown()
         {
-            _emptyPrivateRepository?.DeleteRepository();
+            _emptyTestRepository?.DeleteRepository();
         }
     }
 }

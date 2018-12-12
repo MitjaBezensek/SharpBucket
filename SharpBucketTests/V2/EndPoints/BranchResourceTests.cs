@@ -9,7 +9,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void ListBranches_EmptyRepository_ReturnEmpty()
         {
-            var branches = SampleRepositories.EmptyPrivateRepository.BranchesResource.ListBranches();
+            var branches = SampleRepositories.EmptyTestRepository.BranchesResource.ListBranches();
             branches.ShouldBeEmpty("There is no branch on an empty repository. At least one commit is mandatory to have a branch.");
         }
 
