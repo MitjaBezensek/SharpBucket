@@ -67,7 +67,7 @@ namespace SharpBucketTests.V2.EndPoints
             teamsEndPoint.ShouldNotBe(null);
             var team = teamsEndPoint.GetUserTeamsWithAdminRole()[0];
 
-            var repositoryName = Guid.NewGuid().ToString().Replace("-", string.Empty);
+            var repositoryName = Guid.NewGuid().ToString("N");
             var teamRepository = new Repository
             {
                 name = repositoryName,

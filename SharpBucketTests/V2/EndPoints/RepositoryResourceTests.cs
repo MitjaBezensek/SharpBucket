@@ -71,7 +71,7 @@ namespace SharpBucketTests.V2.EndPoints
         public void CreateRepository_NewPublicRepository_CorrectlyCreatesTheRepository()
         {
             var accountName = TestHelpers.GetAccountName();
-            var repositoryName = Guid.NewGuid().ToString().Replace("-", string.Empty);
+            var repositoryName = Guid.NewGuid().ToString("N");
             var repositoryResource = SampleRepositories.RepositoriesEndPoint.RepositoryResource(accountName, repositoryName);
             var repository = new Repository
             {

@@ -26,7 +26,7 @@ namespace SharpBucketTests.V2
                 if (_emptyTestRepository == null)
                 {
                     var accountName = TestHelpers.GetAccountName();
-                    var repositoryName = Guid.NewGuid().ToString().Replace("-", string.Empty);
+                    var repositoryName = Guid.NewGuid().ToString("N");
                     _emptyTestRepository = RepositoriesEndPoint.RepositoryResource(accountName, repositoryName);
                     var repository = new Repository
                     {

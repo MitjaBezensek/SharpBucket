@@ -28,7 +28,7 @@ namespace SharpBucketTests.V1.EndPoints
         {
             groupsEndPoint.ShouldNotBe(null);
 
-            var name = Guid.NewGuid().ToString().Replace("-", string.Empty);
+            var name = Guid.NewGuid().ToString("N");
             var group = groupsEndPoint.CreateGroup(name);
 
             group.ShouldNotBe(null);
@@ -44,7 +44,7 @@ namespace SharpBucketTests.V1.EndPoints
         {
             groupsEndPoint.ShouldNotBe(null);
 
-            var name = Guid.NewGuid().ToString().Replace("-", string.Empty);
+            var name = Guid.NewGuid().ToString("N");
             var group = groupsEndPoint.CreateGroup(name);
 
             groupsEndPoint.DeleteGroup(name);
@@ -57,7 +57,7 @@ namespace SharpBucketTests.V1.EndPoints
         {
             groupsEndPoint.ShouldNotBe(null);
 
-            var name = Guid.NewGuid().ToString().Replace("-", string.Empty);
+            var name = Guid.NewGuid().ToString("N");
             var group = new Group() { name = name };
             var new_group = groupsEndPoint.CreateGroup(group.name); //create a new group before adding a member to it
 
@@ -74,7 +74,7 @@ namespace SharpBucketTests.V1.EndPoints
         public void ListGroupMembers_ShouldCorrectlyListAllMembers()
         {
             groupsEndPoint.ShouldNotBe(null);
-            var name = Guid.NewGuid().ToString().Replace("-", string.Empty);
+            var name = Guid.NewGuid().ToString("N");
             var group = new Group() { name = name };
             var new_group = groupsEndPoint.CreateGroup(group.name); //create a new group before 
 
