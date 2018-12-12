@@ -8,7 +8,7 @@ namespace SharpBucket.V2.Pocos
         public Links links { get; set; }
         public Repository repository { get; set; }
         public Author author { get; set; }
-        public List<User> participants { get; set; }
+        public List<UserRole> participants { get; set; }
         public List<Parent> parents { get; set; }
         public string date { get; set; }
         public string message { get; set; }
