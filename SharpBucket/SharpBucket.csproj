@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\BasicAuthentication.cs" />
+    <Compile Include="Authentication\OAuth2TokenProvider.cs" />
     <Compile Include="Authentication\OauthAuthentication.cs" />
     <Compile Include="Authentication\OAuthentication2Legged.cs" />
     <Compile Include="Authentication\OAuthentication3Legged.cs" />
