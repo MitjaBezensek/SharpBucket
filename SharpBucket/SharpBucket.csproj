@@ -89,6 +89,7 @@
     <Compile Include="V2\Pocos\Activity.cs" />
     <Compile Include="V2\Pocos\ActivityInfo.cs" />
     <Compile Include="V2\Pocos\ProjectInfo.cs" />
+    <Compile Include="V2\Pocos\Summary.cs" />
     <Compile Include="V2\Pocos\Tag.cs" />
     <Compile Include="V2\Pocos\Update.cs" />
     <Compile Include="V2\Pocos\Comment.cs" />
