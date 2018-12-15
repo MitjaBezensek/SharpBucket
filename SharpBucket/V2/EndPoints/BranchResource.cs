@@ -25,10 +25,19 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Lists all branches associated with a specific repository.
         /// </summary>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<Branch> ListBranches()
+        public List<Branch> ListBranches(int max = 0) => ListBranches(null, max);
+
+        /// <summary>
+        /// Lists all branches associated with a specific repository.
+        /// </summary>
+        /// <param name="filter">The filter string to apply to the query.</param>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
+        /// <returns></returns>
+        public List<Branch> ListBranches(string filter, int max = 0)
         {
-            return _repositoriesEndPoint.ListBranches(_accountName, _repository);
+            return _repositoriesEndPoint.ListBranches(_accountName, _repository, filter, max);
         }
     }
 }

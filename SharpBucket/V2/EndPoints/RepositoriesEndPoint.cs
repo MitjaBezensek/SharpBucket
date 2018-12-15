@@ -30,16 +30,27 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="accountName">The account whose repositories you wish to get.</param>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<Repository> ListRepositories(string accountName, int max = 0)
+        public List<Repository> ListRepositories(string accountName, int max = 0) => ListRepositories(accountName, null, max);
+
+        /// <summary>
+        /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
+        /// this method returns a collection containing public and private repositories. 
+        /// Otherwise, this method returns a collection of the public repositories. 
+        /// </summary>
+        /// <param name="accountName">The account whose repositories you wish to get.</param>
+        /// <param name="filter">The filter string to apply to the query.</param>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
+        /// <returns></returns>
+        public List<Repository> ListRepositories(string accountName, string filter, int max=0)
         {
             var overrideUrl = _baseUrl + accountName + "/";
-            return GetPaginatedValues<Repository>(overrideUrl, max);
+            return GetPaginatedValues<Repository>(overrideUrl, max, new FilterQuery(filter));
         }
 
         /// <summary>
         /// List of all the public repositories on Bitbucket.  This produces a paginated response. 
         /// Pagination only goes forward (it's not possible to navigate to previous pages) and navigation is done by following the URL for the next page.
-        /// The returned repositories are ordered by creation date, oldest repositories first. Only public repositories are returned.
+        /// The returned repositories are ordered by creation date, oldest repositories first. Only public repositories are returned.      
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
@@ -123,10 +134,10 @@ namespace SharpBucket.V2.EndPoints
             return new PullRequestsResource(accountName, repository, this);
         }
 
-        internal List<PullRequest> ListPullRequests(string accountName, string repository, int max)
+        internal List<PullRequest> ListPullRequests(string accountName, string repository, string filter, int max)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/");
-            return GetPaginatedValues<PullRequest>(overrideUrl, max);
+            return GetPaginatedValues<PullRequest>(overrideUrl, max, new FilterQuery(filter));
         }
 
         internal PullRequest PostPullRequest(string accountName, string repository, PullRequest pullRequest)
@@ -348,10 +359,10 @@ namespace SharpBucket.V2.EndPoints
             return new BranchResource(accountName, repository, this);
         }
 
-        internal List<Branch> ListBranches(string accountName, string repository, int max = 0)
+        internal List<Branch> ListBranches(string accountName, string repository, string filter, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "refs/branches/");
-            return GetPaginatedValues<Branch>(overrideUrl, max);
+            return GetPaginatedValues<Branch>(overrideUrl, max, new FilterQuery(filter));
         }
 
         #endregion
@@ -363,10 +374,10 @@ namespace SharpBucket.V2.EndPoints
             return new TagResource(accountName, repository, this);
         }
 
-        internal List<Tag> ListTags(string accountName, string repository, int max = 0)
+        internal List<Tag> ListTags(string accountName, string repository, string filter, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "refs/tags/");
-            return GetPaginatedValues<Tag>(overrideUrl, max);
+            return GetPaginatedValues<Tag>(overrideUrl, max, new FilterQuery(filter));
         }
 
         #endregion

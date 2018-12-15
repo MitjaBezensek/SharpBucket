@@ -26,10 +26,19 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// List all of a repository's open pull requests.
         /// </summary>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<PullRequest> ListPullRequests(int max = 100)
+        public List<PullRequest> ListPullRequests(int max = 100) => ListPullRequests(null, max);
+
+        /// <summary>
+        /// List all of a repository's open pull requests.
+        /// </summary>
+        /// <param name="filter">The filter string to apply to the query.</param>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
+        /// <returns></returns>
+        public List<PullRequest> ListPullRequests(string filter, int max = 100)
         {
-            return _repositoriesEndPoint.ListPullRequests(_accountName, _repository, max);
+            return _repositoriesEndPoint.ListPullRequests(_accountName, _repository, filter, max);
         }
 
         /// <summary>

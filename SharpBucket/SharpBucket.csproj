@@ -70,6 +70,7 @@
     <Compile Include="V1\Pocos\SrcFileInfo.cs" />
     <Compile Include="V2\EndPoints\BranchResource.cs" />
     <Compile Include="V2\EndPoints\EndPoint.cs" />
+    <Compile Include="V2\EndPoints\FilterQuery.cs" />
     <Compile Include="V2\EndPoints\PullRequestResource.cs" />
     <Compile Include="V2\EndPoints\PullRequestsResource.cs" />
     <Compile Include="V2\EndPoints\RepositoryResource.cs" />
