@@ -27,7 +27,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<Tag> ListTags(int max = 0) => ListTags(null, max);
+        public List<Tag> ListTags(int max = 0) => ListTags(null, null, max);
 
         /// <summary>
         /// Lists all Tags associated with a specific repository.
@@ -35,9 +35,18 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="filter">The filter string to apply to the query.</param>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<Tag> ListTags(string filter, int max = 0)
+        public List<Tag> ListTags(string filter, int max = 0) => ListTags(filter, null, max);
+
+        /// <summary>
+        /// Lists all Tags associated with a specific repository.
+        /// </summary>
+        /// <param name="filter">The filter string to apply to the query.</param>
+        /// <param name="sort">Name of the field to sort by.</param>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
+        /// <returns></returns>
+        public List<Tag> ListTags(string filter, string sort, int max = 0)
         {
-            return _repositoriesEndPoint.ListTags(_accountName, _repository, filter, max);
+            return _repositoriesEndPoint.ListTags(_accountName, _repository, filter, sort, max);
         }
     }
 }
