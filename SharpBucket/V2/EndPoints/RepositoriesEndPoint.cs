@@ -15,15 +15,21 @@ namespace SharpBucket.V2.EndPoints
     /// </summary>
     public class RepositoriesEndPoint : EndPoint
     {
-        private class FilterSortDictionary : Dictionary<string, object>
+        private static  IDictionary<string, object> BuildParameters(string filter, string sort)
         {
-            public FilterSortDictionary(string filter, string sort)
+            IDictionary<string, object> parameters = null;
+
+            IDictionary<string, object> SafeParameters()
             {
-                if (!String.IsNullOrWhiteSpace(filter))
-                    this["q"] = filter.Replace('\'', '"');
-                if (!String.IsNullOrWhiteSpace(sort))
-                    this["sort"] = sort;
+                return parameters ?? (parameters = new Dictionary<string, object>());
             }
+
+            if (!String.IsNullOrWhiteSpace(filter))
+                SafeParameters()["q"] = filter.Replace('\'', '"');
+            if (!String.IsNullOrWhiteSpace(sort))
+                SafeParameters()["sort"] = sort;
+
+            return parameters;
         }
 
         #region Repositories End Point
@@ -73,8 +79,8 @@ namespace SharpBucket.V2.EndPoints
         public List<Repository> ListRepositories(string accountName, string filter, string sort, int max = 0)
         {
             var overrideUrl = _baseUrl + accountName + "/";
-            var dict = new FilterSortDictionary(filter, sort);
-            return GetPaginatedValues<Repository>(overrideUrl, max, dict);
+            var parameters = BuildParameters(filter, sort);
+            return GetPaginatedValues<Repository>(overrideUrl, max, parameters);
         }
 
         /// <summary>
@@ -171,8 +177,8 @@ namespace SharpBucket.V2.EndPoints
         internal List<PullRequest> ListPullRequests(string accountName, string repository, string filter, string sort, int max)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/");
-            var dict = new FilterSortDictionary(filter, sort);
-            return GetPaginatedValues<PullRequest>(overrideUrl, max, dict);
+            var parameters = BuildParameters(filter, sort);
+            return GetPaginatedValues<PullRequest>(overrideUrl, max, parameters);
         }
 
         internal PullRequest PostPullRequest(string accountName, string repository, PullRequest pullRequest)
@@ -397,8 +403,8 @@ namespace SharpBucket.V2.EndPoints
         internal List<Branch> ListBranches(string accountName, string repository, string filter, string sort, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "refs/branches/");
-            var dict = new FilterSortDictionary(filter, sort);
-            return GetPaginatedValues<Branch>(overrideUrl, max, dict);
+            var parameters = BuildParameters(filter, sort);
+            return GetPaginatedValues<Branch>(overrideUrl, max, parameters);
         }
 
         #endregion
@@ -413,8 +419,8 @@ namespace SharpBucket.V2.EndPoints
         internal List<Tag> ListTags(string accountName, string repository, string filter, string sort, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "refs/tags/");
-            var dict = new FilterSortDictionary(filter, sort);
-            return GetPaginatedValues<Tag>(overrideUrl, max, dict);
+            var parameters = BuildParameters(filter, sort);
+            return GetPaginatedValues<Tag>(overrideUrl, max, parameters);
         }
 
         #endregion
