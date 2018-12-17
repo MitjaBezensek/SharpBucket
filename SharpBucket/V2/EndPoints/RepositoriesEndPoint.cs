@@ -25,7 +25,7 @@ namespace SharpBucket.V2.EndPoints
             }
 
             if (!String.IsNullOrWhiteSpace(filter))
-                SafeParameters()["q"] = filter.Replace('\'', '"');
+                SafeParameters()["q"] = filter;
             if (!String.IsNullOrWhiteSpace(sort))
                 SafeParameters()["sort"] = sort;
 
