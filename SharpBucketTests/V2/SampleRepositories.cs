@@ -19,25 +19,27 @@ namespace SharpBucketTests.V2
 
         private static RepositoryResource _emptyTestRepository;
 
-        public static RepositoryResource EmptyTestRepository
+        public static RepositoryResource EmptyTestRepository => _emptyTestRepository
+                                                                ?? (_emptyTestRepository = CreateTestRepository("Empty").RepositoryResource);
+
+        private static TestRepository _testRepository;
+
+        public static TestRepository TestRepository
         {
             get
             {
-                if (_emptyTestRepository == null)
+                if (_testRepository == null)
                 {
-                    var accountName = TestHelpers.GetAccountName();
-                    var repositoryName = Guid.NewGuid().ToString("N");
-                    _emptyTestRepository = RepositoriesEndPoint.RepositoryResource(accountName, repositoryName);
-                    var repository = new Repository
+                    _testRepository = new TestRepository();
+                    var testRepository = CreateTestRepository("Test");
+                    _testRepository.RepositoryResource = testRepository.RepositoryResource;
+                    using (var testRepositoryBuilder = TestHelpers.GetTestRepositoryBuilder(testRepository.AccountName, testRepository.RepositoryName))
                     {
-                        name = repositoryName,
-                        language = "c#",
-                        scm = "git"
-                    };
-                    _emptyTestRepository.PostRepository(repository);
+                        _testRepository.RepositoryInfo = testRepositoryBuilder.FillRepository();
+                    }
                 }
 
-                return _emptyTestRepository;
+                return _testRepository;
             }
         }
 
@@ -51,10 +53,35 @@ namespace SharpBucketTests.V2
         public static RepositoryResource NotExistingRepository => _notExistingRepository ??
                                                                 (_notExistingRepository = RepositoriesEndPoint.RepositoryResource(TestHelpers.GetAccountName(), "not_existing_repository"));
 
+        private static RepositoryResourceWithArgs CreateTestRepository(string repositoryNamePrefix)
+        {
+            var accountName = TestHelpers.GetAccountName();
+            var repositoryName = $"{repositoryNamePrefix}_{Guid.NewGuid():N}";
+            var repositoryResource = RepositoriesEndPoint.RepositoryResource(accountName, repositoryName);
+            var repository = new Repository
+            {
+                name = repositoryName,
+                language = "c#",
+                scm = "git"
+            };
+            repositoryResource.PostRepository(repository);
+            return new RepositoryResourceWithArgs { RepositoryResource = repositoryResource, AccountName = accountName, RepositoryName = repositoryName };
+        }
+
+        // small class to return a RepositoryResource with its build arguments
+        // its probably something that should be change in the API but lets keep that for another pull request
+        private class RepositoryResourceWithArgs
+        {
+            public RepositoryResource RepositoryResource { get; set; }
+            public string AccountName { get; set; }
+            public string RepositoryName { get; set; }
+        }
+
         [OneTimeTearDown]
         protected void OneTimeTearDown()
         {
             _emptyTestRepository?.DeleteRepository();
+            _testRepository?.RepositoryResource.DeleteRepository();
         }
     }
 }

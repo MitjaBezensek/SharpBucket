@@ -72,8 +72,10 @@
     <Compile Include="Authentication\OAuthentication2Tests.cs" />
     <Compile Include="GitHelpers\IGitCredentialsProvider.cs" />
     <Compile Include="GitHelpers\OAuth2GitCredentialsProvider.cs" />
+    <Compile Include="GitHelpers\TestRepositoryInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelpers.cs" />
+    <Compile Include="GitHelpers\TestRepositoryBuilder.cs" />
     <Compile Include="V1\EndPoints\ChangesetEndPointTests.cs" />
     <Compile Include="V1\EndPoints\GroupsEndPointTests.cs" />
     <Compile Include="V1\TestHelpers.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="V2\EndPoints\RepositoryResourceTests.cs" />
     <Compile Include="V2\EndPoints\TeamsEndPointTests.cs" />
     <Compile Include="V2\EndPoints\UsersEndPointTests.cs" />
+    <Compile Include="V2\TestRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharpBucket\SharpBucket.csproj">
