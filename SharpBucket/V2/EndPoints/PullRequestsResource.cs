@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -26,28 +27,19 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// List all of a repository's open pull requests.
         /// </summary>
-        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<PullRequest> ListPullRequests(int max = 100) => ListPullRequests(null, null, max);
+        public List<PullRequest> ListPullRequests() => ListPullRequests(new ListParameters());
 
         /// <summary>
         /// List all of a repository's open pull requests.
         /// </summary>
-        /// <param name="filter">The filter string to apply to the query.</param>
-        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
+        /// <param name="parameters">Parameters for the query.</param>
         /// <returns></returns>
-        public List<PullRequest> ListPullRequests(string filter, int max = 100) => ListPullRequests(filter, null, max);
-
-        /// <summary>
-        /// List all of a repository's open pull requests.
-        /// </summary>
-        /// <param name="filter">The filter string to apply to the query.</param>
-        /// <param name="sort">Name of field to sort by.</param>
-        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
-        /// <returns></returns>
-        public List<PullRequest> ListPullRequests(string filter, string sort, int max = 100)
+        public List<PullRequest> ListPullRequests(ListParameters parameters)
         {
-            return _repositoriesEndPoint.ListPullRequests(_accountName, _repository, filter, sort, max);
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+            return _repositoriesEndPoint.ListPullRequests(_accountName, _repository, parameters);
         }
 
         /// <summary>

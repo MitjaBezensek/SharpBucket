@@ -15,23 +15,6 @@ namespace SharpBucket.V2.EndPoints
     /// </summary>
     public class RepositoriesEndPoint : EndPoint
     {
-        private static  IDictionary<string, object> BuildParameters(string filter, string sort)
-        {
-            IDictionary<string, object> parameters = null;
-
-            IDictionary<string, object> SafeParameters()
-            {
-                return parameters ?? (parameters = new Dictionary<string, object>());
-            }
-
-            if (!String.IsNullOrWhiteSpace(filter))
-                SafeParameters()["q"] = filter;
-            if (!String.IsNullOrWhiteSpace(sort))
-                SafeParameters()["sort"] = sort;
-
-            return parameters;
-        }
-
         #region Repositories End Point
 
         public RepositoriesEndPoint(SharpBucketV2 sharpBucketV2)
@@ -39,18 +22,15 @@ namespace SharpBucket.V2.EndPoints
         {
         }
 
+        
         /// <summary>
         /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
         /// this method returns a collection containing public and private repositories. 
         /// Otherwise, this method returns a collection of the public repositories. 
         /// </summary>
         /// <param name="accountName">The account whose repositories you wish to get.</param>
-        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<Repository> ListRepositories(string accountName, int max = 0)
-        {
-            return ListRepositories(accountName, null, null, max);
-        }
+        public List<Repository> ListRepositories(string accountName) => ListRepositories(accountName, new ListParameters());
 
         /// <summary>
         /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
@@ -58,29 +38,15 @@ namespace SharpBucket.V2.EndPoints
         /// Otherwise, this method returns a collection of the public repositories. 
         /// </summary>
         /// <param name="accountName">The account whose repositories you wish to get.</param>
-        /// <param name="filter">The filter string to apply to the query.</param>
-        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
+        /// <param name="parameters">Parameters for the query.</param>
         /// <returns></returns>
-        public List<Repository> ListRepositories(string accountName, string filter, int max=0)
+        public List<Repository> ListRepositories(string accountName, ListParameters parameters)
         {
-            return ListRepositories(accountName, filter, null, max);
-        }
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
 
-        /// <summary>
-        /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
-        /// this method returns a collection containing public and private repositories. 
-        /// Otherwise, this method returns a collection of the public repositories. 
-        /// </summary>
-        /// <param name="accountName">The account whose repositories you wish to get.</param>
-        /// <param name="filter">The filter string to apply to the query.</param>
-        /// <param name="sort">Name of field to sort by.</param>
-        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
-        /// <returns></returns>
-        public List<Repository> ListRepositories(string accountName, string filter, string sort, int max = 0)
-        {
             var overrideUrl = _baseUrl + accountName + "/";
-            var parameters = BuildParameters(filter, sort);
-            return GetPaginatedValues<Repository>(overrideUrl, max, parameters);
+            return GetPaginatedValues<Repository>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 
         /// <summary>
@@ -94,10 +60,6 @@ namespace SharpBucket.V2.EndPoints
         {
             return GetPaginatedValues<Repository>(_baseUrl, max);
         }
-
-        
-
-        
 
         #endregion
 
@@ -174,11 +136,10 @@ namespace SharpBucket.V2.EndPoints
             return new PullRequestsResource(accountName, repository, this);
         }
 
-        internal List<PullRequest> ListPullRequests(string accountName, string repository, string filter, string sort, int max)
+        internal List<PullRequest> ListPullRequests(string accountName, string repository, ListParameters parameters)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/");
-            var parameters = BuildParameters(filter, sort);
-            return GetPaginatedValues<PullRequest>(overrideUrl, max, parameters);
+            return GetPaginatedValues<PullRequest>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 
         internal PullRequest PostPullRequest(string accountName, string repository, PullRequest pullRequest)
@@ -400,11 +361,10 @@ namespace SharpBucket.V2.EndPoints
             return new BranchResource(accountName, repository, this);
         }
 
-        internal List<Branch> ListBranches(string accountName, string repository, string filter, string sort, int max = 0)
+        internal List<Branch> ListBranches(string accountName, string repository, ListParameters parameters)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "refs/branches/");
-            var parameters = BuildParameters(filter, sort);
-            return GetPaginatedValues<Branch>(overrideUrl, max, parameters);
+            return GetPaginatedValues<Branch>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 
         #endregion
@@ -416,11 +376,10 @@ namespace SharpBucket.V2.EndPoints
             return new TagResource(accountName, repository, this);
         }
 
-        internal List<Tag> ListTags(string accountName, string repository, string filter, string sort, int max = 0)
+        internal List<Tag> ListTags(string accountName, string repository, ListParameters parameters)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "refs/tags/");
-            var parameters = BuildParameters(filter, sort);
-            return GetPaginatedValues<Tag>(overrideUrl, max, parameters);
+            return GetPaginatedValues<Tag>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 
         #endregion

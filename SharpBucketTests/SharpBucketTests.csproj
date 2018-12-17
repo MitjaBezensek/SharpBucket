@@ -73,6 +73,7 @@
     <Compile Include="V1\TestHelpers.cs" />
     <Compile Include="V2\EndPoints\BranchResourceTests.cs" />
     <Compile Include="V2\EndPoints\FilterBuilderTests.cs" />
+    <Compile Include="V2\EndPoints\ListParametersTests.cs" />
     <Compile Include="V2\EndPoints\PullRequestResourceTests.cs" />
     <Compile Include="V2\EndPoints\PullRequestsResourceTests.cs" />
     <Compile Include="V2\SampleRepositories.cs" />
