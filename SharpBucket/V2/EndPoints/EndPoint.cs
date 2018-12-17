@@ -2,6 +2,7 @@ using SharpBucket.V2.Pocos;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Web;
 
 namespace SharpBucket.V2.EndPoints
 {
@@ -40,7 +41,19 @@ namespace SharpBucket.V2.EndPoints
             requestParameters["pagelen"] = pageLen;
 
             IteratorBasedPage<TValue> response;
-            int page = 1;
+
+            string GetNextPageID(string next)
+            {
+                if (String.IsNullOrWhiteSpace(next))
+                    return null;
+                else
+                {
+                    var uri = new Uri(response.next);
+                    var parsedQuery = HttpUtility.ParseQueryString(uri.Query);
+                    return parsedQuery["page"];
+                }
+            }
+
             do
             {
                 response = _sharpBucketV2.Get(new IteratorBasedPage<TValue>(), overrideUrl.Replace(SharpBucketV2.BITBUCKET_URL, ""), requestParameters);
@@ -51,7 +64,7 @@ namespace SharpBucket.V2.EndPoints
 
                 yield return response.values;
 
-                requestParameters["page"] = ++page;
+                requestParameters["page"] = GetNextPageID(response.next);
             }
             while (!String.IsNullOrEmpty(response.next));
         }
