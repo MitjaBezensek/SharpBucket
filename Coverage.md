@@ -146,8 +146,8 @@ This table list [all the routes of the API V2](https://developer.atlassian.com/b
 | /repositories/{username}/{repo_slug}/branch-restrictions/{id} | `PUT` | RepositoryResource.PutBranchRestriction(BranchRestriction) | no
 | /repositories/{username}/{repo_slug}/branch-restrictions/{id} | `DELETE` | RepositoryResource.DeleteBranchRestriction(int) | no
 | /repositories/{username}/{repo_slug}/commit/{node} | `GET` | RepositoryResource.GetCommit(string) | no
-| /repositories/{username}/{repo_slug}/commit/{node}/approve | `POST` | RepositoryResource.ApproveCommit(string) | no
-| /repositories/{username}/{repo_slug}/commit/{node}/approve | `DELETE` | RepositoryResource.DeleteCommitApproval(string) | no
+| /repositories/{username}/{repo_slug}/commit/{node}/approve | `POST` | RepositoryResource.ApproveCommit(string) | yes
+| /repositories/{username}/{repo_slug}/commit/{node}/approve | `DELETE` | RepositoryResource.DeleteCommitApproval(string) | yes
 | /repositories/{username}/{repo_slug}/commit/{node}/comments | `GET` | RepositoryResource.ListCommitComments(string) | no
 | /repositories/{username}/{repo_slug}/commit/{node}/comments | `POST` | none | no
 | /repositories/{username}/{repo_slug}/commit/{node}/comments/{comment_id} | `GET` | RepositoryResource.GetCommitComment(string,int) | no
