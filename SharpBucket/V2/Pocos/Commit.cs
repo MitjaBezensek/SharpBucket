@@ -12,5 +12,6 @@ namespace SharpBucket.V2.Pocos
         public List<Parent> parents { get; set; }
         public string date { get; set; }
         public string message { get; set; }
+        public Summary summary { get; set; }
     }
 }
