@@ -69,6 +69,7 @@
     <Compile Include="V1\Pocos\SrcDirectory.cs" />
     <Compile Include="V1\Pocos\SrcFile.cs" />
     <Compile Include="V1\Pocos\SrcFileInfo.cs" />
+    <Compile Include="V1\RequestExecutorV1.cs" />
     <Compile Include="V2\EndPoints\BranchResource.cs" />
     <Compile Include="V2\EndPoints\EndPoint.cs" />
     <Compile Include="V2\EndPoints\PullRequestResource.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="V2\Pocos\Team.cs" />
     <Compile Include="V2\Pocos\Watcher.cs" />
     <Compile Include="V2\Pocos\WatcherInfo.cs" />
+    <Compile Include="V2\RequestExecutorV2.cs" />
     <Compile Include="V2\SharpBucketV2.cs" />
     <Compile Include="V1\Pocos\IssueFollowers.cs" />
     <Compile Include="SharpBucket.cs" />
