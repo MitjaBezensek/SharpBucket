@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RestSharp;
 using SharpBucket.Authentication;
@@ -17,6 +18,11 @@ namespace SharpBucket.V2
 
         private class JsonSerializerStrategy : PocoJsonSerializerStrategy
         {
+            protected override object SerializeEnum(Enum p)
+            {
+                return p.ToString();
+            }
+
             protected override bool TrySerializeUnknownTypes(object input, out object output)
             {
                 var returnValue = base.TrySerializeUnknownTypes(input, out output);
