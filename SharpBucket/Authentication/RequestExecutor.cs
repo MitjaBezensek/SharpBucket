@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using RestSharp;
 using RestSharp.Deserializers;
 
@@ -10,6 +12,7 @@ namespace SharpBucket.Authentication
     {
         internal const string BITBUCKET_URL_V1 = "https://bitbucket.org/api/1.0";
         internal const string BITBUCKET_URL_V2 = "https://api.bitbucket.org/2.0";
+
         public static T ExecuteRequest<T>(string url, Method method, T body, RestClient client, IDictionary<string, object> requestParameters)
             where T : new()
         {
@@ -24,8 +27,16 @@ namespace SharpBucket.Authentication
 
             if (ShouldAddBody(method))
             {
-                request.RequestFormat = DataFormat.Json;
-                request.AddObject(body);
+                // Use Newtonsoft.Json serialization instead of the one included in RestSharp to be able to
+                // ignore null properties during the serialization
+                // https://stackoverflow.com/questions/20006813/restsharp-how-to-skip-serializing-null-values-to-json
+                var jsonSettings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                };
+                var jsonString = JsonConvert.SerializeObject(body, jsonSettings);
+                request.AddParameter("application/json", jsonString, ParameterType.RequestBody);
             }
 
             //Fixed bug that prevents RestClient for adding custom headers to the request
