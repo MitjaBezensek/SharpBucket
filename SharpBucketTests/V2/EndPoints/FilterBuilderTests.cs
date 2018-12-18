@@ -17,7 +17,7 @@ namespace SharpBucketTests.V2.EndPoints
         [TestCase("foo='bob''s burgers'", "foo=\"bob's burgers\"")]
         [TestCase("", "")]
         [TestCase(null, null)]
-        public void Foo(string input, string expected)
+        public void ParseSingleQuotedString_ForGivenInputAndExpected(string input, string expected)
         {
             var output = FilterBuilder.ParseSingleQuotedString(input);
             output.ShouldBe(expected);

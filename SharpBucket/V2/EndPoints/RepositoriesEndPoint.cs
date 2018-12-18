@@ -22,7 +22,6 @@ namespace SharpBucket.V2.EndPoints
         {
         }
 
-        
         /// <summary>
         /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
         /// this method returns a collection containing public and private repositories. 
@@ -52,7 +51,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// List of all the public repositories on Bitbucket.  This produces a paginated response. 
         /// Pagination only goes forward (it's not possible to navigate to previous pages) and navigation is done by following the URL for the next page.
-        /// The returned repositories are ordered by creation date, oldest repositories first. Only public repositories are returned.      
+        /// The returned repositories are ordered by creation date, oldest repositories first. Only public repositories are returned.
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
