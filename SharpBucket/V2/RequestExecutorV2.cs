@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Linq;
 using RestSharp;
 using SharpBucket.Authentication;
 
@@ -9,16 +9,25 @@ namespace SharpBucket.V2
     {
         protected override void AddBody(RestRequest request, object body)
         {
-            // Use Newtonsoft.Json serialization instead of the one included in RestSharp to be able to
-            // ignore null properties during the serialization
+            // Use a custom JsonSerializerStrategy to be able to ignore null properties during the serialization
             // https://stackoverflow.com/questions/20006813/restsharp-how-to-skip-serializing-null-values-to-json
-            var jsonSettings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
-            var jsonString = JsonConvert.SerializeObject(body, jsonSettings);
+            var jsonString = SimpleJson.SerializeObject(body, new JsonSerializerStrategy());
             request.AddParameter("application/json", jsonString, ParameterType.RequestBody);
+        }
+
+        private class JsonSerializerStrategy : PocoJsonSerializerStrategy
+        {
+            protected override bool TrySerializeUnknownTypes(object input, out object output)
+            {
+                var returnValue = base.TrySerializeUnknownTypes(input, out output);
+
+                if (output is IDictionary<string, object> obj)
+                {
+                    output = obj.Where(o => o.Value != null).ToDictionary(o => o.Key, o => o.Value);
+                }
+
+                return returnValue;
+            }
         }
     }
 }
