@@ -82,6 +82,7 @@
     <Compile Include="V2\EndPoints\RepositoryResourceTests.cs" />
     <Compile Include="V2\EndPoints\TeamsEndPointTests.cs" />
     <Compile Include="V2\EndPoints\UsersEndPointTests.cs" />
+    <Compile Include="V2\Utility\StringExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharpBucket\SharpBucket.csproj">

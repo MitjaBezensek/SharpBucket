@@ -102,16 +102,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Delete(new Repository(), overrideUrl);
         }
 
-        private string ParseSlug(string repositoryName)
-        {
-            var slugRegex = new Regex(@"[^a-zA-Z\.\-_0-9]+");
-            return slugRegex.Replace(repositoryName, "-").ToLowerInvariant();
-        }
-
         private string GetRepositoryUrl(string accountName, string repository, string append)
         {
             var format = _baseUrl + "{0}/{1}/{2}";
-            return string.Format(format, accountName, ParseSlug(repository), append);
+            return string.Format(format, accountName, repository.ToSlug(), append);
         }
 
         internal List<Watcher> ListWatchers(string accountName, string repository, int max = 0)

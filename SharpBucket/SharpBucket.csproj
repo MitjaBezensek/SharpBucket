@@ -52,6 +52,7 @@
     <Compile Include="Authentication\OAuthentication2.cs" />
     <Compile Include="Authentication\RequestExecutor.cs" />
     <Compile Include="Authentication\Token.cs" />
+    <Compile Include="Utility\StringExtensions.cs" />
     <Compile Include="V2\EndPoints\FilterBuilder.cs" />
     <Compile Include="Utility\ObjectToDictionaryHelper.cs" />
     <Compile Include="V1\EndPoints\GroupsEndPoint.cs" />
