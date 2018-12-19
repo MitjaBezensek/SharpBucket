@@ -10,8 +10,8 @@ namespace SharpBucket.V1
         /// https://confluence.atlassian.com/display/BITBUCKET/Version+1
         /// </summary>
         public SharpBucketV1()
+            : this("https://bitbucket.org/api/1.0/")
         {
-            _baseUrl = "https://bitbucket.org/api/1.0/";
         }
 
         /// <summary>
@@ -24,8 +24,8 @@ namespace SharpBucket.V1
         /// All API requests will then use this url as a base. 
         /// </param>
         public SharpBucketV1(string baseUrl)
+            :base(baseUrl, new RequestExecutorV1())
         {
-            _baseUrl = baseUrl;
         }
 
         /// <summary>

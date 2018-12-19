@@ -12,14 +12,22 @@ namespace SharpBucket
     /// More info:
     /// https://confluence.atlassian.com/display/BITBUCKET/Use+the+Bitbucket+REST+APIs
     /// </summary>
-    public class SharpBucket
+    public abstract class SharpBucket
     {
         private Authenticate authenticator;
 
         /// <summary>
         /// The base URL exposing the BitBucket API.
         /// </summary>
-        protected string _baseUrl;
+        protected string BaseUrl { get; }
+
+        private RequestExecutor RequestExecutor { get; }
+
+        internal SharpBucket(string baseUrl, RequestExecutor requestExecutor)
+        {
+            this.BaseUrl = baseUrl;
+            this.RequestExecutor = requestExecutor;
+        }
 
         /// <summary>   
         /// Use basic authentication with the BitBucket API. OAuth authentication is preferred over
@@ -29,7 +37,7 @@ namespace SharpBucket
         /// <param name="password">Your BitBucket password.</param>
         public void BasicAuthentication(string username, string password)
         {
-            authenticator = new BasicAuthentication(username, password, _baseUrl);
+            authenticator = new BasicAuthentication(username, password, BaseUrl) { RequestExecutor = this.RequestExecutor };
         }
 
         /// <summary>
@@ -43,7 +51,7 @@ namespace SharpBucket
         /// <param name="consumerSecretKey">Your consumer secret API key also obtained from the BitBucket web page.</param>
         public void OAuth2LeggedAuthentication(string consumerKey, string consumerSecretKey)
         {
-            authenticator = new OAuthentication2Legged(consumerKey, consumerSecretKey, _baseUrl);
+            authenticator = new OAuthentication2Legged(consumerKey, consumerSecretKey, BaseUrl) { RequestExecutor = this.RequestExecutor };
         }
 
         /// <summary>
@@ -61,7 +69,7 @@ namespace SharpBucket
             string consumerSecretKey,
             string callback = "oob")
         {
-            authenticator = new OAuthentication3Legged(consumerKey, consumerSecretKey, callback, _baseUrl);
+            authenticator = new OAuthentication3Legged(consumerKey, consumerSecretKey, callback, BaseUrl) { RequestExecutor = this.RequestExecutor };
             return (OAuthentication3Legged)authenticator;
         }
 
@@ -86,7 +94,10 @@ namespace SharpBucket
                 consumerSecretKey,
                 oauthToken,
                 oauthTokenSecret,
-                _baseUrl);
+                BaseUrl)
+            {
+                RequestExecutor = this.RequestExecutor
+            };
             return (OAuthentication3Legged)authenticator;
         }
 
@@ -98,18 +109,19 @@ namespace SharpBucket
         /// <returns></returns>
         public OAuthentication2 OAuthentication2(string consumerKey, string consumerSecretKey)
         {
-            authenticator = new OAuthentication2(consumerKey, consumerSecretKey, _baseUrl);
+            authenticator = new OAuthentication2(consumerKey, consumerSecretKey, BaseUrl) { RequestExecutor = this.RequestExecutor };
             ((OAuthentication2)authenticator).GetToken();
             return (OAuthentication2)authenticator;
         }
 
-        private T Send<T>(T body, Method method, string overrideUrl = null, IDictionary<string, object> requestParameters = null)
+        private T Send<T>(object body, Method method, string overrideUrl = null, IDictionary<string, object> requestParameters = null)
+            where T : new()
         {
             var relativeUrl = overrideUrl;
             T response;
             try
             {
-                response = authenticator.GetResponse(relativeUrl, method, body, requestParameters);
+                response = authenticator.GetResponse<T>(relativeUrl, method, body, requestParameters);
             }
             catch (WebException ex)
             {
@@ -120,25 +132,29 @@ namespace SharpBucket
         }
 
         internal T Get<T>(T body, string overrideUrl, object requestParameters = null)
+            where T : new()
         {
             //Convert to dictionary to avoid refactoring the Send method.
             var parameterDictionary = requestParameters.ToDictionary();
-            return Send(body, Method.GET, overrideUrl, parameterDictionary);
+            return Send<T>(body, Method.GET, overrideUrl, parameterDictionary);
         }
 
         internal T Post<T>(T body, string overrideUrl)
+            where T : new()
         {
-            return Send(body, Method.POST, overrideUrl);
+            return Send<T>(body, Method.POST, overrideUrl);
         }
 
         internal T Put<T>(T body, string overrideUrl)
+            where T : new()
         {
-            return Send(body, Method.PUT, overrideUrl);
+            return Send<T>(body, Method.PUT, overrideUrl);
         }
 
         internal T Delete<T>(T body, string overrideUrl)
+            where T : new()
         {
-            return Send(body, Method.DELETE, overrideUrl);
+            return Send<T>(body, Method.DELETE, overrideUrl);
         }
     }
 }

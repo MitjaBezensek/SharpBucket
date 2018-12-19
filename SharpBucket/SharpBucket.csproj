@@ -32,10 +32,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
       <Private>True</Private>
@@ -69,6 +65,7 @@
     <Compile Include="V1\Pocos\SrcDirectory.cs" />
     <Compile Include="V1\Pocos\SrcFile.cs" />
     <Compile Include="V1\Pocos\SrcFileInfo.cs" />
+    <Compile Include="V1\RequestExecutorV1.cs" />
     <Compile Include="V2\EndPoints\BranchResource.cs" />
     <Compile Include="V2\EndPoints\EndPoint.cs" />
     <Compile Include="V2\EndPoints\PullRequestResource.cs" />
@@ -115,6 +112,7 @@
     <Compile Include="V2\Pocos\Team.cs" />
     <Compile Include="V2\Pocos\Watcher.cs" />
     <Compile Include="V2\Pocos\WatcherInfo.cs" />
+    <Compile Include="V2\RequestExecutorV2.cs" />
     <Compile Include="V2\SharpBucketV2.cs" />
     <Compile Include="V1\Pocos\IssueFollowers.cs" />
     <Compile Include="SharpBucket.cs" />

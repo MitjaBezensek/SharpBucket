@@ -89,7 +89,7 @@ namespace SharpBucket.V2.EndPoints
         /// Rejects a pull request. This requires write access on the destination repository.
         /// </summary>
         /// <returns></returns>
-        public Merge DeclinePullRequest()
+        public PullRequest DeclinePullRequest()
         {
             return _repositoriesEndPoint.DeclinePullRequest(_accountName, _repository, _pullRequestId);
         }

@@ -116,7 +116,7 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.AcceptAndMergePullRequest(_accountName, _repository, pullRequestId);
         }
 
-        internal Merge DeclinePullRequest(int pullRequestId)
+        internal PullRequest DeclinePullRequest(int pullRequestId)
         {
             return _repositoriesEndPoint.DeclinePullRequest(_accountName, _repository, pullRequestId);
         }

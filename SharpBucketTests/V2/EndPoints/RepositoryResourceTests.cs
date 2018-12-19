@@ -118,5 +118,36 @@ namespace SharpBucketTests.V2.EndPoints
             approvedCommit?.participants.Any(p => p.User.username == currentUser && p.Approved).ShouldBe(true, "Commit should be approved after call to ApproveCommit");
             notApprovedCommit?.participants.Any(p => p.User.username == currentUser && p.Approved).ShouldBe(false, "Commit should not be approved after call to DeleteCommitApproval");
         }
+
+        [Test]
+        public void BuildStatusInfo_AddGetChangeOnFirstCommit_ShouldWork()
+        {
+            var testRepository = SampleRepositories.TestRepository;
+            var repositoryResource = testRepository.RepositoryResource;
+            var firstCommit = testRepository.RepositoryInfo.FirstCommit;
+
+            var firstBuildStatus = new BuildInfo
+            {
+                key = "FooBuild42",
+                state = BuildInfoState.INPROGRESS,
+                url = "https://foo.com/builds/{repository.full_name}",
+                name = "Foo Build #42",
+                description = "fake build status from a fake build server"
+            };
+            var buildInfo = repositoryResource.AddNewBuildStatus(firstCommit, firstBuildStatus);
+            buildInfo.ShouldNotBeNull();
+            buildInfo.state.ShouldBe(firstBuildStatus.state);
+            buildInfo.name.ShouldBe(firstBuildStatus.name);
+            buildInfo.description.ShouldBe(firstBuildStatus.description);
+
+            var getBuildInfo = repositoryResource.GetBuildStatusInfo(firstCommit, "FooBuild42");
+            getBuildInfo.ShouldNotBeNull();
+            getBuildInfo.state.ShouldBe(BuildInfoState.INPROGRESS);
+
+            getBuildInfo.state = BuildInfoState.SUCCESSFUL;
+            var changedBuildInfo = repositoryResource.ChangeBuildStatusInfo(firstCommit, "FooBuild42", getBuildInfo);
+            changedBuildInfo.ShouldNotBeNull();
+            changedBuildInfo.state.ShouldBe(BuildInfoState.SUCCESSFUL);
+        }
     }
 }
