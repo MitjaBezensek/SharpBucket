@@ -38,6 +38,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\BasicAuthentication.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Authentication\OAuthentication2.cs" />
     <Compile Include="Authentication\RequestExecutor.cs" />
     <Compile Include="Authentication\Token.cs" />
+    <Compile Include="V2\EndPoints\FilterBuilder.cs" />
     <Compile Include="Utility\ObjectToDictionaryHelper.cs" />
     <Compile Include="V1\EndPoints\GroupsEndPoint.cs" />
     <Compile Include="V1\EndPoints\IssueResource.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="V1\RequestExecutorV1.cs" />
     <Compile Include="V2\EndPoints\BranchResource.cs" />
     <Compile Include="V2\EndPoints\EndPoint.cs" />
+    <Compile Include="V2\EndPoints\ListParameters.cs" />
     <Compile Include="V2\EndPoints\PullRequestResource.cs" />
     <Compile Include="V2\EndPoints\PullRequestsResource.cs" />
     <Compile Include="V2\EndPoints\RepositoryResource.cs" />

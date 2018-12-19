@@ -35,4 +35,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("0.7.3.0")]
 [assembly: AssemblyFileVersion("0.7.3.0")]
 
+#if DEBUG
 [assembly: InternalsVisibleTo("SharpBucketTests")]
+#endif

@@ -1,4 +1,5 @@
 ﻿using SharpBucket.V2.Pocos;
+using System;
 using System.Collections.Generic;
 
 namespace SharpBucket.V2.EndPoints
@@ -26,9 +27,18 @@ namespace SharpBucket.V2.EndPoints
         /// Lists all Tags associated with a specific repository.
         /// </summary>
         /// <returns></returns>
-        public List<Tag> ListTags()
+        public List<Tag> ListTags() => ListTags(new ListParameters());
+
+        /// <summary>
+        /// Lists all Tags associated with a specific repository.
+        /// </summary>
+        /// <param name="parameters">Parameters for the query.</param>
+        /// <returns></returns>
+        public List<Tag> ListTags(ListParameters parameters)
         {
-            return _repositoriesEndPoint.ListTags(_accountName, _repository);
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+            return _repositoriesEndPoint.ListTags(_accountName, _repository, parameters);
         }
     }
 }
