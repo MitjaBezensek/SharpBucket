@@ -4,7 +4,7 @@ using RestSharp.Authenticators;
 namespace SharpBucket.Authentication
 {
     /// <summary>
-    /// This class is used for basic authetication with the BitBucket REST API.
+    /// This class is used for basic authentication with the BitBucket REST API.
     /// </summary>
     public class BasicAuthentication : Authenticate
     {

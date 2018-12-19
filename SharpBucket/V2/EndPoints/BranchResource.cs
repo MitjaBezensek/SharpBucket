@@ -1,4 +1,5 @@
 ﻿using SharpBucket.V2.Pocos;
+using System;
 using System.Collections.Generic;
 
 namespace SharpBucket.V2.EndPoints
@@ -26,9 +27,18 @@ namespace SharpBucket.V2.EndPoints
         /// Lists all branches associated with a specific repository.
         /// </summary>
         /// <returns></returns>
-        public List<Branch> ListBranches()
+        public List<Branch> ListBranches() => ListBranches(new ListParameters());
+
+        /// <summary>
+        /// Lists all branches associated with a specific repository.
+        /// </summary>
+        /// <param name="parameters">Parameters for the query.</param>
+        /// <returns></returns>
+        public List<Branch> ListBranches(ListParameters parameters)
         {
-            return _repositoriesEndPoint.ListBranches(_accountName, _repository);
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+            return _repositoriesEndPoint.ListBranches(_accountName, _repository, parameters);
         }
     }
 }

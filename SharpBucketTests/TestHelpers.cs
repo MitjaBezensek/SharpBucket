@@ -2,7 +2,7 @@
 using System.IO;
 using SharpBucket.V2;
 
-namespace SharBucketTests
+namespace SharpBucketTests
 {
     internal partial class TestHelpers
     {
@@ -10,6 +10,15 @@ namespace SharBucketTests
         private const string SbConsumerKey = "SB_CONSUMER_KEY";
         private const string SbConsumerSecretKey = "SB_CONSUMER_SECRET_KEY";
         private const string SbAccountName = "SB_ACCOUNT_NAME";
+
+        private static SharpBucketV2 _sharpBucketV2;
+
+        /// <summary>
+        /// Gets a shared authenticated instance of <see cref="SharpBucketV2"/>.
+        /// The goal is to avoid to open a new authentication for each individual test.
+        /// </summary>
+        public static SharpBucketV2 SharpBucketV2 => _sharpBucketV2
+                                                   ?? (_sharpBucketV2 = GetV2ClientAuthenticatedWithOAuth());
 
         public static SharpBucketV2 GetV2ClientAuthenticatedWithBasicAuthentication()
         {

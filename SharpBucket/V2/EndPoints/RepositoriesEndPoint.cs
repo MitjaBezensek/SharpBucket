@@ -28,12 +28,24 @@ namespace SharpBucket.V2.EndPoints
         /// Otherwise, this method returns a collection of the public repositories. 
         /// </summary>
         /// <param name="accountName">The account whose repositories you wish to get.</param>
-        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<Repository> ListRepositories(string accountName, int max = 0)
+        public List<Repository> ListRepositories(string accountName) => ListRepositories(accountName, new ListParameters());
+
+        /// <summary>
+        /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
+        /// this method returns a collection containing public and private repositories. 
+        /// Otherwise, this method returns a collection of the public repositories. 
+        /// </summary>
+        /// <param name="accountName">The account whose repositories you wish to get.</param>
+        /// <param name="parameters">Parameters for the query.</param>
+        /// <returns></returns>
+        public List<Repository> ListRepositories(string accountName, ListParameters parameters)
         {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
             var overrideUrl = _baseUrl + accountName + "/";
-            return GetPaginatedValues<Repository>(overrideUrl, max);
+            return GetPaginatedValues<Repository>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 
         /// <summary>
@@ -123,10 +135,10 @@ namespace SharpBucket.V2.EndPoints
             return new PullRequestsResource(accountName, repository, this);
         }
 
-        internal List<PullRequest> ListPullRequests(string accountName, string repository, int max)
+        internal List<PullRequest> ListPullRequests(string accountName, string repository, ListParameters parameters)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/");
-            return GetPaginatedValues<PullRequest>(overrideUrl, max);
+            return GetPaginatedValues<PullRequest>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 
         internal PullRequest PostPullRequest(string accountName, string repository, PullRequest pullRequest)
@@ -299,15 +311,15 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get(new Comment(), overrideUrl);
         }
 
-        internal object ApproveCommit(string accountName, string repository, string revision)
+        internal UserRole ApproveCommit(string accountName, string repository, string revision)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + revision + "/approve/");
-            return _sharpBucketV2.Post(new object(), overrideUrl);
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/approve/");
+            return _sharpBucketV2.Post(new UserRole(), overrideUrl);
         }
 
         internal void DeleteCommitApproval(string accountName, string repository, string revision)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + revision + "/approve/");
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/approve/");
             _sharpBucketV2.Delete(new object(), overrideUrl);
         }
 
@@ -348,10 +360,10 @@ namespace SharpBucket.V2.EndPoints
             return new BranchResource(accountName, repository, this);
         }
 
-        internal List<Branch> ListBranches(string accountName, string repository, int max = 0)
+        internal List<Branch> ListBranches(string accountName, string repository, ListParameters parameters)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "refs/branches/");
-            return GetPaginatedValues<Branch>(overrideUrl, max);
+            return GetPaginatedValues<Branch>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 
         #endregion
@@ -363,10 +375,10 @@ namespace SharpBucket.V2.EndPoints
             return new TagResource(accountName, repository, this);
         }
 
-        internal List<Tag> ListTags(string accountName, string repository, int max = 0)
+        internal List<Tag> ListTags(string accountName, string repository, ListParameters parameters)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "refs/tags/");
-            return GetPaginatedValues<Tag>(overrideUrl, max);
+            return GetPaginatedValues<Tag>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 
         #endregion

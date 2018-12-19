@@ -3,7 +3,7 @@ using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using Shouldly;
 
-namespace SharBucketTests.V2.EndPoints
+namespace SharpBucketTests.V2.EndPoints
 {
     [TestFixture]
     class UsersEndPointTests
@@ -15,7 +15,7 @@ namespace SharBucketTests.V2.EndPoints
         [SetUp]
         public void Init()
         {
-            sharpBucket = TestHelpers.GetV2ClientAuthenticatedWithOAuth();
+            sharpBucket = TestHelpers.SharpBucketV2;
             usersEndPoint = sharpBucket.UsersEndPoint(ACCOUNT_NAME);
         }
 

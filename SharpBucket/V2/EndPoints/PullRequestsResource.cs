@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -27,9 +28,18 @@ namespace SharpBucket.V2.EndPoints
         /// List all of a repository's open pull requests.
         /// </summary>
         /// <returns></returns>
-        public List<PullRequest> ListPullRequests(int max = 100)
+        public List<PullRequest> ListPullRequests() => ListPullRequests(new ListParameters());
+
+        /// <summary>
+        /// List all of a repository's open pull requests.
+        /// </summary>
+        /// <param name="parameters">Parameters for the query.</param>
+        /// <returns></returns>
+        public List<PullRequest> ListPullRequests(ListParameters parameters)
         {
-            return _repositoriesEndPoint.ListPullRequests(_accountName, _repository, max);
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+            return _repositoriesEndPoint.ListPullRequests(_accountName, _repository, parameters);
         }
 
         /// <summary>

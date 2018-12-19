@@ -1,9 +1,12 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Linq;
+using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
+using SharpBucket.V2.Pocos;
 using Shouldly;
 
-namespace SharBucketTests.V2.EndPoints
+namespace SharpBucketTests.V2.EndPoints
 {
     [TestFixture]
     class TeamsEndPointTests
@@ -15,7 +18,7 @@ namespace SharBucketTests.V2.EndPoints
         [SetUp]
         public void Init()
         {
-            sharpBucket = TestHelpers.GetV2ClientAuthenticatedWithOAuth();
+            sharpBucket = TestHelpers.SharpBucketV2;
             teamsEndPoint = sharpBucket.TeamsEndPoint(TEAM_NAME);
         }
 
@@ -56,6 +59,37 @@ namespace SharBucketTests.V2.EndPoints
             teamsEndPoint.ShouldNotBe(null);
             var teams = teamsEndPoint.GetUserTeams();
             teams.Count.ShouldBeGreaterThan(0);
+        }
+
+        [Test]
+        public void ListRepositories_FromUserAdminTeamAfterHavingCreateOneRepoInside_ShouldReturnAtLeastTheCreatedOne()
+        {
+            teamsEndPoint.ShouldNotBe(null);
+            var team = teamsEndPoint.GetUserTeamsWithAdminRole()[0];
+
+            var repositoryName = Guid.NewGuid().ToString("N");
+            var teamRepository = new Repository
+            {
+                name = repositoryName,
+                language = "c#",
+                scm = "git"
+            };
+            var teamResource = new TeamsEndPoint(TestHelpers.SharpBucketV2, team.username);
+            var teamRepoResource = SampleRepositories.RepositoriesEndPoint.RepositoryResource(team.username, repositoryName);
+            teamRepoResource.PostRepository(teamRepository);
+
+            try
+            {
+                var repositories = teamResource.ListRepositories();
+                repositories.ShouldNotBeEmpty();
+                repositories.Any(r => r.name == teamRepository.name).ShouldBe(true);
+            }
+            catch (Exception)
+            {
+                teamRepoResource.DeleteRepository();
+                throw;
+            }
+            
         }
     }
 }

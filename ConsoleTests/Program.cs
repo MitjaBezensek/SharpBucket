@@ -40,7 +40,7 @@ namespace ConsoleTests
             sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
 
             // Three legged OAuth. We can supply our own callback url to which bitbucket will send our pin
-            // If we use "oob" as the callback url we will get the bitbuckets url address which will have our pin
+            // If we use "oob" as the callback url we will get the bitbucket url address which will have our pin
             //var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oob");
             //var uri = authenticator.StartAuthentication();
             //Process.Start(uri);
@@ -306,7 +306,7 @@ namespace ConsoleTests
             //var commentId = 10;
             //var pullRequestComment = repositoriesEndPoint.GetPullRequestComment(accountName, repository, pullRequestId, commentId);
 
-            //var pullRequestsEP = repositoriesEndPoint.PullReqestsResource(accountName, repository);
+            //var pullRequestsEP = repositoriesEndPoint.PullRequestsResource(accountName, repository);
             //var PRs = pullRequestsEP.ListPullRequests();
             //var newPR = pullRequestsEP.PostPullRequest(new PullRequest());
             //var updatedPR = pullRequestsEP.PutPullRequest(new PullRequest());
@@ -325,7 +325,7 @@ namespace ConsoleTests
             //var PRComment = pullRequestsEP.GetPullRequestComment(PRId, cId);
 
             //var PRId2 = 10;
-            //var pullRequestEP = pullRequestsEP.PullRequestEndPoint(PRId);
+            //var pullRequestEP = pullRequestsEP.PullRequestResource(PRId);
             //var PR2 = pullRequestEP.GetPullRequest();
             //var commitsInPR2 = pullRequestEP.ListPullRequestCommits();
             //var postPR2Approval = pullRequestEP.ApprovePullRequest();

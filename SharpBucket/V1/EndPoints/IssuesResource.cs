@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using SharpBucket.V1.Pocos;
-using System.Dynamic;
 
 namespace SharpBucket.V1.EndPoints
 {
@@ -47,7 +46,7 @@ namespace SharpBucket.V1.EndPoints
 
         /// <summary>
         /// Creates a new issue in a repository. This call requires authentication. 
-        /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
+        /// Private repositories or private issue trackers require the caller to authenticate with an account that has appropriate authorization. 
         /// The authenticated user is used for the issue's reported_by field.
         /// </summary>
         /// <param name="issue">The issue.</param>
@@ -91,7 +90,7 @@ namespace SharpBucket.V1.EndPoints
 
         /// <summary>
         /// Gets an individual component in an issue tracker. 
-        /// To get a component, private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
+        /// To get a component, private issue trackers require the caller to authenticate with an account that has appropriate authorization. 
         /// </summary>
         /// <param name="componentId">The component identifier.</param>
         /// <returns></returns>
@@ -104,7 +103,7 @@ namespace SharpBucket.V1.EndPoints
         /// Creates a new component in an issue tracker. 
         /// You must supply a name value in the form of a string. 
         /// The server creates the id for you and it appears in the return value. 
-        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation.
+        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorization.
         /// </summary>
         /// <param name="component">The component.</param>
         /// <returns>The response from the BitBucket API.</returns>
@@ -116,7 +115,7 @@ namespace SharpBucket.V1.EndPoints
         /// <summary>
         /// Updates an existing component in an issue tracker. 
         /// You must supply a name value in the form of a string. 
-        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
+        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorization. 
         /// </summary>
         /// <param name="component">The component.</param>
         /// <returns>The response from the BitBucket API.</returns>
@@ -127,7 +126,7 @@ namespace SharpBucket.V1.EndPoints
 
         /// <summary>
         /// Deletes a component in an issue tracker. Keep in mind that the component can be in use on existing issues. 
-        /// To delete a component, public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
+        /// To delete a component, public and private issue trackers require the caller to authenticate with an account that has appropriate authorization. 
         /// </summary>
         /// <param name="componentId">The component identifier.</param>
         /// <returns>The response from the BitBucket API.</returns>
@@ -147,7 +146,7 @@ namespace SharpBucket.V1.EndPoints
 
         /// <summary>
         /// Gets an individual version in an issue tracker. 
-        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
+        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorization. 
         /// </summary>
         /// <param name="versionId">The version identifier.</param>
         /// <returns></returns>
@@ -159,7 +158,7 @@ namespace SharpBucket.V1.EndPoints
         /// <summary>
         /// Creates a new version in an issue tracker. You must supply a name value in the form of a string. 
         /// The server creates the id for you and it appears in the return value. 
-        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
+        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorization. 
         /// </summary>
         /// <param name="version">The version.</param>
         /// <returns>The response from the BitBucket API.</returns>
@@ -170,7 +169,7 @@ namespace SharpBucket.V1.EndPoints
 
         /// <summary>
         /// Updates an existing version in an issue tracker. You must supply a name value in the form of a string. 
-        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
+        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorization. 
         /// </summary>
         /// <param name="version">The version.</param>
         /// <returns>The response from the BitBucket API.</returns>
@@ -181,7 +180,7 @@ namespace SharpBucket.V1.EndPoints
 
         /// <summary>
         /// Deletes a version in an issue tracker. Keep in mind that the version can be in use on existing issues. 
-        /// To delete a version, public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
+        /// To delete a version, public and private issue trackers require the caller to authenticate with an account that has appropriate authorization. 
         /// </summary>
         /// <param name="versionId">The version identifier.</param>
         /// <returns>The response from the BitBucket API.</returns>
@@ -201,7 +200,7 @@ namespace SharpBucket.V1.EndPoints
 
         /// <summary>
         /// Gets an individual milestone in an issue tracker. 
-        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation.
+        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorization.
         /// </summary>
         /// <param name="milestoneId">The milestone identifier.</param>
         /// <returns></returns>
@@ -213,7 +212,7 @@ namespace SharpBucket.V1.EndPoints
         /// <summary>
         /// Creates a new milestone in an issue tracker. You must supply a name value in the form of a string. 
         /// The server creates the id for you and it appears in the return value. 
-        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
+        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorization. 
         /// </summary>
         /// <param name="milestone">The milestone.</param>
         /// <returns>The response from the BitBucket API.</returns>
@@ -225,7 +224,7 @@ namespace SharpBucket.V1.EndPoints
         /// <summary>
         /// Updates an existing milestone in an issue tracker. 
         /// You must supply a name value in the form of a string. 
-        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation.
+        /// Public and private issue trackers require the caller to authenticate with an account that has appropriate authorization.
         /// </summary>
         /// <param name="milestone">The milestone.</param>
         /// <returns>The response from the BitBucket API.</returns>
@@ -236,7 +235,7 @@ namespace SharpBucket.V1.EndPoints
 
         /// <summary>
         /// Deletes a milestone in an issue tracker. Keep in mind that the milestone can be in use on existing issues. 
-        /// To delete a milestone, public and private issue trackers require the caller to authenticate with an account that has appropriate authorisation. 
+        /// To delete a milestone, public and private issue trackers require the caller to authenticate with an account that has appropriate authorization. 
         /// </summary>
         /// <param name="milestoneId">The milestone identifier.</param>
         /// <returns>The response from the BitBucket API.</returns>

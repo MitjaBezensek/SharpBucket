@@ -50,7 +50,6 @@ namespace SharpBucket.V2.EndPoints
             return GetPaginatedValues<User>(overrideUrl, max);
         }
 
-        // TODO: Moved permanently
         /// <summary>
         /// List all of the user's repositories. 
         /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.

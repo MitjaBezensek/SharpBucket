@@ -2,7 +2,9 @@ using SharpBucket.V2.Pocos;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Dynamic;
+using System.Linq;
+using System.Web;
+
 
 namespace SharpBucket.V2.EndPoints
 {
@@ -33,6 +35,8 @@ namespace SharpBucket.V2.EndPoints
             Debug.Assert(!String.IsNullOrEmpty(overrideUrl));
             Debug.Assert(!overrideUrl.Contains("?"));
 
+            overrideUrl = overrideUrl.Replace(SharpBucketV2.BITBUCKET_URL, "");
+
             if (requestParameters == null)
             {
                 requestParameters = new Dictionary<string, object>();
@@ -41,10 +45,10 @@ namespace SharpBucket.V2.EndPoints
             requestParameters["pagelen"] = pageLen;
 
             IteratorBasedPage<TValue> response;
-            int page = 1;
-            do
+
+            while (true)
             {
-                response = _sharpBucketV2.Get(new IteratorBasedPage<TValue>(), overrideUrl.Replace(SharpBucketV2.BITBUCKET_URL, ""), requestParameters);
+                response = _sharpBucketV2.Get(new IteratorBasedPage<TValue>(), overrideUrl, requestParameters);
                 if (response == null)
                 {
                     break;
@@ -52,9 +56,15 @@ namespace SharpBucket.V2.EndPoints
 
                 yield return response.values;
 
-                requestParameters["page"] = ++page;
+                if (String.IsNullOrWhiteSpace(response.next))
+                {
+                    break;
+                }
+
+                var uri = new Uri(response.next);
+                var parsedQuery = HttpUtility.ParseQueryString(uri.Query);
+                requestParameters = parsedQuery.AllKeys.ToDictionary<string, string, object>(key => key, parsedQuery.Get);                
             }
-            while (!String.IsNullOrEmpty(response.next));
         }
 
         /// <summary>
