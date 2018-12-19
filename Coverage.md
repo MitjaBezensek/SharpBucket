@@ -152,9 +152,9 @@ This table list [all the routes of the API V2](https://developer.atlassian.com/b
 | /repositories/{username}/{repo_slug}/commit/{node}/comments | `POST` | none | no
 | /repositories/{username}/{repo_slug}/commit/{node}/comments/{comment_id} | `GET` | RepositoryResource.GetCommitComment(string,int) | no
 | /repositories/{username}/{repo_slug}/commit/{node}/statuses | `GET` | none | no
-| /repositories/{username}/{repo_slug}/commit/{node}/statuses/build | `POST` | RepositoryResource.AddNewBuildStatus(string,BuildInfo) | no
-| /repositories/{username}/{repo_slug}/commit/{node}/statuses/build/{key} | `GET` | RepositoryResource.GetBuildStatusInfo(string,string) | no
-| /repositories/{username}/{repo_slug}/commit/{node}/statuses/build/{key} | `PUT` | RepositoryResource.ChangeBuildStatusInfo(string,string,BuildInfo) | no
+| /repositories/{username}/{repo_slug}/commit/{node}/statuses/build | `POST` | RepositoryResource.AddNewBuildStatus(string,BuildInfo) | yes
+| /repositories/{username}/{repo_slug}/commit/{node}/statuses/build/{key} | `GET` | RepositoryResource.GetBuildStatusInfo(string,string) | yes
+| /repositories/{username}/{repo_slug}/commit/{node}/statuses/build/{key} | `PUT` | RepositoryResource.ChangeBuildStatusInfo(string,string,BuildInfo) | yes
 | /repositories/{username}/{repo_slug}/commits | `GET` | RepositoryResource.ListCommits(int) | yes
 | /repositories/{username}/{repo_slug}/commits | `POST` | none | no
 | /repositories/{username}/{repo_slug}/commits/{revision} | `GET` | RepositoryResource.ListCommits(string,int) | no
@@ -228,7 +228,7 @@ This table list [all the routes of the API V2](https://developer.atlassian.com/b
 | /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id} | `PUT` | none | no
 | /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id} | `DELETE` | none | no
 | /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/commits | `GET` | PullRequestResource.ListPullRequestCommits() | yes
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/decline | `POST` | PullRequestResource.DeclinePullRequest() | no
+| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/decline | `POST` | PullRequestResource.DeclinePullRequest() | yes
 | /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/diff | `GET` | PullRequestResource.GetDiffForPullRequest() | yes
 | /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/diffstat | `GET` | none | no
 | /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/merge | `POST` | PullRequestResource.AcceptAndMergePullRequest() | no
