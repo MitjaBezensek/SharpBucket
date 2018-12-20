@@ -167,10 +167,10 @@ namespace SharpBucket
             return Send<T>(body, Method.PUT, overrideUrl);
         }
 
-        internal T Delete<T>(T body, string overrideUrl)
+        internal T Delete<T>(string overrideUrl)
             where T : new()
         {
-            return Send<T>(body, Method.DELETE, overrideUrl);
+            return Send<T>(null, Method.DELETE, overrideUrl);
         }
     }
 }

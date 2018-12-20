@@ -99,7 +99,7 @@ namespace SharpBucket.V2.EndPoints
         internal Repository DeleteRepository(string accountName, string repository)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, null);
-            return _sharpBucketV2.Delete(new Repository(), overrideUrl);
+            return _sharpBucketV2.Delete<Repository>(overrideUrl);
         }
 
         private string ParseSlug(string repositoryName)
@@ -178,13 +178,13 @@ namespace SharpBucket.V2.EndPoints
         internal PullRequestInfo ApprovePullRequest(string accountName, string repository, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/approve/");
-            return _sharpBucketV2.Post(new PullRequestInfo(), overrideUrl);
+            return _sharpBucketV2.Post<PullRequestInfo>(null, overrideUrl);
         }
 
         internal PullRequestInfo RemovePullRequestApproval(string accountName, string repository, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/approve/");
-            return _sharpBucketV2.Delete(new PullRequestInfo(), overrideUrl);
+            return _sharpBucketV2.Delete<PullRequestInfo>(overrideUrl);
         }
 
         internal object GetDiffForPullRequest(string accountName, string repository, int pullRequestId)
@@ -202,13 +202,13 @@ namespace SharpBucket.V2.EndPoints
         internal Merge AcceptAndMergePullRequest(string accountName, string repository, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/merge/");
-            return _sharpBucketV2.Post(new Merge(), overrideUrl);
+            return _sharpBucketV2.Post<Merge>(null, overrideUrl);
         }
 
         internal PullRequest DeclinePullRequest(string accountName, string repository, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/decline/");
-            return _sharpBucketV2.Post(new PullRequest(), overrideUrl);
+            return _sharpBucketV2.Post<PullRequest>(null, overrideUrl);
         }
 
         internal List<Comment> ListPullRequestComments(string accountName, string repository, int pullRequestId, int max = 0)
@@ -260,7 +260,7 @@ namespace SharpBucket.V2.EndPoints
         internal BranchRestriction DeleteBranchRestriction(string accountName, string repository, int restrictionId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restrictionId);
-            return _sharpBucketV2.Delete(new BranchRestriction(), overrideUrl);
+            return _sharpBucketV2.Delete<BranchRestriction>(overrideUrl);
         }
 
         #endregion
@@ -314,13 +314,13 @@ namespace SharpBucket.V2.EndPoints
         internal UserRole ApproveCommit(string accountName, string repository, string revision)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/approve/");
-            return _sharpBucketV2.Post(new UserRole(), overrideUrl);
+            return _sharpBucketV2.Post<UserRole>(null, overrideUrl);
         }
 
         internal void DeleteCommitApproval(string accountName, string repository, string revision)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/approve/");
-            _sharpBucketV2.Delete(new object(), overrideUrl);
+            _sharpBucketV2.Delete<object>(overrideUrl);
         }
 
         internal BuildInfo AddNewBuildStatus(string accountName, string repository, string revision, BuildInfo buildInfo)

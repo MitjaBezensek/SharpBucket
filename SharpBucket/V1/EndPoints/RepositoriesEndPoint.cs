@@ -161,7 +161,7 @@ namespace SharpBucket.V1.EndPoints
         public SSH DeleteDeployKey(SSH key)
         {
             var overrideUrl = _baserUrl + "deploy-keys/" + key.pk + "/";
-            return _sharpBucketV1.Delete(key, overrideUrl);
+            return _sharpBucketV1.Delete<SSH>(overrideUrl);
         }
 
         #endregion
@@ -238,7 +238,7 @@ namespace SharpBucket.V1.EndPoints
         internal Issue DeleteIssue(Issue issue)
         {
             var overrideUrl = String.Format(_issuesIdUrl, issue.local_id);
-            return _sharpBucketV1.Delete(issue, overrideUrl);
+            return _sharpBucketV1.Delete<Issue>(overrideUrl);
         }
 
         internal Issue DeleteIssue(int? issueId)
@@ -300,7 +300,7 @@ namespace SharpBucket.V1.EndPoints
         internal Comment DeleteIssueComment(Issue issue, Comment comment)
         {
             var overrideUrl = String.Format(_issuesIdUrl + "comments/{1}", issue.local_id, comment.comment_id);
-            return _sharpBucketV1.Delete(comment, overrideUrl);
+            return _sharpBucketV1.Delete<Comment>(overrideUrl);
         }
 
         internal Comment DeleteIssueComment(Issue issue, int? commentId)
@@ -350,7 +350,7 @@ namespace SharpBucket.V1.EndPoints
         internal Component DeleteComponent(Component component)
         {
             var overrideUrl = _issuesUrl + "components/" + component.id;
-            return _sharpBucketV1.Delete(component, overrideUrl);
+            return _sharpBucketV1.Delete<Component>(overrideUrl);
         }
 
         internal Component DeleteComponent(int? componentId)
@@ -390,7 +390,7 @@ namespace SharpBucket.V1.EndPoints
         internal Version DeleteVersion(Version version)
         {
             var overrideUrl = _issuesUrl + "versions/" + version.id;
-            return _sharpBucketV1.Delete(version, overrideUrl);
+            return _sharpBucketV1.Delete<Version>(overrideUrl);
         }
 
         internal Version DeleteVersion(int? versionId)
@@ -430,7 +430,7 @@ namespace SharpBucket.V1.EndPoints
         internal Milestone DeleteMilestone(Milestone milestone)
         {
             var overrideUrl = _issuesUrl + "milestones/" + milestone.id;
-            return _sharpBucketV1.Delete(milestone, overrideUrl);
+            return _sharpBucketV1.Delete<Milestone>(overrideUrl);
         }
 
         internal Milestone DeleteMilestone(int? milestoneId)
@@ -493,7 +493,7 @@ namespace SharpBucket.V1.EndPoints
         public Link DeleteLink(Link link)
         {
             var overrideUrl = _baserUrl + "links/" + link.id + "/";
-            return _sharpBucketV1.Delete(link, overrideUrl);
+            return _sharpBucketV1.Delete<Link>(overrideUrl);
         }
 
         #endregion
