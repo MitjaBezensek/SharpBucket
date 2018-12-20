@@ -24,10 +24,8 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public List<Team> GetUserTeams(int max = 0)
         {
-            dynamic parameters = new ExpandoObject();
-            parameters.role = "member";
+            var parameters = new Dictionary<string, object> { { "role", "member" } };
             return GetPaginatedValues<Team>("teams/", max, parameters);
-            //return _sharpBucketV2.Get<List<Team>>(null, "teams/", parameters);
         }
 
         /// <summary>
@@ -35,8 +33,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public List<Team> GetUserTeamsWithContributorRole(int max = 0)
         {
-            dynamic parameters = new ExpandoObject();
-            parameters.role = "contributor";
+            var parameters = new Dictionary<string, object> { { "role", "contributor" } };
             return GetPaginatedValues<Team>("teams/", max, parameters);
         }
 
@@ -45,8 +42,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public List<Team> GetUserTeamsWithAdminRole(int max = 0)
         {
-            dynamic parameters = new ExpandoObject();
-            parameters.role = "admin";
+            var parameters = new Dictionary<string, object> { { "role", "admin" } };
             return GetPaginatedValues<Team>("teams/", max, parameters);
         }
 
@@ -57,7 +53,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public Team GetProfile()
         {
-            return _sharpBucketV2.Get(new Team(), _baseUrl);
+            return _sharpBucketV2.Get<Team>(_baseUrl);
         }
 
         /// <summary>

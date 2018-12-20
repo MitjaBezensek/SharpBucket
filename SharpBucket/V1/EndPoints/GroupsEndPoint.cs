@@ -29,7 +29,7 @@ namespace SharpBucket.V1.EndPoints
         /// <returns></returns>
         public List<Group> ListGroups()
         {
-            return _sharpBucketV1.Get<List<Group>>(new List<Group>(), _baseUrl);
+            return _sharpBucketV1.Get<List<Group>>(_baseUrl);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace SharpBucket.V1.EndPoints
         public Group GetGroup(string group_slug)
         {
             var overrideUrl = _baseUrl + group_slug;
-            return _sharpBucketV1.Get<Group>(new Group(), overrideUrl);
+            return _sharpBucketV1.Get<Group>(overrideUrl);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace SharpBucket.V1.EndPoints
         public List<User> ListGroupMembers(string group_slug)
         {
             var overrideUrl = _baseUrl + group_slug + "/members";
-            return _sharpBucketV1.Get<List<User>>(new List<User>(), overrideUrl);
+            return _sharpBucketV1.Get<List<User>>(overrideUrl);
         }
 
         /// <summary>

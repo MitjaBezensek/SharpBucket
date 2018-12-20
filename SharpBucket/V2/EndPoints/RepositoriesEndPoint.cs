@@ -81,7 +81,7 @@ namespace SharpBucket.V2.EndPoints
         internal Repository GetRepository(string accountName, string repository)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, null);
-            return _sharpBucketV2.Get(new Repository(), overrideUrl);
+            return _sharpBucketV2.Get<Repository>(overrideUrl);
         }
 
         internal Repository PutRepository(Repository repo, string accountName, string repository)
@@ -166,7 +166,7 @@ namespace SharpBucket.V2.EndPoints
         internal PullRequest GetPullRequest(string accountName, string repository, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/");
-            return _sharpBucketV2.Get(new PullRequest(), overrideUrl);
+            return _sharpBucketV2.Get<PullRequest>(overrideUrl);
         }
 
         internal List<Commit> ListPullRequestCommits(string accountName, string repository, int pullRequestId, int max = 0)
@@ -190,7 +190,7 @@ namespace SharpBucket.V2.EndPoints
         internal object GetDiffForPullRequest(string accountName, string repository, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/diff/");
-            return _sharpBucketV2.Get(new Object(), overrideUrl);
+            return _sharpBucketV2.Get(overrideUrl);
         }
 
         internal List<Activity> GetPullRequestActivity(string accountName, string repository, int pullRequestId, int max = 0)
@@ -220,7 +220,7 @@ namespace SharpBucket.V2.EndPoints
         internal Comment GetPullRequestComment(string accountName, string repository, int pullRequestId, int commentId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/comments/" + commentId + "/");
-            return _sharpBucketV2.Get(new Comment(), overrideUrl);
+            return _sharpBucketV2.Get<Comment>(overrideUrl);
         }
 
         internal Comment PostPullRequestComment(string accountName, string repository, int pullRequestId, Comment comment)
@@ -248,7 +248,7 @@ namespace SharpBucket.V2.EndPoints
         internal BranchRestriction GetBranchRestriction(string accountName, string repository, int restrictionId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restrictionId);
-            return _sharpBucketV2.Get(new BranchRestriction(), overrideUrl);
+            return _sharpBucketV2.Get<BranchRestriction>(overrideUrl);
         }
 
         internal BranchRestriction PutBranchRestriction(string accountName, string repository, BranchRestriction restriction)
@@ -270,13 +270,13 @@ namespace SharpBucket.V2.EndPoints
         internal object GetDiff(string accountName, string repository, object options)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "diff/" + options);
-            return _sharpBucketV2.Get(new object(), overrideUrl);
+            return _sharpBucketV2.Get(overrideUrl);
         }
 
         internal object GetPatch(string accountName, string repository, object options)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "patch/" + options);
-            return _sharpBucketV2.Get(new object(), overrideUrl);
+            return _sharpBucketV2.Get(overrideUrl);
         }
 
         #endregion
@@ -296,7 +296,7 @@ namespace SharpBucket.V2.EndPoints
         internal Commit GetCommit(string accountName, string repository, string revision)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision);
-            return _sharpBucketV2.Get(new Commit(), overrideUrl);
+            return _sharpBucketV2.Get<Commit>(overrideUrl);
         }
 
         internal List<Comment> ListCommitComments(string accountName, string repository, string revision, int max = 0)
@@ -308,7 +308,7 @@ namespace SharpBucket.V2.EndPoints
         internal Comment GetCommitComment(string accountName, string repository, string revision, int commentId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + revision + "/comments/" + revision + "/" + commentId + "/");
-            return _sharpBucketV2.Get(new Comment(), overrideUrl);
+            return _sharpBucketV2.Get<Comment>(overrideUrl);
         }
 
         internal UserRole ApproveCommit(string accountName, string repository, string revision)
@@ -332,7 +332,7 @@ namespace SharpBucket.V2.EndPoints
         internal BuildInfo GetBuildStatusInfo(string accountName, string repository, string revision, string key)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/" + key);
-            return _sharpBucketV2.Get(new BuildInfo(), overrideUrl);
+            return _sharpBucketV2.Get<BuildInfo>(overrideUrl);
         }
 
         internal BuildInfo ChangeBuildStatusInfo(string accountName, string repository, string revision, string key, BuildInfo buildInfo)

@@ -38,7 +38,7 @@ namespace SharpBucket.V1.EndPoints
         public List<RepositoryPrivileges> ListRepositoryPrivileges(string repository)
         {
             var overrideUrl = _baseUrl + repository + "/";
-            return _sharpBucketV1.Get(new List<RepositoryPrivileges>(), overrideUrl);
+            return _sharpBucketV1.Get<List<RepositoryPrivileges>>(overrideUrl);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace SharpBucket.V1.EndPoints
         public RepositoryPrivilegesUser GetPrivilegesForAccount(string repository, string accountName)
         {
             var overrideUrl = _baseUrl + repository + "/" + accountName;
-            return _sharpBucketV1.Get(new RepositoryPrivilegesUser(), overrideUrl);
+            return _sharpBucketV1.Get<RepositoryPrivilegesUser>(overrideUrl);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using RestSharp;
@@ -8,8 +9,46 @@ namespace SharpBucket.Authentication
 {
     internal abstract class RequestExecutor
     {
+        public string ExecuteRequest(string url, Method method, object body, RestClient client, IDictionary<string, object> requestParameters)
+        {
+            var result = ExecuteRequest(url, method, body, client, requestParameters, client.Execute);
+            return result.Content;
+        }
+
         public T ExecuteRequest<T>(string url, Method method, object body, RestClient client, IDictionary<string, object> requestParameters)
             where T : new()
+        {
+            var result = ExecuteRequest(url, method, body, client, requestParameters, client.Execute<T>);
+            return result.Data;
+        }
+
+        private TRestResponse ExecuteRequest<TRestResponse>(
+            string url,
+            Method method,
+            object body,
+            RestClient client,
+            IDictionary<string, object> requestParameters,
+            Func<RestRequest, TRestResponse> clientExecute)
+            where TRestResponse : IRestResponse
+        {
+            var request = BuildRestRequest(url, method, body, requestParameters);
+
+            //Fixed bug that prevents RestClient for adding custom headers to the request
+            //https://stackoverflow.com/questions/22229393/why-is-restsharp-addheaderaccept-application-json-to-a-list-of-item
+            client.ClearHandlers();
+            client.AddHandler("application/json", new JsonDeserializer());
+
+            var result = ExecuteRequestWithManualFollowRedirect(request, client, clientExecute);
+
+            if (result.ErrorException != null)
+            {
+                throw new WebException("REST client encountered an error: " + result.ErrorMessage, result.ErrorException);
+            }
+
+            return result;
+        }
+
+        private RestRequest BuildRestRequest(string url, Method method, object body, IDictionary<string, object> requestParameters)
         {
             var request = new RestRequest(url, method);
             if (requestParameters != null)
@@ -20,46 +59,29 @@ namespace SharpBucket.Authentication
                 }
             }
 
-            if (ShouldAddBody(method))
+            if (method == Method.PUT || method == Method.POST)
             {
                 AddBody(request, body);
             }
 
-            //Fixed bug that prevents RestClient for adding custom headers to the request
-            //https://stackoverflow.com/questions/22229393/why-is-restsharp-addheaderaccept-application-json-to-a-list-of-item
-
-            client.ClearHandlers();
-            client.AddHandler("application/json", new JsonDeserializer());
-            var result = ExecuteRequest<T>(method, client, request);
-
-            if (result.ErrorException != null)
-            {
-                throw new WebException("REST client encountered an error: " + result.ErrorMessage, result.ErrorException);
-            }
-            // This is a hack in order to allow this method to work for simple types as well
-            // one example of this is the GetRevisionRaw method
-            if (RequestingSimpleType<T>())
-            {
-                return result.Content as dynamic;
-            }
-            return result.Data;
+            return request;
         }
 
         protected abstract void AddBody(RestRequest request, object body);
 
-        private static IRestResponse<T> ExecuteRequest<T>(Method method, RestClient client, RestRequest request)
-            where T : new()
+        private static TRestResponse ExecuteRequestWithManualFollowRedirect<TRestResponse>(RestRequest request, RestClient client, Func<RestRequest, TRestResponse> clientExecute)
+            where TRestResponse : IRestResponse
         {
-            IRestResponse<T> result;
-
             client.FollowRedirects = false;
-            result = client.Execute<T>(request);
+
+            var result = clientExecute(request);
             if (result.StatusCode == HttpStatusCode.Redirect)
             {
                 var redirectUrl = GetRedirectUrl(result, client.BaseUrl.ToString());
-                request = new RestRequest(redirectUrl, method);
-                result = client.Execute<T>(request);
+                request = new RestRequest(redirectUrl, request.Method);
+                result = clientExecute(request);
             }
+
             return result;
         }
 
@@ -71,17 +93,6 @@ namespace SharpBucket.Authentication
                 redirectUrl = redirectUrl.Remove(0, requestBaseUrl.Length);
             }
             return redirectUrl;
-        }
-
-        private static bool ShouldAddBody(Method method)
-        {
-            return method == Method.PUT || method == Method.POST;
-        }
-
-        private static bool RequestingSimpleType<T>()
-            where T : new()
-        {
-            return typeof(T) == typeof(object);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace SharpBucket.V1.EndPoints
         public EventInfo ListUserEvents()
         {
             var overrideUrl = _baseUrl + "events/";
-            return _sharpBucketV1.Get(new EventInfo(), overrideUrl);
+            return _sharpBucketV1.Get<EventInfo>(overrideUrl);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace SharpBucket.V1.EndPoints
         public Privileges ListUserPrivileges()
         {
             var overrideUrl = _baseUrl + "privileges/";
-            return _sharpBucketV1.Get(new Privileges(), overrideUrl);
+            return _sharpBucketV1.Get<Privileges>(overrideUrl);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace SharpBucket.V1.EndPoints
         public InvitationsInfo ListInvitations()
         {
             var overrideUrl = _baseUrl + "invitations/";
-            return _sharpBucketV1.Get(new InvitationsInfo(), overrideUrl);
+            return _sharpBucketV1.Get<InvitationsInfo>(overrideUrl);
         }
 
         // TODO: Serialization
@@ -65,7 +65,7 @@ namespace SharpBucket.V1.EndPoints
         public object GetInvitationsFor(string email)
         {
             var overrideUrl = _baseUrl + "invitations/" + email;
-            return _sharpBucketV1.Get(new object(), overrideUrl);
+            return _sharpBucketV1.Get(overrideUrl);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace SharpBucket.V1.EndPoints
         public Followers ListFollowers()
         {
             var overrideUrl = _baseUrl + "followers/";
-            return _sharpBucketV1.Get(new Followers(), overrideUrl);
+            return _sharpBucketV1.Get<Followers>(overrideUrl);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace SharpBucket.V1.EndPoints
         public List<Consumer> ListConsumers()
         {
             var overrideUrl = _baseUrl + "consumers/";
-            return _sharpBucketV1.Get(new List<Consumer>(), overrideUrl);
+            return _sharpBucketV1.Get<List<Consumer>>(overrideUrl);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace SharpBucket.V1.EndPoints
         public Consumer GetConsumer(int? consumerId)
         {
             var overrideUrl = _baseUrl + "consumers/" + consumerId;
-            return _sharpBucketV1.Get(new Consumer(), overrideUrl);
+            return _sharpBucketV1.Get<Consumer>(overrideUrl);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace SharpBucket.V1.EndPoints
         public List<SSH> ListSSHKeys()
         {
             var overrideUrl = _baseUrl + "ssh-keys/";
-            return _sharpBucketV1.Get(new List<SSH>(), overrideUrl);
+            return _sharpBucketV1.Get<List<SSH>>(overrideUrl);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace SharpBucket.V1.EndPoints
         public SSHDetailed GetSSHKey(int? pk)
         {
             var overrideUrl = _baseUrl + "ssh-keys/" + pk;
-            return _sharpBucketV1.Get(new SSHDetailed(), overrideUrl);
+            return _sharpBucketV1.Get<SSHDetailed>(overrideUrl);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace SharpBucket.V1.EndPoints
         public List<EmailInfo> ListEmails()
         {
             var overrideUrl = _baseUrl + "emails/";
-            return _sharpBucketV1.Get(new List<EmailInfo>(), overrideUrl);
+            return _sharpBucketV1.Get<List<EmailInfo>>(overrideUrl);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace SharpBucket.V1.EndPoints
         public EmailInfo GetEmail(string email)
         {
             var overrideUrl = _baseUrl + "emails/" + email;
-            return _sharpBucketV1.Get(new EmailInfo(), overrideUrl);
+            return _sharpBucketV1.Get<EmailInfo>(overrideUrl);
         }
     }
 }

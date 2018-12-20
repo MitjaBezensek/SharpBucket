@@ -30,7 +30,7 @@ namespace SharpBucket.V1.EndPoints
         /// <returns></returns>
         public UserInfo GetInfo()
         {
-            return _sharpBucketV1.Get(new UserInfo(), _baseUrl);
+            return _sharpBucketV1.Get<UserInfo>(_baseUrl);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace SharpBucket.V1.EndPoints
         public Privileges ListPrivileges()
         {
             var overrideUrl = _baseUrl + "privileges";
-            return _sharpBucketV1.Get(new Privileges(), overrideUrl);
+            return _sharpBucketV1.Get<Privileges>(overrideUrl);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace SharpBucket.V1.EndPoints
         public List<Repository> ListFollows()
         {
             var overrideUrl = _baseUrl + "follows";
-            return _sharpBucketV1.Get(new List<Repository>(), overrideUrl);
+            return _sharpBucketV1.Get<List<Repository>>(overrideUrl);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace SharpBucket.V1.EndPoints
         public List<Repository> ListRepositories()
         {
             var overrideUrl = _baseUrl + "repositories";
-            return _sharpBucketV1.Get(new List<Repository>(), overrideUrl);
+            return _sharpBucketV1.Get<List<Repository>>(overrideUrl);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace SharpBucket.V1.EndPoints
         public RepositoriesOverview RepositoriesOverview()
         {
             var overrideUrl = _baseUrl + "repositories/overview";
-            return _sharpBucketV1.Get(new RepositoriesOverview(), overrideUrl);
+            return _sharpBucketV1.Get<RepositoriesOverview>(overrideUrl);
         }
 
         // TODO: Fix serialization
@@ -86,7 +86,7 @@ namespace SharpBucket.V1.EndPoints
         public object GetRepositoryDasboard()
         {
             var overrideUrl = _baseUrl + "repositories/dashboard";
-            return _sharpBucketV1.Get(new object(), overrideUrl);
+            return _sharpBucketV1.Get(overrideUrl);
         }
     }
 }
