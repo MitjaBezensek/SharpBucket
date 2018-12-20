@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Dynamic;
+using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -14,9 +15,9 @@ namespace SharpBucket.V2.EndPoints
         private readonly string _repositoriesUrl;
 
         public TeamsEndPoint(SharpBucketV2 sharpBucketV2, string teamName)
-            : base(sharpBucketV2, "teams/" + teamName + "/")
+            : base(sharpBucketV2, $"teams/{teamName.GuidOrValue()}/")
         {
-            _repositoriesUrl = "repositories/" + teamName + "/";
+            _repositoriesUrl = $"repositories/{teamName.GuidOrValue()}/";
         }
 
         /// <summary>
