@@ -16,6 +16,6 @@
     <PackageReleaseNotes>https://github.com/MitjaBezensek/SharpBucket/releases</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="RestSharp" Version="106.2.1" />
+    <PackageReference Include="RestSharp" Version="106.5.4" />
   </ItemGroup>
 </Project>
