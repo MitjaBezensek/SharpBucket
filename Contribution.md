@@ -1,7 +1,7 @@
 # How to get started
 
 In order to run the SharpBucket's integration tests you should configure your development environment to inject OAuth credentials that will be used to connect to Bitbucket.  
-We recommend you to create a separate Bitbucket account that will be used only to run the tests. (disconnect and go [here](https://bitbucket.org/account/signup/) to create your test account)  
+We recommend you to create a separate Bitbucket account that will be used only to run the tests. (log out and go [here](https://bitbucket.org/account/signup/) to create your test account)  
 Then in that test account you will need to create an OAuth Consumer. For that, go to "Settings > OAuth > Add consumer"  
 Your consumer must have a name, a callback URL, and all permissions (since we should tests all possible API calls). Look at that [screenshot](./Assets/OauthConsumerConfig.png) is you need help.
 
