@@ -267,15 +267,15 @@ namespace SharpBucket.V2.EndPoints
 
         #region Diff resource
 
-        internal object GetDiff(string accountName, string repository, object options)
+        internal object GetDiff(string accountName, string repository, string spec)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "diff/" + options);
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "diff/" + spec);
             return _sharpBucketV2.Get(new object(), overrideUrl);
         }
 
-        internal object GetPatch(string accountName, string repository, object options)
+        internal object GetPatch(string accountName, string repository, string spec)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "patch/" + options);
+            var overrideUrl = GetRepositoryUrl(accountName, repository, "patch/" + spec);
             return _sharpBucketV2.Get(new object(), overrideUrl);
         }
 

@@ -157,21 +157,21 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Gets the diff for the current repository.  
         /// </summary>
-        /// <param name="options">The diff options.</param>
+        /// <param name="options">The diff spec.</param>
         /// <returns></returns>
-        public object GetDiff(object options)
+        public object GetDiff(string spec)
         {
-            return _repositoriesEndPoint.GetDiff(_accountName, _repository, options);
+            return _repositoriesEndPoint.GetDiff(_accountName, _repository, spec);
         }
 
         /// <summary>
         /// Gets the patch for an individual specification. 
         /// </summary>
-        /// <param name="options">The patch options.</param>
+        /// <param name="options">The patch spec.</param>
         /// <returns></returns>
-        public object GetPatch(object options)
+        public object GetPatch(string spec)
         {
-            return _repositoriesEndPoint.GetPatch(_accountName, _repository, options);
+            return _repositoriesEndPoint.GetPatch(_accountName, _repository, spec);
         }
 
         #endregion
