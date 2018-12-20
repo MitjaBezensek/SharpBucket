@@ -6,11 +6,9 @@ using RestSharp.Deserializers;
 
 namespace SharpBucket.Authentication
 {
-    internal class RequestExecutor
+    internal abstract class RequestExecutor
     {
-        internal const string BITBUCKET_URL_V1 = "https://bitbucket.org/api/1.0";
-        internal const string BITBUCKET_URL_V2 = "https://api.bitbucket.org/2.0";
-        public static T ExecuteRequest<T>(string url, Method method, T body, RestClient client, IDictionary<string, object> requestParameters)
+        public T ExecuteRequest<T>(string url, Method method, object body, RestClient client, IDictionary<string, object> requestParameters)
             where T : new()
         {
             var request = new RestRequest(url, method);
@@ -24,8 +22,7 @@ namespace SharpBucket.Authentication
 
             if (ShouldAddBody(method))
             {
-                request.RequestFormat = DataFormat.Json;
-                request.AddObject(body);
+                AddBody(request, body);
             }
 
             //Fixed bug that prevents RestClient for adding custom headers to the request
@@ -33,7 +30,7 @@ namespace SharpBucket.Authentication
 
             client.ClearHandlers();
             client.AddHandler("application/json", new JsonDeserializer());
-            var result = ExectueRequest<T>(method, client, request);
+            var result = ExecuteRequest<T>(method, client, request);
 
             if (result.ErrorException != null)
             {
@@ -48,7 +45,9 @@ namespace SharpBucket.Authentication
             return result.Data;
         }
 
-        private static IRestResponse<T> ExectueRequest<T>(Method method, RestClient client, RestRequest request)
+        protected abstract void AddBody(RestRequest request, object body);
+
+        private static IRestResponse<T> ExecuteRequest<T>(Method method, RestClient client, RestRequest request)
             where T : new()
         {
             IRestResponse<T> result;
@@ -57,24 +56,21 @@ namespace SharpBucket.Authentication
             result = client.Execute<T>(request);
             if (result.StatusCode == HttpStatusCode.Redirect)
             {
-                var redirectUrl = GetRedirectUrl(result);
+                var redirectUrl = GetRedirectUrl(result, client.BaseUrl.ToString());
                 request = new RestRequest(redirectUrl, method);
                 result = client.Execute<T>(request);
             }
             return result;
         }
 
-        private static string GetRedirectUrl(IRestResponse result)
+        private static string GetRedirectUrl(IRestResponse result, string requestBaseUrl)
         {
             var redirectUrl = result.Headers.Where(header => header.Name == "Location").Select(header => header.Value).First().ToString();
-            if (redirectUrl.Contains(BITBUCKET_URL_V1))
+            if (redirectUrl.StartsWith(requestBaseUrl))
             {
-                return redirectUrl.Replace(BITBUCKET_URL_V1, "");
+                redirectUrl = redirectUrl.Remove(0, requestBaseUrl.Length);
             }
-            else
-            {
-                return redirectUrl.Replace(BITBUCKET_URL_V2, "");
-            }
+            return redirectUrl;
         }
 
         private static bool ShouldAddBody(Method method)

@@ -1,6 +1,4 @@
 ﻿using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace SharpBucket.V2.Pocos
 {
@@ -10,7 +8,6 @@ namespace SharpBucket.V2.Pocos
         public string url { get; set; }
         public string refname { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public BuildInfoState state { get; set; }
 
         public string key { get; set; }
