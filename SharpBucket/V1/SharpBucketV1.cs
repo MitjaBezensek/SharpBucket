@@ -1,7 +1,9 @@
-﻿using SharpBucket.V1.EndPoints;
+﻿using System;
+using SharpBucket.V1.EndPoints;
 
 namespace SharpBucket.V1
 {
+    [Obsolete("Bitbucket Cloud v1 APIs are deprecated")]
     public sealed class SharpBucketV1 : SharpBucket
     {
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.EndPoints
@@ -10,6 +11,7 @@ namespace SharpBucket.V1.EndPoints
     /// More info here:
     /// https://confluence.atlassian.com/bitbucket/groups-endpoint-296093143.html
     /// </summary>
+    [Obsolete("Bitbucket Cloud v1 APIs are deprecated")]
     public class GroupsEndPoint
     {
         private readonly string _baseUrl;

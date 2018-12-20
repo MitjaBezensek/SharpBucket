@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.EndPoints
@@ -9,6 +10,7 @@ namespace SharpBucket.V1.EndPoints
     /// More info here:
     /// https://confluence.atlassian.com/display/BITBUCKET/users+Endpoint+-+1.0
     /// </summary>
+    [Obsolete("Bitbucket Cloud v1 APIs are deprecated")]
     public class UsersEndPoint
     {
         private readonly SharpBucketV1 _sharpBucketV1;
