@@ -16,7 +16,7 @@ namespace SharpBucket.V2.EndPoints
 
         public PullRequestResource(string accountName, string repoSlugOrName, int pullRequestId, RepositoriesEndPoint repositoriesEndPoint)
         {
-            _accountName = accountName;
+            _accountName = accountName.GuidOrValue();
             _slug = repoSlugOrName.ToSlug();
             _repositoriesEndPoint = repositoriesEndPoint;
             _pullRequestId = pullRequestId;

@@ -45,7 +45,7 @@ namespace SharpBucket.V2.EndPoints
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
 
-            var overrideUrl = _baseUrl + accountName + "/";
+            var overrideUrl = $"{_baseUrl}{accountName.GuidOrValue()}/";
             return GetPaginatedValues<Repository>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 

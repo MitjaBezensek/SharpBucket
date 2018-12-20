@@ -22,7 +22,7 @@ namespace SharpBucket.V2.EndPoints
         public RepositoryResource(string accountName, string repoSlugOrName, RepositoriesEndPoint repositoriesEndPoint)
         {
             _slug = repoSlugOrName.ToSlug();
-            _accountName = accountName;
+            _accountName = accountName.GuidOrValue();
             _repositoriesEndPoint = repositoriesEndPoint;
         }
 
