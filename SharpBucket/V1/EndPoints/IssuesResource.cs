@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SharpBucket.V1.Pocos;
+using Version = SharpBucket.V1.Pocos.Version;
 
 namespace SharpBucket.V1.EndPoints
 {
@@ -10,6 +12,7 @@ namespace SharpBucket.V1.EndPoints
     /// and you can't gain access to private repositories' issues. By authenticating, you will get a more detailed set of information, 
     /// the ability to create issues, as well as access to updating data or deleting issues you have access to.
     /// </summary>
+    [Obsolete("Bitbucket Cloud v1 APIs are deprecated")]
     public class IssuesResource
     {
         private readonly RepositoriesEndPoint _repositoriesEndPoint;

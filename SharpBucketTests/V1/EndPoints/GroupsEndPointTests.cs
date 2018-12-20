@@ -9,6 +9,7 @@ using System.Collections.Generic;
 namespace SharpBucketTests.V1.EndPoints
 {
     [TestFixture]
+    [Obsolete("Bitbucket Cloud v1 APIs are deprecated")]
     public class GroupsEndPointTests
     {
         private SharpBucketV1 sharpBucket;

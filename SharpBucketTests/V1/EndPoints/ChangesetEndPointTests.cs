@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using SharpBucket.V1;
 using SharpBucket.V1.EndPoints;
 using Shouldly;
@@ -7,6 +8,7 @@ using System.Linq;
 namespace SharpBucketTests.V1.EndPoints
 {
     [TestFixture]
+    [Obsolete("Bitbucket Cloud v1 APIs are deprecated")]
     public class ChangesetEndPointTests
     {
         private SharpBucketV1 sharpBucket;

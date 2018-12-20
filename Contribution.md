@@ -1,16 +1,21 @@
 # How to get started
 
-In order to run the SharpBuckets integration tests you should create OAuth tokens for your Bitbucket account. It is recommended that you create a separate Bitbucket account for developing.
+In order to run the SharpBucket's integration tests you should configure your development environment to inject OAuth credentials that will be used to connect to Bitbucket.  
+We recommend you to create a separate Bitbucket account that will be used only to run the tests. (log out and go [here](https://bitbucket.org/account/signup/) to create your test account)  
+Then in that test account you will need to create an OAuth Consumer. For that, go to "Settings > OAuth > Add consumer"  
+Your consumer must have a name, a callback URL, and all permissions (since we should tests all possible API calls). Look at that [screenshot](./Assets/OauthConsumerConfig.png) is you need help.
+
+Now, in the Oauth screen you can click on your OAuth consumer to reveal its key and secret like on that [screenshot](./Assets/OauthConsumerKeyAndSecret.png)
 
 After that create two environment variables for the key and the secret key. They should be named:
 - SB_CONSUMER_KEY
 - SB_CONSUMER_SECRET_KEY
 
-Also create an environment variable with your user name
+Also create an environment variable with your user name (the name of your account, not the name of the OAuth consumer)
 - SB_ACCOUNT_NAME
 
 Other prerequisites in your Bitbucket test account:
-- You should create at least one team (or be member of an existing one)
+- You should create one team (and by definition be member of it)
 - You should create a group named "AdminGroup" in the account referenced by SB_ACCOUNT_NAME
 
 # Where to get started
@@ -30,7 +35,7 @@ Just a few guidelines:
 - for simple improvements (like adding a missing api call) just submit a PR 
 - for architecture and breaking changes please open an issue first and lets discuss what you have planned
 - try to stick to the existing formatting as much as possible
-- any reformatting should be done in a sepparate PR in order to make it easier to review it
+- any reformatting should be done in a separate PR in order to make it easier to review it
 
 # Continuous integration
 
