@@ -72,7 +72,7 @@ namespace SharpBucket.V2.EndPoints
         /// https://confluence.atlassian.com/display/BITBUCKET/repository+Resource
         /// </summary>
         /// <param name="accountName">The owner of the repository.</param>
-        /// <param name="repoSlugOrName">The repository slug, name, or UUID</param>
+        /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
         /// <returns></returns>
         public RepositoryResource RepositoryResource(string accountName, string repoSlugOrName)
         {
@@ -124,6 +124,14 @@ namespace SharpBucket.V2.EndPoints
 
         #region Pull Requests Resource
 
+        /// <summary>
+        /// Manage pull requests for a repository. Use this resource to perform CRUD (create/read/update/delete) operations on a pull request. 
+        /// More info:
+        /// https://confluence.atlassian.com/display/BITBUCKET/pullrequests+Resource
+        /// </summary>
+        /// <param name="accountName">The owner of the repository.</param>
+        /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
+        /// <returns></returns>
         public PullRequestsResource PullRequestsResource(string accountName, string repoSlugOrName)
         {
             return new PullRequestsResource(accountName, repoSlugOrName, this);
@@ -349,6 +357,14 @@ namespace SharpBucket.V2.EndPoints
 
         #region Branch Resource
 
+        /// <summary>
+        /// Manage branches for a repository. Use this resource to perform CRUD (create/read/update/delete) operations. 
+        /// More info:
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/refs/branches
+        /// </summary>
+        /// <param name="accountName">The owner of the repository.</param>
+        /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
+        /// <returns></returns>
         public BranchResource BranchResource(string accountName, string repoSlugOrName)
         {
             return new BranchResource(accountName, repoSlugOrName, this);
@@ -364,6 +380,14 @@ namespace SharpBucket.V2.EndPoints
 
         #region Tag Resource
 
+        /// <summary>
+        /// Manage tags for a repository. Use this resource to perform CRUD (create/read/update/delete) operations. 
+        /// More info:
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/refs/tags
+        /// </summary>
+        /// <param name="accountName">The owner of the repository.</param>
+        /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
+        /// <returns></returns>
         public TagResource TagResource(string accountName, string repoSlugOrName)
         {
             return new TagResource(accountName, repoSlugOrName, this);
