@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using SharpBucket.V2.EndPoints;
+using SharpBucket.V2.Pocos;
 using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
@@ -119,6 +120,22 @@ namespace SharpBucketTests.V2.EndPoints
             var diff = NotExistingPullRequest.GetDiffForPullRequest();
             diff.ShouldNotBeNull();
             // TODO: to complete once the right POCO will be returned
+        }
+
+        [Test]
+        public void DeclinePullRequest_CreateAPullRequestThenDeclineIt_BranchStateShouldChangeFromOpenToDeclined()
+        {
+            var pullRequestsResource = SampleRepositories.TestRepository.RepositoryResource.PullRequestsResource();
+            var pullRequestToDecline = new PullRequest
+            {
+                title = "a bad work",
+                source = new Source { branch = new Branch { name = "branchToDecline" } }
+            };
+            var pullRequest = pullRequestsResource.PostPullRequest(pullRequestToDecline);
+            pullRequest.state.ShouldBe("OPEN");
+
+            var declinedPullRequest = pullRequestsResource.PullRequestResource(pullRequest.id.GetValueOrDefault()).DeclinePullRequest();
+            declinedPullRequest.state.ShouldBe("DECLINED");
         }
     }
 }

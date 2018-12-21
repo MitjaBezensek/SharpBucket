@@ -199,10 +199,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Post(new Merge(), overrideUrl);
         }
 
-        internal Merge DeclinePullRequest(string accountName, string slug, int pullRequestId)
+        internal PullRequest DeclinePullRequest(string accountName, string slug, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/decline/");
-            return _sharpBucketV2.Get(new Merge(), overrideUrl);
+            return _sharpBucketV2.Post(new PullRequest(), overrideUrl);
         }
 
         internal List<Comment> ListPullRequestComments(string accountName, string slug, int pullRequestId, int max = 0)

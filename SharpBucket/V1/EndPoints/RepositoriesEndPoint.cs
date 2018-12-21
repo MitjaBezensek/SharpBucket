@@ -12,6 +12,7 @@ namespace SharpBucket.V1.EndPoints
     /// More info here:
     /// https://confluence.atlassian.com/display/BITBUCKET/repositories+Endpoint+-+1.0
     /// </summary>
+    [Obsolete("Bitbucket Cloud v1 APIs are deprecated")]
     public class RepositoriesEndPoint
     {
         private readonly SharpBucketV1 _sharpBucketV1;

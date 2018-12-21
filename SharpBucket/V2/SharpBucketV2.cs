@@ -12,13 +12,13 @@ namespace SharpBucket.V2
         internal const string BITBUCKET_URL = "https://api.bitbucket.org/2.0";
 
         public SharpBucketV2()
+            : this(BITBUCKET_URL)
         {
-            _baseUrl = BITBUCKET_URL;
         }
 
         public SharpBucketV2(string baseUrl)
+            :base(baseUrl, new RequestExecutorV2())
         {
-            _baseUrl = baseUrl;
         }
 
         /// <summary>

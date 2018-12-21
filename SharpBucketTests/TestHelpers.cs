@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using SharpBucket.V2;
+using SharpBucketTests.GitHelpers;
 
 namespace SharpBucketTests
 {
@@ -55,6 +56,14 @@ namespace SharpBucketTests
             var sharpbucket = new SharpBucketV2();
             sharpbucket.OAuthentication2(consumerKey, consumerSecretKey);
             return sharpbucket;
+        }
+
+        public static TestRepositoryBuilder GetTestRepositoryBuilder(string repositoryAccountName, string repositoryName)
+        {
+            var consumerKey = Environment.GetEnvironmentVariable(SbConsumerKey);
+            var consumerSecretKey = Environment.GetEnvironmentVariable(SbConsumerSecretKey);
+            var credentialProvider = new OAuth2GitCredentialsProvider(consumerKey, consumerSecretKey);
+            return new TestRepositoryBuilder($"https://bitbucket.org/{repositoryAccountName}/{repositoryName}.git", credentialProvider);
         }
     }
 }
