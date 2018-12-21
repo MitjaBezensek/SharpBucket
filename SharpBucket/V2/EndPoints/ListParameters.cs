@@ -11,7 +11,7 @@ namespace SharpBucket.V2.EndPoints
     /// and which support filtering and sorting. See <see cref="https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering"/>
     /// for syntax.
     /// </summary>
-    public class ListParameters
+    public class ListParameters: ParametersBase
     {
         /// <summary>
         /// The filter string to apply to the list query.
@@ -26,23 +26,15 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public int Max { get; set; }
 
-        internal IDictionary<string, object> ToDictionary()
+        internal override IDictionary<string, object> ToDictionary()
         {
-            IDictionary<string, object> result = null;
-            
-            void AddIfNeeded(string key, string value)
+            var parameters = new[]
             {
-                if (!String.IsNullOrWhiteSpace(value))
-                {
-                    result = result ?? (result = new Dictionary<string, object>());
-                    result[key] = value;
-                }
-            }
+                new Parameter(!String.IsNullOrWhiteSpace(Filter), "q", Filter),
+                new Parameter(!String.IsNullOrWhiteSpace(Sort), "sort", Sort)
+            };
 
-            AddIfNeeded("q", Filter);
-            AddIfNeeded("sort", Sort);
-
-            return result;
+            return DictionaryFromParameters(parameters);            
         }
     }
 }

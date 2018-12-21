@@ -155,13 +155,21 @@ namespace SharpBucket.V2.EndPoints
         /// More info:
         /// https://confluence.atlassian.com/display/BITBUCKET/diff+Resource
         /// <summary>
-        /// Gets the diff for the current repository.  
+        /// Gets the diff for the current repository.
         /// </summary>
-        /// <param name="options">The diff spec.</param>
+        /// <param name="options">The diff spec (e.g., de3f2..78ab1).</param>
         /// <returns></returns>
-        public object GetDiff(string spec)
+        public string GetDiff(string spec) => GetDiff(spec, new DiffParameters());
+
+        /// <summary>
+        /// Gets the diff for the current repository.
+        /// </summary>
+        /// <param name="spec">The diff spec (e.g., de3f2..78ab1).</param>
+        /// <param name="parameters">Parameters for the diff.</param>
+        /// <returns></returns>
+        public string GetDiff(string spec, DiffParameters parameters)
         {
-            return _repositoriesEndPoint.GetDiff(_accountName, _repository, spec);
+            return _repositoriesEndPoint.GetDiff(_accountName, _repository, spec, parameters);
         }
 
         /// <summary>

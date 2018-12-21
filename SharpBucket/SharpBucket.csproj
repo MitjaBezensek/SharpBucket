@@ -52,6 +52,7 @@
     <Compile Include="Authentication\OAuthentication2.cs" />
     <Compile Include="Authentication\RequestExecutor.cs" />
     <Compile Include="Authentication\Token.cs" />
+    <Compile Include="V2\EndPoints\DiffParameters.cs" />
     <Compile Include="V2\EndPoints\FilterBuilder.cs" />
     <Compile Include="Utility\ObjectToDictionaryHelper.cs" />
     <Compile Include="V1\EndPoints\GroupsEndPoint.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="V2\EndPoints\BranchResource.cs" />
     <Compile Include="V2\EndPoints\EndPoint.cs" />
     <Compile Include="V2\EndPoints\ListParameters.cs" />
+    <Compile Include="V2\EndPoints\ParametersBase.cs" />
     <Compile Include="V2\EndPoints\PullRequestResource.cs" />
     <Compile Include="V2\EndPoints\PullRequestsResource.cs" />
     <Compile Include="V2\EndPoints\RepositoryResource.cs" />
