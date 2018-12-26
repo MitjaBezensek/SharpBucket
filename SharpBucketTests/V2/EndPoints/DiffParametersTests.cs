@@ -24,7 +24,7 @@ namespace SharpBucketTests.V2.EndPoints
 
         public static IEnumerable TestCases()
         {
-            var guid = Guid.NewGuid().ToString();
+            var guidList = new List<string>() { Guid.NewGuid().ToString() };
             var context = (byte)new Random().Next(5, 200);
 
             return new[]
@@ -40,8 +40,8 @@ namespace SharpBucketTests.V2.EndPoints
                 ),
 
                 new TestCaseData(
-                    new DiffParameters() { Path = guid },
-                    new Dictionary<string, object>() { { "path", guid } }
+                    new DiffParameters() { Paths = guidList },
+                    new Dictionary<string, object>() { { "path", guidList } }
                 ),
 
                 new TestCaseData(
@@ -55,13 +55,13 @@ namespace SharpBucketTests.V2.EndPoints
                 ),
 
                 new TestCaseData(
-                    new DiffParameters() { Context = context, Path = guid },
-                    new Dictionary<string, object>() { { "context", context }, { "path", guid } }
+                    new DiffParameters() { Context = context, Paths = guidList },
+                    new Dictionary<string, object>() { { "context", context }, { "path", guidList } }
                 ),
 
                 new TestCaseData(
-                    new DiffParameters() { Context = context, Path = guid, IgnoreWhitespace = true, Binary = false },
-                    new Dictionary<string, object>() { { "context", context }, { "path", guid }, { "ignore_whitespace", "true" }, { "binary", "false" } }
+                    new DiffParameters() { Context = context, Paths = guidList, IgnoreWhitespace = true, Binary = false },
+                    new Dictionary<string, object>() { { "context", context }, { "path", guidList }, { "ignore_whitespace", "true" }, { "binary", "false" } }
                 ),
             };
         }

@@ -16,9 +16,9 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public byte Context { get; set; } = 3;
         /// <summary>
-        /// Path of a particular file to diff.
+        /// The paths of specific files to diff.
         /// </summary>
-        public string Path { get; set; }
+        public IEnumerable<string> Paths { get; set; } = new List<string>();
         /// <summary>
         /// Generate diffs that ignore whitespace; default is false.
         /// </summary>
@@ -33,7 +33,7 @@ namespace SharpBucket.V2.EndPoints
             var parameters = new []
             {
                 new Parameter(Context != 3, "context", Context),
-                new Parameter(!String.IsNullOrWhiteSpace(Path), "path", Path),
+                new Parameter(Paths?.Any() == true, "path", Paths),
                 new Parameter(IgnoreWhitespace, "ignore_whitespace", "true"),
                 new Parameter(!Binary, "binary", "false")
             };
