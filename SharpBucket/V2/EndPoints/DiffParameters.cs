@@ -30,15 +30,12 @@ namespace SharpBucket.V2.EndPoints
 
         internal override IDictionary<string, object> ToDictionary()
         {
-            var parameters = new []
-            {
-                new Parameter(Context != 3, "context", Context),
-                new Parameter(Paths?.Any() == true, "path", Paths),
-                new Parameter(IgnoreWhitespace, "ignore_whitespace", "true"),
-                new Parameter(!Binary, "binary", "false")
-            };
-
-            return DictionaryFromParameters(parameters);
+            return DictionaryFromKvps(
+                KvpOrNull(Context != 3, "context", Context),
+                KvpOrNull(Paths?.Any() == true, "path", Paths),
+                KvpOrNull(IgnoreWhitespace, "ignore_whitespace", "true"),
+                KvpOrNull(!Binary, "binary", "false")
+            );
         }
     }
 }

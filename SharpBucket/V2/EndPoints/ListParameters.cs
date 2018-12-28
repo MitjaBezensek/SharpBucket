@@ -28,13 +28,10 @@ namespace SharpBucket.V2.EndPoints
 
         internal override IDictionary<string, object> ToDictionary()
         {
-            var parameters = new[]
-            {
-                new Parameter(!String.IsNullOrWhiteSpace(Filter), "q", Filter),
-                new Parameter(!String.IsNullOrWhiteSpace(Sort), "sort", Sort)
-            };
-
-            return DictionaryFromParameters(parameters);            
+            return DictionaryFromKvps(
+                KvpOrNull(!String.IsNullOrWhiteSpace(Filter), "q", Filter),
+                KvpOrNull(!String.IsNullOrWhiteSpace(Sort), "sort", Sort)
+            );        
         }
     }
 }
