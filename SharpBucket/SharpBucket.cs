@@ -27,7 +27,7 @@ namespace SharpBucket
         {
             this.BaseUrl = baseUrl;
             this.RequestExecutor = requestExecutor;
-            authenticator = new NoAuthentication(BaseUrl);
+            authenticator = new NoAuthentication(BaseUrl) { RequestExecutor = this.RequestExecutor };
         }
 
         /// <summary>   
