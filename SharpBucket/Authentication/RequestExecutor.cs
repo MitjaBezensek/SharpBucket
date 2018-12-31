@@ -8,7 +8,7 @@ namespace SharpBucket.Authentication
 {
     internal abstract class RequestExecutor
     {
-        public T ExecuteRequest<T>(string url, Method method, object body, RestClient client, IDictionary<string, object> requestParameters)
+        public T ExecuteRequest<T>(string url, Method method, object body, IRestClient client, IDictionary<string, object> requestParameters)
             where T : new()
         {
             var request = new RestRequest(url, method);
@@ -45,9 +45,9 @@ namespace SharpBucket.Authentication
             return result.Data;
         }
 
-        protected abstract void AddBody(RestRequest request, object body);
+        protected abstract void AddBody(IRestRequest request, object body);
 
-        private static IRestResponse<T> ExecuteRequest<T>(Method method, RestClient client, RestRequest request)
+        private static IRestResponse<T> ExecuteRequest<T>(Method method, IRestClient client, IRestRequest request)
             where T : new()
         {
             IRestResponse<T> result;
