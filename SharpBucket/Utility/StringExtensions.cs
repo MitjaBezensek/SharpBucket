@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace SharpBucket.Utility
 {
-    public static class StringExtensions
+    internal static class StringExtensions
     {
         /// <summary>
         /// Converts a repository name into the corresponding slug.
@@ -17,8 +17,7 @@ namespace SharpBucket.Utility
             if (repoName.TryGetGuid(out var guidString))
                 return guidString;
 
-            if (repoName.Contains('\''))
-                repoName = repoName.Replace("'", "");
+            repoName = repoName.Replace("'", "");
             var slugRegex = new Regex(@"[^a-zA-Z\.\-_0-9]+|-{2,}");
             return slugRegex.Replace(repoName, "-").ToLowerInvariant();
         }
