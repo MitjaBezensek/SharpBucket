@@ -68,6 +68,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Authentication\NoAuthenticationTests.cs" />
     <Compile Include="Authentication\OAuthenticationTests.cs" />
     <Compile Include="Authentication\OAuthentication2Tests.cs" />
     <Compile Include="GitHelpers\IGitCredentialsProvider.cs" />
