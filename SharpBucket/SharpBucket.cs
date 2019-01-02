@@ -27,6 +27,14 @@ namespace SharpBucket
         {
             this.BaseUrl = baseUrl;
             this.RequestExecutor = requestExecutor;
+            NoAuthentation();
+        }
+
+        /// <summary>
+        /// Do not use authentication with the BitBucket API. Only public data can be retrieved.
+        /// </summary>
+        public void NoAuthentation()
+        {
             authenticator = new NoAuthentication(BaseUrl) { RequestExecutor = this.RequestExecutor };
         }
 
