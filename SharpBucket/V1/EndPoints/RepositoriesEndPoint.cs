@@ -41,7 +41,7 @@ namespace SharpBucket.V1.EndPoints
         public ChangesetInfo ListChangeset()
         {
             var overrideUrl = _baserUrl + "changesets/";
-            return _sharpBucketV1.Get(new ChangesetInfo(), overrideUrl);
+            return _sharpBucketV1.Get<ChangesetInfo>(overrideUrl);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace SharpBucket.V1.EndPoints
         private Changeset GetChangeset(Changeset changeset)
         {
             var overrideUrl = _baserUrl + "changesets/" + changeset.node;
-            return _sharpBucketV1.Get(changeset, overrideUrl);
+            return _sharpBucketV1.Get<Changeset>(overrideUrl);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace SharpBucket.V1.EndPoints
         private List<DiffstatInfo> GetChangesetDiffstat(Changeset changeset, int limit, int start)
         {
             var overrideUrl = _baserUrl + "changesets/" + changeset.node + "/diffstat/";
-            return _sharpBucketV1.Get(new List<DiffstatInfo>(), overrideUrl, new { limit, start });
+            return _sharpBucketV1.Get<List<DiffstatInfo>>(overrideUrl, new { limit, start });
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace SharpBucket.V1.EndPoints
         private Changeset GetChangesetDiff(Changeset changeset)
         {
             var overrideUrl = _baserUrl + "changesets/" + changeset.node + "/diff/";
-            return _sharpBucketV1.Get(changeset, overrideUrl);
+            return _sharpBucketV1.Get<Changeset>(overrideUrl);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace SharpBucket.V1.EndPoints
         public List<SSH> ListDeployKeys()
         {
             var overrideUrl = _baserUrl + "deploy-keys/";
-            return _sharpBucketV1.Get(new List<SSH>(), overrideUrl);
+            return _sharpBucketV1.Get<List<SSH>>(overrideUrl);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace SharpBucket.V1.EndPoints
         public SSH GetDeployKey(int? pk)
         {
             var overrideUrl = _baserUrl + "deploy-keys/" + pk + "/";
-            return _sharpBucketV1.Get(new SSH(), overrideUrl);
+            return _sharpBucketV1.Get<SSH>(overrideUrl);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace SharpBucket.V1.EndPoints
         public SSH DeleteDeployKey(SSH key)
         {
             var overrideUrl = _baserUrl + "deploy-keys/" + key.pk + "/";
-            return _sharpBucketV1.Delete(key, overrideUrl);
+            return _sharpBucketV1.Delete<SSH>(overrideUrl);
         }
 
         #endregion
@@ -175,7 +175,7 @@ namespace SharpBucket.V1.EndPoints
         public EventInfo ListEvents()
         {
             var overrideUrl = _baserUrl + "events/";
-            return _sharpBucketV1.Get(new EventInfo(), overrideUrl);
+            return _sharpBucketV1.Get<EventInfo>(overrideUrl);
         }
 
         #endregion
@@ -199,13 +199,13 @@ namespace SharpBucket.V1.EndPoints
 
         internal IssuesInfo ListIssues(IssueSearchParameters parameters = null)
         {
-            return _sharpBucketV1.Get(new IssuesInfo(), _issuesUrl, parameters);
+            return _sharpBucketV1.Get<IssuesInfo>(_issuesUrl, parameters);
         }
 
         private Issue GetIssue(Issue issue)
         {
             var overrideUrl = String.Format(_issuesIdUrl, issue.local_id);
-            return _sharpBucketV1.Get(issue, overrideUrl);
+            return _sharpBucketV1.Get<Issue>(overrideUrl);
         }
 
         internal Issue GetIssue(int? issueId)
@@ -216,7 +216,7 @@ namespace SharpBucket.V1.EndPoints
         internal IssueFollowers ListIssueFollowers(Issue issue)
         {
             var overrideUrl = String.Format(_issuesIdUrl + "followers", issue.local_id);
-            return _sharpBucketV1.Get(new IssueFollowers(), overrideUrl);
+            return _sharpBucketV1.Get<IssueFollowers>(overrideUrl);
         }
 
         internal IssueFollowers ListIssueFollowers(int? issueId)
@@ -238,7 +238,7 @@ namespace SharpBucket.V1.EndPoints
         internal Issue DeleteIssue(Issue issue)
         {
             var overrideUrl = String.Format(_issuesIdUrl, issue.local_id);
-            return _sharpBucketV1.Delete(issue, overrideUrl);
+            return _sharpBucketV1.Delete<Issue>(overrideUrl);
         }
 
         internal Issue DeleteIssue(int? issueId)
@@ -249,7 +249,7 @@ namespace SharpBucket.V1.EndPoints
         internal List<Comment> ListIssueComments(Issue issue)
         {
             var overrideUrl = String.Format(_issuesIdUrl + "comments", issue.local_id);
-            return _sharpBucketV1.Get(new List<Comment>(), overrideUrl);
+            return _sharpBucketV1.Get<List<Comment>>(overrideUrl);
         }
 
         internal List<Comment> ListIssueComments(int issueId)
@@ -260,13 +260,13 @@ namespace SharpBucket.V1.EndPoints
         private Comment GetIssueComment(int issueId, Comment comment)
         {
             var overrideUrl = String.Format(_issuesIdUrl + "comments/{1}", issueId, comment.comment_id);
-            return _sharpBucketV1.Get(comment, overrideUrl);
+            return _sharpBucketV1.Get<Comment>(overrideUrl);
         }
 
         internal Comment GetIssueComment(Issue issue, int? commentId)
         {
             var overrideUrl = String.Format(_issuesIdUrl + "comments/{1}", issue.local_id, commentId);
-            return _sharpBucketV1.Get(new Comment { comment_id = commentId }, overrideUrl);
+            return _sharpBucketV1.Get<Comment>(overrideUrl);
         }
 
         internal Comment GetIssueComment(int issueId, int? commentId)
@@ -300,7 +300,7 @@ namespace SharpBucket.V1.EndPoints
         internal Comment DeleteIssueComment(Issue issue, Comment comment)
         {
             var overrideUrl = String.Format(_issuesIdUrl + "comments/{1}", issue.local_id, comment.comment_id);
-            return _sharpBucketV1.Delete(comment, overrideUrl);
+            return _sharpBucketV1.Delete<Comment>(overrideUrl);
         }
 
         internal Comment DeleteIssueComment(Issue issue, int? commentId)
@@ -321,13 +321,13 @@ namespace SharpBucket.V1.EndPoints
         internal List<Component> ListComponents()
         {
             var overrideUrl = _issuesUrl + "components/";
-            return _sharpBucketV1.Get(new List<Component>(), overrideUrl);
+            return _sharpBucketV1.Get<List<Component>>(overrideUrl);
         }
 
         private Component GetComponent(Component component)
         {
             var overrideUrl = _issuesUrl + "components/" + component.id;
-            return _sharpBucketV1.Get(component, overrideUrl);
+            return _sharpBucketV1.Get<Component>(overrideUrl);
         }
 
         internal Component GetComponent(int? componentId)
@@ -350,7 +350,7 @@ namespace SharpBucket.V1.EndPoints
         internal Component DeleteComponent(Component component)
         {
             var overrideUrl = _issuesUrl + "components/" + component.id;
-            return _sharpBucketV1.Delete(component, overrideUrl);
+            return _sharpBucketV1.Delete<Component>(overrideUrl);
         }
 
         internal Component DeleteComponent(int? componentId)
@@ -361,13 +361,13 @@ namespace SharpBucket.V1.EndPoints
         internal List<Version> ListVersions()
         {
             var overrideUrl = _issuesUrl + "versions/";
-            return _sharpBucketV1.Get(new List<Version>(), overrideUrl);
+            return _sharpBucketV1.Get<List<Version>>(overrideUrl);
         }
 
         private Version GetVersion(Version version)
         {
             var overrideUrl = _issuesUrl + "versions/" + version.id;
-            return _sharpBucketV1.Get(version, overrideUrl);
+            return _sharpBucketV1.Get<Version>(overrideUrl);
         }
 
         internal Version GetVersion(int? versionId)
@@ -390,7 +390,7 @@ namespace SharpBucket.V1.EndPoints
         internal Version DeleteVersion(Version version)
         {
             var overrideUrl = _issuesUrl + "versions/" + version.id;
-            return _sharpBucketV1.Delete(version, overrideUrl);
+            return _sharpBucketV1.Delete<Version>(overrideUrl);
         }
 
         internal Version DeleteVersion(int? versionId)
@@ -401,13 +401,13 @@ namespace SharpBucket.V1.EndPoints
         internal List<Milestone> ListMilestones()
         {
             var overrideUrl = _issuesUrl + "milestones/";
-            return _sharpBucketV1.Get(new List<Milestone>(), overrideUrl);
+            return _sharpBucketV1.Get<List<Milestone>>(overrideUrl);
         }
 
         private Milestone GetMilestone(Milestone milestone)
         {
             var overrideUrl = _issuesUrl + "milestones/" + milestone.id;
-            return _sharpBucketV1.Get(milestone, overrideUrl);
+            return _sharpBucketV1.Get<Milestone>(overrideUrl);
         }
 
         internal Milestone GetMilestone(int? milestoneId)
@@ -430,7 +430,7 @@ namespace SharpBucket.V1.EndPoints
         internal Milestone DeleteMilestone(Milestone milestone)
         {
             var overrideUrl = _issuesUrl + "milestones/" + milestone.id;
-            return _sharpBucketV1.Delete(milestone, overrideUrl);
+            return _sharpBucketV1.Delete<Milestone>(overrideUrl);
         }
 
         internal Milestone DeleteMilestone(int? milestoneId)
@@ -449,7 +449,7 @@ namespace SharpBucket.V1.EndPoints
         public List<Link> ListLinks()
         {
             var overrideUrl = _baserUrl + "links/";
-            return _sharpBucketV1.Get(new List<Link>(), overrideUrl);
+            return _sharpBucketV1.Get<List<Link>>(overrideUrl);
         }
 
         /// <summary>
@@ -460,7 +460,7 @@ namespace SharpBucket.V1.EndPoints
         public Link GetLink(int? linkId)
         {
             var overrideUrl = _baserUrl + "links/" + linkId + "/";
-            return _sharpBucketV1.Get(new Link(), overrideUrl);
+            return _sharpBucketV1.Get<Link>(overrideUrl);
         }
 
         /// <summary>
@@ -493,7 +493,7 @@ namespace SharpBucket.V1.EndPoints
         public Link DeleteLink(Link link)
         {
             var overrideUrl = _baserUrl + "links/" + link.id + "/";
-            return _sharpBucketV1.Delete(link, overrideUrl);
+            return _sharpBucketV1.Delete<Link>(overrideUrl);
         }
 
         #endregion
@@ -507,7 +507,7 @@ namespace SharpBucket.V1.EndPoints
         public Dictionary<string, BranchInfo> ListBranches()
         {
             var overrideUrl = _baserUrl + "branches/";
-            return _sharpBucketV1.Get(new Dictionary<string, BranchInfo>(), overrideUrl);
+            return _sharpBucketV1.Get<Dictionary<string, BranchInfo>>(overrideUrl);
         }
 
         /// <summary>
@@ -518,7 +518,7 @@ namespace SharpBucket.V1.EndPoints
         public MainBranch GetMainBranch()
         {
             var overrideUrl = _baserUrl + "main-branch/";
-            return _sharpBucketV1.Get(new MainBranch(), overrideUrl);
+            return _sharpBucketV1.Get<MainBranch>(overrideUrl);
         }
 
         /// <summary>
@@ -528,7 +528,7 @@ namespace SharpBucket.V1.EndPoints
         public IDictionary<string, Tag> ListTags()
         {
             var overrideUrl = _baserUrl + "tags/";
-            return _sharpBucketV1.Get(new Dictionary<string, Tag>(), overrideUrl);
+            return _sharpBucketV1.Get<Dictionary<string, Tag>>(overrideUrl);
         }
 
         #endregion
@@ -548,13 +548,13 @@ namespace SharpBucket.V1.EndPoints
         public SrcDirectory ListSources(string branch, string directory)
         {
             var overrideUrl = _baserUrl + "src/" + branch + "/" + directory + "/";
-            return _sharpBucketV1.Get(new SrcDirectory(), overrideUrl);
+            return _sharpBucketV1.Get<SrcDirectory>(overrideUrl);
         }
 
         public SrcFile GetSrcFile(string branch, string filepath)
         {
             var overrideUrl = _baserUrl + "src/" + branch + "/" + filepath;
-            return _sharpBucketV1.Get(new SrcFile(), overrideUrl);
+            return _sharpBucketV1.Get<SrcFile>(overrideUrl);
         }
 
         #endregion
@@ -571,7 +571,7 @@ namespace SharpBucket.V1.EndPoints
         public Wiki GetWiki(string page)
         {
             var overrideUrl = _baserUrl + "wiki/" + page;
-            return _sharpBucketV1.Get(new Wiki(), overrideUrl);
+            return _sharpBucketV1.Get<Wiki>(overrideUrl);
         }
 
         // TODO: Doesn't work, 500 server error, same for put
@@ -612,7 +612,7 @@ namespace SharpBucket.V1.EndPoints
         public List<Revision> GetRevisionSrc(string revision, string path)
         {
             var overrideUrl = _baserUrl + "src/" + revision + "/" + path;
-            return _sharpBucketV1.Get(new List<Revision>(), overrideUrl);
+            return _sharpBucketV1.Get<List<Revision>>(overrideUrl);
         }
 
         /// <summary>
@@ -624,7 +624,7 @@ namespace SharpBucket.V1.EndPoints
         public String GetRevisionRaw(string revision, string path)
         {
             var overrideUrl = _baserUrl + "raw/" + revision + "/" + path;
-            return _sharpBucketV1.Get(new object(), overrideUrl) as String;
+            return _sharpBucketV1.Get(overrideUrl);
         }
 
         #endregion

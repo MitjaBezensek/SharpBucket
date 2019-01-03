@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Net;
+using System.Web;
 using RestSharp;
 using RestSharp.Authenticators;
-using RestSharp.Extensions.MonoHttp;
 
 namespace SharpBucket.Authentication
 {
@@ -31,6 +31,18 @@ namespace SharpBucket.Authentication
         {
             OAuthToken = oAuthToken;
             OauthTokenSecret = oauthTokenSecret;
+        }
+
+        public override string GetResponse(string url, Method method, object body, IDictionary<string, object> requestParameters)
+        {
+            if (client == null)
+            {
+                client = new RestClient(_baseUrl)
+                {
+                    Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)
+                };
+            }
+            return base.GetResponse(url, method, body, requestParameters);
         }
 
         public override T GetResponse<T>(string url, Method method, object body, IDictionary<string, object> requestParameters)

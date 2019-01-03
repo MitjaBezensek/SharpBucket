@@ -82,7 +82,7 @@ namespace SharpBucket.V2.EndPoints
         internal Repository GetRepository(string accountName, string slug)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, null);
-            return _sharpBucketV2.Get(new Repository(), overrideUrl);
+            return _sharpBucketV2.Get<Repository>(overrideUrl);
         }
 
         internal Repository PutRepository(Repository repo, string accountName, string slug)
@@ -100,7 +100,7 @@ namespace SharpBucket.V2.EndPoints
         internal Repository DeleteRepository(string accountName, string slug)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, null);
-            return _sharpBucketV2.Delete(new Repository(), overrideUrl);
+            return _sharpBucketV2.Delete<Repository>(overrideUrl);
         }
 
         private string GetRepositoryUrl(string accountName, string slug, string append)
@@ -168,7 +168,7 @@ namespace SharpBucket.V2.EndPoints
         internal PullRequest GetPullRequest(string accountName, string slug, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/");
-            return _sharpBucketV2.Get(new PullRequest(), overrideUrl);
+            return _sharpBucketV2.Get<PullRequest>(overrideUrl);
         }
 
         internal List<Commit> ListPullRequestCommits(string accountName, string slug, int pullRequestId, int max = 0)
@@ -180,19 +180,19 @@ namespace SharpBucket.V2.EndPoints
         internal PullRequestInfo ApprovePullRequest(string accountName, string slug, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/approve/");
-            return _sharpBucketV2.Post(new PullRequestInfo(), overrideUrl);
+            return _sharpBucketV2.Post<PullRequestInfo>(null, overrideUrl);
         }
 
         internal PullRequestInfo RemovePullRequestApproval(string accountName, string slug, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/approve/");
-            return _sharpBucketV2.Delete(new PullRequestInfo(), overrideUrl);
+            return _sharpBucketV2.Delete<PullRequestInfo>(overrideUrl);
         }
 
         internal object GetDiffForPullRequest(string accountName, string slug, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/diff/");
-            return _sharpBucketV2.Get(new Object(), overrideUrl);
+            return _sharpBucketV2.Get(overrideUrl);
         }
 
         internal List<Activity> GetPullRequestActivity(string accountName, string slug, int pullRequestId, int max = 0)
@@ -204,13 +204,13 @@ namespace SharpBucket.V2.EndPoints
         internal Merge AcceptAndMergePullRequest(string accountName, string slug, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/merge/");
-            return _sharpBucketV2.Post(new Merge(), overrideUrl);
+            return _sharpBucketV2.Post<Merge>(null, overrideUrl);
         }
 
         internal PullRequest DeclinePullRequest(string accountName, string slug, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/decline/");
-            return _sharpBucketV2.Post(new PullRequest(), overrideUrl);
+            return _sharpBucketV2.Post<PullRequest>(null, overrideUrl);
         }
 
         internal List<Comment> ListPullRequestComments(string accountName, string slug, int pullRequestId, int max = 0)
@@ -222,7 +222,7 @@ namespace SharpBucket.V2.EndPoints
         internal Comment GetPullRequestComment(string accountName, string slug, int pullRequestId, int commentId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/{commentId}/");
-            return _sharpBucketV2.Get(new Comment(), overrideUrl);
+            return _sharpBucketV2.Get<Comment>(overrideUrl);
         }
 
         internal Comment PostPullRequestComment(string accountName, string slug, int pullRequestId, Comment comment)
@@ -250,7 +250,7 @@ namespace SharpBucket.V2.EndPoints
         internal BranchRestriction GetBranchRestriction(string accountName, string slug, int restrictionId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"branch-restrictions/{restrictionId}");
-            return _sharpBucketV2.Get(new BranchRestriction(), overrideUrl);
+            return _sharpBucketV2.Get<BranchRestriction>(overrideUrl);
         }
 
         internal BranchRestriction PutBranchRestriction(string accountName, string slug, BranchRestriction restriction)
@@ -262,7 +262,7 @@ namespace SharpBucket.V2.EndPoints
         internal BranchRestriction DeleteBranchRestriction(string accountName, string slug, int restrictionId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"branch-restrictions/{restrictionId}");
-            return _sharpBucketV2.Delete(new BranchRestriction(), overrideUrl);
+            return _sharpBucketV2.Delete<BranchRestriction>(overrideUrl);
         }
 
         #endregion
@@ -272,13 +272,13 @@ namespace SharpBucket.V2.EndPoints
         internal object GetDiff(string accountName, string slug, object options)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"diff/{options}");
-            return _sharpBucketV2.Get(new object(), overrideUrl);
+            return _sharpBucketV2.Get(overrideUrl);
         }
 
         internal object GetPatch(string accountName, string slug, object options)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"patch/{options}");
-            return _sharpBucketV2.Get(new object(), overrideUrl);
+            return _sharpBucketV2.Get(overrideUrl);
         }
 
         #endregion
@@ -298,7 +298,7 @@ namespace SharpBucket.V2.EndPoints
         internal Commit GetCommit(string accountName, string slug, string revision)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}");
-            return _sharpBucketV2.Get(new Commit(), overrideUrl);
+            return _sharpBucketV2.Get<Commit>(overrideUrl);
         }
 
         internal List<Comment> ListCommitComments(string accountName, string slug, string revision, int max = 0)
@@ -310,19 +310,19 @@ namespace SharpBucket.V2.EndPoints
         internal Comment GetCommitComment(string accountName, string slug, string revision, int commentId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"commits/{revision}/comments/{revision}/{commentId}/");
-            return _sharpBucketV2.Get(new Comment(), overrideUrl);
+            return _sharpBucketV2.Get<Comment>(overrideUrl);
         }
 
         internal UserRole ApproveCommit(string accountName, string slug, string revision)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/approve/");
-            return _sharpBucketV2.Post(new UserRole(), overrideUrl);
+            return _sharpBucketV2.Post<UserRole>(null, overrideUrl);
         }
 
         internal void DeleteCommitApproval(string accountName, string slug, string revision)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/approve/");
-            _sharpBucketV2.Delete(new object(), overrideUrl);
+            _sharpBucketV2.Delete<object>(overrideUrl);
         }
 
         internal BuildInfo AddNewBuildStatus(string accountName, string slug, string revision, BuildInfo buildInfo)
@@ -334,7 +334,7 @@ namespace SharpBucket.V2.EndPoints
         internal BuildInfo GetBuildStatusInfo(string accountName, string slug, string revision, string key)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/statuses/build/" + key);
-            return _sharpBucketV2.Get(new BuildInfo(), overrideUrl);
+            return _sharpBucketV2.Get<BuildInfo>(overrideUrl);
         }
 
         internal BuildInfo ChangeBuildStatusInfo(string accountName, string slug, string revision, string key, BuildInfo buildInfo)

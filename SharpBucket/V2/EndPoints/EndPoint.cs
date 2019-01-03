@@ -48,7 +48,7 @@ namespace SharpBucket.V2.EndPoints
 
             while (true)
             {
-                response = _sharpBucketV2.Get(new IteratorBasedPage<TValue>(), overrideUrl, requestParameters);
+                response = _sharpBucketV2.Get<IteratorBasedPage<TValue>>(overrideUrl, requestParameters);
                 if (response == null)
                 {
                     break;

@@ -29,7 +29,7 @@ namespace SharpBucket.V1.EndPoints
         /// <returns></returns>
         public List<Group> ListGroups()
         {
-            return _sharpBucketV1.Get<List<Group>>(new List<Group>(), _baseUrl);
+            return _sharpBucketV1.Get<List<Group>>(_baseUrl);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace SharpBucket.V1.EndPoints
         public Group GetGroup(string group_slug)
         {
             var overrideUrl = _baseUrl + group_slug;
-            return _sharpBucketV1.Get<Group>(new Group(), overrideUrl);
+            return _sharpBucketV1.Get<Group>(overrideUrl);
         }
 
         /// <summary>
@@ -61,8 +61,7 @@ namespace SharpBucket.V1.EndPoints
         public Group DeleteGroup(string group_slug)
         {
             var overrideUrl = _baseUrl + group_slug;
-            var group = new Group() { slug = group_slug };
-            return _sharpBucketV1.Delete<Group>(group, overrideUrl);
+            return _sharpBucketV1.Delete<Group>(overrideUrl);
         }
 
         /// <summary>
@@ -73,7 +72,7 @@ namespace SharpBucket.V1.EndPoints
         public Group UpdateGroup(string group_slug, Group group)
         {
             var overrideUrl = _baseUrl + group_slug;
-            return _sharpBucketV1.Put<Group>(group, overrideUrl);
+            return _sharpBucketV1.Put(group, overrideUrl);
         }
 
         /// <summary>
@@ -86,7 +85,7 @@ namespace SharpBucket.V1.EndPoints
         {
             var overrideUrl = _baseUrl + group_slug + "/members/" + membername;
             var member = new User() { username = membername };
-            return _sharpBucketV1.Put<User>(member, overrideUrl);
+            return _sharpBucketV1.Put(member, overrideUrl);
         }
 
         /// <summary>
@@ -97,7 +96,7 @@ namespace SharpBucket.V1.EndPoints
         public List<User> ListGroupMembers(string group_slug)
         {
             var overrideUrl = _baseUrl + group_slug + "/members";
-            return _sharpBucketV1.Get<List<User>>(new List<User>(), overrideUrl);
+            return _sharpBucketV1.Get<List<User>>(overrideUrl);
         }
 
         /// <summary>
@@ -109,8 +108,7 @@ namespace SharpBucket.V1.EndPoints
         public User DeleteMemberFromGroup(string group_slug, string membername)
         {
             var overrideUrl = _baseUrl + group_slug + "/members/" + membername;
-            var member = new User() { username = membername };
-            return _sharpBucketV1.Delete<User>(member, overrideUrl);
+            return _sharpBucketV1.Delete<User>(overrideUrl);
         }
     }
 }

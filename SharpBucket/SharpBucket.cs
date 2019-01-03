@@ -123,14 +123,23 @@ namespace SharpBucket
             return (OAuthentication2)authenticator;
         }
 
+        private string Send(object body, Method method, string overrideUrl = null, IDictionary<string, object> requestParameters = null)
+        {
+            return SafeCallTo(() => authenticator.GetResponse(overrideUrl, method, body, requestParameters));
+        }
+
         private T Send<T>(object body, Method method, string overrideUrl = null, IDictionary<string, object> requestParameters = null)
             where T : new()
         {
-            var relativeUrl = overrideUrl;
+            return SafeCallTo(() => authenticator.GetResponse<T>(overrideUrl, method, body, requestParameters));
+        }
+
+        private T SafeCallTo<T>(Func<T> webCall)
+        {
             T response;
             try
             {
-                response = authenticator.GetResponse<T>(relativeUrl, method, body, requestParameters);
+                response = webCall();
             }
             catch (WebException ex)
             {
@@ -140,12 +149,19 @@ namespace SharpBucket
             return response;
         }
 
-        internal T Get<T>(T body, string overrideUrl, object requestParameters = null)
+        internal string Get(string overrideUrl, object requestParameters = null)
+        {
+            //Convert to dictionary to avoid refactoring the Send method.
+            var parameterDictionary = requestParameters.ToDictionary();
+            return Send(null, Method.GET, overrideUrl, parameterDictionary);
+        }
+
+        internal T Get<T>(string overrideUrl, object requestParameters = null)
             where T : new()
         {
             //Convert to dictionary to avoid refactoring the Send method.
             var parameterDictionary = requestParameters.ToDictionary();
-            return Send<T>(body, Method.GET, overrideUrl, parameterDictionary);
+            return Send<T>(null, Method.GET, overrideUrl, parameterDictionary);
         }
 
         internal T Post<T>(T body, string overrideUrl)
@@ -160,10 +176,10 @@ namespace SharpBucket
             return Send<T>(body, Method.PUT, overrideUrl);
         }
 
-        internal T Delete<T>(T body, string overrideUrl)
+        internal T Delete<T>(string overrideUrl)
             where T : new()
         {
-            return Send<T>(body, Method.DELETE, overrideUrl);
+            return Send<T>(null, Method.DELETE, overrideUrl);
         }
     }
 }
