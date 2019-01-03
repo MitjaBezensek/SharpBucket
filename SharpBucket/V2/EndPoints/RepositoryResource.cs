@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -14,14 +15,14 @@ namespace SharpBucket.V2.EndPoints
     {
         private readonly RepositoriesEndPoint _repositoriesEndPoint;
         private readonly string _accountName;
-        private readonly string _repository;
+        private readonly string _slug;
 
         #region Repository Resource
 
-        public RepositoryResource(string accountName, string repository, RepositoriesEndPoint repositoriesEndPoint)
+        public RepositoryResource(string accountName, string repoSlugOrName, RepositoriesEndPoint repositoriesEndPoint)
         {
-            _repository = repository;
-            _accountName = accountName;
+            _slug = repoSlugOrName.ToSlug();
+            _accountName = accountName.GuidOrValue();
             _repositoriesEndPoint = repositoriesEndPoint;
         }
 
@@ -31,7 +32,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public Repository GetRepository()
         {
-            return _repositoriesEndPoint.GetRepository(_accountName, _repository);
+            return _repositoriesEndPoint.GetRepository(_accountName, _slug);
         }
 
         /// <summary>
@@ -40,9 +41,15 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public Repository DeleteRepository()
         {
-            return _repositoriesEndPoint.DeleteRepository(_accountName, _repository);
+            return _repositoriesEndPoint.DeleteRepository(_accountName, _slug);
         }
 
+
+        /// <summary>
+        /// Creates a new repository.
+        /// </summary>
+        /// <param name="repository">The repository to create.</param>
+        /// <returns>The created repository.</returns>
         public Repository PostRepository(Repository repository)
         {
             return _repositoriesEndPoint.PostRepository(repository, _accountName);
@@ -54,7 +61,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public List<Watcher> ListWatchers()
         {
-            return _repositoriesEndPoint.ListWatchers(_accountName, _repository);
+            return _repositoriesEndPoint.ListWatchers(_accountName, _slug);
         }
 
         /// <summary>
@@ -63,7 +70,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public List<Fork> ListForks()
         {
-            return _repositoriesEndPoint.ListForks(_accountName, _repository);
+            return _repositoriesEndPoint.ListForks(_accountName, _slug);
         }
 
         #endregion
@@ -73,7 +80,7 @@ namespace SharpBucket.V2.EndPoints
         private BranchResource _branchesResource;
 
         public BranchResource BranchesResource => this._branchesResource ??
-                                                (_branchesResource = new BranchResource(_accountName, _repository, _repositoriesEndPoint));
+                                                (_branchesResource = new BranchResource(_accountName, _slug, _repositoriesEndPoint));
 
         #endregion
 
@@ -90,7 +97,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public PullRequestsResource PullRequestsResource()
         {
-            return new PullRequestsResource(_accountName, _repository, _repositoriesEndPoint);
+            return new PullRequestsResource(_accountName, _slug, _repositoriesEndPoint);
         }
 
         #endregion
@@ -105,7 +112,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public List<BranchRestriction> ListBranchRestrictions()
         {
-            return _repositoriesEndPoint.ListBranchRestrictions(_accountName, _repository);
+            return _repositoriesEndPoint.ListBranchRestrictions(_accountName, _slug);
         }
 
         /// <summary>
@@ -115,7 +122,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public BranchRestriction PostBranchRestriction(BranchRestriction restriction)
         {
-            return _repositoriesEndPoint.PostBranchRestriction(_accountName, _repository, restriction);
+            return _repositoriesEndPoint.PostBranchRestriction(_accountName, _slug, restriction);
         }
 
         /// <summary>
@@ -125,7 +132,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public BranchRestriction GetBranchRestriction(int restrictionId)
         {
-            return _repositoriesEndPoint.GetBranchRestriction(_accountName, _repository, restrictionId);
+            return _repositoriesEndPoint.GetBranchRestriction(_accountName, _slug, restrictionId);
         }
 
         /// <summary>
@@ -135,7 +142,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public BranchRestriction PutBranchRestriction(BranchRestriction restriction)
         {
-            return _repositoriesEndPoint.PutBranchRestriction(_accountName, _repository, restriction);
+            return _repositoriesEndPoint.PutBranchRestriction(_accountName, _slug, restriction);
         }
 
         /// <summary>
@@ -145,7 +152,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public BranchRestriction DeleteBranchRestriction(int restrictionId)
         {
-            return _repositoriesEndPoint.DeleteBranchRestriction(_accountName, _repository, restrictionId);
+            return _repositoriesEndPoint.DeleteBranchRestriction(_accountName, _slug, restrictionId);
         }
 
         #endregion
@@ -161,7 +168,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public object GetDiff(object options)
         {
-            return _repositoriesEndPoint.GetDiff(_accountName, _repository, options);
+            return _repositoriesEndPoint.GetDiff(_accountName, _slug, options);
         }
 
         /// <summary>
@@ -171,7 +178,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public object GetPatch(object options)
         {
-            return _repositoriesEndPoint.GetPatch(_accountName, _repository, options);
+            return _repositoriesEndPoint.GetPatch(_accountName, _slug, options);
         }
 
         #endregion
@@ -189,7 +196,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public List<Commit> ListCommits(string branchortag = null, int max = 0)
         {
-            return _repositoriesEndPoint.ListCommits(_accountName, _repository, branchortag, max);
+            return _repositoriesEndPoint.ListCommits(_accountName, _slug, branchortag, max);
         }
 
         /// <summary>
@@ -199,7 +206,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public Commit GetCommit(string revision)
         {
-            return _repositoriesEndPoint.GetCommit(_accountName, _repository, revision);
+            return _repositoriesEndPoint.GetCommit(_accountName, _slug, revision);
         }
 
         /// <summary>
@@ -209,7 +216,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public List<Comment> ListCommitComments(string revision)
         {
-            return _repositoriesEndPoint.ListCommitComments(_accountName, _repository, revision);
+            return _repositoriesEndPoint.ListCommitComments(_accountName, _slug, revision);
         }
 
         /// <summary>
@@ -220,7 +227,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public Comment GetCommitComment(string revision, int commentId)
         {
-            return _repositoriesEndPoint.GetCommitComment(_accountName, _repository, revision, commentId);
+            return _repositoriesEndPoint.GetCommitComment(_accountName, _slug, revision, commentId);
         }
 
         /// <summary>
@@ -231,7 +238,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public UserRole ApproveCommit(string revision)
         {
-            return _repositoriesEndPoint.ApproveCommit(_accountName, _repository, revision);
+            return _repositoriesEndPoint.ApproveCommit(_accountName, _slug, revision);
         }
 
         /// <summary>
@@ -241,7 +248,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public void DeleteCommitApproval(string revision)
         {
-            _repositoriesEndPoint.DeleteCommitApproval(_accountName, _repository, revision);
+            _repositoriesEndPoint.DeleteCommitApproval(_accountName, _slug, revision);
         }
 
         /// <summary>
@@ -252,7 +259,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public BuildInfo AddNewBuildStatus(string revision, BuildInfo buildInfo)
         {
-            return _repositoriesEndPoint.AddNewBuildStatus(_accountName, _repository, revision, buildInfo);
+            return _repositoriesEndPoint.AddNewBuildStatus(_accountName, _slug, revision, buildInfo);
         }
 
         /// <summary>
@@ -263,7 +270,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public BuildInfo GetBuildStatusInfo(string revision, string key)
         {
-            return _repositoriesEndPoint.GetBuildStatusInfo(_accountName, _repository, revision, key);
+            return _repositoriesEndPoint.GetBuildStatusInfo(_accountName, _slug, revision, key);
         }
 
         /// <summary>
@@ -276,7 +283,7 @@ namespace SharpBucket.V2.EndPoints
         /// /// <remarks>This operation can also be used to change other properties of the build status: state, name, description, url, refname. The key cannot be changed.</remarks>
         public BuildInfo ChangeBuildStatusInfo(string revision, string key, BuildInfo buildInfo)
         {
-            return _repositoriesEndPoint.ChangeBuildStatusInfo(_accountName, _repository, revision, key, buildInfo);
+            return _repositoriesEndPoint.ChangeBuildStatusInfo(_accountName, _slug, revision, key, buildInfo);
         }
 
         #endregion
@@ -290,7 +297,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public void PutDefaultReviewer(string targetUsername)
         {
-            _repositoriesEndPoint.PutDefaultReviewer(_accountName, _repository, targetUsername);
+            _repositoriesEndPoint.PutDefaultReviewer(_accountName, _slug, targetUsername);
         }
 
         #endregion

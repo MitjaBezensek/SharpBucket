@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -12,15 +13,15 @@ namespace SharpBucket.V2.EndPoints
     public class PullRequestsResource
     {
         private readonly RepositoriesEndPoint _repositoriesEndPoint;
-        private readonly string _repository;
+        private readonly string _slug;
         private readonly string _accountName;
 
         #region Pull Requests Resource
 
-        public PullRequestsResource(string accountName, string repository, RepositoriesEndPoint repositoriesEndPoint)
+        public PullRequestsResource(string accountName, string repoSlugOrName, RepositoriesEndPoint repositoriesEndPoint)
         {
-            _accountName = accountName;
-            _repository = repository;
+            _accountName = accountName.GuidOrValue();
+            _slug = repoSlugOrName.ToSlug();
             _repositoriesEndPoint = repositoriesEndPoint;
         }
 
@@ -39,7 +40,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _repositoriesEndPoint.ListPullRequests(_accountName, _repository, parameters);
+            return _repositoriesEndPoint.ListPullRequests(_accountName, _slug, parameters);
         }
 
         /// <summary>
@@ -50,7 +51,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public PullRequest PostPullRequest(PullRequest pullRequest)
         {
-            return _repositoriesEndPoint.PostPullRequest(_accountName, _repository, pullRequest);
+            return _repositoriesEndPoint.PostPullRequest(_accountName, _slug, pullRequest);
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public PullRequest PutPullRequest(PullRequest pullRequest)
         {
-            return _repositoriesEndPoint.PutPullRequest(_accountName, _repository, pullRequest);
+            return _repositoriesEndPoint.PutPullRequest(_accountName, _slug, pullRequest);
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public List<Activity> GetPullRequestLog()
         {
-            return _repositoriesEndPoint.GetPullRequestLog(_accountName, _repository);
+            return _repositoriesEndPoint.GetPullRequestLog(_accountName, _slug);
         }
 
         #endregion
@@ -88,62 +89,62 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public PullRequestResource PullRequestResource(int pullRequestId)
         {
-            return new PullRequestResource(_accountName, _repository, pullRequestId, _repositoriesEndPoint);
+            return new PullRequestResource(_accountName, _slug, pullRequestId, _repositoriesEndPoint);
         }
 
         internal PullRequest GetPullRequest(int pullRequestId)
         {
-            return _repositoriesEndPoint.GetPullRequest(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.GetPullRequest(_accountName, _slug, pullRequestId);
         }
 
         internal List<Commit> ListPullRequestCommits(int pullRequestId)
         {
-            return _repositoriesEndPoint.ListPullRequestCommits(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.ListPullRequestCommits(_accountName, _slug, pullRequestId);
         }
 
         internal PullRequestInfo ApprovePullRequest(int pullRequestId)
         {
-            return _repositoriesEndPoint.ApprovePullRequest(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.ApprovePullRequest(_accountName, _slug, pullRequestId);
         }
 
         internal PullRequestInfo RemovePullRequestApproval(int pullRequestId)
         {
-            return _repositoriesEndPoint.RemovePullRequestApproval(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.RemovePullRequestApproval(_accountName, _slug, pullRequestId);
         }
 
         internal object GetDiffForPullRequest(int pullRequestId)
         {
-            return _repositoriesEndPoint.GetDiffForPullRequest(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.GetDiffForPullRequest(_accountName, _slug, pullRequestId);
         }
 
         internal List<Activity> GetPullRequestActivity(int pullRequestId)
         {
-            return _repositoriesEndPoint.GetPullRequestActivity(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.GetPullRequestActivity(_accountName, _slug, pullRequestId);
         }
 
         internal Merge AcceptAndMergePullRequest(int pullRequestId)
         {
-            return _repositoriesEndPoint.AcceptAndMergePullRequest(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.AcceptAndMergePullRequest(_accountName, _slug, pullRequestId);
         }
 
         internal PullRequest DeclinePullRequest(int pullRequestId)
         {
-            return _repositoriesEndPoint.DeclinePullRequest(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.DeclinePullRequest(_accountName, _slug, pullRequestId);
         }
 
         internal List<Comment> ListPullRequestComments(int pullRequestId)
         {
-            return _repositoriesEndPoint.ListPullRequestComments(_accountName, _repository, pullRequestId);
+            return _repositoriesEndPoint.ListPullRequestComments(_accountName, _slug, pullRequestId);
         }
 
         internal Comment GetPullRequestComment(int pullRequestId, int commentId)
         {
-            return _repositoriesEndPoint.GetPullRequestComment(_accountName, _repository, pullRequestId, commentId);
+            return _repositoriesEndPoint.GetPullRequestComment(_accountName, _slug, pullRequestId, commentId);
         }
 
         internal Comment PostPullRequestComment(int pullRequestId, Comment comment)
         {
-            return _repositoriesEndPoint.PostPullRequestComment(_accountName, _repository, pullRequestId, comment);
+            return _repositoriesEndPoint.PostPullRequestComment(_accountName, _slug, pullRequestId, comment);
         }
 
         #endregion

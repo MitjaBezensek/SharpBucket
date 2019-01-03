@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 using Comment = SharpBucket.V2.Pocos.Comment;
 using Repository = SharpBucket.V2.Pocos.Repository;
@@ -44,7 +45,7 @@ namespace SharpBucket.V2.EndPoints
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
 
-            var overrideUrl = _baseUrl + accountName + "/";
+            var overrideUrl = $"{_baseUrl}{accountName.GuidOrValue()}/";
             return GetPaginatedValues<Repository>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 
@@ -71,58 +72,51 @@ namespace SharpBucket.V2.EndPoints
         /// https://confluence.atlassian.com/display/BITBUCKET/repository+Resource
         /// </summary>
         /// <param name="accountName">The owner of the repository.</param>
-        /// <param name="repository">The repository slug.</param>
+        /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
         /// <returns></returns>
-        public RepositoryResource RepositoryResource(string accountName, string repository)
+        public RepositoryResource RepositoryResource(string accountName, string repoSlugOrName)
         {
-            return new RepositoryResource(accountName, repository, this);
+            return new RepositoryResource(accountName, repoSlugOrName, this);
         }
 
-        internal Repository GetRepository(string accountName, string repository)
+        internal Repository GetRepository(string accountName, string slug)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, null);
+            var overrideUrl = GetRepositoryUrl(accountName, slug, null);
             return _sharpBucketV2.Get(new Repository(), overrideUrl);
         }
 
-        internal Repository PutRepository(Repository repo, string accountName, string repository)
+        internal Repository PutRepository(Repository repo, string accountName, string slug)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, null);
+            var overrideUrl = GetRepositoryUrl(accountName, slug, null);
             return _sharpBucketV2.Put(repo, overrideUrl);
         }
 
         internal Repository PostRepository(Repository repo, string accountName)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repo.name, null);
+            var overrideUrl = GetRepositoryUrl(accountName, repo.name.ToSlug(), null);
             return _sharpBucketV2.Post(repo, overrideUrl);
         }
 
-        internal Repository DeleteRepository(string accountName, string repository)
+        internal Repository DeleteRepository(string accountName, string slug)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, null);
+            var overrideUrl = GetRepositoryUrl(accountName, slug, null);
             return _sharpBucketV2.Delete(new Repository(), overrideUrl);
         }
 
-        private string ParseSlug(string repositoryName)
+        private string GetRepositoryUrl(string accountName, string slug, string append)
         {
-            var slugRegex = new Regex(@"[^a-zA-Z\.\-_0-9]+");
-            return slugRegex.Replace(repositoryName, "-").ToLowerInvariant();
+            return $"{_baseUrl}{accountName}/{slug}/{append}";
         }
 
-        private string GetRepositoryUrl(string accountName, string repository, string append)
+        internal List<Watcher> ListWatchers(string accountName, string slug, int max = 0)
         {
-            var format = _baseUrl + "{0}/{1}/{2}";
-            return string.Format(format, accountName, ParseSlug(repository), append);
-        }
-
-        internal List<Watcher> ListWatchers(string accountName, string repository, int max = 0)
-        {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "watchers");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "watchers");
             return GetPaginatedValues<Watcher>(overrideUrl, max);
         }
 
-        internal List<Fork> ListForks(string accountName, string repository, int max = 0)
+        internal List<Fork> ListForks(string accountName, string slug, int max = 0)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "forks");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "forks");
             return GetPaginatedValues<Fork>(overrideUrl, max);
         }
 
@@ -130,32 +124,40 @@ namespace SharpBucket.V2.EndPoints
 
         #region Pull Requests Resource
 
-        public PullRequestsResource PullRequestsResource(string accountName, string repository)
+        /// <summary>
+        /// Manage pull requests for a repository. Use this resource to perform CRUD (create/read/update/delete) operations on a pull request. 
+        /// More info:
+        /// https://confluence.atlassian.com/display/BITBUCKET/pullrequests+Resource
+        /// </summary>
+        /// <param name="accountName">The owner of the repository.</param>
+        /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
+        /// <returns></returns>
+        public PullRequestsResource PullRequestsResource(string accountName, string repoSlugOrName)
         {
-            return new PullRequestsResource(accountName, repository, this);
+            return new PullRequestsResource(accountName, repoSlugOrName, this);
         }
 
-        internal List<PullRequest> ListPullRequests(string accountName, string repository, ListParameters parameters)
+        internal List<PullRequest> ListPullRequests(string accountName, string slug, ListParameters parameters)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/");
             return GetPaginatedValues<PullRequest>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 
-        internal PullRequest PostPullRequest(string accountName, string repository, PullRequest pullRequest)
+        internal PullRequest PostPullRequest(string accountName, string slug, PullRequest pullRequest)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/");
             return _sharpBucketV2.Post(pullRequest, overrideUrl);
         }
 
-        internal PullRequest PutPullRequest(string accountName, string repository, PullRequest pullRequest)
+        internal PullRequest PutPullRequest(string accountName, string slug, PullRequest pullRequest)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/");
             return _sharpBucketV2.Put(pullRequest, overrideUrl);
         }
 
-        internal List<Activity> GetPullRequestLog(string accountName, string repository, int max = 0)
+        internal List<Activity> GetPullRequestLog(string accountName, string slug, int max = 0)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/activity/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/activity/");
             return GetPaginatedValues<Activity>(overrideUrl, max);
         }
 
@@ -163,69 +165,69 @@ namespace SharpBucket.V2.EndPoints
 
         #region Pull Request Resource
 
-        internal PullRequest GetPullRequest(string accountName, string repository, int pullRequestId)
+        internal PullRequest GetPullRequest(string accountName, string slug, int pullRequestId)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/");
             return _sharpBucketV2.Get(new PullRequest(), overrideUrl);
         }
 
-        internal List<Commit> ListPullRequestCommits(string accountName, string repository, int pullRequestId, int max = 0)
+        internal List<Commit> ListPullRequestCommits(string accountName, string slug, int pullRequestId, int max = 0)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/commits/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/commits/");
             return GetPaginatedValues<Commit>(overrideUrl, max);
         }
 
-        internal PullRequestInfo ApprovePullRequest(string accountName, string repository, int pullRequestId)
+        internal PullRequestInfo ApprovePullRequest(string accountName, string slug, int pullRequestId)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/approve/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/approve/");
             return _sharpBucketV2.Post(new PullRequestInfo(), overrideUrl);
         }
 
-        internal PullRequestInfo RemovePullRequestApproval(string accountName, string repository, int pullRequestId)
+        internal PullRequestInfo RemovePullRequestApproval(string accountName, string slug, int pullRequestId)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/approve/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/approve/");
             return _sharpBucketV2.Delete(new PullRequestInfo(), overrideUrl);
         }
 
-        internal object GetDiffForPullRequest(string accountName, string repository, int pullRequestId)
+        internal object GetDiffForPullRequest(string accountName, string slug, int pullRequestId)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/diff/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/diff/");
             return _sharpBucketV2.Get(new Object(), overrideUrl);
         }
 
-        internal List<Activity> GetPullRequestActivity(string accountName, string repository, int pullRequestId, int max = 0)
+        internal List<Activity> GetPullRequestActivity(string accountName, string slug, int pullRequestId, int max = 0)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/activity/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/activity/");
             return GetPaginatedValues<Activity>(overrideUrl, max);
         }
 
-        internal Merge AcceptAndMergePullRequest(string accountName, string repository, int pullRequestId)
+        internal Merge AcceptAndMergePullRequest(string accountName, string slug, int pullRequestId)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/merge/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/merge/");
             return _sharpBucketV2.Post(new Merge(), overrideUrl);
         }
 
-        internal PullRequest DeclinePullRequest(string accountName, string repository, int pullRequestId)
+        internal PullRequest DeclinePullRequest(string accountName, string slug, int pullRequestId)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/decline/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/decline/");
             return _sharpBucketV2.Post(new PullRequest(), overrideUrl);
         }
 
-        internal List<Comment> ListPullRequestComments(string accountName, string repository, int pullRequestId, int max = 0)
+        internal List<Comment> ListPullRequestComments(string accountName, string slug, int pullRequestId, int max = 0)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/comments/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/");
             return GetPaginatedValues<Comment>(overrideUrl, max);
         }
 
-        internal Comment GetPullRequestComment(string accountName, string repository, int pullRequestId, int commentId)
+        internal Comment GetPullRequestComment(string accountName, string slug, int pullRequestId, int commentId)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/comments/" + commentId + "/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/{commentId}/");
             return _sharpBucketV2.Get(new Comment(), overrideUrl);
         }
 
-        internal Comment PostPullRequestComment(string accountName, string repository, int pullRequestId, Comment comment)
+        internal Comment PostPullRequestComment(string accountName, string slug, int pullRequestId, Comment comment)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "pullrequests/" + pullRequestId + "/comments/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/");
             return _sharpBucketV2.Post(comment, overrideUrl);
         }
 
@@ -233,33 +235,33 @@ namespace SharpBucket.V2.EndPoints
 
         #region Branch Restrictions resource
 
-        internal List<BranchRestriction> ListBranchRestrictions(string accountName, string repository, int max = 0)
+        internal List<BranchRestriction> ListBranchRestrictions(string accountName, string slug, int max = 0)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "branch-restrictions/");
             return GetPaginatedValues<BranchRestriction>(overrideUrl, max);
         }
 
-        internal BranchRestriction PostBranchRestriction(string accountName, string repository, BranchRestriction restriction)
+        internal BranchRestriction PostBranchRestriction(string accountName, string slug, BranchRestriction restriction)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "branch-restrictions/");
             return _sharpBucketV2.Post(restriction, overrideUrl);
         }
 
-        internal BranchRestriction GetBranchRestriction(string accountName, string repository, int restrictionId)
+        internal BranchRestriction GetBranchRestriction(string accountName, string slug, int restrictionId)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restrictionId);
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"branch-restrictions/{restrictionId}");
             return _sharpBucketV2.Get(new BranchRestriction(), overrideUrl);
         }
 
-        internal BranchRestriction PutBranchRestriction(string accountName, string repository, BranchRestriction restriction)
+        internal BranchRestriction PutBranchRestriction(string accountName, string slug, BranchRestriction restriction)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restriction.id);
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"branch-restrictions/{restriction.id}");
             return _sharpBucketV2.Put(restriction, overrideUrl);
         }
 
-        internal BranchRestriction DeleteBranchRestriction(string accountName, string repository, int restrictionId)
+        internal BranchRestriction DeleteBranchRestriction(string accountName, string slug, int restrictionId)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "branch-restrictions/" + restrictionId);
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"branch-restrictions/{restrictionId}");
             return _sharpBucketV2.Delete(new BranchRestriction(), overrideUrl);
         }
 
@@ -267,15 +269,15 @@ namespace SharpBucket.V2.EndPoints
 
         #region Diff resource
 
-        internal object GetDiff(string accountName, string repository, object options)
+        internal object GetDiff(string accountName, string slug, object options)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "diff/" + options);
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"diff/{options}");
             return _sharpBucketV2.Get(new object(), overrideUrl);
         }
 
-        internal object GetPatch(string accountName, string repository, object options)
+        internal object GetPatch(string accountName, string slug, object options)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "patch/" + options);
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"patch/{options}");
             return _sharpBucketV2.Get(new object(), overrideUrl);
         }
 
@@ -283,9 +285,9 @@ namespace SharpBucket.V2.EndPoints
 
         #region Commits Resource
 
-        internal List<Commit> ListCommits(string accountName, string repository, string branchortag = null, int max = 0)
+        internal List<Commit> ListCommits(string accountName, string slug, string branchortag = null, int max = 0)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "commits/");
             if (!string.IsNullOrEmpty(branchortag))
             {
                 overrideUrl += branchortag;
@@ -293,51 +295,51 @@ namespace SharpBucket.V2.EndPoints
             return GetPaginatedValues<Commit>(overrideUrl, max);
         }
 
-        internal Commit GetCommit(string accountName, string repository, string revision)
+        internal Commit GetCommit(string accountName, string slug, string revision)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision);
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}");
             return _sharpBucketV2.Get(new Commit(), overrideUrl);
         }
 
-        internal List<Comment> ListCommitComments(string accountName, string repository, string revision, int max = 0)
+        internal List<Comment> ListCommitComments(string accountName, string slug, string revision, int max = 0)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + revision + "/comments/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commits/{revision}/comments/");
             return GetPaginatedValues<Comment>(overrideUrl, max);
         }
 
-        internal Comment GetCommitComment(string accountName, string repository, string revision, int commentId)
+        internal Comment GetCommitComment(string accountName, string slug, string revision, int commentId)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commits/" + revision + "/comments/" + revision + "/" + commentId + "/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commits/{revision}/comments/{revision}/{commentId}/");
             return _sharpBucketV2.Get(new Comment(), overrideUrl);
         }
 
-        internal UserRole ApproveCommit(string accountName, string repository, string revision)
+        internal UserRole ApproveCommit(string accountName, string slug, string revision)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/approve/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/approve/");
             return _sharpBucketV2.Post(new UserRole(), overrideUrl);
         }
 
-        internal void DeleteCommitApproval(string accountName, string repository, string revision)
+        internal void DeleteCommitApproval(string accountName, string slug, string revision)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/approve/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/approve/");
             _sharpBucketV2.Delete(new object(), overrideUrl);
         }
 
-        internal BuildInfo AddNewBuildStatus(string accountName, string repository, string revision, BuildInfo buildInfo)
+        internal BuildInfo AddNewBuildStatus(string accountName, string slug, string revision, BuildInfo buildInfo)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/statuses/build/");
             return _sharpBucketV2.Post(buildInfo, overrideUrl);
         }
 
-        internal BuildInfo GetBuildStatusInfo(string accountName, string repository, string revision, string key)
+        internal BuildInfo GetBuildStatusInfo(string accountName, string slug, string revision, string key)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/" + key);
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/statuses/build/" + key);
             return _sharpBucketV2.Get(new BuildInfo(), overrideUrl);
         }
 
-        internal BuildInfo ChangeBuildStatusInfo(string accountName, string repository, string revision, string key, BuildInfo buildInfo)
+        internal BuildInfo ChangeBuildStatusInfo(string accountName, string slug, string revision, string key, BuildInfo buildInfo)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "commit/" + revision + "/statuses/build/" + key);
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/statuses/build/{key}");
             return _sharpBucketV2.Put(buildInfo, overrideUrl);
         }
 
@@ -345,9 +347,9 @@ namespace SharpBucket.V2.EndPoints
 
         #region Default Reviewer Resource
 
-        internal void PutDefaultReviewer(string accountName, string repository, string targetUsername)
+        internal void PutDefaultReviewer(string accountName, string slug, string targetUsername)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "default-reviewers/" + targetUsername);
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"default-reviewers/{targetUsername}");
             _sharpBucketV2.Put(new object(), overrideUrl);
         }
 
@@ -355,14 +357,22 @@ namespace SharpBucket.V2.EndPoints
 
         #region Branch Resource
 
-        public BranchResource BranchResource(string accountName, string repository)
+        /// <summary>
+        /// Manage branches for a repository. Use this resource to perform CRUD (create/read/update/delete) operations. 
+        /// More info:
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/refs/branches
+        /// </summary>
+        /// <param name="accountName">The owner of the repository.</param>
+        /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
+        /// <returns></returns>
+        public BranchResource BranchResource(string accountName, string repoSlugOrName)
         {
-            return new BranchResource(accountName, repository, this);
+            return new BranchResource(accountName, repoSlugOrName, this);
         }
 
-        internal List<Branch> ListBranches(string accountName, string repository, ListParameters parameters)
+        internal List<Branch> ListBranches(string accountName, string slug, ListParameters parameters)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "refs/branches/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "refs/branches/");
             return GetPaginatedValues<Branch>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 
@@ -370,14 +380,22 @@ namespace SharpBucket.V2.EndPoints
 
         #region Tag Resource
 
-        public TagResource TagResource(string accountName, string repository)
+        /// <summary>
+        /// Manage tags for a repository. Use this resource to perform CRUD (create/read/update/delete) operations. 
+        /// More info:
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/refs/tags
+        /// </summary>
+        /// <param name="accountName">The owner of the repository.</param>
+        /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
+        /// <returns></returns>
+        public TagResource TagResource(string accountName, string repoSlugOrName)
         {
-            return new TagResource(accountName, repository, this);
+            return new TagResource(accountName, repoSlugOrName, this);
         }
 
-        internal List<Tag> ListTags(string accountName, string repository, ListParameters parameters)
+        internal List<Tag> ListTags(string accountName, string slug, ListParameters parameters)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, repository, "refs/tags/");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "refs/tags/");
             return GetPaginatedValues<Tag>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 
