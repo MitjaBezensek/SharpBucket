@@ -123,6 +123,15 @@ namespace SharpBucket
             return (OAuthentication2)authenticator;
         }
 
+        /// <summary>
+        /// Allows the use of a mock IRestClient, for testing.
+        /// </summary>
+        /// <param name="client"></param>
+        internal void MockAuthentication(IRestClient client)
+        {
+            authenticator = new MockAuthentication(client, BaseUrl) { RequestExecutor = this.RequestExecutor };
+        }
+
         private string Send(object body, Method method, string overrideUrl = null, IDictionary<string, object> requestParameters = null)
         {
             return SafeCallTo(() => authenticator.GetResponse(overrideUrl, method, body, requestParameters));
