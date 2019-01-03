@@ -18,7 +18,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// The paths of specific files to diff.
         /// </summary>
-        public IEnumerable<string> Paths { get; set; } = new List<string>();
+        public List<string> Paths { get; set; } = new List<string>();
         /// <summary>
         /// Generate diffs that ignore whitespace; default is false.
         /// </summary>
