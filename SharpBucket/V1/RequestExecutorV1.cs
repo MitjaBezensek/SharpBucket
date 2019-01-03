@@ -5,7 +5,7 @@ namespace SharpBucket.V1
 {
     internal class RequestExecutorV1 : RequestExecutor
     {
-        protected override void AddBody(RestRequest request, object body)
+        protected override void AddBody(IRestRequest request, object body)
         {
             request.AddObject(body);
         }

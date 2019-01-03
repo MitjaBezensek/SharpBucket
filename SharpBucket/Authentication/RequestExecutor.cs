@@ -9,13 +9,13 @@ namespace SharpBucket.Authentication
 {
     internal abstract class RequestExecutor
     {
-        public string ExecuteRequest(string url, Method method, object body, RestClient client, IDictionary<string, object> requestParameters)
+        public string ExecuteRequest(string url, Method method, object body, IRestClient client, IDictionary<string, object> requestParameters)
         {
             var result = ExecuteRequest(url, method, body, client, requestParameters, client.Execute);
             return result.Content;
         }
 
-        public T ExecuteRequest<T>(string url, Method method, object body, RestClient client, IDictionary<string, object> requestParameters)
+        public T ExecuteRequest<T>(string url, Method method, object body, IRestClient client, IDictionary<string, object> requestParameters)
             where T : new()
         {
             var result = ExecuteRequest(url, method, body, client, requestParameters, client.Execute<T>);
@@ -26,9 +26,9 @@ namespace SharpBucket.Authentication
             string url,
             Method method,
             object body,
-            RestClient client,
+            IRestClient client,
             IDictionary<string, object> requestParameters,
-            Func<RestRequest, TRestResponse> clientExecute)
+            Func<IRestRequest, TRestResponse> clientExecute)
             where TRestResponse : IRestResponse
         {
             var request = BuildRestRequest(url, method, body, requestParameters);
@@ -48,7 +48,7 @@ namespace SharpBucket.Authentication
             return result;
         }
 
-        private RestRequest BuildRestRequest(string url, Method method, object body, IDictionary<string, object> requestParameters)
+        private IRestRequest BuildRestRequest(string url, Method method, object body, IDictionary<string, object> requestParameters)
         {
             var request = new RestRequest(url, method);
             if (requestParameters != null)
@@ -67,9 +67,9 @@ namespace SharpBucket.Authentication
             return request;
         }
 
-        protected abstract void AddBody(RestRequest request, object body);
+        protected abstract void AddBody(IRestRequest request, object body);
 
-        private static TRestResponse ExecuteRequestWithManualFollowRedirect<TRestResponse>(RestRequest request, RestClient client, Func<RestRequest, TRestResponse> clientExecute)
+        private static TRestResponse ExecuteRequestWithManualFollowRedirect<TRestResponse>(IRestRequest request, IRestClient client, Func<IRestRequest, TRestResponse> clientExecute)
             where TRestResponse : IRestResponse
         {
             client.FollowRedirects = false;
