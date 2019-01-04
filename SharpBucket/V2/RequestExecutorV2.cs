@@ -9,7 +9,7 @@ namespace SharpBucket.V2
 {
     internal class RequestExecutorV2 : RequestExecutor
     {
-        protected override void AddBody(RestRequest request, object body)
+        protected override void AddBody(IRestRequest request, object body)
         {
             // Use a custom JsonSerializerStrategy to be able to ignore null properties during the serialization
             // https://stackoverflow.com/questions/20006813/restsharp-how-to-skip-serializing-null-values-to-json
