@@ -1,25 +1,25 @@
-﻿using SharpBucket.V2.Pocos;
+﻿using SharpBucket.Utility;
+using SharpBucket.V2.Pocos;
 using System;
 using System.Collections.Generic;
 
 namespace SharpBucket.V2.EndPoints
 {
+    /// <summary>
+    /// Manage branches for a repository. Use this resource to perform CRUD (create/read/update/delete) operations. 
+    /// More info:
+    /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/refs/branches
+    /// </summary>
     public class BranchResource
     {
         private readonly string _accountName;
-        private readonly string _repository;
+        private readonly string _slug;
         private readonly RepositoriesEndPoint _repositoriesEndPoint;
 
-        /// <summary>
-        /// Manage branches for a repository. Use this resource to perform CRUD (create/read/update/delete) operations. 
-        /// More info:
-        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/refs/branches
-        /// </summary>
-        /// <returns></returns>
-        public BranchResource(string accountName, string repository, RepositoriesEndPoint repositoriesEndPoint)
+        public BranchResource(string accountName, string repoSlugOrName, RepositoriesEndPoint repositoriesEndPoint)
         {
-            _accountName = accountName;
-            _repository = repository;
+            _accountName = accountName.GuidOrValue();
+            _slug = repoSlugOrName.ToSlug();
             _repositoriesEndPoint = repositoriesEndPoint;
         }
 
@@ -38,7 +38,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _repositoriesEndPoint.ListBranches(_accountName, _repository, parameters);
+            return _repositoriesEndPoint.ListBranches(_accountName, _slug, parameters);
         }
     }
 }

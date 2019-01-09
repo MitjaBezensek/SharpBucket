@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SharpBucket.V1.Pocos;
 
 namespace SharpBucket.V1.EndPoints
@@ -6,6 +7,7 @@ namespace SharpBucket.V1.EndPoints
     /// <summary>
     /// A "Virtual" End Point that offers easier manipulation of a specific issue.
     /// </summary>
+    [Obsolete("Bitbucket Cloud v1 APIs are deprecated")]
     public class IssueResource
     {
         private readonly RepositoriesEndPoint _repositoriesEndPoint;

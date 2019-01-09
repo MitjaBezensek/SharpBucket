@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,12 +8,48 @@ using RestSharp.Deserializers;
 
 namespace SharpBucket.Authentication
 {
-    internal class RequestExecutor
+    internal abstract class RequestExecutor
     {
-        internal const string BITBUCKET_URL_V1 = "https://bitbucket.org/api/1.0";
-        internal const string BITBUCKET_URL_V2 = "https://api.bitbucket.org/2.0";
-        public static T ExecuteRequest<T>(string url, Method method, T body, RestClient client, IDictionary<string, object> requestParameters)
+        public string ExecuteRequest(string url, Method method, object body, IRestClient client, IDictionary<string, object> requestParameters)
+        {
+            var result = ExecuteRequest(url, method, body, client, requestParameters, client.Execute);
+            return result.Content;
+        }
+
+        public T ExecuteRequest<T>(string url, Method method, object body, IRestClient client, IDictionary<string, object> requestParameters)
             where T : new()
+        {
+            var result = ExecuteRequest(url, method, body, client, requestParameters, client.Execute<T>);
+            return result.Data;
+        }
+
+        private TRestResponse ExecuteRequest<TRestResponse>(
+            string url,
+            Method method,
+            object body,
+            IRestClient client,
+            IDictionary<string, object> requestParameters,
+            Func<IRestRequest, TRestResponse> clientExecute)
+            where TRestResponse : IRestResponse
+        {
+            var request = BuildRestRequest(url, method, body, requestParameters);
+
+            //Fixed bug that prevents RestClient for adding custom headers to the request
+            //https://stackoverflow.com/questions/22229393/why-is-restsharp-addheaderaccept-application-json-to-a-list-of-item
+            client.ClearHandlers();
+            client.AddHandler("application/json", new JsonDeserializer());
+
+            var result = ExecuteRequestWithManualFollowRedirect(request, client, clientExecute);
+
+            if (result.ErrorException != null)
+            {
+                throw new WebException("REST client encountered an error: " + result.ErrorMessage, result.ErrorException);
+            }
+
+            return result;
+        }
+
+        private IRestRequest BuildRestRequest(string url, Method method, object body, IDictionary<string, object> requestParameters)
         {
             var request = new RestRequest(url, method);
             if (requestParameters != null)
@@ -32,70 +69,40 @@ namespace SharpBucket.Authentication
                 }
             }
 
-            if (ShouldAddBody(method))
+            if (method == Method.PUT || method == Method.POST)
             {
-                request.RequestFormat = DataFormat.Json;
-                request.AddObject(body);
+                AddBody(request, body);
             }
 
-            //Fixed bug that prevents RestClient for adding custom headers to the request
-            //https://stackoverflow.com/questions/22229393/why-is-restsharp-addheaderaccept-application-json-to-a-list-of-item
-
-            client.ClearHandlers();
-            client.AddHandler("application/json", new JsonDeserializer());
-            var result = ExectueRequest<T>(method, client, request);
-
-            if (result.ErrorException != null)
-            {
-                throw new WebException("REST client encountered an error: " + result.ErrorMessage, result.ErrorException);
-            }
-            // This is a hack in order to allow this method to work for simple types as well
-            // one example of this is the GetRevisionRaw method
-            if (RequestingSimpleType<T>())
-            {
-                return result.Content as dynamic;
-            }
-            return result.Data;
+            return request;
         }
 
-        private static IRestResponse<T> ExectueRequest<T>(Method method, RestClient client, RestRequest request)
-            where T : new()
-        {
-            IRestResponse<T> result;
+        protected abstract void AddBody(IRestRequest request, object body);
 
+        private static TRestResponse ExecuteRequestWithManualFollowRedirect<TRestResponse>(IRestRequest request, IRestClient client, Func<IRestRequest, TRestResponse> clientExecute)
+            where TRestResponse : IRestResponse
+        {
             client.FollowRedirects = false;
-            result = client.Execute<T>(request);
+
+            var result = clientExecute(request);
             if (result.StatusCode == HttpStatusCode.Redirect)
             {
-                var redirectUrl = GetRedirectUrl(result);
-                request = new RestRequest(redirectUrl, method);
-                result = client.Execute<T>(request);
+                var redirectUrl = GetRedirectUrl(result, client.BaseUrl.ToString());
+                request = new RestRequest(redirectUrl, request.Method);
+                result = clientExecute(request);
             }
+
             return result;
         }
 
-        private static string GetRedirectUrl(IRestResponse result)
+        private static string GetRedirectUrl(IRestResponse result, string requestBaseUrl)
         {
             var redirectUrl = result.Headers.Where(header => header.Name == "Location").Select(header => header.Value).First().ToString();
-            if (redirectUrl.Contains(BITBUCKET_URL_V1))
+            if (redirectUrl.StartsWith(requestBaseUrl))
             {
-                return redirectUrl.Replace(BITBUCKET_URL_V1, "");
+                redirectUrl = redirectUrl.Remove(0, requestBaseUrl.Length);
             }
-            else
-            {
-                return redirectUrl.Replace(BITBUCKET_URL_V2, "");
-            }
-        }
-
-        private static bool ShouldAddBody(Method method)
-        {
-            return method == Method.PUT || method == Method.POST;
-        }
-
-        private static bool RequestingSimpleType<T>()
-            where T : new()
-        {
-            return typeof(T) == typeof(object);
+            return redirectUrl;
         }
     }
 }

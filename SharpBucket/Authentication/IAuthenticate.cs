@@ -1,17 +1,24 @@
 using System.Collections.Generic;
 using RestSharp;
+using SharpBucket.V2;
 
 namespace SharpBucket.Authentication
 {
     public abstract class Authenticate
     {
-        protected RestClient client;
+        protected IRestClient client;
 
-        public virtual T GetResponse<T>(string url, Method method, T body, IDictionary<string, object> requestParameters)
+        internal RequestExecutor RequestExecutor { get; set; } = new RequestExecutorV2(); // Use V2 by default since V1 should disappear soon
+
+        public virtual string GetResponse(string url, Method method, object body, IDictionary<string, object> requestParameters)
         {
-            var executeMethod = typeof(RequestExecutor).GetMethod("ExecuteRequest");
-            var generic = executeMethod.MakeGenericMethod(typeof(T));
-            return (T)generic.Invoke(this, new object[] { url, method, body, client, requestParameters });
+            return RequestExecutor.ExecuteRequest(url, method, body, client, requestParameters);
+        }
+
+        public virtual T GetResponse<T>(string url, Method method, object body, IDictionary<string, object> requestParameters)
+            where T : new()
+        {
+            return RequestExecutor.ExecuteRequest<T>(url, method, body, client, requestParameters);
         }
     }
 }

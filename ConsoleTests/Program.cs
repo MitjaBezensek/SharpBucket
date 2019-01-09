@@ -12,6 +12,7 @@ using Version = SharpBucket.V1.Pocos.Version;
 
 namespace ConsoleTests
 {
+    [Obsolete("Bitbucket Cloud v1 APIs are deprecated, API V2 code is commented and we plan to drop this program since we are covering API V2 with unit tests")]
     internal class Program
     {
         private static string email;

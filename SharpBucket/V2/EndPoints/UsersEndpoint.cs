@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -13,9 +14,9 @@ namespace SharpBucket.V2.EndPoints
         private readonly string _repositoriesUrl;
 
         public UsersEndpoint(string accountName, SharpBucketV2 sharpBucketV2) :
-            base(sharpBucketV2, "users/" + accountName + "/")
+            base(sharpBucketV2, $"users/{accountName.GuidOrValue()}/")
         {
-            _repositoriesUrl = "repositories/" + accountName + "/";
+            _repositoriesUrl = $"repositories/{accountName.GuidOrValue()}/";
         }
 
         /// <summary>
@@ -25,7 +26,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public User GetProfile()
         {
-            return _sharpBucketV2.Get(new User(), _baseUrl);
+            return _sharpBucketV2.Get<User>(_baseUrl);
         }
 
         /// <summary>

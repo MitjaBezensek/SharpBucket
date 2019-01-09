@@ -8,7 +8,7 @@ To install SharpBucket, run the following command in the Package Manager Console
     PM> Install-Package SharpBucket
 
 ### Usage
-See the [Console Test Project][1] to see how to use the wrapper. Here's just a brief demo:
+See the [Console Test Project](https://github.com/MitjaBezensek/SharpBucket/blob/master/ConsoleTests/Program.cs) to see how to use the wrapper. Here's just a brief demo:
 
 First lets set your entry point to the API
 ```CSharp
@@ -109,11 +109,7 @@ Service that is free for open source projects. It is enabled for Pull Requests a
 SharpBucket is licensed under [MIT license](https://github.com/MitjaBezensek/SharpBucket/blob/master/LICENSE). 
 
 ### Dependencies:
-- **RestSharp** for HTTP requests and responses. RestSHarp is [licensed under Apache 2.0 license](https://github.com/restsharp/RestSharp/blob/master/LICENSE.txt) terms. 
-- **Json.NET** for parsing the the JSON data. Json.NET is [licensed under MIT license](https://raw.githubusercontent.com/JamesNK/Newtonsoft.Json/master/LICENSE.md)
+- **RestSharp** for HTTP requests and responses. RestSHarp is [licensed under Apache 2.0 license](https://github.com/restsharp/RestSharp/blob/master/LICENSE.txt) terms.
 
 ### Influence
 SharpBucket was influenced by ServiceStack's [Stripe api wrapper](https://github.com/ServiceStack/Stripe). The first versions of SharpBucket used ServiceStack's library, but has since moved to RestSharp.
-
-
-  [1]: https://github.com/MitjaBezensek/SharpBucket/blob/master/ConsoleTests/Program.cs
