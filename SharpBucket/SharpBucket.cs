@@ -94,8 +94,9 @@ namespace SharpBucket
             string consumerSecretKey,
             string callback = "oob")
         {
-            authenticator = new OAuthentication3Legged(consumerKey, consumerSecretKey, callback, BaseUrl) { RequestExecutor = this.RequestExecutor };
-            return (OAuthentication3Legged)authenticator;
+            var oauthentication3Legged = new OAuthentication3Legged(consumerKey, consumerSecretKey, callback, BaseUrl) { RequestExecutor = this.RequestExecutor };
+            authenticator = oauthentication3Legged;
+            return oauthentication3Legged;
         }
 
         /// <summary>
@@ -113,8 +114,9 @@ namespace SharpBucket
             string consumerSecretKey,
             string callback = "oob")
         {
-            authenticator = new OAuth1ThreeLeggedAuthentication(consumerKey, consumerSecretKey, callback, BaseUrl) { RequestExecutor = this.RequestExecutor };
-            return (OAuth1ThreeLeggedAuthentication)authenticator;
+            var oauth1ThreeLeggedAuthentication = new OAuth1ThreeLeggedAuthentication(consumerKey, consumerSecretKey, callback, BaseUrl) { RequestExecutor = this.RequestExecutor };
+            authenticator = oauth1ThreeLeggedAuthentication;
+            return oauth1ThreeLeggedAuthentication;
         }
 
         /// <summary>
@@ -134,7 +136,7 @@ namespace SharpBucket
             string oauthToken,
             string oauthTokenSecret)
         {
-            authenticator = new OAuthentication3Legged(
+            var oauthentication3Legged = new OAuthentication3Legged(
                 consumerKey,
                 consumerSecretKey,
                 oauthToken,
@@ -143,7 +145,8 @@ namespace SharpBucket
             {
                 RequestExecutor = this.RequestExecutor
             };
-            return (OAuthentication3Legged)authenticator;
+            authenticator = oauthentication3Legged;
+            return oauthentication3Legged;
         }
 
         /// <summary>
@@ -162,7 +165,7 @@ namespace SharpBucket
             string oauthToken,
             string oauthTokenSecret)
         {
-            authenticator = new OAuth1ThreeLeggedAuthentication(
+            var oauth1ThreeLeggedAuthentication = new OAuth1ThreeLeggedAuthentication(
                 consumerKey,
                 consumerSecretKey,
                 oauthToken,
@@ -171,7 +174,8 @@ namespace SharpBucket
             {
                 RequestExecutor = this.RequestExecutor
             };
-            return (OAuth1ThreeLeggedAuthentication)authenticator;
+            authenticator = oauth1ThreeLeggedAuthentication;
+            return oauth1ThreeLeggedAuthentication;
         }
 
         /// <summary>
@@ -183,9 +187,10 @@ namespace SharpBucket
         [Obsolete("Use OAuth2ClientCredentials instead")]
         public OAuthentication2 OAuthentication2(string consumerKey, string consumerSecretKey)
         {
-            authenticator = new OAuthentication2(consumerKey, consumerSecretKey, BaseUrl) { RequestExecutor = this.RequestExecutor };
-            ((OAuthentication2)authenticator).GetToken();
-            return (OAuthentication2)authenticator;
+            var oaAuthentication2 = new OAuthentication2(consumerKey, consumerSecretKey, BaseUrl) { RequestExecutor = this.RequestExecutor };
+            authenticator = oaAuthentication2;
+            oaAuthentication2.GetToken();
+            return oaAuthentication2;
         }
 
         /// <summary>
@@ -194,11 +199,9 @@ namespace SharpBucket
         /// <param name="consumerKey"></param>
         /// <param name="consumerSecretKey"></param>
         /// <returns></returns>
-        public OAuth2ClientCredentials OAuth2ClientCredentials(string consumerKey, string consumerSecretKey)
+        public void OAuth2ClientCredentials(string consumerKey, string consumerSecretKey)
         {
             authenticator = new OAuth2ClientCredentials(consumerKey, consumerSecretKey, BaseUrl) { RequestExecutor = this.RequestExecutor };
-            ((OAuth2ClientCredentials)authenticator).GetToken();
-            return (OAuth2ClientCredentials)authenticator;
         }
 
         /// <summary>

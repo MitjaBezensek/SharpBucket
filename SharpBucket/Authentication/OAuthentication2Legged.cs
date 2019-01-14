@@ -10,10 +10,12 @@ namespace SharpBucket.Authentication
     [Obsolete("Use OAuth1TwoLeggedAuthentication instead")]
     public class OAuthentication2Legged : OauthAuthentication
     {
+        protected override IRestClient Client { get; }
+
         public OAuthentication2Legged(string consumerKey, string consumerSecret, string baseUrl)
             : base(consumerKey, consumerSecret, baseUrl)
         {
-            client = new RestClient(baseUrl)
+            Client = new RestClient(baseUrl)
             {
                 Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, null, null)
             };

@@ -1,5 +1,8 @@
+using System;
+
 namespace SharpBucket.Authentication
 {
+    [Obsolete("This layer is useless with the new Authenticate implementations")]
     public abstract class OauthAuthentication : Authenticate
     {
         protected readonly string ConsumerKey;

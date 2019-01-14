@@ -42,5 +42,26 @@ namespace SharpBucket.Authentication
 
             return response.Data;
         }
+
+        public Token RefreshToken(Token token)
+        {
+            var tempClient = new RestClient(TokenUrl)
+            {
+                Authenticator = new HttpBasicAuthenticator(ConsumerKey, ConsumerSecret),
+            };
+            var request = new RestRequest
+            {
+                Method = Method.POST
+            };
+            request.AddParameter("grant_type", "refresh_token");
+            request.AddParameter("refresh_token", token.RefreshToken);
+            var response = tempClient.Execute<Token>(request);
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception($"Unable to refresh OAuth2 Token:{Environment.NewLine}{response.StatusCode}{Environment.NewLine}{response.Content}");
+            }
+
+            return response.Data;
+        }
     }
 }
