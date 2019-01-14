@@ -11,8 +11,7 @@ namespace SharpBucket.Authentication
     /// <summary>
     /// This class helps you authenticated with the BitBucket REST API via the 3 legged OAuth authentication.
     /// </summary>
-    [Obsolete("Use OAuth1ThreeLeggedAuthentication instead")]
-    public class OAuthentication3Legged : OauthAuthentication
+    public class OAuth1ThreeLeggedAuthentication : OauthAuthentication
     {
         private string OAuthToken;
         private string OauthTokenSecret;
@@ -21,13 +20,13 @@ namespace SharpBucket.Authentication
         private const string accessUrl = "oauth/access_token";
         private readonly string callback;
 
-        public OAuthentication3Legged(string consumerKey, string consumerSecret, string callback, string baseUrl)
+        public OAuth1ThreeLeggedAuthentication(string consumerKey, string consumerSecret, string callback, string baseUrl)
             : base(consumerKey, consumerSecret, baseUrl)
         {
             this.callback = callback;
         }
 
-        public OAuthentication3Legged(string consumerKey, string consumerSecret, string oAuthToken, string oauthTokenSecret, string baseUrl)
+        public OAuth1ThreeLeggedAuthentication(string consumerKey, string consumerSecret, string oAuthToken, string oauthTokenSecret, string baseUrl)
             : base(consumerKey, consumerSecret, baseUrl)
         {
             OAuthToken = oAuthToken;

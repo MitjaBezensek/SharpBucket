@@ -19,7 +19,7 @@ namespace SharpBucketTests
         /// The goal is to avoid to open a new authentication for each individual test.
         /// </summary>
         public static SharpBucketV2 SharpBucketV2 => _sharpBucketV2
-                                                   ?? (_sharpBucketV2 = GetV2ClientAuthenticatedWithOAuth());
+                                                   ?? (_sharpBucketV2 = GetV2ClientAuthenticatedWithOAuth1());
 
         public static SharpBucketV2 GetV2ClientAuthenticatedWithBasicAuthentication()
         {
@@ -40,12 +40,12 @@ namespace SharpBucketTests
             return sharpbucket;
         }
 
-        public static SharpBucketV2 GetV2ClientAuthenticatedWithOAuth()
+        public static SharpBucketV2 GetV2ClientAuthenticatedWithOAuth1()
         {
             var consumerKey = Environment.GetEnvironmentVariable(SbConsumerKey);
             var consumerSecretKey = Environment.GetEnvironmentVariable(SbConsumerSecretKey);
             var sharpbucket = new SharpBucketV2();
-            sharpbucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
+            sharpbucket.OAuth1TwoLeggedAuthentication(consumerKey, consumerSecretKey);
             return sharpbucket;
         }
 
@@ -54,7 +54,7 @@ namespace SharpBucketTests
             var consumerKey = Environment.GetEnvironmentVariable(SbConsumerKey);
             var consumerSecretKey = Environment.GetEnvironmentVariable(SbConsumerSecretKey);
             var sharpbucket = new SharpBucketV2();
-            sharpbucket.OAuthentication2(consumerKey, consumerSecretKey);
+            sharpbucket.OAuth2ClientCredentials(consumerKey, consumerSecretKey);
             return sharpbucket;
         }
 

@@ -1,16 +1,14 @@
-﻿using System;
-using RestSharp;
+﻿using RestSharp;
 using RestSharp.Authenticators;
 
 namespace SharpBucket.Authentication
 {
-    [Obsolete("Use OAuth2ClientCredentials instead")]
-    public class OAuthentication2 : OauthAuthentication
+    public class OAuth2ClientCredentials : OauthAuthentication
     {
         private const string TokenType = "Bearer";
         private string _accessToken;
 
-        public OAuthentication2(string consumerKey, string consumerSecret, string baseUrl)
+        public OAuth2ClientCredentials(string consumerKey, string consumerSecret, string baseUrl)
             : base(consumerKey, consumerSecret, baseUrl)
         {
         }
