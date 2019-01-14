@@ -121,7 +121,7 @@ namespace SharpBucket
 
         /// <summary>
         /// Use 3 legged OAuth 1.0a authentication. Use this method if you have already obtained the OAuthToken
-        /// and OAuthSecretToken. This method can be used so you do not have to go trough the whole 3 legged
+        /// and OAuthSecretToken. This method can be used so you do not have to go through the whole 3 legged
         /// process every time. You can save the tokens you receive the first time and reuse them in another session.
         /// </summary>
         /// <param name="consumerKey">Your consumer API key obtained from the BitBucket web page.</param>
@@ -151,7 +151,7 @@ namespace SharpBucket
 
         /// <summary>
         /// Use 3 legged OAuth 1.0a authentication. Use this method if you have already obtained the OAuthToken
-        /// and OAuthSecretToken. This method can be used so you do not have to go trough the whole 3 legged
+        /// and OAuthSecretToken. This method can be used so you do not have to go through the whole 3 legged
         /// process every time. You can save the tokens you receive the first time and reuse them in another session.
         /// </summary>
         /// <param name="consumerKey">Your consumer API key obtained from the BitBucket web page.</param>
@@ -159,13 +159,13 @@ namespace SharpBucket
         /// <param name="oauthToken">Your OAuth token that was obtained on a previous session.</param>
         /// <param name="oauthTokenSecret">Your OAuth secret token that was obtained on a previous session.</param>
         /// <returns></returns>
-        public OAuth1ThreeLeggedAuthentication OAuth1ThreeLeggedAuthentication(
+        public void OAuth1ThreeLeggedAuthentication(
             string consumerKey,
             string consumerSecretKey,
             string oauthToken,
             string oauthTokenSecret)
         {
-            var oauth1ThreeLeggedAuthentication = new OAuth1ThreeLeggedAuthentication(
+            authenticator = new OAuth1ThreeLeggedAuthentication(
                 consumerKey,
                 consumerSecretKey,
                 oauthToken,
@@ -174,8 +174,6 @@ namespace SharpBucket
             {
                 RequestExecutor = this.RequestExecutor
             };
-            authenticator = oauth1ThreeLeggedAuthentication;
-            return oauth1ThreeLeggedAuthentication;
         }
 
         /// <summary>

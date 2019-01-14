@@ -21,8 +21,8 @@ namespace SharpBucket.Authentication
         private string Callback { get; }
         private string BaseUrl { get; }
 
-        private string OAuthToken { get; set; }
-        private string OAuthTokenSecret { get; set; }
+        private OAuth1Token RequestToken { get; set; }
+        private OAuth1Token AccessToken { get; set; }
 
         private IRestClient _client;
         protected override IRestClient Client
@@ -31,13 +31,13 @@ namespace SharpBucket.Authentication
             {
                 if (_client == null)
                 {
-                    if (OAuthToken == null)
+                    if (AccessToken == null)
                     {
                         throw new InvalidOperationException("StartAuthentication and AuthenticateWithPin must be called before being able to do any request with this authentication mode");
                     }
                     _client = new RestClient(BaseUrl)
                     {
-                        Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OAuthTokenSecret)
+                        Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, AccessToken.Token, AccessToken.Secret)
                     };
                 }
 
@@ -52,24 +52,35 @@ namespace SharpBucket.Authentication
             BaseUrl = baseUrl;
         }
 
+        /// <summary>
+        /// Initialize a new instance of <see cref="OAuth1ThreeLeggedAuthentication"/>
+        /// to perform the whole Oauth1 3 legged process.
+        /// </summary>
+        /// <para>
+        /// The <see cref="StartAuthentication"/> and <see cref="AuthenticateWithPin"/> methods
+        /// will need to be called to complete the authentication process before being able to do any request.
+        /// </para>
         public OAuth1ThreeLeggedAuthentication(string consumerKey, string consumerSecret, string callback, string baseUrl)
             : this(consumerKey, consumerSecret, baseUrl)
         {
             this.Callback = callback;
         }
 
+        /// <summary>
+        /// Initialize a new instance of <see cref="OAuth1ThreeLeggedAuthentication"/>
+        /// to perform requests in an Oauth1 3 legged session which is already opened.
+        /// </summary>
         public OAuth1ThreeLeggedAuthentication(string consumerKey, string consumerSecret, string oauthToken, string oauthTokenSecret, string baseUrl)
             : this(consumerKey, consumerSecret, baseUrl)
         {
-            OAuthToken = oauthToken;
-            OAuthTokenSecret = oauthTokenSecret;
+            this.AccessToken = new OAuth1Token(oauthToken, oauthTokenSecret);
         }
 
         /// <summary>
-        /// Sets the authentication tokens.
+        /// Gets the authentication token and secret.
         /// </summary>
         /// <exception cref="System.Net.WebException">REST client encountered an error:  + response.ErrorMessage</exception>
-        private void SetAuthTokens(IRestClient client, string method)
+        private OAuth1Token GetAuthToken(IRestClient client, string method)
         {
             var request = new RestRequest(method, Method.POST);
             var response = client.Execute(request);
@@ -80,8 +91,7 @@ namespace SharpBucket.Authentication
             }
 
             var qs = HttpUtility.ParseQueryString(response.Content);
-            OAuthToken = qs["oauth_token"];
-            OAuthTokenSecret = qs["oauth_token_secret"];
+            return new OAuth1Token(qs["oauth_token"], qs["oauth_token_secret"]);
         }
 
         /// <summary>
@@ -97,14 +107,10 @@ namespace SharpBucket.Authentication
                 Authenticator = OAuth1Authenticator.ForRequestToken(ConsumerKey, ConsumerSecret, Callback)
             };
 
-            SetAuthTokens(restClient, RequestUrl);
-
-            Contract.Assert(
-                !String.IsNullOrWhiteSpace(OAuthToken) &&
-                !String.IsNullOrWhiteSpace(OAuthTokenSecret));
+            this.RequestToken = GetAuthToken(restClient, RequestUrl);
 
             var request = new RestRequest(UserAuthorizeUrl);
-            request.AddParameter("oauth_token", OAuthToken);
+            request.AddParameter("oauth_token", this.RequestToken.Token);
 
             return restClient.BuildUri(request).ToString();
         }
@@ -115,18 +121,20 @@ namespace SharpBucket.Authentication
         /// https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket#OAuthonBitbucket-Step4.RequestanAccessToken
         /// </summary>
         /// <param name="pin">The pin / verifier that was obtained in the previous step.</param>
-        public void AuthenticateWithPin(string pin)
+        /// <returns>The access token that will be used for further requests in that session,
+        /// and that you may use in another session to skip a part of the 3 legged process if you keep it somewhere.</returns>
+        public OAuth1Token AuthenticateWithPin(string pin)
         {
+            if (RequestToken == null) throw new InvalidOperationException("StartAuthentication must be called before");
+
             var restClient = new RestClient(BaseUrl)
             {
-                Authenticator = OAuth1Authenticator.ForAccessToken(ConsumerKey, ConsumerSecret, OAuthToken, OAuthTokenSecret, pin)
+                Authenticator = OAuth1Authenticator.ForAccessToken(ConsumerKey, ConsumerSecret, RequestToken.Token, RequestToken.Secret, pin)
             };
 
-            SetAuthTokens(restClient, AccessUrl);
+            AccessToken = GetAuthToken(restClient, AccessUrl);
 
-            Contract.Assert(
-                !String.IsNullOrWhiteSpace(OAuthToken) &&
-                !String.IsNullOrWhiteSpace(OAuthTokenSecret));
+            return AccessToken;
         }
     }
 }
