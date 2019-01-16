@@ -11,7 +11,6 @@ namespace SharpBucketTests.V2.EndPoints
     public class SrcResourceTests
     {
         [Test]
-        [Ignore("redirect is not working let's fix that later...")]
         public void ListTreeEntries_AtRootOfLastCommitOfMainBranch_GetAListing()
         {
             var testRepo = SampleRepositories.TestRepository;
