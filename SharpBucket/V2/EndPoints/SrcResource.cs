@@ -17,7 +17,18 @@ namespace SharpBucket.V2.EndPoints
         public SrcResource(RepositoriesEndPoint repositoriesEndPoint, string accountName, string repoSlugOrName, string revision = null, string path = null)
         {
             RepositoriesEndPoint = repositoriesEndPoint ?? throw new ArgumentNullException(nameof(repositoriesEndPoint));
-            SrcPath = UrlHelper.ConcatPathSegments($"{accountName.GuidOrValue()}/{repoSlugOrName.ToSlug()}/src", revision, path).EnsureEndsWith('/');
+
+            var rootSrcPath = $"{accountName.GuidOrValue()}/{repoSlugOrName.ToSlug()}/src/";
+            if (string.IsNullOrEmpty(revision))
+            {
+                // This may potentially be optimized since this call will first hit a redirect toward an url that contains the revision
+                // but the actual architecture of the code doesn't allow us to fetch just the redirect location of a GET request.
+                // so we found back the data we need in the response of the call to the url where we are redirected.
+                var rootEntry = repositoriesEndPoint.GetTreeEntry(rootSrcPath);
+                revision = rootEntry.Commit.hash;
+            }
+
+            SrcPath = UrlHelper.ConcatPathSegments(rootSrcPath, revision, path).EnsureEndsWith('/');
         }
 
         private SrcResource(RepositoriesEndPoint repositoriesEndPoint, string srcPath, string subDirPath)

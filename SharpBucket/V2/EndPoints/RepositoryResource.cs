@@ -304,7 +304,7 @@ namespace SharpBucket.V2.EndPoints
 
         #region Src resource
 
-        public SrcResource SrcResource(string revision, string path = null)
+        public SrcResource SrcResource(string revision = null, string path = null)
         {
             return new SrcResource(_repositoriesEndPoint, _accountName, _slug, revision, path);
         }

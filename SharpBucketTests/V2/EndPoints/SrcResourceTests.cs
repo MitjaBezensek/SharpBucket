@@ -14,7 +14,7 @@ namespace SharpBucketTests.V2.EndPoints
         public void ListTreeEntries_AtRootOfLastCommitOfMainBranch_GetAListing()
         {
             var testRepo = SampleRepositories.TestRepository;
-            var currentRoot = testRepo.RepositoryResource.SrcResource(null);
+            var currentRoot = testRepo.RepositoryResource.SrcResource();
 
             var treeEntries = currentRoot.ListTreeEntries();
 
@@ -67,6 +67,32 @@ namespace SharpBucketTests.V2.EndPoints
             treeEntries.Count.ShouldBe(4, "4 elements should be listed");
             treeEntries.Count(treeEntry => treeEntry.Type == "commit_file").ShouldBe(3, "3 elements should be files");
             treeEntries.Count(treeEntry => treeEntry.Type == "commit_directory").ShouldBe(1, "1 element should be a directory");
+        }
+
+        [Test]
+        public void GetTreeEntry_OfAFileInLastCommitOfMainBranch_GetFileMetadata()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource();
+
+            var treeEntry = rootOfFirstCommit.GetTreeEntry("readme.md");
+
+            treeEntry.ShouldNotBeNull();
+            treeEntry.Type.ShouldBe("commit_file");
+            treeEntry.Path.ShouldBe("readme.md");
+        }
+
+        [Test]
+        public void GetTreeEntry_OfAFileInASubPathInLastCommitOfMainBranch_GetFileMetadata()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource(path:"src");
+
+            var treeEntry = rootOfFirstCommit.GetTreeEntry("fileToChange.txt");
+
+            treeEntry.ShouldNotBeNull();
+            treeEntry.Type.ShouldBe("commit_file");
+            treeEntry.Path.ShouldBe("src/fileToChange.txt");
         }
 
         [TestCase("readme.md")]
