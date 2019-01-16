@@ -241,8 +241,9 @@ This table list [all the routes of the API V2](https://developer.atlassian.com/b
 | /repositories/{username}/{repo_slug}/refs/tags | `GET` | TagResource.ListTags() | no
 | /repositories/{username}/{repo_slug}/refs/tags | `POST` | none | no
 | /repositories/{username}/{repo_slug}/refs/tags/{name} | `GET` `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/src | `GET` `POST` | none | no
-| /repositories/{username}/{repo_slug}/src/{node}/{path} | `GET` | none | no
+| /repositories/{username}/{repo_slug}/src | `GET` | SrcResource when revision parameter is not specified | yes
+| /repositories/{username}/{repo_slug}/src | `POST` | none | no
+| /repositories/{username}/{repo_slug}/src/{node}/{path} | `GET` | SrcResource | yes
 | /repositories/{username}/{repo_slug}/versions | `GET` | none | no
 | /repositories/{username}/{repo_slug}/versions/{version_id} | `GET` | none | no
 | /repositories/{username}/{repo_slug}/watchers | `GET` | RepositoryResource.ListWatchers() | yes
