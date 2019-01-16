@@ -49,10 +49,10 @@ namespace SharpBucket.V2.EndPoints
         /// List the files and directories that are present at the root of this resource, or in the specified sub directory.
         /// </summary>
         /// <param name="subDirPath">The path to a sub directory, or null to list the root directory of this resource.</param>
-        /// <param name="max">The maximum number of entries to return, or 0 for unlimited size.</param>
-        public List<TreeEntry> ListTreeEntries(string subDirPath = null, int max = 0)
+        /// <param name="listParameters">Parameters for the query.</param>
+        public List<TreeEntry> ListTreeEntries(string subDirPath = null, ListParameters listParameters = null)
         {
-            return RepositoriesEndPoint.ListTreeEntries(SrcPath, subDirPath, max);
+            return RepositoriesEndPoint.ListTreeEntries(SrcPath, subDirPath, listParameters);
         }
 
         /// <summary>

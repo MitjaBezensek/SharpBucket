@@ -1,6 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using SharpBucket.Utility;
+using SharpBucket.V2.EndPoints;
 using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
@@ -67,6 +67,20 @@ namespace SharpBucketTests.V2.EndPoints
             treeEntries.Count.ShouldBe(4, "4 elements should be listed");
             treeEntries.Count(treeEntry => treeEntry.Type == "commit_file").ShouldBe(3, "3 elements should be files");
             treeEntries.Count(treeEntry => treeEntry.Type == "commit_directory").ShouldBe(1, "1 element should be a directory");
+        }
+
+        [Test]
+        public void ListTreeEntries_WithAFilter_GetAFilteredListing()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource(testRepo.RepositoryInfo.FirstCommit, "src");
+
+            var treeEntries = rootOfFirstCommit.ListTreeEntries(listParameters:new ListParameters { Filter = "path ~ \".txt\""});
+
+            treeEntries.ShouldNotBeNull();
+            treeEntries.Count.ShouldBe(3, "3 elements should be listed");
+            treeEntries.Count(treeEntry => treeEntry.Type == "commit_file").ShouldBe(3, "the 3 elements should be files");
+            treeEntries.Count(treeEntry => treeEntry.Path.Contains(".txt")).ShouldBe(3, "the 3 elements path should contains '.txt' as requested in the filter query");
         }
 
         [Test]

@@ -403,10 +403,12 @@ namespace SharpBucket.V2.EndPoints
 
         #region Src Resource
 
-        internal List<TreeEntry> ListTreeEntries(string srcResourcePath, string subDirPath = null, int max = 0)
+        internal List<TreeEntry> ListTreeEntries(string srcResourcePath, string subDirPath = null, ListParameters listParameters = null)
         {
             var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath, subDirPath);
-            return GetPaginatedValues<TreeEntry>(overrideUrl, max);
+            return listParameters == null
+                ? GetPaginatedValues<TreeEntry>(overrideUrl)
+                : GetPaginatedValues<TreeEntry>(overrideUrl, listParameters.Max, listParameters.ToDictionary());
         }
 
         internal TreeEntry GetTreeEntry(string srcResourcePath, string subPath = null)
