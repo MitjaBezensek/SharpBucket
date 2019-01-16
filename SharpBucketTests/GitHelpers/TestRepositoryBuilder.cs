@@ -53,6 +53,7 @@ namespace SharpBucketTests.GitHelpers
                 AddOrUpdateFile(repository, "src/fileToDelete.txt", "This is a file that will be delete in second commit to show some delete diff");
                 AddOrUpdateFile(repository, "src/fileToChange.txt", "This is a file that will be changed in second commit to show some change diff\nCurrent state: unchanged");
                 AddOrUpdateFile(repository, "src/fileToRename.txt", "This is a file that will be renamed in second commit to show some rename diff");
+                AddOrUpdateFile(repository, "src/subDir/fileInADeepDirectory.txt", "This file is in a deep directory to perform advanced tests of the src resource.");
                 var firstCommit = repository.Commit("Initial commit", testSignature, testSignature);
                 info.FirstCommit = firstCommit.Sha;
 

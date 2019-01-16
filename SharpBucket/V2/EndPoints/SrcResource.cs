@@ -17,13 +17,13 @@ namespace SharpBucket.V2.EndPoints
         public SrcResource(RepositoriesEndPoint repositoriesEndPoint, string accountName, string repoSlugOrName, string revision = null, string path = null)
         {
             RepositoriesEndPoint = repositoriesEndPoint ?? throw new ArgumentNullException(nameof(repositoriesEndPoint));
-            SrcPath = ConcatPathSegments($"{accountName.GuidOrValue()}/{repoSlugOrName.ToSlug()}/src", revision, path);
+            SrcPath = UrlHelper.ConcatPathSegments($"{accountName.GuidOrValue()}/{repoSlugOrName.ToSlug()}/src", revision, path).EnsureEndsWith('/');
         }
 
         private SrcResource(RepositoriesEndPoint repositoriesEndPoint, string srcPath, string subDirPath)
         {
             RepositoriesEndPoint = repositoriesEndPoint;
-            SrcPath = ConcatPathSegments(srcPath, subDirPath);
+            SrcPath = UrlHelper.ConcatPathSegments(srcPath, subDirPath).EnsureEndsWith('/');
         }
 
         /// <summary>
@@ -62,18 +62,6 @@ namespace SharpBucket.V2.EndPoints
         internal string GetFileContent(string filePath)
         {
             return RepositoriesEndPoint.GetFileContent(SrcPath, filePath);
-        }
-
-        private static string ConcatPathSegments(params string[] pathSegments)
-        {
-            var path = new StringBuilder();
-            foreach (var pathSegment in pathSegments)
-            {
-                if (string.IsNullOrEmpty(pathSegment)) return path.ToString();
-                path.Append(pathSegment);
-                path.Append("/");
-            }
-            return path.ToString();
         }
     }
 }

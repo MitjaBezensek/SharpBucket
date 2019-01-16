@@ -405,19 +405,19 @@ namespace SharpBucket.V2.EndPoints
 
         internal List<TreeEntry> ListTreeEntries(string srcResourcePath, string subDirPath = null, int max = 0)
         {
-            var overrideUrl = _baseUrl + srcResourcePath + subDirPath;
+            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath, subDirPath);
             return GetPaginatedValues<TreeEntry>(overrideUrl, max);
         }
 
         internal TreeEntry GetTreeEntry(string srcResourcePath, string subPath = null)
         {
-            var overrideUrl = _baseUrl + srcResourcePath + subPath;
-            return _sharpBucketV2.Get<TreeEntry>(overrideUrl, new { Format = "meta" });
+            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath, subPath);
+            return _sharpBucketV2.Get<TreeEntry>(overrideUrl, new { format = "meta" });
         }
 
         internal string GetFileContent(string srcResourcePath, string filePath)
         {
-            var overrideUrl = _baseUrl + srcResourcePath + filePath;
+            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath, filePath);
             return _sharpBucketV2.Get(overrideUrl);
         }
 
