@@ -84,10 +84,9 @@ namespace SharpBucketTests.V2.EndPoints
                 repositories.ShouldNotBeEmpty();
                 repositories.Any(r => r.name == teamRepository.name).ShouldBe(true);
             }
-            catch (Exception)
+            finally
             {
                 teamRepoResource.DeleteRepository();
-                throw;
             }
             
         }
