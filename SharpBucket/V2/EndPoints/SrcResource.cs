@@ -14,6 +14,14 @@ namespace SharpBucket.V2.EndPoints
         private RepositoriesEndPoint RepositoriesEndPoint { get; }
         private string SrcPath { get; }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="SrcResource"/>.
+        /// </summary>
+        /// <param name="repositoriesEndPoint">The base end point extended by this resource.</param>
+        /// <param name="accountName">The name of the account or team in which is located the repository we want to browse.</param>
+        /// <param name="repoSlugOrName">The slug or name of the repository we want to browse. (this may also be the repository UUID).</param>
+        /// <param name="revision">The name of the revision to browse. This may be a commit hash, a branch name, a tag name, or null to target the last commit of the main branch.</param>
+        /// <param name="path">An optional path to a sub directory if you want to start to browse somewhere else that at the root path.</param>
         public SrcResource(RepositoriesEndPoint repositoriesEndPoint, string accountName, string repoSlugOrName, string revision = null, string path = null)
         {
             RepositoriesEndPoint = repositoriesEndPoint ?? throw new ArgumentNullException(nameof(repositoriesEndPoint));
