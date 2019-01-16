@@ -70,7 +70,7 @@ namespace SharpBucket.V2.EndPoints
         /// Gets the raw content of the specified file.
         /// </summary>
         /// <param name="filePath">The path to a file relative to the root of this resource.</param>
-        internal string GetFileContent(string filePath)
+        public string GetFileContent(string filePath)
         {
             return RepositoriesEndPoint.GetFileContent(SrcPath, filePath);
         }
