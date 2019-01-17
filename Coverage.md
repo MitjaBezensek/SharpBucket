@@ -115,183 +115,597 @@
 ## [Group privileges endpoint][25]
 ## [Invitations endpoint][26] 
 
-# [Api v2][27]
-This table list [all the routes of the API V2](https://developer.atlassian.com/bitbucket/api/2/reference/resource/), and for each route describe the corresponding methods in SharpBucket and if our implementation is covered with tests.
+# [Api v2](https://developer.atlassian.com/bitbucket/api/2/reference/)
+Here we have listed [all the routes of the API V2](https://developer.atlassian.com/bitbucket/api/2/reference/resource/), and for each route describe the corresponding methods in SharpBucket and if our implementation is covered with tests.
 
-| Path | Methods | SharpBucket Methods | Tested
-| ---- | ------- | ------------------- | ------
-| /addon | `PUT` | none | no
-| /addon | `DELETE` | none | no
-| /addon/linkers | `GET` | none | no
-| /addon/linkers/{linker_key} | `GET` | none | no
-| /addon/linkers/{linker_key}/values | `GET` | none | no
-| /addon/linkers/{linker_key}/values | `POST` | none | no
-| /addon/linkers/{linker_key}/values | `PUT` | none | no
-| /addon/linkers/{linker_key}/values | `DELETE` | none | no
-| /addon/linkers/{linker_key}/values/ | `GET` | none | no
-| /addon/linkers/{linker_key}/values/ | `DELETE` | none | no
-| /addon/users/{target_user}/events/{event_key} | `POST` | none | no
-| /hook_events | `GET` | none | no
-| /hook_events/{subject_type} | `GET` | none | no
-| /pullrequests/{target_user} | `GET` | none | no
-| /repositories | `GET` | RepositoriesEndPoint.ListPublicRepositories(int) | yes
-| /repositories/{username} | `GET` | RepositoriesEndPoint.ListRepositories(string,int) | yes
-| /repositories/{username}/{repo_slug} | `GET` | RepositoryResource.GetRepository() | yes
-| /repositories/{username}/{repo_slug} | `POST` | RepositoryResource.PostRepository(Repository) | yes
-| /repositories/{username}/{repo_slug} | `PUT` | none | no
-| /repositories/{username}/{repo_slug} | `DELETE` | RepositoryResource.DeleteRepository() | yes
-| /repositories/{username}/{repo_slug}/branch-restrictions | `GET` | RepositoryResource.ListBranchRestrictions() | no
-| /repositories/{username}/{repo_slug}/branch-restrictions | `POST` | RepositoryResource.PostBranchRestriction(BranchRestriction) | no
-| /repositories/{username}/{repo_slug}/branch-restrictions/{id} | `GET` | RepositoryResource.GetBranchRestriction(int) | no
-| /repositories/{username}/{repo_slug}/branch-restrictions/{id} | `PUT` | RepositoryResource.PutBranchRestriction(BranchRestriction) | no
-| /repositories/{username}/{repo_slug}/branch-restrictions/{id} | `DELETE` | RepositoryResource.DeleteBranchRestriction(int) | no
-| /repositories/{username}/{repo_slug}/commit/{node} | `GET` | RepositoryResource.GetCommit(string) | no
-| /repositories/{username}/{repo_slug}/commit/{node}/approve | `POST` | RepositoryResource.ApproveCommit(string) | yes
-| /repositories/{username}/{repo_slug}/commit/{node}/approve | `DELETE` | RepositoryResource.DeleteCommitApproval(string) | yes
-| /repositories/{username}/{repo_slug}/commit/{node}/comments | `GET` | RepositoryResource.ListCommitComments(string) | no
-| /repositories/{username}/{repo_slug}/commit/{node}/comments | `POST` | none | no
-| /repositories/{username}/{repo_slug}/commit/{node}/comments/{comment_id} | `GET` | RepositoryResource.GetCommitComment(string,int) | no
-| /repositories/{username}/{repo_slug}/commit/{node}/statuses | `GET` | none | no
-| /repositories/{username}/{repo_slug}/commit/{node}/statuses/build | `POST` | RepositoryResource.AddNewBuildStatus(string,BuildInfo) | yes
-| /repositories/{username}/{repo_slug}/commit/{node}/statuses/build/{key} | `GET` | RepositoryResource.GetBuildStatusInfo(string,string) | yes
-| /repositories/{username}/{repo_slug}/commit/{node}/statuses/build/{key} | `PUT` | RepositoryResource.ChangeBuildStatusInfo(string,string,BuildInfo) | yes
-| /repositories/{username}/{repo_slug}/commits | `GET` | RepositoryResource.ListCommits(int) | yes
-| /repositories/{username}/{repo_slug}/commits | `POST` | none | no
-| /repositories/{username}/{repo_slug}/commits/{revision} | `GET` | RepositoryResource.ListCommits(string,int) | no
-| /repositories/{username}/{repo_slug}/commits/{revision} | `POST` | none | no
-| /repositories/{username}/{repo_slug}/components | `GET` | none | no
-| /repositories/{username}/{repo_slug}/components/{component_id} | `GET` | none | no
-| /repositories/{username}/{repo_slug}/default-reviewers | `GET` | none | no
-| /repositories/{username}/{repo_slug}/default-reviewers/{target_username} | `GET` | none | no
-| /repositories/{username}/{repo_slug}/default-reviewers/{target_username} | `PUT` | RepositoryResource.PutDefaultReviewer(string) | no
-| /repositories/{username}/{repo_slug}/default-reviewers/{target_username} | `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/deployments/ | `GET` | none | no
-| /repositories/{username}/{repo_slug}/deployments/{deployment_uuid} | `GET` | none | no
-| /repositories/{username}/{repo_slug}/diff/{spec} | `GET` | RepositoryResource.GetDiff(object) | no
-| /repositories/{username}/{repo_slug}/diffstat/{spec} | `GET` | none | no
-| /repositories/{username}/{repo_slug}/downloads | `GET` | none | no
-| /repositories/{username}/{repo_slug}/downloads | `POST` | none | no
-| /repositories/{username}/{repo_slug}/downloads/{filename} | `GET` | none | no
-| /repositories/{username}/{repo_slug}/downloads/{filename} | `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/environments/ | `GET` | none | no
-| /repositories/{username}/{repo_slug}/environments/{environment_uuid} | `GET` | none | no
-| /repositories/{username}/{repo_slug}/environments/{environment_uuid}/changes/ | `POST` | none | no
-| /repositories/{username}/{repo_slug}/filehistory/{node}/{path} | `GET` | none | no
-| /repositories/{username}/{repo_slug}/forks | `GET` | RepositoryResource.ListForks() | yes
-| /repositories/{username}/{repo_slug}/forks | `POST` | none | no
-| /repositories/{username}/{repo_slug}/hooks | `GET` | none | no
-| /repositories/{username}/{repo_slug}/hooks | `POST` | none | no
-| /repositories/{username}/{repo_slug}/hooks/{uid} | `GET` | none | no
-| /repositories/{username}/{repo_slug}/hooks/{uid} | `PUT` | none | no
-| /repositories/{username}/{repo_slug}/hooks/{uid} | `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/issues | `GET` `POST` | none | no
-| /repositories/{username}/{repo_slug}/issues/{issue_id} | `GET` `PUT` `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/issues/{issue_id}/attachments | `GET` `POST` | none | no
-| /repositories/{username}/{repo_slug}/issues/{issue_id}/attachments/{path} | `GET` `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/issues/{issue_id}/changes | `GET` `POST` | none | no
-| /repositories/{username}/{repo_slug}/issues/{issue_id}/changes/{change_id} | `GET` | none | no
-| /repositories/{username}/{repo_slug}/issues/{issue_id}/comments | `GET` `POST` | none | no
-| /repositories/{username}/{repo_slug}/issues/{issue_id}/comments/{comment_id} | `GET` `PUT` `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/issues/{issue_id}/vote | `GET` `PUT` `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/issues/{issue_id}/watch | `GET` `PUT` `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/milestones | `GET` | none | no
-| /repositories/{username}/{repo_slug}/milestones/{milestone_id} | `GET` | none | no
-| /repositories/{username}/{repo_slug}/patch/{spec} | `GET` | RepositoryResource.GetDiff(GetPatch) | no
-| /repositories/{username}/{repo_slug}/pipelines/ | `GET` `POST` | none | no
-| /repositories/{username}/{repo_slug}/pipelines/{pipeline_uuid} | `GET` | none | no
-| /repositories/{username}/{repo_slug}/pipelines/{pipeline_uuid}/steps/ | `GET` | none | no
-| /repositories/{username}/{repo_slug}/pipelines/{pipeline_uuid}/steps/{step_uuid} | `GET` | none | no
-| /repositories/{username}/{repo_slug}/pipelines/{pipeline_uuid}/steps/{step_uuid}/log | `GET` | none | no
-| /repositories/{username}/{repo_slug}/pipelines/{pipeline_uuid}/stopPipeline | `POST` | none | no
-| /repositories/{username}/{repo_slug}/pipelines_config | `GET` `PUT` | none | no
-| /repositories/{username}/{repo_slug}/pipelines_config/build_number | `PUT` | none | no
-| /repositories/{username}/{repo_slug}/pipelines_config/schedules/ | `GET` `POST` | none | no
-| /repositories/{username}/{repo_slug}/pipelines_config/schedules/{schedule_uuid} | `GET` `PUT` `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/pipelines_config/schedules/{schedule_uuid}/executions/ | `GET` | none | no
-| /repositories/{username}/{repo_slug}/pipelines_config/ssh/key_pair | `GET` `PUT` `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/pipelines_config/ssh/known_hosts/ | `GET` `POST` | none | no
-| /repositories/{username}/{repo_slug}/pipelines_config/ssh/known_hosts/{known_host_uuid} | `GET` `PUT` `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/pipelines_config/variables/ | `GET` `POST` | none | no
-| /repositories/{username}/{repo_slug}/pipelines_config/variables/{variable_uuid} | `GET` `PUT` `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/properties/{app_key}/{property_name} | `GET` `PUT` `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/pullrequests | `GET` | PullRequestsResource.ListPullRequests(int) | yes
-| /repositories/{username}/{repo_slug}/pullrequests | `POST` | PullRequestsResource.PostPullRequest(PullRequest) | no
-| /repositories/{username}/{repo_slug}/pullrequests/activity | `GET` | PullRequestsResource.GetPullRequestLog() | yes
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id} | `GET` | PullRequestResource.GetPullRequest() | yes
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id} | `PUT` | none | no
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/activity | `GET` | PullRequestResource.GetPullRequestActivity() | yes
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/approve | `POST` | PullRequestResource.ApprovePullRequest() | no
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/approve | `DELETE` | PullRequestResource.RemovePullRequestApproval() | no
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments | `GET` | PullRequestResource.ListPullRequestComments() | yes
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments | `POST` | PullRequestResource.PostPullRequestComment(Comment) | no
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id} | `GET` | PullRequestResource.GetPullRequestComment(int) | yes
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id} | `PUT` | none | no
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id} | `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/commits | `GET` | PullRequestResource.ListPullRequestCommits() | yes
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/decline | `POST` | PullRequestResource.DeclinePullRequest() | yes
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/diff | `GET` | PullRequestResource.GetDiffForPullRequest() | yes
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/diffstat | `GET` | none | no
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/merge | `POST` | PullRequestResource.AcceptAndMergePullRequest() | no
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/patch | `GET` | none | no
-| /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/statuses | `GET` | none | no
-| /repositories/{username}/{repo_slug}/refs | `GET` | none | no
-| /repositories/{username}/{repo_slug}/refs/branches | `GET` | BranchResource.ListBranches() | yes
-| /repositories/{username}/{repo_slug}/refs/branches | `POST` | none | no
-| /repositories/{username}/{repo_slug}/refs/branches/{name} | `GET` `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/refs/tags | `GET` | TagResource.ListTags() | no
-| /repositories/{username}/{repo_slug}/refs/tags | `POST` | none | no
-| /repositories/{username}/{repo_slug}/refs/tags/{name} | `GET` `DELETE` | none | no
-| /repositories/{username}/{repo_slug}/src | `GET` `POST` | none | no
-| /repositories/{username}/{repo_slug}/src/{node}/{path} | `GET` | none | no
-| /repositories/{username}/{repo_slug}/versions | `GET` | none | no
-| /repositories/{username}/{repo_slug}/versions/{version_id} | `GET` | none | no
-| /repositories/{username}/{repo_slug}/watchers | `GET` | RepositoryResource.ListWatchers() | yes
-| /snippets | `GET` `POST` | none | no
-| /snippets/{username} | `GET` `POST` | none | no
-| /snippets/{username}/{encoded_id} | `GET` `PUT` `DELETE` | none | no
-| /snippets/{username}/{encoded_id}/comments | `GET` `POST` | none | no
-| /snippets/{username}/{encoded_id}/comments/{comment_id} | `GET` `PUT` `DELETE` | none | no
-| /snippets/{username}/{encoded_id}/commits | `GET` | none | no
-| /snippets/{username}/{encoded_id}/commits/{revision} | `GET` | none | no
-| /snippets/{username}/{encoded_id}/files/{path} | `GET` | none | no
-| /snippets/{username}/{encoded_id}/watch | `GET` `PUT` `DELETE` | none | no
-| /snippets/{username}/{encoded_id}/watchers | `GET` | none | no
-| /snippets/{username}/{encoded_id}/{node_id} | `GET` `PUT` `DELETE` | none | no
-| /snippets/{username}/{encoded_id}/{node_id}/files/{path} | `GET` | none | no
-| /snippets/{username}/{encoded_id}/{revision}/diff | `GET` | none | no
-| /snippets/{username}/{encoded_id}/{revision}/patch | `GET` | none | no
-| /teams | `GET` | TeamsEndPoint.GetUserTeams(int) | yes
-| /teams/{username} | `GET` | TeamsEndPoint.GetProfile() | yes
-| /teams/{username}/followers | `GET` | TeamsEndPoint.ListFollowers(int) | yes
-| /teams/{username}/following | `GET` | TeamsEndPoint.ListFollowing(int) | no
-| /teams/{username}/hooks | `GET` `POST` | none | no
-| /teams/{username}/hooks/{uid} | `GET` `PUT` `DELETE` | none | no
-| /teams/{username}/members | `GET` | TeamsEndPoint.ListMembers(int) | yes
-| /teams/{username}/permissions | `GET` | none | no
-| /teams/{username}/permissions/repositories | `GET` | none | no
-| /teams/{username}/pipelines_config/variables/ | `GET` `POST` | none | no
-| /teams/{username}/pipelines_config/variables/{variable_uuid} | `GET` `PUT` `DELETE` | none | no
-| /teams/{username}/projects/ | `GET` `POST` | none | no
-| /teams/{username}/projects/{project_key} | `GET` `PUT` `DELETE` | none | no
-| /teams/{username}/repositories | `GET` | TeamsEndPoint.ListRepositories(int) | yes
-| /teams/{username}/search/code | `GET` | none | no
-| /user | `GET` | UserEndpoint.GetUser() | yes
-| /user/emails | `GET` | none | no
-| /user/emails/{email} | `GET` | none | no
-| /user/permissions/repositories | `GET` | none | no
-| /user/permissions/teams | `GET` | none | no
-| /users/{username} | `GET` | UsersEndpoint.GetProfile() | yes
-| /users/{username}/followers | `GET` | UsersEndpoint.ListFollowers(int) | yes
-| /users/{username}/following | `GET` | UsersEndpoint.ListFollowing(int) | yes
-| /users/{username}/hooks | `GET` `POST` | none | no
-| /users/{username}/hooks/{uid} | `GET` `PUT` `DELETE` | none | no
-| /users/{username}/members | `GET` | none | no
-| /users/{username}/pipelines_config/variables/ | `GET` `POST` | none | no
-| /users/{username}/pipelines_config/variables/{variable_uuid} | `GET` `PUT` `DELETE` | none | no
-| /users/{username}/repositories | `GET` | UsersEndpoint.ListRepositories(int) | yes
-| /users/{username}/search/code | `GET` | none | no
-| /users/{username}/ssh-keys | `GET` `POST` | none | no
-| /users/{username}/ssh-keys/ | `GET` `PUT` `DELETE` | none | no
+*nb: The names of the end points and resources in this document are an exact reflect of the URLs organization.  
+The organization of all that routes may slightly differ in the SharpBucket classes.*
+
+## [Addon endpoint](https://developer.atlassian.com/bitbucket/api/2/reference/resource/addon)
+- /addon `PUT`
+  - Implemented by: none
+  - Tested: no
+- /addon `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /addon/linkers `GET`
+  - Implemented by: none
+  - Tested: no
+- /addon/users/{target_user}/events/{event_key} `POST`
+  - Implemented by: none
+  - Tested: no
+
+### [Linkers ressource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/addon/linkers)
+- /addon/linkers/{linker_key} `GET`
+  - Implemented by: none
+  - Tested: no
+- /addon/linkers/{linker_key}/values `GET`
+  - Implemented by: none
+  - Tested: no
+- /addon/linkers/{linker_key}/values `POST`
+  - Implemented by: none
+  - Tested: no
+- /addon/linkers/{linker_key}/values `PUT`
+  - Implemented by: none
+  - Tested: no
+- /addon/linkers/{linker_key}/values `DELETE`
+  - Implemented by: none
+  - Tested: no
+
+## [Hook events endpoint](https://developer.atlassian.com/bitbucket/api/2/reference/resource/hook_events)
+- /hook_events `GET`
+  - Implemented by: none
+  - Tested: no
+- /hook_events/{subject_type} `GET`
+  - Implemented by: none
+  - Tested: no
+
+## [Pull requests endpoint](https://developer.atlassian.com/bitbucket/api/2/reference/resource/pullrequests)
+- /pullrequests/{target_user} `GET`
+  - Implemented by: none
+  - Tested: no
+
+## [Repositories endpoint](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories)
+- /repositories `GET`
+  - Implemented by: `RepositoriesEndPoint.ListPublicRepositories(int)`
+  - Tested: **yes**
+- /repositories/{username} `GET`
+  - Implemented by:
+    - `RepositoriesEndPoint.ListRepositories(string)`
+    - `RepositoriesEndPoint.ListRepositories(string,ListParameters)`
+  - Tested: **yes**
+
+### [Repository resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D)
+- /repositories/{username}/{repo_slug} `GET`
+  - Implemented by: `RepositoryResource.GetRepository()`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug} `POST`
+  - Implemented by: `RepositoryResource.PostRepository(Repository)`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug} `PUT`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug} `DELETE`
+  - Implemented by: `RepositoryResource.DeleteRepository()`
+  - Tested: **yes**
+
+### [Branch restrictions resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/branch-restrictions)
+- /repositories/{username}/{repo_slug}/branch-restrictions `GET`
+  - Implemented by: `RepositoryResource.ListBranchRestrictions()`
+  - Tested: no
+- /repositories/{username}/{repo_slug}/branch-restrictions `POST`
+  - Implemented by: `RepositoryResource.PostBranchRestriction(BranchRestriction)`
+  - Tested: no
+- /repositories/{username}/{repo_slug}/branch-restrictions/{id} `GET`
+  - Implemented by: `RepositoryResource.GetBranchRestriction(int)`
+  - Tested: no
+- /repositories/{username}/{repo_slug}/branch-restrictions/{id} `PUT`
+  - Implemented by: `RepositoryResource.PutBranchRestriction(BranchRestriction)`
+  - Tested: no
+- /repositories/{username}/{repo_slug}/branch-restrictions/{id} `DELETE`
+  - Implemented by: `RepositoryResource.DeleteBranchRestriction(int)`
+  - Tested: no
+
+### [Commit resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit)
+- /repositories/{username}/{repo_slug}/commit/{node} `GET`
+  - Implemented by: `RepositoryResource.GetCommit(string)`
+  - Tested: no
+- /repositories/{username}/{repo_slug}/commit/{node}/approve `POST`
+  - Implemented by: `RepositoryResource.ApproveCommit(string)`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/commit/{node}/approve `DELETE`
+  - Implemented by: `RepositoryResource.DeleteCommitApproval(string)`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/commit/{node}/comments `GET`
+  - Implemented by: `RepositoryResource.ListCommitComments(string)`
+  - Tested: no
+- /repositories/{username}/{repo_slug}/commit/{node}/comments `POST`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/commit/{node}/comments/{comment_id} `GET`
+  - Implemented by: `RepositoryResource.GetCommitComment(string,int)`
+  - Tested: no
+- /repositories/{username}/{repo_slug}/commit/{node}/statuses `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/commit/{node}/statuses/build `POST`
+  - Implemented by: `RepositoryResource.AddNewBuildStatus(string,BuildInfo)`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/commit/{node}/statuses/build/{key} `GET`
+  - Implemented by: `RepositoryResource.GetBuildStatusInfo(string,string)`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/commit/{node}/statuses/build/{key} `PUT`
+  - Implemented by: `RepositoryResource.ChangeBuildStatusInfo(string,string,BuildInfo)`
+  - Tested: **yes**
+
+### [Commits resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits)
+- /repositories/{username}/{repo_slug}/commits `GET`
+  - Implemented by: `RepositoryResource.ListCommits(int)`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/commits `POST`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/commits/{revision} `GET`
+  - Implemented by: `RepositoryResource.ListCommits(string,int)`
+  - Tested: no
+- /repositories/{username}/{repo_slug}/commits/{revision} `POST`
+  - Implemented by: none
+  - Tested: no
+
+### [Components resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/components)
+- /repositories/{username}/{repo_slug}/components `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/components/{component_id} `GET`
+  - Implemented by: none
+  - Tested: no
+
+### [Default reviewers resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/default-reviewers)
+- /repositories/{username}/{repo_slug}/default-reviewers `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/default-reviewers/{target_username} `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/default-reviewers/{target_username} `PUT`
+  - Implemented by: `RepositoryResource.PutDefaultReviewer(string)`
+  - Tested: no
+- /repositories/{username}/{repo_slug}/default-reviewers/{target_username} `DELETE`
+  - Implemented by: none
+  - Tested: no
+
+### [Deployments resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/deployments)
+- /repositories/{username}/{repo_slug}/deployments/ `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/deployments/{deployment_uuid} `GET`
+  - Implemented by: none
+  - Tested: no
+
+### [Diff resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/diff)
+- /repositories/{username}/{repo_slug}/diff/{spec} `GET`
+  - Implemented by: `RepositoryResource.GetDiff(object)`
+  - Tested: no
+
+### [Diffstat resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/diffstat)
+- /repositories/{username}/{repo_slug}/diffstat/{spec} `GET`
+  - Implemented by: none
+  - Tested: no
+
+### [Downloads resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/downloads)
+- /repositories/{username}/{repo_slug}/downloads `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/downloads `POST`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/downloads/{filename} `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/downloads/{filename} `DELETE`
+  - Implemented by: none
+  - Tested: no
+
+### [Environments resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/environments)
+- /repositories/{username}/{repo_slug}/environments/ `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/environments/{environment_uuid} `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/environments/{environment_uuid}/changes/ `POST`
+  - Implemented by: none
+  - Tested: no
+
+### [File History resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/filehistory)
+- /repositories/{username}/{repo_slug}/filehistory/{node}/{path} `GET`
+  - Implemented by: none
+  - Tested: no
+
+### [Forks resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/forks)
+- /repositories/{username}/{repo_slug}/forks `GET`
+  - Implemented by: `RepositoryResource.ListForks()`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/forks `POST`
+  - Implemented by: none
+  - Tested: no
+
+### [hooks resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/hooks)
+- /repositories/{username}/{repo_slug}/hooks `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/hooks `POST`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/hooks/{uid} `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/hooks/{uid} `PUT`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/hooks/{uid} `DELETE`
+  - Implemented by: none
+  - Tested: no
+
+### [Issues resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues)
+- /repositories/{username}/{repo_slug}/issues `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/issues/{issue_id} `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/issues/{issue_id}/attachments `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/issues/{issue_id}/attachments/{path} `GET` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/issues/{issue_id}/changes `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/issues/{issue_id}/changes/{change_id} `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/issues/{issue_id}/comments `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/issues/{issue_id}/comments/{comment_id} `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/issues/{issue_id}/vote `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/issues/{issue_id}/watch `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+
+### [Milestones resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/milestones)
+- /repositories/{username}/{repo_slug}/milestones `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/milestones/{milestone_id} `GET`
+  - Implemented by: none
+  - Tested: no
+
+### [Patch resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/patch/%7Bspec%7D)
+- /repositories/{username}/{repo_slug}/patch/{spec} `GET`
+  - Implemented by: `RepositoryResource.GetDiff(GetPatch)`
+  - Tested: no
+
+### [Pipelines resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pipelines)
+- /repositories/{username}/{repo_slug}/pipelines/ `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pipelines/{pipeline_uuid} `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pipelines/{pipeline_uuid}/steps/ `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pipelines/{pipeline_uuid}/steps/{step_uuid} `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pipelines/{pipeline_uuid}/steps/{step_uuid}/log `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pipelines/{pipeline_uuid}/stopPipeline `POST`
+  - Implemented by: none
+  - Tested: no
+
+### [Pipelines config resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pipelines_config)
+- /repositories/{username}/{repo_slug}/pipelines_config `GET` `PUT`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pipelines_config/build_number `PUT`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pipelines_config/schedules/ `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pipelines_config/schedules/{schedule_uuid} `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pipelines_config/schedules/{schedule_uuid}/executions/ `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pipelines_config/ssh/key_pair `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pipelines_config/ssh/known_hosts/ `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pipelines_config/ssh/known_hosts/{known_host_uuid} `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pipelines_config/variables/ `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pipelines_config/variables/{variable_uuid} `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+
+### [Property resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/properties/%7Bapp_key%7D/%7Bproperty_name%7D)
+- /repositories/{username}/{repo_slug}/properties/{app_key}/{property_name} `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+
+### [Pull requests resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests)
+- /repositories/{username}/{repo_slug}/pullrequests `GET`
+  - Implemented by: `PullRequestsResource.ListPullRequests(int)`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/pullrequests `POST`
+  - Implemented by: `PullRequestsResource.PostPullRequest(PullRequest)`
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pullrequests/activity `GET`
+  - Implemented by: `PullRequestsResource.GetPullRequestLog()`
+  - Tested: **yes**
+
+### [Pull request resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D)
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id} `GET`
+  - Implemented by: `PullRequestResource.GetPullRequest()`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id} `PUT`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/activity `GET`
+  - Implemented by: `PullRequestResource.GetPullRequestActivity()`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/approve `POST`
+  - Implemented by: `PullRequestResource.ApprovePullRequest()`
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/approve `DELETE`
+  - Implemented by: `PullRequestResource.RemovePullRequestApproval()`
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments `GET`
+  - Implemented by: `PullRequestResource.ListPullRequestComments()`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments `POST`
+  - Implemented by: `PullRequestResource.PostPullRequestComment(Comment)`
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id} `GET`
+  - Implemented by: `PullRequestResource.GetPullRequestComment(int)`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id} `PUT`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id} `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/commits `GET`
+  - Implemented by: `PullRequestResource.ListPullRequestCommits()`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/decline `POST`
+  - Implemented by: `PullRequestResource.DeclinePullRequest()`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/diff `GET`
+  - Implemented by: `PullRequestResource.GetDiffForPullRequest()`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/diffstat `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/merge `POST`
+  - Implemented by: `PullRequestResource.AcceptAndMergePullRequest()`
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/patch `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/statuses `GET`
+  - Implemented by: none
+  - Tested: no
+
+### [Ref resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/refs)
+- /repositories/{username}/{repo_slug}/refs `GET`
+  - Implemented by: none
+  - Tested: no
+
+### [Branch resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/refs/branches/%7Bname%7D)
+- /repositories/{username}/{repo_slug}/refs/branches `GET`
+  - Implemented by: `BranchResource.ListBranches()`
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/refs/branches `POST`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/refs/branches/{name} `GET` `DELETE`
+  - Implemented by: none
+  - Tested: no
+
+### [Tag resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/refs/tags/%7Bname%7D)
+- /repositories/{username}/{repo_slug}/refs/tags `GET`
+  - Implemented by: `TagResource.ListTags()`
+  - Tested: no
+- /repositories/{username}/{repo_slug}/refs/tags `POST`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/refs/tags/{name} `GET` `DELETE`
+  - Implemented by: none
+  - Tested: no
+
+### [Src resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src)
+- /repositories/{username}/{repo_slug}/src `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/src/{node}/{path} `GET`
+  - Implemented by: none
+  - Tested: no
+
+### [Versions resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/versions)
+- /repositories/{username}/{repo_slug}/versions `GET`
+  - Implemented by: none
+  - Tested: no
+- /repositories/{username}/{repo_slug}/versions/{version_id} `GET`
+  - Implemented by: none
+  - Tested: no
+
+### [Watchers resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/watchers)
+- /repositories/{username}/{repo_slug}/watchers `GET`
+  - Implemented by: `RepositoryResource.ListWatchers()`
+  - Tested: **yes**
+
+## [Snippets endpoint](https://developer.atlassian.com/bitbucket/api/2/reference/resource/snippets)
+- /snippets `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /snippets/{username} `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /snippets/{username}/{encoded_id} `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /snippets/{username}/{encoded_id}/comments `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /snippets/{username}/{encoded_id}/comments/{comment_id} `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /snippets/{username}/{encoded_id}/commits `GET`
+  - Implemented by: none
+  - Tested: no
+- /snippets/{username}/{encoded_id}/commits/{revision} `GET`
+  - Implemented by: none
+  - Tested: no
+- /snippets/{username}/{encoded_id}/files/{path} `GET`
+  - Implemented by: none
+  - Tested: no
+- /snippets/{username}/{encoded_id}/watch `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /snippets/{username}/{encoded_id}/watchers `GET`
+  - Implemented by: none
+  - Tested: no
+- /snippets/{username}/{encoded_id}/{node_id} `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /snippets/{username}/{encoded_id}/{node_id}/files/{path} `GET`
+  - Implemented by: none
+  - Tested: no
+- /snippets/{username}/{encoded_id}/{revision}/diff `GET`
+  - Implemented by: none
+  - Tested: no
+- /snippets/{username}/{encoded_id}/{revision}/patch `GET`
+  - Implemented by: none
+  - Tested: no
+
+## [Teams endpoint](https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams)
+- /teams `GET`
+  - Implemented by: `TeamsEndPoint.GetUserTeams(int)`
+  - Tested: **yes**
+- /teams/{username} `GET`
+  - Implemented by: `TeamsEndPoint.GetProfile()`
+  - Tested: **yes**
+- /teams/{username}/followers `GET`
+  - Implemented by: `TeamsEndPoint.ListFollowers(int)`
+  - Tested: **yes**
+- /teams/{username}/following `GET`
+  - Implemented by: `TeamsEndPoint.ListFollowing(int)`
+  - Tested: no
+- /teams/{username}/hooks `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /teams/{username}/hooks/{uid} `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /teams/{username}/members `GET`
+  - Implemented by: `TeamsEndPoint.ListMembers(int)`
+  - Tested: **yes**
+- /teams/{username}/permissions `GET`
+  - Implemented by: none
+  - Tested: no
+- /teams/{username}/permissions/repositories `GET`
+  - Implemented by: none
+  - Tested: no
+- /teams/{username}/pipelines_config/variables/ `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /teams/{username}/pipelines_config/variables/{variable_uuid} `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /teams/{username}/projects/ `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /teams/{username}/projects/{project_key} `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /teams/{username}/repositories `GET`
+  - Implemented by: `TeamsEndPoint.ListRepositories(int)`
+  - Tested: **yes**
+- /teams/{username}/search/code `GET`
+  - Implemented by: none
+  - Tested: no
+
+## [User endpoint](https://developer.atlassian.com/bitbucket/api/2/reference/resource/user)
+- /user `GET`
+  - Implemented by: `UserEndpoint.GetUser()`
+  - Tested: **yes**
+- /user/emails `GET`
+  - Implemented by: none
+  - Tested: no
+- /user/emails/{email} `GET`
+  - Implemented by: none
+  - Tested: no
+- /user/permissions/repositories `GET`
+  - Implemented by: none
+  - Tested: no
+- /user/permissions/teams `GET`
+  - Implemented by: none
+  - Tested: no
+
+## [Users endpoint](https://developer.atlassian.com/bitbucket/api/2/reference/resource/users)
+- /users/{username} `GET`
+  - Implemented by: `UsersEndpoint.GetProfile()`
+  - Tested: **yes**
+- /users/{username}/followers `GET`
+  - Implemented by: `UsersEndpoint.ListFollowers(int)`
+  - Tested: **yes**
+- /users/{username}/following `GET`
+  - Implemented by: `UsersEndpoint.ListFollowing(int)`
+  - Tested: **yes**
+- /users/{username}/hooks `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /users/{username}/hooks/{uid} `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /users/{username}/members `GET`
+  - Implemented by: none
+  - Tested: no
+- /users/{username}/pipelines_config/variables/ `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /users/{username}/pipelines_config/variables/{variable_uuid} `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /users/{username}/repositories `GET`
+  - Implemented by: `UsersEndpoint.ListRepositories(int)`
+  - Tested: **yes**
+- /users/{username}/search/code `GET`
+  - Implemented by: none
+  - Tested: no
+- /users/{username}/ssh-keys `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /users/{username}/ssh-keys/ `GET` `PUT` `DELETE`
+  - Implemented by: none
+  - Tested: no
 
 # [Authentication][28] 
 - Basic **(done)**
@@ -326,7 +740,6 @@ This table list [all the routes of the API V2](https://developer.atlassian.com/b
   [24]: https://confluence.atlassian.com/display/BITBUCKET/groups+Endpoint
   [25]: https://confluence.atlassian.com/display/BITBUCKET/group-privileges+Endpoint
   [26]: https://confluence.atlassian.com/display/BITBUCKET/invitations+Endpoint
-  [27]: https://confluence.atlassian.com/display/BITBUCKET/Version+2
   [28]: https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket
   [29]: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/default-reviewers/%7Btarget_username%7D
   
