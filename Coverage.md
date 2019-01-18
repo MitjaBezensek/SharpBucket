@@ -607,16 +607,27 @@ The organization of all that routes may slightly differ in the SharpBucket class
 
 ## [Teams endpoint](https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams)
 - /teams `GET`
-  - Implemented by: `TeamsEndPoint.GetUserTeams(int)`
+  - Implemented by:
+    - `TeamsEndPoint.GetUserTeams(int)`
+    - `TeamsEndPoint.GetUserTeamsWithContributorRole(int)`
+    - `TeamsEndPoint.GetUserTeamsWithAdminRole(int)`
   - Tested: **yes**
+
+### [Team Resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D)
 - /teams/{username} `GET`
-  - Implemented by: `TeamsEndPoint.GetProfile()`
+  - Implemented by:
+    - `TeamResource.GetProfile()` *v0.9.0*
+    - `[obsolete]TeamsEndPoint.GetProfile()`
   - Tested: **yes**
 - /teams/{username}/followers `GET`
-  - Implemented by: `TeamsEndPoint.ListFollowers(int)`
+  - Implemented by:
+    - `TeamResource.ListFollowers(int)` *V0.9.0*
+    - `[obsolete]TeamsEndPoint.ListFollowers(int)`
   - Tested: **yes**
 - /teams/{username}/following `GET`
-  - Implemented by: `TeamsEndPoint.ListFollowing(int)`
+  - Implemented by:
+    - `TeamResource.ListFollowing(int)` *V0.9.0*
+    - `[obsolete]TeamsEndPoint.ListFollowing(int)`
   - Tested: no
 - /teams/{username}/hooks `GET` `POST`
   - Implemented by: none
@@ -625,7 +636,9 @@ The organization of all that routes may slightly differ in the SharpBucket class
   - Implemented by: none
   - Tested: no
 - /teams/{username}/members `GET`
-  - Implemented by: `TeamsEndPoint.ListMembers(int)`
+  - Implemented by:
+    - `TeamResource.ListMembers(int)` *V0.9.0*
+    - `[obsolete]TeamsEndPoint.ListMembers(int)`
   - Tested: **yes**
 - /teams/{username}/permissions `GET`
   - Implemented by: none
@@ -646,7 +659,9 @@ The organization of all that routes may slightly differ in the SharpBucket class
   - Implemented by: none
   - Tested: no
 - /teams/{username}/repositories `GET`
-  - Implemented by: `TeamsEndPoint.ListRepositories(int)`
+  - Implemented by:
+    - `TeamResource.ListRepositories(ListParameters)` *V0.9.0*
+    - `[obsolete]TeamsEndPoint.ListRepositories(int)`
   - Tested: **yes**
 - /teams/{username}/search/code `GET`
   - Implemented by: none
