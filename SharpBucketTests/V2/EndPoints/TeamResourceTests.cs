@@ -9,7 +9,7 @@ using Shouldly;
 namespace SharpBucketTests.V2.EndPoints
 {
     [TestFixture]
-    class TeamsEndPointTests
+    class TeamResourceTests
     {
         private SharpBucketV2 sharpBucket;
         private TeamsEndPoint teamsEndPoint;
@@ -22,69 +22,41 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void GetUserTeams_FromLoggedUser_ShouldReturnManyTeams()
-        {
-            teamsEndPoint.ShouldNotBe(null);
-            var teams = teamsEndPoint.GetUserTeams();
-            teams.Count.ShouldBeGreaterThan(0);
-        }
-
-        [Test]
-        public void GetUserTeamsWithAdminRole_FromLoggedUser_ShouldReturnManyTeams()
-        {
-            teamsEndPoint.ShouldNotBe(null);
-            var teams = teamsEndPoint.GetUserTeamsWithAdminRole();
-            teams.Count.ShouldBeGreaterThan(0);
-        }
-
-        [Test]
-        public void GetUserTeamsWithContributorRole_FromLoggedUser_ShouldReturnManyTeams()
-        {
-            teamsEndPoint.ShouldNotBe(null);
-            var teams = teamsEndPoint.GetUserTeamsWithContributorRole();
-            teams.Count.ShouldBeGreaterThan(0);
-        }
-
-        [Test]
-        [Obsolete]
         public void GetProfile_FromTeamAtlassian_ReturnsAtlassianProfile()
         {
-            sharpBucket.ShouldNotBe(null);
-            var profile = sharpBucket.TeamsEndPoint("atlassian").GetProfile();
+            teamsEndPoint.ShouldNotBe(null);
+            var profile = teamsEndPoint.TeamResource("atlassian").GetProfile();
             profile.display_name.ShouldBe("Atlassian");
         }
 
         [Test]
-        [Obsolete]
         public void ListMembers_FromFirstTeamOfLoggedUser_ShouldReturnManyMembers()
         {
             teamsEndPoint.ShouldNotBe(null);
             var teams = teamsEndPoint.GetUserTeams();
             teams.Count.ShouldBeGreaterThan(0);
 
-            var firstTeamEndPoint = sharpBucket.TeamsEndPoint(teams[0].username);
-            var members = firstTeamEndPoint.ListMembers(35);
+            var firstTeamResource = teamsEndPoint.TeamResource(teams[0].username);
+            var members = firstTeamResource.ListMembers(35);
             members.Count.ShouldBeGreaterThan(0);
             var userName = sharpBucket.UserEndPoint().GetUser().username;
             members.ShouldContain(m => m.username == userName);
         }
 
         [Test]
-        [Obsolete]
         public void ListFollowers_FromTeamAtlassian_ShouldReturnManyFollowers()
         {
-            sharpBucket.ShouldNotBe(null);
-            var followers = sharpBucket.TeamsEndPoint("atlassian").ListFollowers(8);
+            teamsEndPoint.ShouldNotBe(null);
+            var followers = teamsEndPoint.TeamResource("atlassian").ListFollowers(8);
             followers.Count.ShouldBe(8);
             followers[0].display_name.ShouldBe("Hector Miuler Malpica Gallegos");
         }
 
         [Test]
-        [Obsolete]
         public void ListRepositories_FromUserAdminTeamAfterHavingCreateOneRepoInside_ShouldReturnAtLeastTheCreatedOne()
         {
-            teamsEndPoint.ShouldNotBe(null);
-            var team = teamsEndPoint.GetUserTeamsWithAdminRole()[0];
+            this.teamsEndPoint.ShouldNotBe(null);
+            var team = this.teamsEndPoint.GetUserTeamsWithAdminRole()[0];
 
             var repositoryName = Guid.NewGuid().ToString("N");
             var teamRepository = new Repository
@@ -93,7 +65,7 @@ namespace SharpBucketTests.V2.EndPoints
                 language = "c#",
                 scm = "git"
             };
-            var teamResource = new TeamsEndPoint(TestHelpers.SharpBucketV2, team.username);
+            var teamResource = this.teamsEndPoint.TeamResource(team.username);
             var teamRepoResource = SampleRepositories.RepositoriesEndPoint.RepositoryResource(team.username, repositoryName);
             teamRepoResource.PostRepository(teamRepository);
 
@@ -107,7 +79,6 @@ namespace SharpBucketTests.V2.EndPoints
             {
                 teamRepoResource.DeleteRepository();
             }
-            
         }
     }
 }

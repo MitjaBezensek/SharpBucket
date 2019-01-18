@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Dynamic;
+﻿using System;
+using System.Collections.Generic;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
@@ -14,6 +14,12 @@ namespace SharpBucket.V2.EndPoints
     {
         private readonly string _repositoriesUrl;
 
+        public TeamsEndPoint(SharpBucketV2 sharpBucketV2)
+            : base(sharpBucketV2, "teams")
+        {
+        }
+
+        [Obsolete("Use TeamResource class to manipulate a team")]
         public TeamsEndPoint(SharpBucketV2 sharpBucketV2, string teamName)
             : base(sharpBucketV2, $"teams/{teamName.GuidOrValue()}/")
         {
@@ -48,10 +54,20 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Gets a <see cref="TeamResource"/> for a specified team.
+        /// </summary>
+        /// <param name="teamName">The team's username or UUID.</param>
+        public TeamResource TeamResource(string teamName)
+        {
+            return new TeamResource(this._sharpBucketV2, teamName);
+        }
+
+        /// <summary>
         /// Gets the public information associated with a team. 
         /// If the team's profile is private, the caller must be authenticated and authorized to view this information. 
         /// </summary>
         /// <returns></returns>
+        [Obsolete("Use TeamResource.GetProfile() instead")]
         public Team GetProfile()
         {
             return _sharpBucketV2.Get<Team>(_baseUrl);
@@ -62,6 +78,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
+        [Obsolete("Use TeamResource.ListMembers() instead")]
         public List<Team> ListMembers(int max = 0)
         {
             var overrideUrl = _baseUrl + "members/";
@@ -73,6 +90,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
+        [Obsolete("Use TeamResource.ListFollowers() instead")]
         public List<Team> ListFollowers(int max = 0)
         {
             var overrideUrl = _baseUrl + "followers/";
@@ -84,6 +102,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
+        [Obsolete("Use TeamResource.ListFollowing() instead")]
         public List<Team> ListFollowing(int max = 0)
         {
             var overrideUrl = _baseUrl + "following/";
@@ -96,6 +115,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
+        [Obsolete("Use TeamResource.ListRepositories() instead")]
         public List<Repository> ListRepositories(int max = 0)
         {
             return GetPaginatedValues<Repository>(_repositoriesUrl, max);
