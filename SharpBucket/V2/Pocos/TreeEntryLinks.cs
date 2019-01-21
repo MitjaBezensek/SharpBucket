@@ -2,7 +2,8 @@
 {
     public class TreeEntryLinks
     {
-        public Link Self { get; set; }
-        public Link Meta { get; set; }
+        public Link self { get; set; }
+        public Link meta { get; set; }
+        public Link history { get; set; }
     }
 }

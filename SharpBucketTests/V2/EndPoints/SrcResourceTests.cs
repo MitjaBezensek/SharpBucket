@@ -32,12 +32,12 @@ namespace SharpBucketTests.V2.EndPoints
 
             treeEntries.ShouldNotBeNull();
             treeEntries.Count.ShouldBe(2);
-            var readMeFile = treeEntries.FirstOrDefault(treeEntry => treeEntry.Type == "commit_file");
+            var readMeFile = treeEntries.FirstOrDefault(treeEntry => treeEntry.type == "commit_file");
             readMeFile.ShouldNotBeNull();
-            readMeFile.Path.ShouldBe("readme.md");
-            var srcDir = treeEntries.FirstOrDefault(treeEntry => treeEntry.Type == "commit_directory");
+            readMeFile.path.ShouldBe("readme.md");
+            var srcDir = treeEntries.FirstOrDefault(treeEntry => treeEntry.type == "commit_directory");
             srcDir.ShouldNotBeNull();
-            srcDir.Path.ShouldBe("src");
+            srcDir.path.ShouldBe("src");
         }
 
         [Test]
@@ -51,8 +51,8 @@ namespace SharpBucketTests.V2.EndPoints
 
             treeEntries.ShouldNotBeNull();
             treeEntries.Count.ShouldBe(4, "4 elements should be listed");
-            treeEntries.Count(treeEntry => treeEntry.Type == "commit_file").ShouldBe(3, "3 elements should be files");
-            treeEntries.Count(treeEntry => treeEntry.Type == "commit_directory").ShouldBe(1, "1 element should be a directory");
+            treeEntries.Count(treeEntry => treeEntry.type == "commit_file").ShouldBe(3, "3 elements should be files");
+            treeEntries.Count(treeEntry => treeEntry.type == "commit_directory").ShouldBe(1, "1 element should be a directory");
         }
 
         [Test]
@@ -65,8 +65,8 @@ namespace SharpBucketTests.V2.EndPoints
 
             treeEntries.ShouldNotBeNull();
             treeEntries.Count.ShouldBe(4, "4 elements should be listed");
-            treeEntries.Count(treeEntry => treeEntry.Type == "commit_file").ShouldBe(3, "3 elements should be files");
-            treeEntries.Count(treeEntry => treeEntry.Type == "commit_directory").ShouldBe(1, "1 element should be a directory");
+            treeEntries.Count(treeEntry => treeEntry.type == "commit_file").ShouldBe(3, "3 elements should be files");
+            treeEntries.Count(treeEntry => treeEntry.type == "commit_directory").ShouldBe(1, "1 element should be a directory");
         }
 
         [Test]
@@ -79,8 +79,8 @@ namespace SharpBucketTests.V2.EndPoints
 
             treeEntries.ShouldNotBeNull();
             treeEntries.Count.ShouldBe(3, "3 elements should be listed");
-            treeEntries.Count(treeEntry => treeEntry.Type == "commit_file").ShouldBe(3, "the 3 elements should be files");
-            treeEntries.Count(treeEntry => treeEntry.Path.Contains(".txt")).ShouldBe(3, "the 3 elements path should contains '.txt' as requested in the filter query");
+            treeEntries.Count(treeEntry => treeEntry.type == "commit_file").ShouldBe(3, "the 3 elements should be files");
+            treeEntries.Count(treeEntry => treeEntry.path.Contains(".txt")).ShouldBe(3, "the 3 elements path should contains '.txt' as requested in the filter query");
         }
 
         [Test]
@@ -92,8 +92,8 @@ namespace SharpBucketTests.V2.EndPoints
             var treeEntry = rootOfFirstCommit.GetTreeEntry("readme.md");
 
             treeEntry.ShouldNotBeNull();
-            treeEntry.Type.ShouldBe("commit_file");
-            treeEntry.Path.ShouldBe("readme.md");
+            treeEntry.type.ShouldBe("commit_file");
+            treeEntry.path.ShouldBe("readme.md");
         }
 
         [Test]
@@ -105,8 +105,8 @@ namespace SharpBucketTests.V2.EndPoints
             var treeEntry = rootOfFirstCommit.GetTreeEntry("fileToChange.txt");
 
             treeEntry.ShouldNotBeNull();
-            treeEntry.Type.ShouldBe("commit_file");
-            treeEntry.Path.ShouldBe("src/fileToChange.txt");
+            treeEntry.type.ShouldBe("commit_file");
+            treeEntry.path.ShouldBe("src/fileToChange.txt");
         }
 
         [TestCase("readme.md")]
@@ -119,8 +119,16 @@ namespace SharpBucketTests.V2.EndPoints
             var treeEntry = rootOfFirstCommit.GetTreeEntry(filePath);
 
             treeEntry.ShouldNotBeNull();
-            treeEntry.Type.ShouldBe("commit_file");
-            treeEntry.Path.ShouldBe(filePath);
+            treeEntry.type.ShouldBe("commit_file");
+            treeEntry.path.ShouldBe(filePath);
+            treeEntry.size.ShouldBeGreaterThan(0);
+            treeEntry.attributes.Count.ShouldBe(0);
+            treeEntry.links.self.href.ShouldNotBeNull();
+            treeEntry.links.meta.href.ShouldNotBeNull();
+            treeEntry.links.history.href.ShouldNotBeNull();
+            treeEntry.commit.hash.ShouldBe(testRepo.RepositoryInfo.FirstCommit);
+            treeEntry.commit.links.self.href.ShouldNotBeNull();
+            treeEntry.commit.links.html.href.ShouldNotBeNull();
         }
 
         [TestCase(null)]
@@ -134,8 +142,8 @@ namespace SharpBucketTests.V2.EndPoints
             var treeEntry = rootOfFirstCommit.GetTreeEntry(directoryPath);
 
             treeEntry.ShouldNotBeNull();
-            treeEntry.Type.ShouldBe("commit_directory");
-            treeEntry.Path.ShouldBe(directoryPath ?? string.Empty);
+            treeEntry.type.ShouldBe("commit_directory");
+            treeEntry.path.ShouldBe(directoryPath ?? string.Empty);
         }
 
         [TestCase(null)]
@@ -150,8 +158,8 @@ namespace SharpBucketTests.V2.EndPoints
             var treeEntry = rootOfASubPath.GetTreeEntry(directoryPath);
 
             treeEntry.ShouldNotBeNull();
-            treeEntry.Type.ShouldBe("commit_directory");
-            treeEntry.Path.ShouldBe(UrlHelper.ConcatPathSegments("src", directoryPath));
+            treeEntry.type.ShouldBe("commit_directory");
+            treeEntry.path.ShouldBe(UrlHelper.ConcatPathSegments("src", directoryPath));
         }
 
         [Test]

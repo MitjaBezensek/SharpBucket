@@ -33,7 +33,7 @@ namespace SharpBucket.V2.EndPoints
                 // but the actual architecture of the code doesn't allow us to fetch just the redirect location of a GET request.
                 // so we found back the data we need in the response of the call to the url where we are redirected.
                 var rootEntry = repositoriesEndPoint.GetTreeEntry(rootSrcPath);
-                revision = rootEntry.Commit.hash;
+                revision = rootEntry.commit.hash;
             }
 
             SrcPath = UrlHelper.ConcatPathSegments(rootSrcPath, revision, path).EnsureEndsWith('/');
