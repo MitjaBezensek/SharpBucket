@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using SharpBucket.Utility;
 using SharpBucket.V2.EndPoints;
+using SharpBucketTests.V2.Pocos;
 using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
@@ -91,9 +92,8 @@ namespace SharpBucketTests.V2.EndPoints
 
             var treeEntry = rootOfFirstCommit.GetTreeEntry("readme.md");
 
-            treeEntry.ShouldNotBeNull();
-            treeEntry.type.ShouldBe("commit_file");
-            treeEntry.path.ShouldBe("readme.md");
+            treeEntry.ShouldBeFilled()
+                .And().ShouldBeFile("readme.md");
         }
 
         [Test]
@@ -104,9 +104,9 @@ namespace SharpBucketTests.V2.EndPoints
 
             var treeEntry = rootOfFirstCommit.GetTreeEntry("fileToChange.txt");
 
-            treeEntry.ShouldNotBeNull();
-            treeEntry.type.ShouldBe("commit_file");
-            treeEntry.path.ShouldBe("src/fileToChange.txt");
+            treeEntry.ShouldBeFilled()
+                .And().ShouldBeFile("src/fileToChange.txt")
+                .And().mimetype.ShouldBe("text/plain", "mime type is not always available on files. Take the opportunity to test it here.");
         }
 
         [TestCase("readme.md")]
@@ -118,17 +118,9 @@ namespace SharpBucketTests.V2.EndPoints
 
             var treeEntry = rootOfFirstCommit.GetTreeEntry(filePath);
 
-            treeEntry.ShouldNotBeNull();
-            treeEntry.type.ShouldBe("commit_file");
-            treeEntry.path.ShouldBe(filePath);
-            treeEntry.size.ShouldBeGreaterThan(0);
-            treeEntry.attributes.Count.ShouldBe(0);
-            treeEntry.links.self.href.ShouldNotBeNull();
-            treeEntry.links.meta.href.ShouldNotBeNull();
-            treeEntry.links.history.href.ShouldNotBeNull();
-            treeEntry.commit.hash.ShouldBe(testRepo.RepositoryInfo.FirstCommit);
-            treeEntry.commit.links.self.href.ShouldNotBeNull();
-            treeEntry.commit.links.html.href.ShouldNotBeNull();
+            treeEntry.ShouldBeFilled()
+                .And().ShouldBeFile(filePath)
+                .And().commit.ShouldBeAReferenceTo(testRepo.RepositoryInfo.FirstCommit);
         }
 
         [TestCase(null)]
@@ -141,9 +133,9 @@ namespace SharpBucketTests.V2.EndPoints
 
             var treeEntry = rootOfFirstCommit.GetTreeEntry(directoryPath);
 
-            treeEntry.ShouldNotBeNull();
-            treeEntry.type.ShouldBe("commit_directory");
-            treeEntry.path.ShouldBe(directoryPath ?? string.Empty);
+            treeEntry.ShouldBeFilled()
+                .And().ShouldBeDirectory(directoryPath ?? string.Empty)
+                .And().commit.ShouldBeAReferenceTo(testRepo.RepositoryInfo.FirstCommit);
         }
 
         [TestCase(null)]
@@ -157,9 +149,9 @@ namespace SharpBucketTests.V2.EndPoints
 
             var treeEntry = rootOfASubPath.GetTreeEntry(directoryPath);
 
-            treeEntry.ShouldNotBeNull();
-            treeEntry.type.ShouldBe("commit_directory");
-            treeEntry.path.ShouldBe(UrlHelper.ConcatPathSegments("src", directoryPath));
+            treeEntry.ShouldBeFilled()
+                .And().ShouldBeDirectory(UrlHelper.ConcatPathSegments("src", directoryPath))
+                .And().commit.ShouldBeAReferenceTo(testRepo.RepositoryInfo.FirstCommit);
         }
 
         [Test]
