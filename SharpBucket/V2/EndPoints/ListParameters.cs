@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SharpBucket.V2.EndPoints
 {
     /// <summary>
     /// An object that can be passed into methods which return a list of objects
-    /// and which support filtering and sorting. See <see cref="https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering"/>
-    /// for syntax.
+    /// and which support filtering and sorting.
+    /// See https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering for syntax.
     /// </summary>
     public class ListParameters
     {

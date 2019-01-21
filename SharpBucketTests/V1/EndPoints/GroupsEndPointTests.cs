@@ -47,6 +47,7 @@ namespace SharpBucketTests.V1.EndPoints
 
             var name = Guid.NewGuid().ToString("N");
             var group = groupsEndPoint.CreateGroup(name);
+            group.ShouldNotBeNull();
 
             groupsEndPoint.DeleteGroup(name);
             group = groupsEndPoint.GetGroup(name);

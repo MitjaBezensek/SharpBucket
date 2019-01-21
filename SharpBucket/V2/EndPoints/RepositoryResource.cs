@@ -191,12 +191,12 @@ namespace SharpBucket.V2.EndPoints
         /// Gets the commit information associated with a repository. 
         /// By default, this call returns all the commits across all branches, bookmarks, and tags. The newest commit is first. 
         /// </summary>
-        /// <param name="branchortag">The branch or tag to get, for example, master or default.</param>
+        /// <param name="branchOrTag">The branch or tag to get, for example, master or default.</param>
         /// <param name="max">Values greater than 0 will set a maximum number of records to return. 0 or less returns all.</param>
         /// <returns></returns>
-        public List<Commit> ListCommits(string branchortag = null, int max = 0)
+        public List<Commit> ListCommits(string branchOrTag = null, int max = 0)
         {
-            return _repositoriesEndPoint.ListCommits(_accountName, _slug, branchortag, max);
+            return _repositoriesEndPoint.ListCommits(_accountName, _slug, branchOrTag, max);
         }
 
         /// <summary>
