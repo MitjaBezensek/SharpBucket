@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Dynamic;
-using SharpBucket.Utility;
+﻿using System;
+using System.Collections.Generic;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -12,12 +11,24 @@ namespace SharpBucket.V2.EndPoints
     /// </summary>
     public class TeamsEndPoint : EndPoint
     {
-        private readonly string _repositoriesUrl;
+        private readonly TeamResource _teamResource;
 
-        public TeamsEndPoint(SharpBucketV2 sharpBucketV2, string teamName)
-            : base(sharpBucketV2, $"teams/{teamName.GuidOrValue()}/")
+        public TeamsEndPoint(SharpBucketV2 sharpBucketV2)
+            : base(sharpBucketV2, "teams/")
         {
-            _repositoriesUrl = $"repositories/{teamName.GuidOrValue()}/";
+        }
+
+        [Obsolete("Use TeamResource class to manipulate a team")]
+        public TeamsEndPoint(SharpBucketV2 sharpBucketV2, string teamName)
+            : this(sharpBucketV2)
+        {
+            // initially when teamName was null there where no check in the constructor
+            // which means that only the methods that need it will fails and methods that doesn't works
+            // this test is here to reproduce that legacy behaviour until we delete the obsolete code
+            if (!string.IsNullOrEmpty(teamName))
+            {
+                _teamResource = new TeamResource(sharpBucketV2, teamName);
+            }
         }
 
         /// <summary>
@@ -26,7 +37,7 @@ namespace SharpBucket.V2.EndPoints
         public List<Team> GetUserTeams(int max = 0)
         {
             var parameters = new Dictionary<string, object> { { "role", "member" } };
-            return GetPaginatedValues<Team>("teams/", max, parameters);
+            return GetPaginatedValues<Team>(_baseUrl, max, parameters);
         }
 
         /// <summary>
@@ -35,7 +46,7 @@ namespace SharpBucket.V2.EndPoints
         public List<Team> GetUserTeamsWithContributorRole(int max = 0)
         {
             var parameters = new Dictionary<string, object> { { "role", "contributor" } };
-            return GetPaginatedValues<Team>("teams/", max, parameters);
+            return GetPaginatedValues<Team>(_baseUrl, max, parameters);
         }
 
         /// <summary>
@@ -44,7 +55,16 @@ namespace SharpBucket.V2.EndPoints
         public List<Team> GetUserTeamsWithAdminRole(int max = 0)
         {
             var parameters = new Dictionary<string, object> { { "role", "admin" } };
-            return GetPaginatedValues<Team>("teams/", max, parameters);
+            return GetPaginatedValues<Team>(_baseUrl, max, parameters);
+        }
+
+        /// <summary>
+        /// Gets a <see cref="TeamResource"/> for a specified team.
+        /// </summary>
+        /// <param name="teamName">The team's username or UUID.</param>
+        public TeamResource TeamResource(string teamName)
+        {
+            return new TeamResource(this._sharpBucketV2, teamName);
         }
 
         /// <summary>
@@ -52,9 +72,11 @@ namespace SharpBucket.V2.EndPoints
         /// If the team's profile is private, the caller must be authenticated and authorized to view this information. 
         /// </summary>
         /// <returns></returns>
+        [Obsolete("Use TeamResource.GetProfile() instead")]
         public Team GetProfile()
         {
-            return _sharpBucketV2.Get<Team>(_baseUrl);
+            if (_teamResource == null) throw new InvalidOperationException("This method could be used only with obsolete constructor, when a team name has been provided");
+            return _teamResource.GetProfile();
         }
 
         /// <summary>
@@ -62,10 +84,11 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
+        [Obsolete("Use TeamResource.ListMembers() instead")]
         public List<Team> ListMembers(int max = 0)
         {
-            var overrideUrl = _baseUrl + "members/";
-            return GetPaginatedValues<Team>(overrideUrl, max);
+            if (_teamResource == null) throw new InvalidOperationException("This method could be used only with obsolete constructor, when a team name has been provided");
+            return _teamResource.ListMembers(max);
         }
 
         /// <summary>
@@ -73,10 +96,11 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
+        [Obsolete("Use TeamResource.ListFollowers() instead")]
         public List<Team> ListFollowers(int max = 0)
         {
-            var overrideUrl = _baseUrl + "followers/";
-            return GetPaginatedValues<Team>(overrideUrl, max);
+            if (_teamResource == null) throw new InvalidOperationException("This method could be used only with obsolete constructor, when a team name has been provided");
+            return _teamResource.ListFollowers(max);
         }
 
         /// <summary>
@@ -84,10 +108,11 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
+        [Obsolete("Use TeamResource.ListFollowing() instead")]
         public List<Team> ListFollowing(int max = 0)
         {
-            var overrideUrl = _baseUrl + "following/";
-            return GetPaginatedValues<Team>(overrideUrl, max);
+            if (_teamResource == null) throw new InvalidOperationException("This method could be used only with obsolete constructor, when a team name has been provided");
+            return _teamResource.ListFollowing(max);
         }
 
         /// <summary>
@@ -96,9 +121,11 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
+        [Obsolete("Use TeamResource.ListRepositories() instead")]
         public List<Repository> ListRepositories(int max = 0)
         {
-            return GetPaginatedValues<Repository>(_repositoriesUrl, max);
+            if (_teamResource == null) throw new InvalidOperationException("This method could be used only with obsolete constructor, when a team name has been provided");
+            return _teamResource.ListRepositories(new ListParameters { Max = max });
         }
     }
 }

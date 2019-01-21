@@ -12,9 +12,9 @@ namespace SharpBucketTests
             var consumerKey = Environment.GetEnvironmentVariable(SbConsumerKey);
             var consumerSecretKey = Environment.GetEnvironmentVariable(SbConsumerSecretKey);
 
-            var sharpbucket = new SharpBucketV1();
-            sharpbucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
-            return sharpbucket;
+            var sharpBucket = new SharpBucketV1();
+            sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
+            return sharpBucket;
         }
 
         public static string GetAccountName()

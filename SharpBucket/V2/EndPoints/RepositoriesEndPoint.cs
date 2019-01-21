@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 using Comment = SharpBucket.V2.Pocos.Comment;
@@ -285,12 +284,12 @@ namespace SharpBucket.V2.EndPoints
 
         #region Commits Resource
 
-        internal List<Commit> ListCommits(string accountName, string slug, string branchortag = null, int max = 0)
+        internal List<Commit> ListCommits(string accountName, string slug, string branchOrTag = null, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "commits/");
-            if (!string.IsNullOrEmpty(branchortag))
+            if (!string.IsNullOrEmpty(branchOrTag))
             {
-                overrideUrl += branchortag;
+                overrideUrl += branchOrTag;
             }
             return GetPaginatedValues<Commit>(overrideUrl, max);
         }

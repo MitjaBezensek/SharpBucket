@@ -1,4 +1,5 @@
-﻿using SharpBucket.V2.EndPoints;
+﻿using System;
+using SharpBucket.V2.EndPoints;
 
 namespace SharpBucket.V2
 {
@@ -22,10 +23,19 @@ namespace SharpBucket.V2
         }
 
         /// <summary>
+        /// Get the Teams End Point.
+        /// </summary>
+        public TeamsEndPoint TeamsEndPoint()
+        {
+            return new TeamsEndPoint(this);
+        }
+
+        /// <summary>
         /// Get the Teams End Point for a specific team.
         /// </summary>
         /// <param name="teamName">The team whose team End Point you wish to get.</param>
         /// <returns></returns>
+        [Obsolete("Use TeamsEndPoint().TeamResource(teamName) instead")]
         public TeamsEndPoint TeamsEndPoint(string teamName)
         {
             return new TeamsEndPoint(this, teamName);

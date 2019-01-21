@@ -23,7 +23,7 @@ namespace SharpBucketTests
 
         public static SharpBucketV2 GetV2ClientAuthenticatedWithBasicAuthentication()
         {
-            var sharpbucket = new SharpBucketV2();
+            var sharpBucket = new SharpBucketV2();
             // Reads test data information from a file, you should structure it like this:
             // By default it reads from c:\
             // Username:yourUsername
@@ -36,26 +36,26 @@ namespace SharpBucketTests
             var accountName = lines[2].Split(':')[1];
             var repository = lines[3].Split(':')[1];
 
-            sharpbucket.BasicAuthentication(email, password);
-            return sharpbucket;
+            sharpBucket.BasicAuthentication(email, password);
+            return sharpBucket;
         }
 
         public static SharpBucketV2 GetV2ClientAuthenticatedWithOAuth()
         {
             var consumerKey = Environment.GetEnvironmentVariable(SbConsumerKey);
             var consumerSecretKey = Environment.GetEnvironmentVariable(SbConsumerSecretKey);
-            var sharpbucket = new SharpBucketV2();
-            sharpbucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
-            return sharpbucket;
+            var sharpBucket = new SharpBucketV2();
+            sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
+            return sharpBucket;
         }
 
         public static SharpBucketV2 GetV2ClientAuthenticatedWithOAuth2()
         {
             var consumerKey = Environment.GetEnvironmentVariable(SbConsumerKey);
             var consumerSecretKey = Environment.GetEnvironmentVariable(SbConsumerSecretKey);
-            var sharpbucket = new SharpBucketV2();
-            sharpbucket.OAuthentication2(consumerKey, consumerSecretKey);
-            return sharpbucket;
+            var sharpBucket = new SharpBucketV2();
+            sharpBucket.OAuthentication2(consumerKey, consumerSecretKey);
+            return sharpBucket;
         }
 
         public static TestRepositoryBuilder GetTestRepositoryBuilder(string repositoryAccountName, string repositoryName)
