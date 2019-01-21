@@ -5,6 +5,6 @@
         public string uuid { get; set; }
         public string key { get; set; }
         public string name { get; set; }
-        public Links links { get; set; }
+        public ProjectLinks links { get; set; }
     }
 }

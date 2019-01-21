@@ -185,6 +185,11 @@ namespace SharpBucket
             return Send<T>(body, Method.PUT, overrideUrl);
         }
 
+        internal void Delete(string overrideUrl)
+        {
+            Send(null, Method.DELETE, overrideUrl, null);
+        }
+
         internal T Delete<T>(string overrideUrl)
             where T : new()
         {

@@ -75,5 +75,46 @@ namespace SharpBucket.V2.EndPoints
             // So to improve performances we directly do the the call to the repositories endpoint
             return _sharpBucketV2.RepositoriesEndPoint().ListRepositories(_teamName, parameters ?? new ListParameters());
         }
+
+        /// <summary>
+        /// Gets a <see cref="RepositoryResource"/> for a specified repository name, owned by the team represented by this resource.
+        /// </summary>
+        /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
+        public RepositoryResource RepositoryResource(string repoSlugOrName)
+        {
+            return new RepositoryResource(_teamName, repoSlugOrName, _sharpBucketV2.RepositoriesEndPoint());
+        }
+
+        /// <summary>
+        /// Gets a list of projects that belong to the team.
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/#get
+        /// </summary>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
+        public List<Project> ListProjects(int max = 0)
+        {
+            var overrideUrl = _baseUrl + "projects/";
+            return _sharpBucketV2.GetPaginatedValues<Project>(overrideUrl, max);
+        }
+
+        /// <summary>
+        /// Create a new project.
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns>A new project instance that fully represent the newly created project.</returns>
+        public Project PostProject(Project project)
+        {
+            var overrideUrl = _baseUrl + "projects/";
+            return _sharpBucketV2.Post(project, overrideUrl);
+        }
+
+        /// <summary>
+        /// Gets a <see cref="ProjectResource"/> for a specified project key.
+        /// </summary>
+        /// <param name="projectKey">This can either be the actual key assigned to the project or the UUID.</param>
+        public ProjectResource ProjectResource(string projectKey)
+        {
+            return new ProjectResource(_sharpBucketV2, _teamName, projectKey);
+        }
     }
 }
