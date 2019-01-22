@@ -184,7 +184,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="spec">The patch spec.</param>
         /// <returns></returns>
-        public object GetPatch(string spec)
+        public string GetPatch(string spec)
         {
             return _repositoriesEndPoint.GetPatch(_accountName, _slug, spec);
         }
