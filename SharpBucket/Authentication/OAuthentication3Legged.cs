@@ -11,6 +11,7 @@ namespace SharpBucket.Authentication
     /// <summary>
     /// This class helps you authenticated with the BitBucket REST API via the 3 legged OAuth authentication.
     /// </summary>
+    [Obsolete("Use OAuth1ThreeLeggedAuthentication instead")]
     public class OAuthentication3Legged : OauthAuthentication
     {
         private string OAuthToken;
@@ -19,6 +20,9 @@ namespace SharpBucket.Authentication
         private const string userAuthorizeUrl = "oauth/authenticate";
         private const string accessUrl = "oauth/access_token";
         private readonly string callback;
+
+        private IRestClient _client;
+        protected override IRestClient Client => _client;
 
         public OAuthentication3Legged(string consumerKey, string consumerSecret, string callback, string baseUrl)
             : base(consumerKey, consumerSecret, baseUrl)
@@ -35,9 +39,9 @@ namespace SharpBucket.Authentication
 
         public override string GetResponse(string url, Method method, object body, IDictionary<string, object> requestParameters)
         {
-            if (client == null)
+            if (_client == null)
             {
-                client = new RestClient(_baseUrl)
+                _client = new RestClient(_baseUrl)
                 {
                     Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)
                 };
@@ -47,9 +51,9 @@ namespace SharpBucket.Authentication
 
         public override T GetResponse<T>(string url, Method method, object body, IDictionary<string, object> requestParameters)
         {
-            if (client == null)
+            if (_client == null)
             {
-                client = new RestClient(_baseUrl)
+                _client = new RestClient(_baseUrl)
                 {
                     Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)
                 };

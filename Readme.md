@@ -12,40 +12,42 @@ See the [Console Test Project](https://github.com/MitjaBezensek/SharpBucket/blob
 
 First lets set your entry point to the API
 ```CSharp
-// your main entry to the Bitbucket API, this one is for V1
-var sharpBucket = new SharpBucketV1();
-// authenticate with OAuth keys
-sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
+// your main entry to the Bitbucket API, this one is for V2
+var sharpBucket = new SharpBucketV2();
+// authenticate with OAuth2 keys
+sharpBucket.OAuth2ClientCredentials(consumerKey, consumerSecretKey);
 ```
 
-There are various end points you can use. Lets take a look at User end point:
+There are various end points you can use. Lets take a look at Users end point:
 ```CSharp
-// getting the User end point
-var userEndPoint = sharpBucket.UserEndPoint();
+// getting the User end point (accountName can be the name of a user or a team)
+var userEndPoint = sharpBucket.UsersEndPoint("accountName");
 // querying the Bitbucket API for various info
-var info = userEndPoint.GetInfo();
-var privileges = userEndPoint.ListPrivileges();
-var follows = userEndPoint.ListFollows();
-var userRepos = userEndPoint.ListRepositories();
+var userProfile = userEndPoint.GetProfile();
+var followers = user.ListFollowers();
+var follows = user.ListFollowing();
+var userRepos = user.ListRepositories();
 ```
 
-Similarly for the Issues resource, let's get all the issues of a specific repository:
-
+Sub end points are named *Resource* but are pretty similar. Lets look at the repository resource:
 ```CSharp
-// getting the Repository end point
-var repositoryEndPoint = sharpBucket.RepositoriesEndPoint(accountName, repository);
-// getting the Issue resource for this specific repository
-var issuesResource = respositoryEndPoint.IssuesResource();
-// getting the list of all the issues of the repository
-var issues = issuesResource.ListIssues();
+// getting the repositories end point
+var repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
+// getting the Repository resource for a specific repository
+var repositoryResource = repositoriesEndPoint.RepositoryResource("accountName", "repoSlugOrName");
+// getting the list of all the commits of the repository
+var commits = repositoryResource.ListCommits();
 ```
+
 Sending information is just as easy.
-
 ```CSharp
-var newIssue = new Issue{title = "I have this little bug", 
-                         content = "that is really annoying",
-                         status = "new"};
-var newIssueResult = issuesResource.PostIssue(newIssue);
+var newRepository = new Repository
+                    {
+                        name = "Sample",
+                        language = "c#",
+                        scm = "git"
+                    };
+var newRepositoryResult = repositoryResource.PostRepository(newRepository);
 ```
 
 SharpBucket uses a strict naming convention:
@@ -68,17 +70,17 @@ Here is how you can use them:
 sharpBucket.BasicAuthentication(email, password);
 ```
 
-### OAuth authentication
+### OAuth 1.0 authentication
 With OAuth you can choose between [2 legged and 3 legged authentication](http://cakebaker.42dh.com/2011/01/10/2-legged-vs-3-legged-oauth/).
 
 **Two legged** is as simple as basic authentication:
 ```CSharp
 // authenticate with OAuth keys
-sharpBucket.OAuth2LeggedAuthentication(consumerKey, consumerSecretKey);
+sharpBucket.OAuth1TwoLeggedAuthentication(consumerKey, consumerSecretKey);
 ```
-**The three legged** one requires an additional step for getting the pin / verifier from the Bitbucket. If you dont supply a callback url (or use "oob") you will get a Bitbucket's url that will promt your user to allow access for your application and supply you with the pin / verifier. Here is a simple example of how you could manually copy paste the pin from the browser:
+**The three legged** one requires an additional step for getting the pin / verifier from the Bitbucket. If you do not supply a callback url (or use "oob") you will get a Bitbucket's url that will promt your user to allow access for your application and supply you with the pin / verifier. Here is a simple example of how you could manually copy paste the pin from the browser:
 ```CSharp
-var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, "oob");
+var authenticator = sharpBucket.OAuth1ThreeLeggedAuthentication(consumerKey, consumerSecretKey, "oob");
 var uri = authenticator.StartAuthentication();
 Process.Start(uri);
 var pin = Console.ReadLine();
@@ -87,10 +89,19 @@ authenticator.AuthenticateWithPin(pin);
 ```
 If you had a server waiting from Bitbucket's response, you would simply use your server's url as the callback and then wait for Bitbucket to send you the pin to that address.
 
-If you already have the tokens you can simply skip the authentication process:
+If you already have the tokens (those returned by AuthenticateWithPin method) you can simply skip the authentication process:
 ```CSharp
-var authenticator = sharpBucket.OAuth3LeggedAuthentication(consumerKey, consumerSecretKey, 
-														   oauthToken oauthTokenSecret);
+var authenticator = sharpBucket.OAuth1ThreeLeggedAuthentication(consumerKey, consumerSecretKey, oauthToken, oauthTokenSecret);
+```
+
+### OAuth2 authentication
+OAuth 2.0 offer a large choice of scenarios ([bitbucket OAuth 2.0](https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication))  
+But they are not yet all implemented.
+
+**Client credentials Grant** is similar to OAuth1 two legged authentication:
+```CSharp
+// authenticate with OAuth keys
+sharpBucket.OAuth2ClientCredentials(consumerKey, consumerSecretKey);
 ```
 
 ## How much of the API is covered?

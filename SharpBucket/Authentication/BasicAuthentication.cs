@@ -8,9 +8,11 @@ namespace SharpBucket.Authentication
     /// </summary>
     public class BasicAuthentication : Authenticate
     {
+        protected override IRestClient Client { get; }
+
         public BasicAuthentication(string username, string password, string baseUrl)
         {
-            client = new RestClient(baseUrl)
+            Client = new RestClient(baseUrl)
             {
                 Authenticator = new HttpBasicAuthenticator(username, password)
             };
