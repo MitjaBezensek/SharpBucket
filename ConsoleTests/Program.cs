@@ -257,8 +257,8 @@ namespace ConsoleTests
             var gr = r.GetBranchRestriction(restrictionId);
             var nr = r.PostBranchRestriction(new BranchRestriction());
             var dbr = r.DeleteBranchRestriction(restrictionId);
-            var diff2 = r.GetDiff(new object());
-            var patch2 = r.GetPatch(new object());
+            var diff2 = r.GetDiff("HEAD");
+            var patch2 = r.GetPatch("HEAD");
             var commits2 = r.ListCommits();
             var commit2 = r.GetCommit(commitId);
             var commitComments2 = r.ListCommitComments(commitId);

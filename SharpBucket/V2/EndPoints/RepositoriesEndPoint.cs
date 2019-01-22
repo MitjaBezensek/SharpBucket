@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 using Comment = SharpBucket.V2.Pocos.Comment;
@@ -269,15 +268,15 @@ namespace SharpBucket.V2.EndPoints
 
         #region Diff resource
 
-        internal object GetDiff(string accountName, string slug, object options)
+        internal string GetDiff(string accountName, string slug, string spec, DiffParameters parameters)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, $"diff/{options}");
-            return _sharpBucketV2.Get(overrideUrl);
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "diff/" + spec);
+            return _sharpBucketV2.Get(overrideUrl, parameters.ToDictionary());
         }
 
-        internal object GetPatch(string accountName, string slug, object options)
+        internal string GetPatch(string accountName, string slug, string spec)
         {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, $"patch/{options}");
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "patch/" + spec);
             return _sharpBucketV2.Get(overrideUrl);
         }
 
@@ -285,12 +284,12 @@ namespace SharpBucket.V2.EndPoints
 
         #region Commits Resource
 
-        internal List<Commit> ListCommits(string accountName, string slug, string branchortag = null, int max = 0)
+        internal List<Commit> ListCommits(string accountName, string slug, string branchOrTag = null, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "commits/");
-            if (!string.IsNullOrEmpty(branchortag))
+            if (!string.IsNullOrEmpty(branchOrTag))
             {
-                overrideUrl += branchortag;
+                overrideUrl += branchOrTag;
             }
             return GetPaginatedValues<Commit>(overrideUrl, max);
         }

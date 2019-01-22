@@ -162,23 +162,31 @@ namespace SharpBucket.V2.EndPoints
         /// More info:
         /// https://confluence.atlassian.com/display/BITBUCKET/diff+Resource
         /// <summary>
-        /// Gets the diff for the current repository.  
+        /// Gets the diff for the current repository.
         /// </summary>
-        /// <param name="options">The diff options.</param>
+        /// <param name="spec">The diff spec (e.g., de3f2..78ab1).</param>
         /// <returns></returns>
-        public object GetDiff(object options)
+        public string GetDiff(string spec) => GetDiff(spec, new DiffParameters());
+
+        /// <summary>
+        /// Gets the diff for the current repository.
+        /// </summary>
+        /// <param name="spec">The diff spec (e.g., de3f2..78ab1).</param>
+        /// <param name="parameters">Parameters for the diff.</param>
+        /// <returns></returns>
+        public string GetDiff(string spec, DiffParameters parameters)
         {
-            return _repositoriesEndPoint.GetDiff(_accountName, _slug, options);
+            return _repositoriesEndPoint.GetDiff(_accountName, _slug, spec, parameters);
         }
 
         /// <summary>
         /// Gets the patch for an individual specification. 
         /// </summary>
-        /// <param name="options">The patch options.</param>
+        /// <param name="spec">The patch spec.</param>
         /// <returns></returns>
-        public object GetPatch(object options)
+        public string GetPatch(string spec)
         {
-            return _repositoriesEndPoint.GetPatch(_accountName, _slug, options);
+            return _repositoriesEndPoint.GetPatch(_accountName, _slug, spec);
         }
 
         #endregion
@@ -191,12 +199,12 @@ namespace SharpBucket.V2.EndPoints
         /// Gets the commit information associated with a repository. 
         /// By default, this call returns all the commits across all branches, bookmarks, and tags. The newest commit is first. 
         /// </summary>
-        /// <param name="branchortag">The branch or tag to get, for example, master or default.</param>
+        /// <param name="branchOrTag">The branch or tag to get, for example, master or default.</param>
         /// <param name="max">Values greater than 0 will set a maximum number of records to return. 0 or less returns all.</param>
         /// <returns></returns>
-        public List<Commit> ListCommits(string branchortag = null, int max = 0)
+        public List<Commit> ListCommits(string branchOrTag = null, int max = 0)
         {
-            return _repositoriesEndPoint.ListCommits(_accountName, _slug, branchortag, max);
+            return _repositoriesEndPoint.ListCommits(_accountName, _slug, branchOrTag, max);
         }
 
         /// <summary>

@@ -50,12 +50,13 @@ namespace SharpBucket.V1.EndPoints
         /// <returns></returns>
         public Group CreateGroup(string name)
         {
-            var group = new Group() { name = name };
-            return _sharpBucketV1.Post<Group>(group, _baseUrl);
+            var group = new Group { name = name };
+            return _sharpBucketV1.Post(group, _baseUrl);
         }
 
         /// <summary>
         /// Deletes the specified group
+        /// </summary>
         /// <param name="group_slug">The group's slug.</param>
         /// <returns></returns>
         public Group DeleteGroup(string group_slug)
@@ -66,6 +67,7 @@ namespace SharpBucket.V1.EndPoints
 
         /// <summary>
         /// Updates the specified group
+        /// </summary>
         /// <param name="group_slug">The group's slug to be updated.</param>
         /// <param name="group">The new group.</param>
         /// <returns></returns>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -55,7 +56,16 @@ namespace SharpBucket.Authentication
             {
                 foreach (var requestParameter in requestParameters)
                 {
-                    request.AddParameter(requestParameter.Key, requestParameter.Value);
+                    var key = requestParameter.Key;
+                    var val = requestParameter.Value;
+
+                    if (val is IEnumerable && !(val is string))
+                    {
+                        foreach (var item in (IEnumerable)val)
+                            request.AddParameter(key, item);
+                    }
+                    else
+                        request.AddParameter(key, val);
                 }
             }
 
