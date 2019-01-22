@@ -84,9 +84,9 @@ namespace SharpBucket.Authentication
                 NameValueCollection queryValues;
                 if (redirectUrl.Contains("?"))
                 {
-                    var urlAdnQuery = redirectUrl.Split('?');
-                    redirectUrl = urlAdnQuery[0];
-                    queryValues = HttpUtility.ParseQueryString(urlAdnQuery[1]);
+                    var urlAndQuery = redirectUrl.Split('?');
+                    redirectUrl = urlAndQuery[0];
+                    queryValues = HttpUtility.ParseQueryString(urlAndQuery[1]);
                 }
                 else
                 {
