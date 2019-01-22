@@ -9,5 +9,14 @@
         {
             return poco;
         }
+
+        /// <summary>
+        /// Method that do nothing expect allowing to express the fact that we can't do any real assertion on a data.
+        /// </summary>
+        public static TPoco CouldBeNull<TPoco>(this TPoco poco)
+            where TPoco : class
+        {
+            return poco;
+        }
     }
 }

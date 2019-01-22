@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
@@ -46,7 +46,12 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// List the files and directories that are present at the root of this resource, or in the specified sub directory.
+        /// List the tree entries that are present at the root of this resource, or in the specified sub directory.
+        /// <remarks>
+        /// Since it can be difficult to guess which field is filled or not in a <see cref="TreeEntry"/>,
+        /// we suggest you to use <see cref="ListSrcEntries"/> method instead of that one,
+        /// except if you really want to retrieve the raw model as returned by BitBucket.
+        /// </remarks>
         /// </summary>
         /// <param name="subDirPath">The path to a sub directory, or null to list the root directory of this resource.</param>
         /// <param name="listParameters">Parameters for the query.</param>
@@ -56,12 +61,57 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// Gets the metadata of a specified file or directory in this resource.
+        /// List the source files and directories that are present at the root of this resource, or in the specified sub directory.
+        /// </summary>
+        /// <param name="subDirPath">The path to a sub directory, or null to list the root directory of this resource.</param>
+        /// <param name="listParameters">Parameters for the query.</param>
+        public List<SrcEntry> ListSrcEntries(string subDirPath = null, ListParameters listParameters = null)
+        {
+            return ListTreeEntries(subDirPath, listParameters)
+                .Select(treeEntry => treeEntry.ToSrcEntry())
+                .ToList();
+        }
+
+        /// <summary>
+        /// Gets the metadata of a specified sub path in this resource.
+        /// <remarks>
+        /// Since it can be difficult to guess which field is filled or not in a <see cref="TreeEntry"/>,
+        /// we suggest you to use <see cref="GetSrcEntry"/> method instead of that one,
+        /// except if you really want to retrieve the raw model as returned by BitBucket.
+        /// </remarks>
         /// </summary>
         /// <param name="subPath">The path to the file or directory, or null to retrieve the metadata of the root of this resource.</param>
         public TreeEntry GetTreeEntry(string subPath = null)
         {
             return RepositoriesEndPoint.GetTreeEntry(SrcPath, subPath);
+        }
+
+        /// <summary>
+        /// Gets the metadata of a specified file or directory in this resource.
+        /// </summary>
+        /// <param name="subPath">The path to the file or directory, or null to retrieve the metadata of the root of this resource.</param>
+        public SrcEntry GetSrcEntry(string subPath = null)
+        {
+            return GetTreeEntry(subPath).ToSrcEntry();
+        }
+
+        /// <summary>
+        /// Gets the metadata of a specified file.
+        /// </summary>
+        /// <param name="filePath">The path to the file.</param>
+        public SrcFile GetSrcFile(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath)) throw new ArgumentNullException(nameof(filePath));
+            return (SrcFile)GetTreeEntry(filePath).ToSrc();
+        }
+
+        /// <summary>
+        /// Gets the metadata of a specified directory.
+        /// </summary>
+        /// <param name="directoryPath">The path to the directory, or null to retrieve the metadata of the root of this resource.</param>
+        public SrcDirectory GetSrcDirectory(string directoryPath)
+        {
+            return (SrcDirectory)GetTreeEntry(directoryPath).ToSrc();
         }
 
         /// <summary>

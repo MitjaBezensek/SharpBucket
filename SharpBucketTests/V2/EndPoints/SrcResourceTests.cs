@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using SharpBucket.Utility;
 using SharpBucket.V2.EndPoints;
 using SharpBucketTests.V2.Pocos;
@@ -33,12 +34,14 @@ namespace SharpBucketTests.V2.EndPoints
 
             treeEntries.ShouldNotBeNull();
             treeEntries.Count.ShouldBe(2);
+
             var readMeFile = treeEntries.FirstOrDefault(treeEntry => treeEntry.type == "commit_file");
-            readMeFile.ShouldNotBeNull();
-            readMeFile.path.ShouldBe("readme.md");
+            readMeFile.ShouldBeFilled()
+                .And().ShouldBeFile("readme.md");
+
             var srcDir = treeEntries.FirstOrDefault(treeEntry => treeEntry.type == "commit_directory");
-            srcDir.ShouldNotBeNull();
-            srcDir.path.ShouldBe("src");
+            srcDir.ShouldBeFilled()
+                .And().ShouldBeDirectory("src");
         }
 
         [Test]
@@ -82,6 +85,26 @@ namespace SharpBucketTests.V2.EndPoints
             treeEntries.Count.ShouldBe(3, "3 elements should be listed");
             treeEntries.Count(treeEntry => treeEntry.type == "commit_file").ShouldBe(3, "the 3 elements should be files");
             treeEntries.Count(treeEntry => treeEntry.path.Contains(".txt")).ShouldBe(3, "the 3 elements path should contains '.txt' as requested in the filter query");
+        }
+
+        [Test]
+        public void ListSrcEntries_AtRootOfFirstCommit_GetOneFileAndOneDirectory()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource(testRepo.RepositoryInfo.FirstCommit);
+
+            var srcEntries = rootOfFirstCommit.ListSrcEntries();
+
+            srcEntries.ShouldNotBeNull();
+            srcEntries.Count.ShouldBe(2);
+
+            var readMeFile = srcEntries.FirstOrDefault(srcEntry => srcEntry.IsFile);
+            readMeFile.ShouldBeFilled()
+                .And().ShouldBeFile("readme.md");
+
+            var srcDir = srcEntries.FirstOrDefault(treeEntry => treeEntry.IsDirectory);
+            srcDir.ShouldBeFilled()
+                .And().ShouldBeDirectory("src");
         }
 
         [Test]
@@ -152,6 +175,98 @@ namespace SharpBucketTests.V2.EndPoints
             treeEntry.ShouldBeFilled()
                 .And().ShouldBeDirectory(UrlHelper.ConcatPathSegments("src", directoryPath))
                 .And().commit.ShouldBeAReferenceTo(testRepo.RepositoryInfo.FirstCommit);
+        }
+
+        [Test]
+        public void GetSrcEntry_OfAFile_GetAFileTreeEntry()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource();
+
+            var srcEntry = rootOfFirstCommit.GetSrcEntry("readme.md");
+
+            srcEntry.ShouldBeFilled()
+                .And().ShouldBeFile("readme.md");
+        }
+
+        [Test]
+        public void GetSrcEntry_OfADirectory_GetADirectoryTreeEntry()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource();
+
+            var srcEntry = rootOfFirstCommit.GetSrcEntry("src");
+
+            srcEntry.ShouldBeFilled()
+                .And().ShouldBeDirectory("src");
+        }
+
+        [Test]
+        public void GetSrcFile_OfAFile_GetASrcFile()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource();
+
+            var srcFile = rootOfFirstCommit.GetSrcFile("readme.md");
+
+            srcFile.ShouldBeFilled()
+                .And().path.ShouldBe("readme.md");
+        }
+
+        [Test]
+        public void GetSrcFile_OfADirectory_ThrowsInvalidCastException()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource();
+
+            Assert.That(
+                () => rootOfFirstCommit.GetSrcFile("src"),
+                Throws.TypeOf<InvalidCastException>().With.Message.Contains("SrcDirectory"));
+        }
+
+        [Test]
+        public void GetSrcFile_OfNull_ThrowsArgumentNullException()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource();
+
+            Assert.That(
+                () => rootOfFirstCommit.GetSrcFile(null),
+                Throws.TypeOf<ArgumentNullException>().With.Message.EndsWith("filePath"));
+        }
+
+        [Test]
+        public void GetSrcDirectory_OfADirectory_GetASrcDirectory()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource();
+
+            var srcDirectory = rootOfFirstCommit.GetSrcDirectory("src");
+
+            srcDirectory.ShouldBeFilled()
+                .And().path.ShouldBe("src");
+        }
+
+        [Test]
+        public void GetSrcDirectory_OfAFile_ThrowsInvalidCastException()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource();
+
+            Assert.That(
+                () => rootOfFirstCommit.GetSrcDirectory("readme.md"),
+                Throws.TypeOf<InvalidCastException>().With.Message.Contains("SrcFile"));
+        }
+
+        [Test]
+        public void GetSrcDirectory_OfNull_GetRootSrcDirectory()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource();
+
+            var srcDirectory = rootOfFirstCommit.GetSrcDirectory(null);
+            srcDirectory.ShouldBeFilled()
+                .And().path.ShouldBe(string.Empty);
         }
 
         [Test]
