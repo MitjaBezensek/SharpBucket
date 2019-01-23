@@ -4,6 +4,7 @@ using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
+using SharpBucketTests.V2.Pocos;
 using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
@@ -13,12 +14,16 @@ namespace SharpBucketTests.V2.EndPoints
     {
         private SharpBucketV2 sharpBucket;
         private TeamsEndPoint teamsEndPoint;
+        private TeamResource teamResource;
 
-        [SetUp]
+        [OneTimeSetUp]
         public void Init()
         {
             sharpBucket = TestHelpers.SharpBucketV2;
             teamsEndPoint = sharpBucket.TeamsEndPoint();
+
+            var team = teamsEndPoint.GetUserTeamsWithAdminRole()[0];
+            teamResource = teamsEndPoint.TeamResource(team.username);
         }
 
         [Test]
@@ -53,11 +58,8 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void ListRepositories_FromUserAdminTeamAfterHavingCreateOneRepoInside_ShouldReturnAtLeastTheCreatedOne()
+        public void ListRepositories_AfterHavingCreateOneRepoInTeam_ShouldReturnAtLeastTheCreatedRepo()
         {
-            this.teamsEndPoint.ShouldNotBe(null);
-            var team = this.teamsEndPoint.GetUserTeamsWithAdminRole()[0];
-
             var repositoryName = Guid.NewGuid().ToString("N");
             var teamRepository = new Repository
             {
@@ -65,8 +67,7 @@ namespace SharpBucketTests.V2.EndPoints
                 language = "c#",
                 scm = "git"
             };
-            var teamResource = this.teamsEndPoint.TeamResource(team.username);
-            var teamRepoResource = SampleRepositories.RepositoriesEndPoint.RepositoryResource(team.username, repositoryName);
+            var teamRepoResource = teamResource.RepositoryResource(repositoryName);
             teamRepoResource.PostRepository(teamRepository);
 
             try
@@ -78,6 +79,33 @@ namespace SharpBucketTests.V2.EndPoints
             finally
             {
                 teamRepoResource.DeleteRepository();
+            }
+        }
+
+        [Test]
+        public void ListProjects_AfterHavingCreateOneProjectInTeam_ShouldReturnAtLestTheCreatedProject()
+        {
+            var projectKey = "Test_" + Guid.NewGuid().ToString("N"); // must start by a letter
+            var project = new Project
+            {
+                key = projectKey,
+                name = "Name of " + projectKey,
+                is_private = true,
+                description = "project created by the unit test ListProjects_AfterHavingAddAProject_ShouldReturnAtLestTheCreatedProject"
+            };
+            project = teamResource.PostProject(project);
+
+            try
+            {
+                var projects = teamResource.ListProjects();
+                projects.ShouldNotBeEmpty();
+                projects.Any(r => r.name == project.name).ShouldBe(true);
+                projects.Select(p => p.ShouldBeFilled())
+                    .Any(r => r.name == project.name).ShouldBe(true);
+            }
+            finally
+            {
+                teamResource.ProjectResource(project.key).DeleteProject();
             }
         }
     }

@@ -666,12 +666,12 @@ The organization of all that routes may slightly differ in the SharpBucket class
 - /teams/{username}/pipelines_config/variables/{variable_uuid} `GET` `PUT` `DELETE`
   - Implemented by: none
   - Tested: no
-- /teams/{username}/projects/ `GET` `POST`
-  - Implemented by: none
-  - Tested: no
-- /teams/{username}/projects/{project_key} `GET` `PUT` `DELETE`
-  - Implemented by: none
-  - Tested: no
+- /teams/{username}/projects/ `GET`
+  - Implemented by: `ListProjects(int)` *V0.9.0*
+  - Tested: **yes**
+- /teams/{username}/projects/ `POST`
+  - Implemented by: `PostProject(int)` *V0.9.0*
+  - Tested: **yes**
 - /teams/{username}/repositories `GET`
   - Implemented by:
     - `TeamResource.ListRepositories(ListParameters)` *V0.9.0*
@@ -680,6 +680,17 @@ The organization of all that routes may slightly differ in the SharpBucket class
 - /teams/{username}/search/code `GET`
   - Implemented by: none
   - Tested: no
+
+### [Project Resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/%7Bproject_key%7D)
+- /teams/{username}/projects/{project_key} `GET`
+  - Implemented by: `ProjectResource.GetProject()` *V0.9.0*
+  - Tested: **yes**
+- /teams/{username}/projects/{project_key} `PUT`
+  - Implemented by: `ProjectResource.PutProject(Project)` *V0.9.0*
+  - Tested: **yes**
+- /teams/{username}/projects/{project_key} `DELETE`
+  - Implemented by: `ProjectResource.DeleteProject()` *V0.9.0*
+  - Tested: **yes**
 
 ## [User endpoint](https://developer.atlassian.com/bitbucket/api/2/reference/resource/user)
 - /user `GET`
