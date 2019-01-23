@@ -3,6 +3,7 @@ using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
+using SharpBucketTests.V2.Pocos;
 using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
@@ -41,65 +42,21 @@ namespace SharpBucketTests.V2.EndPoints
             {
                 // create with PUT
                 var createdProject = projectResource.PutProject(newProject);
-                createdProject.ShouldNotBeNull();
+                createdProject.ShouldBeFilled();
                 createdProject.key.ShouldBe(projectKey);
                 createdProject.name.ShouldBe(newProject.name);
                 createdProject.description.ShouldBe(newProject.description);
                 createdProject.is_private.ShouldBe(newProject.is_private);
                 createdProject.owner.username.ShouldBe(teamName);
-                createdProject.owner.display_name.ShouldNotBeNull();
-                createdProject.owner.uuid.ShouldNotBe(Guid.Empty);
-                createdProject.owner.links.self.href.ShouldNotBeNull();
-                createdProject.owner.links.html.href.ShouldNotBeNull();
-                createdProject.owner.links.avatar.href.ShouldNotBeNull();
-                createdProject.uuid.ShouldNotBeNull();
-                createdProject.created_on.ShouldNotBeNull();
-                createdProject.updated_on.ShouldNotBeNull();
-                createdProject.links.self.href.ShouldNotBeNull();
-                createdProject.links.html.href.ShouldNotBeNull();
-                createdProject.links.avatar.href.ShouldNotBeNull();
 
                 // get
                 var getProject = projectResource.GetProject();
-                getProject.ShouldNotBeNull();
-                getProject.key.ShouldBe(projectKey);
-                getProject.name.ShouldBe(newProject.name);
-                getProject.description.ShouldBe(newProject.description);
-                getProject.is_private.ShouldBe(newProject.is_private);
-                getProject.owner.username.ShouldBe(teamName);
-                getProject.owner.display_name.ShouldBe(createdProject.owner.display_name);
-                getProject.owner.uuid.ShouldBe(createdProject.owner.uuid);
-                getProject.owner.links.self.href.ShouldBe(createdProject.owner.links.self.href);
-                getProject.owner.links.html.href.ShouldBe(createdProject.owner.links.html.href);
-                getProject.owner.links.avatar.href.ShouldBe(createdProject.owner.links.avatar.href);
-                getProject.uuid.ShouldBe(createdProject.uuid);
-                getProject.created_on.ShouldBe(createdProject.created_on);
-                getProject.updated_on.ShouldBe(createdProject.updated_on);
-                getProject.links.self.href.ShouldBe(createdProject.links.self.href);
-                getProject.links.html.href.ShouldBe(createdProject.links.html.href);
-                getProject.links.avatar.href.ShouldBe(createdProject.links.avatar.href);
+                getProject.ShouldBeEquivalentTo(createdProject);
 
                 // update
                 getProject.description += " -- altered description";
                 var updatedProject = projectResource.PutProject(getProject);
-                updatedProject.ShouldNotBeNull();
-                updatedProject.key.ShouldBe(projectKey);
-                updatedProject.name.ShouldBe(newProject.name);
-                updatedProject.description.ShouldBe(getProject.description);
-                updatedProject.is_private.ShouldBe(newProject.is_private);
-                updatedProject.owner.username.ShouldBe(teamName);
-                updatedProject.owner.display_name.ShouldBe(createdProject.owner.display_name);
-                updatedProject.owner.uuid.ShouldBe(createdProject.owner.uuid);
-                updatedProject.owner.links.self.href.ShouldBe(createdProject.owner.links.self.href);
-                updatedProject.owner.links.html.href.ShouldBe(createdProject.owner.links.html.href);
-                updatedProject.owner.links.avatar.href.ShouldBe(createdProject.owner.links.avatar.href);
-                updatedProject.uuid.ShouldBe(createdProject.uuid);
-                updatedProject.created_on.ShouldBe(createdProject.created_on);
-                updatedProject.updated_on.ShouldNotBeNull();
-                updatedProject.updated_on.ShouldNotBe(createdProject.updated_on);
-                updatedProject.links.self.href.ShouldBe(createdProject.links.self.href);
-                updatedProject.links.html.href.ShouldBe(createdProject.links.html.href);
-                updatedProject.links.avatar.href.ShouldBe(createdProject.links.avatar.href);
+                updatedProject.ShouldBeEquivalentExceptUpdateDateTo(getProject);
             }
             finally
             {

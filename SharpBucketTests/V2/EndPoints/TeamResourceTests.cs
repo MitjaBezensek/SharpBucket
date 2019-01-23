@@ -4,6 +4,7 @@ using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
+using SharpBucketTests.V2.Pocos;
 using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
@@ -96,9 +97,11 @@ namespace SharpBucketTests.V2.EndPoints
 
             try
             {
-                var repositories = teamResource.ListProjects();
-                repositories.ShouldNotBeEmpty();
-                repositories.Any(r => r.name == project.name).ShouldBe(true);
+                var projects = teamResource.ListProjects();
+                projects.ShouldNotBeEmpty();
+                projects.Any(r => r.name == project.name).ShouldBe(true);
+                projects.Select(p => p.ShouldBeFilled())
+                    .Any(r => r.name == project.name).ShouldBe(true);
             }
             finally
             {

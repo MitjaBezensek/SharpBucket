@@ -4,7 +4,7 @@ namespace SharpBucket.V2.Pocos
 {
     public class TeamInfo
     {
-        public Guid uuid { get; set; }
+        public string uuid { get; set; }
         public string username { get; set; }
         public string display_name { get; set; }
         public TeamLinks links { get; set; }
