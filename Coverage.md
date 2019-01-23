@@ -543,16 +543,20 @@ The organization of all that routes may slightly differ in the SharpBucket class
 ### [Src resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src)
 - /repositories/{username}/{repo_slug}/src `POST`
   - Implemented by: none
-  - Tested: noe
+  - Tested: no
 - /repositories/{username}/{repo_slug}/src `GET`
   - Implemented by:
-    - `SrcResource.ctor` (when revision parameter is not specified)
+    - `SrcResource.ctor` (when revision parameter is not specified) *V0.9.0*
   - Tested: **yes**
 - /repositories/{username}/{repo_slug}/src/{node}/{path} `GET`
   - Implemented by:
-    - `SrcResource.GetTreeEntry(string)`
-    - `SrcResource.ListTreeEntries(string,ListParameters)`
-    - `SrcResource.GetFileContent(string)`
+    - `SrcResource.ListSrcEntries(string,ListParameters)` *V0.9.0*
+    - `SrcResource.GetSrcEntry(string)` *V0.9.0*
+    - `SrcResource.GetSrcFile(string)` *V0.9.0*
+    - `SrcResource.GetSrcDirectory(string)` *V0.9.0*
+    - `SrcResource.GetFileContent(string)` *V0.9.0*
+    - `SrcResource.ListTreeEntries(string,ListParameters)` *V0.9.0*
+    - `SrcResource.GetTreeEntry(string)` *V0.9.0*
   - Tested: **yes**
 
 ### [Versions resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/versions)
