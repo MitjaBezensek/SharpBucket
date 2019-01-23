@@ -11,8 +11,8 @@ namespace SharpBucketTests.Authentication
         [Test]
         public void OAuth_RequestWithParameters_GetsPublicRepositories()
         {
-            var sharpbucket = TestHelpers.GetV2ClientAuthenticatedWithOAuth();
-            var publicRepos = sharpbucket.RepositoriesEndPoint().ListPublicRepositories(max: Expected);
+            var sharpBucket = TestHelpers.GetV2ClientAuthenticatedWithOAuth1();
+            var publicRepos = sharpBucket.RepositoriesEndPoint().ListPublicRepositories(max: Expected);
             publicRepos.ShouldNotBe(null);
             publicRepos.Count.ShouldBe(Expected);
         }

@@ -284,7 +284,9 @@ The organization of all that routes may slightly differ in the SharpBucket class
 
 ### [Diff resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/diff)
 - /repositories/{username}/{repo_slug}/diff/{spec} `GET`
-  - Implemented by: `RepositoryResource.GetDiff(object)`
+  - Implemented by:
+    - `RepositoryResource.GetDiff(string)` *V0.9.0*
+    - `RepositoryResource.GetDiff(string,DiffParameters)` *V0.9.0*
   - Tested: no
 
 ### [Diffstat resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/diffstat)
@@ -389,7 +391,8 @@ The organization of all that routes may slightly differ in the SharpBucket class
 
 ### [Patch resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/patch/%7Bspec%7D)
 - /repositories/{username}/{repo_slug}/patch/{spec} `GET`
-  - Implemented by: `RepositoryResource.GetDiff(GetPatch)`
+  - Implemented by:
+    - `RepositoryResource.GetPatch(string)` *V0.9.0*
   - Tested: no
 
 ### [Pipelines resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pipelines)
@@ -541,12 +544,23 @@ The organization of all that routes may slightly differ in the SharpBucket class
   - Tested: no
 
 ### [Src resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src)
-- /repositories/{username}/{repo_slug}/src `GET` `POST`
+- /repositories/{username}/{repo_slug}/src `POST`
   - Implemented by: none
   - Tested: no
+- /repositories/{username}/{repo_slug}/src `GET`
+  - Implemented by:
+    - `SrcResource.ctor` (when revision parameter is not specified) *V0.9.0*
+  - Tested: **yes**
 - /repositories/{username}/{repo_slug}/src/{node}/{path} `GET`
-  - Implemented by: none
-  - Tested: no
+  - Implemented by:
+    - `SrcResource.ListSrcEntries(string,ListParameters)` *V0.9.0*
+    - `SrcResource.GetSrcEntry(string)` *V0.9.0*
+    - `SrcResource.GetSrcFile(string)` *V0.9.0*
+    - `SrcResource.GetSrcDirectory(string)` *V0.9.0*
+    - `SrcResource.GetFileContent(string)` *V0.9.0*
+    - `SrcResource.ListTreeEntries(string,ListParameters)` *V0.9.0*
+    - `SrcResource.GetTreeEntry(string)` *V0.9.0*
+  - Tested: **yes**
 
 ### [Versions resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/versions)
 - /repositories/{username}/{repo_slug}/versions `GET`
