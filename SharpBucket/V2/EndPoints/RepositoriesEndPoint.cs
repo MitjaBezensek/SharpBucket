@@ -399,5 +399,29 @@ namespace SharpBucket.V2.EndPoints
         }
 
         #endregion
+
+        #region Src Resource
+
+        internal List<TreeEntry> ListTreeEntries(string srcResourcePath, string subDirPath = null, ListParameters listParameters = null)
+        {
+            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath, subDirPath);
+            return listParameters == null
+                ? GetPaginatedValues<TreeEntry>(overrideUrl)
+                : GetPaginatedValues<TreeEntry>(overrideUrl, listParameters.Max, listParameters.ToDictionary());
+        }
+
+        internal TreeEntry GetTreeEntry(string srcResourcePath, string subPath = null)
+        {
+            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath, subPath);
+            return _sharpBucketV2.Get<TreeEntry>(overrideUrl, new { format = "meta" });
+        }
+
+        internal string GetFileContent(string srcResourcePath, string filePath)
+        {
+            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath, filePath);
+            return _sharpBucketV2.Get(overrideUrl);
+        }
+
+        #endregion
     }
 }

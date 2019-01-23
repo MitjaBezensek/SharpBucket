@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
+using System.Web;
 using RestSharp;
 using RestSharp.Deserializers;
 
@@ -88,7 +90,25 @@ namespace SharpBucket.Authentication
             if (result.StatusCode == HttpStatusCode.Redirect)
             {
                 var redirectUrl = GetRedirectUrl(result, client.BaseUrl.ToString());
+
+                NameValueCollection queryValues;
+                if (redirectUrl.Contains("?"))
+                {
+                    var urlAndQuery = redirectUrl.Split('?');
+                    redirectUrl = urlAndQuery[0];
+                    queryValues = HttpUtility.ParseQueryString(urlAndQuery[1]);
+                }
+                else
+                {
+                    queryValues = new NameValueCollection();
+                }
+
                 request = new RestRequest(redirectUrl, request.Method);
+                foreach (var queryKey in queryValues.AllKeys)
+                {
+                    request.AddQueryParameter(queryKey, queryValues[queryKey]);
+                }
+
                 result = clientExecute(request);
             }
 

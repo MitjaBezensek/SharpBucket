@@ -309,5 +309,19 @@ namespace SharpBucket.V2.EndPoints
         }
 
         #endregion
+
+        #region Src resource
+
+        /// <summary>
+        /// Get a Src resource that allows to browse the content of the repository
+        /// </summary>
+        /// <param name="revision">The name of the revision to browse. This may be a commit hash, a branch name, a tag name, or null to target the last commit of the main branch.</param>
+        /// <param name="path">An optional path to a sub directory if you want to start to browse somewhere else that at the root path.</param>
+        public SrcResource SrcResource(string revision = null, string path = null)
+        {
+            return new SrcResource(_repositoriesEndPoint, _accountName, _slug, revision, path);
+        }
+
+        #endregion
     }
 }

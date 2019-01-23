@@ -56,5 +56,18 @@ namespace SharpBucket.Utility
         {
             return input.TryGetGuid(out var guidString) ? guidString : input;
         }
+
+        /// <summary>
+        /// Ensure that the string ends with the specified character.
+        /// If true return the string unaltered, if not, return the same string with the specified character append at the end.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="trailingChar"></param>
+        public static string EnsureEndsWith(this string input, char trailingChar)
+        {
+            if (string.IsNullOrEmpty(input)) return trailingChar.ToString();
+            if (input[input.Length - 1] == trailingChar) return input;
+            return input + trailingChar;
+        }
     }
 }
