@@ -48,6 +48,11 @@ namespace SharpBucket.Authentication
                 throw new WebException("REST client encountered an error: " + result.ErrorMessage, result.ErrorException);
             }
 
+            if (!result.IsSuccessful)
+            {
+                throw new WebException($"Http Error {(int)result.StatusCode} {result.StatusDescription}{Environment.NewLine}{result.Content}");
+            }
+
             return result;
         }
 

@@ -281,7 +281,6 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        [Ignore("This tests simply demonstrate issue #107 and wait for a fix")]
         public void GetFileContent_OfAFileThatDoNotExists_ShouldReturnNullOrThrowAnException()
         {
             var testRepo = SampleRepositories.TestRepository;
