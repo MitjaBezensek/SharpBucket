@@ -36,6 +36,8 @@ namespace SharpBucketTests.V2
                     using (var testRepositoryBuilder = TestHelpers.GetTestRepositoryBuilder(testRepository.AccountName, testRepository.RepositoryName))
                     {
                         _testRepository.RepositoryInfo = testRepositoryBuilder.FillRepository();
+                        _testRepository.RepositoryInfo.AccountName = testRepository.AccountName;
+                        _testRepository.RepositoryInfo.RepositoryName = testRepository.RepositoryName;
                     }
                 }
 
