@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using NUnit.Framework;
+using SharpBucket.V2;
 using SharpBucket.V2.Pocos;
 using Shouldly;
 
@@ -95,6 +97,21 @@ namespace SharpBucketTests.V2.EndPoints
             repositoryFromPost.uuid.ShouldBe(repositoryFromGet.uuid);
 
             repositoryResource.DeleteRepository();
+        }
+
+        [Test]
+        public void CreateRepository_InATeamWhereIHaveNoRights_ThrowAnException()
+        {
+            var repositoryName = Guid.NewGuid().ToString("N");
+            var repositoryResource = SampleRepositories.RepositoriesEndPoint.RepositoryResource(SampleRepositories.MERCURIAL_ACCOUNT_NAME, repositoryName);
+            var repository = new Repository
+            {
+                name = repositoryName
+            };
+
+            var exception = Assert.Throws<BitbucketV2Exception>(() => repositoryResource.PostRepository(repository));
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.Forbidden);
+            exception.ErrorResponse.error.message.ShouldBe("You cannot administer other userspersonal accounts.");
         }
 
         [Test]
