@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Net;
+using NUnit.Framework;
+using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
 using Shouldly;
@@ -36,10 +38,10 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void GetPullRequest_NotExistingPublicPullRequest_ReturnNull()
+        public void GetPullRequest_NotExistingPublicPullRequest_ThrowException()
         {
-            var pullRequest = NotExistingPullRequest.GetPullRequest();
-            pullRequest.ShouldBeNull();
+            var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.GetPullRequest());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]
@@ -52,10 +54,10 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void GetPullRequestActivity_NotExistingPublicPullRequest_ReturnEmpty()
+        public void GetPullRequestActivity_NotExistingPublicPullRequest_ThrowException()
         {
-            var activities = NotExistingPullRequest.GetPullRequestActivity();
-            activities.ShouldBeEmpty();
+            var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.GetPullRequestActivity());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]
@@ -68,10 +70,10 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void ListPullRequestComments_NotExistingPublicPullRequest_ReturnEmpty()
+        public void ListPullRequestComments_NotExistingPublicPullRequest_ThrowException()
         {
-            var comments = NotExistingPullRequest.ListPullRequestComments();
-            comments.ShouldBeEmpty();
+            var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.ListPullRequestComments());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]
@@ -83,11 +85,10 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void GetPullRequestComment_NotExistingCommentOnPublicPullRequest_ReturnEmpty()
+        public void GetPullRequestComment_NotExistingCommentOnPublicPullRequest_ThrowException()
         {
-            var comment = ExistingPullRequest.GetPullRequestComment(int.MaxValue);
-            comment.ShouldNotBeNull();
-            comment.id.ShouldBeNull();
+            var exception = Assert.Throws<BitbucketV2Exception>(() => ExistingPullRequest.GetPullRequestComment(int.MaxValue));
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]
@@ -100,10 +101,10 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void ListPullRequestCommits_NotExistingPublicPullRequest_ReturnEmpty()
+        public void ListPullRequestCommits_NotExistingPublicPullRequest_ThrowException()
         {
-            var commits = NotExistingPullRequest.ListPullRequestCommits();
-            commits.ShouldBeEmpty();
+            var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.ListPullRequestCommits());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]
@@ -115,11 +116,10 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void GetDiffForPullRequest_NotExistingPublicPullRequest_ReturnEmpty()
+        public void GetDiffForPullRequest_NotExistingPublicPullRequest_ThrowException()
         {
-            var diff = NotExistingPullRequest.GetDiffForPullRequest();
-            diff.ShouldNotBeNull();
-            // TODO: to complete once the right POCO will be returned
+            var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.GetDiffForPullRequest());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]

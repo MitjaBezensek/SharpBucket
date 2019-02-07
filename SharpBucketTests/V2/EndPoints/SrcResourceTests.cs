@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using SharpBucket.Utility;
+using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using SharpBucketTests.V2.Pocos;
 using Shouldly;
@@ -281,21 +283,36 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void GetFileContent_OfAFileThatDoNotExists_ShouldReturnNullOrThrowAnException()
+        public void GetFileContent_OfAFileThatDoNotExists_ThrowAnException()
         {
             var testRepo = SampleRepositories.TestRepository;
             var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource(testRepo.RepositoryInfo.FirstCommit);
 
-            string fileContent = null;
-            try
-            {
-                fileContent = rootOfFirstCommit.GetFileContent("NotExistingFile.txt");
-            }
-            catch (Exception e)
-            {
-                Assert.That(e.Message.Contains("NotExistingFile.txt"));
-            }
-            fileContent.ShouldBeNull();
+            var exception = Assert.Throws<BitbucketV2Exception>(() => rootOfFirstCommit.GetFileContent("NotExistingFile.txt"));
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+            exception.Message.ShouldBe("No such file or directory: NotExistingFile.txt");
+        }
+
+        [Test]
+        public void GetFileContent_OfAFileFromARevisionThatDoNotExists_ThrowAnException()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var srcOfNotExistingRevision = testRepo.RepositoryResource.SrcResource("not_existing_revision");
+
+            var exception = Assert.Throws<BitbucketV2Exception>(() => srcOfNotExistingRevision.GetFileContent("AnyFile.txt"));
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+            exception.Message.ShouldBe("Changeset not found.");
+        }
+
+        [Test]
+        public void GetFileContent_OfAFileFromARepositoryThatDoNotExists_ThrowAnException()
+        {
+            var notExistingRepo = TestHelpers.SharpBucketV2.RepositoriesEndPoint().RepositoryResource("foo", "bar");
+            var masterSrcResource = notExistingRepo.SrcResource("master");
+
+            var exception = Assert.Throws<BitbucketV2Exception>(() => masterSrcResource.GetFileContent("AnyFile.txt"));
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+            exception.Message.ShouldBe("Repository foo/bar not found");
         }
     }
 }

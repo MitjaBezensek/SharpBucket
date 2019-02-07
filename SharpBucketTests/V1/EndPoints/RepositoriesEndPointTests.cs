@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net;
 using NUnit.Framework;
+using SharpBucket;
 using SharpBucketTests.V2;
 using Shouldly;
 
@@ -22,14 +24,15 @@ namespace SharpBucketTests.V1.EndPoints
         }
 
         [Test]
-        public void GetSrcFile_OfAFileThatDoNotExists_ReturnsNull()
+        public void GetSrcFile_OfAFileThatDoNotExists_ThrowExceptionWithStatusNotFound()
         {
             var testRepoInfo = SampleRepositories.TestRepository.RepositoryInfo;
             var repositoryEndPoint = TestHelpers.GetV1ClientAuthenticatedWithOAuth()
                 .RepositoriesEndPoint(testRepoInfo.AccountName, testRepoInfo.RepositoryName);
 
-            var srcFile = repositoryEndPoint.GetSrcFile("master", "FileThatDoNotExists.txt");
-            srcFile.ShouldBeNull();
+            var exception = Assert.Throws<BitbucketException>(() => repositoryEndPoint.GetSrcFile("master", "FileThatDoNotExists.txt"));
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+            exception.Message.ShouldBe("Not Found");
         }
     }
 }

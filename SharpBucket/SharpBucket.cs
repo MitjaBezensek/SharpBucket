@@ -213,28 +213,13 @@ namespace SharpBucket
 
         private string Send(object body, Method method, string overrideUrl = null, IDictionary<string, object> requestParameters = null)
         {
-            return SafeCallTo(() => authenticator.GetResponse(overrideUrl, method, body, requestParameters));
+            return authenticator.GetResponse(overrideUrl, method, body, requestParameters);
         }
 
         private T Send<T>(object body, Method method, string overrideUrl = null, IDictionary<string, object> requestParameters = null)
             where T : new()
         {
-            return SafeCallTo(() => authenticator.GetResponse<T>(overrideUrl, method, body, requestParameters));
-        }
-
-        private T SafeCallTo<T>(Func<T> webCall)
-        {
-            T response;
-            try
-            {
-                response = webCall();
-            }
-            catch (WebException ex)
-            {
-                Console.WriteLine(ex.Message);
-                response = default(T);
-            }
-            return response;
+            return authenticator.GetResponse<T>(overrideUrl, method, body, requestParameters);
         }
 
         internal string Get(string overrideUrl, object requestParameters = null)

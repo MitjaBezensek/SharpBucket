@@ -3,12 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using RestSharp;
 using SharpBucket.Authentication;
+using SharpBucket.V2.Pocos;
 using SimpleJson;
 
 namespace SharpBucket.V2
 {
     internal class RequestExecutorV2 : RequestExecutor
     {
+        protected override BitbucketException BuildBitbucketException(IRestResponse response)
+        {
+            return new BitbucketV2Exception(response.StatusCode, ExtractErrorResponse(response), response.ErrorException);
+        }
+
+        private static ErrorResponse ExtractErrorResponse(IRestResponse response)
+        {
+            try
+            {
+                var errorResponse = SimpleJson.SimpleJson.DeserializeObject<ErrorResponse>(response.Content);
+                return errorResponse;
+            }
+            catch (Exception)
+            {
+                return new ErrorResponse
+                {
+                    type = "Undefined",
+                    error = new Error
+                    {
+                        message = response?.Content ??
+                                  "An unexpected error occured, and we have not been able to extract an error message"
+                    }
+                };
+            }
+        }
+
         protected override void AddBody(IRestRequest request, object body)
         {
             // Use a custom JsonSerializerStrategy to be able to ignore null properties during the serialization
