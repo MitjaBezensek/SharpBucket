@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace SharpBucket
 {
     /// <summary>
-    /// Exception raised when a call to the bitbucket API response describe an error.
+    /// Exception raised when the response of a call to the bitbucket API describe an error.
     /// </summary>
     /// <remarks>
     /// This class is really similar to HttpException,

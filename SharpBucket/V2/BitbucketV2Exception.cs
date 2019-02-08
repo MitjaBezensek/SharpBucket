@@ -5,7 +5,7 @@ using SharpBucket.V2.Pocos;
 namespace SharpBucket.V2
 {
     /// <summary>
-    /// Exception raised when a call to the bitbucket API V2 response describe an error.
+    /// Exception raised when the response of a call to the bitbucket API V2 describe an error.
     /// </summary>
     public class BitbucketV2Exception : BitbucketException
     {
