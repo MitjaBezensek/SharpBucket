@@ -8,7 +8,9 @@ To install SharpBucket, run the following command in the Package Manager Console
     PM> Install-Package SharpBucket
 
 ### Usage
-See the [Console Test Project](https://github.com/MitjaBezensek/SharpBucket/blob/master/ConsoleTests/Program.cs) to see how to use the wrapper. Here's just a brief demo:
+See the [SharpBucketCli Project](https://github.com/MitjaBezensek/SharpBucket/blob/master/SharpBucketCli/Program.cs) or the [unit tests](https://github.com/MitjaBezensek/SharpBucket/tree/master/SharpBucketTests) to see how to use the wrapper.
+
+Here's just a brief demo:
 
 First lets set your entry point to the API
 ```CSharp
