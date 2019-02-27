@@ -11,6 +11,11 @@ namespace SharpBucket.V2
     {
         public ErrorResponse ErrorResponse { get; }
 
+        public BitbucketV2Exception(HttpStatusCode httpStatusCode, ErrorResponse errorResponse)
+            : this(httpStatusCode, errorResponse, null)
+        {
+        }
+
         public BitbucketV2Exception(HttpStatusCode httpStatusCode, ErrorResponse errorResponse, Exception innerException)
             : base(httpStatusCode, errorResponse.error.message, innerException)
         {

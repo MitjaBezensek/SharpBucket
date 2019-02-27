@@ -16,6 +16,11 @@ namespace SharpBucket
     {
         public HttpStatusCode HttpStatusCode { get; }
 
+        public BitbucketException(HttpStatusCode httpStatusCode, string message)
+            : this(httpStatusCode, message, null)
+        {
+        }
+
         public BitbucketException(HttpStatusCode httpStatusCode, string message, Exception innerException)
             : base(message, innerException)
         {

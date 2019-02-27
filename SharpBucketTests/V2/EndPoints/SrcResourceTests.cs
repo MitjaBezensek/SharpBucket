@@ -314,5 +314,16 @@ namespace SharpBucketTests.V2.EndPoints
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
             exception.Message.ShouldBe("Repository foo/bar not found");
         }
+
+        [Test]
+        public void GetFileContent_OfAFileFromARepositoryThatDoNotExistsWithoutSpecifyingRevision_ThrowAnException()
+        {
+            var notExistingRepo = TestHelpers.SharpBucketV2.RepositoriesEndPoint().RepositoryResource("foo", "bar");
+            var masterSrcResource = notExistingRepo.SrcResource();
+
+            var exception = Assert.Throws<BitbucketV2Exception>(() => masterSrcResource.GetFileContent("AnyFile.txt"));
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+            exception.Message.ShouldBe("Repository foo/bar not found");
+        }
     }
 }

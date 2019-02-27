@@ -12,7 +12,8 @@ namespace SharpBucket.V2
     {
         protected override BitbucketException BuildBitbucketException(IRestResponse response)
         {
-            return new BitbucketV2Exception(response.StatusCode, ExtractErrorResponse(response), response.ErrorException);
+            // response.ErrorException is not useful for caller in that case, so it's useless to transmit it as an inner exception
+            return new BitbucketV2Exception(response.StatusCode, ExtractErrorResponse(response));
         }
 
         private static ErrorResponse ExtractErrorResponse(IRestResponse response)
@@ -29,8 +30,11 @@ namespace SharpBucket.V2
                     type = "Undefined",
                     error = new Error
                     {
-                        message = response?.Content ??
-                                  "An unexpected error occured, and we have not been able to extract an error message"
+                        message = !string.IsNullOrWhiteSpace(response.Content)
+                            ? response.Content
+                            : !string.IsNullOrWhiteSpace(response.StatusDescription)
+                            ? response.StatusDescription
+                            : response.StatusCode.ToString()
                     }
                 };
             }

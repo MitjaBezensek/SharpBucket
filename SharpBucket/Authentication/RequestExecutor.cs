@@ -52,7 +52,8 @@ namespace SharpBucket.Authentication
 
         protected virtual BitbucketException BuildBitbucketException(IRestResponse response)
         {
-            throw new BitbucketException(response.StatusCode, response.Content, response.ErrorException);
+            // response.ErrorException is not useful for caller in that case, so it's useless to transmit it as an inner exception
+            throw new BitbucketException(response.StatusCode, response.Content);
         }
 
         private IRestRequest BuildRestRequest(string url, Method method, object body, IDictionary<string, object> requestParameters)

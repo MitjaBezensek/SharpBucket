@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
@@ -12,7 +13,7 @@ namespace SharpBucket.V2.EndPoints
     public class SrcResource
     {
         private RepositoriesEndPoint RepositoriesEndPoint { get; }
-        private string SrcPath { get; }
+        private Lazy<string> SrcPath { get; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="SrcResource"/>.
@@ -26,23 +27,42 @@ namespace SharpBucket.V2.EndPoints
         {
             RepositoriesEndPoint = repositoriesEndPoint ?? throw new ArgumentNullException(nameof(repositoriesEndPoint));
 
-            var rootSrcPath = $"{accountName.GuidOrValue()}/{repoSlugOrName.ToSlug()}/src/";
-            if (string.IsNullOrEmpty(revision))
+            var repoPath = $"{accountName.GuidOrValue()}/{repoSlugOrName.ToSlug()}";
+
+            // full build of the SrcPath value is delayed so that when revision is null errors are send
+            // only when caller really try to do a request and not when building the resource object
+            string BuildSrcPath()
             {
-                // This may potentially be optimized since this call will first hit a redirect toward an url that contains the revision
-                // but the actual architecture of the code doesn't allow us to fetch just the redirect location of a GET request.
-                // so we found back the data we need in the response of the call to the url where we are redirected.
-                var rootEntry = repositoriesEndPoint.GetTreeEntry(rootSrcPath);
-                revision = rootEntry.commit.hash;
+                var rootSrcPath = $"{repoPath}/src/";
+
+                if (string.IsNullOrEmpty(revision))
+                {
+                    try
+                    {
+                        // This may potentially be optimized since this call will first hit a redirect toward an url that contains the revision
+                        // but the actual architecture of the code doesn't allow us to fetch just the redirect location of a GET request.
+                        // so we found back the data we need in the response of the call to the url where we are redirected.
+                        var rootEntry = repositoriesEndPoint.GetTreeEntry(rootSrcPath);
+                        revision = rootEntry.commit.hash;
+                    }
+                    catch (BitbucketV2Exception e) when (e.HttpStatusCode == HttpStatusCode.NotFound)
+                    {
+                        // mimic the error that bitbucket send when we perform calls on src endpoint with a revision name
+                        var errorResponse = new ErrorResponse {type = "Error", error = new Error {message = $"Repository {repoPath} not found"}};
+                        throw new BitbucketV2Exception(HttpStatusCode.NotFound, errorResponse);
+                    }
+                }
+
+                return UrlHelper.ConcatPathSegments(rootSrcPath, revision, path).EnsureEndsWith('/');
             }
 
-            SrcPath = UrlHelper.ConcatPathSegments(rootSrcPath, revision, path).EnsureEndsWith('/');
+            SrcPath = new Lazy<string>(BuildSrcPath);
         }
 
         private SrcResource(RepositoriesEndPoint repositoriesEndPoint, string srcPath, string subDirPath)
         {
             RepositoriesEndPoint = repositoriesEndPoint;
-            SrcPath = UrlHelper.ConcatPathSegments(srcPath, subDirPath).EnsureEndsWith('/');
+            SrcPath = new Lazy<string>(() => UrlHelper.ConcatPathSegments(srcPath, subDirPath).EnsureEndsWith('/'));
         }
 
         /// <summary>
@@ -57,7 +77,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="listParameters">Parameters for the query.</param>
         public List<TreeEntry> ListTreeEntries(string subDirPath = null, ListParameters listParameters = null)
         {
-            return RepositoriesEndPoint.ListTreeEntries(SrcPath, subDirPath, listParameters);
+            return RepositoriesEndPoint.ListTreeEntries(SrcPath.Value, subDirPath, listParameters);
         }
 
         /// <summary>
@@ -83,7 +103,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="subPath">The path to the file or directory, or null to retrieve the metadata of the root of this resource.</param>
         public TreeEntry GetTreeEntry(string subPath = null)
         {
-            return RepositoriesEndPoint.GetTreeEntry(SrcPath, subPath);
+            return RepositoriesEndPoint.GetTreeEntry(SrcPath.Value, subPath);
         }
 
         /// <summary>
@@ -121,7 +141,7 @@ namespace SharpBucket.V2.EndPoints
         public SrcResource SubSrcResource(string subDirPath)
         {
             if (string.IsNullOrWhiteSpace(subDirPath)) throw new ArgumentNullException(nameof(subDirPath));
-            return new SrcResource(RepositoriesEndPoint, SrcPath, subDirPath);
+            return new SrcResource(RepositoriesEndPoint, SrcPath.Value, subDirPath);
         }
 
         /// <summary>
@@ -130,7 +150,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="filePath">The path to a file relative to the root of this resource.</param>
         public string GetFileContent(string filePath)
         {
-            return RepositoriesEndPoint.GetFileContent(SrcPath, filePath);
+            return RepositoriesEndPoint.GetFileContent(SrcPath.Value, filePath);
         }
     }
 }
