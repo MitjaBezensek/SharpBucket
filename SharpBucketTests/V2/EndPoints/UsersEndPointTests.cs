@@ -37,14 +37,17 @@ namespace SharpBucketTests.V2.EndPoints
             followers[0].display_name.ShouldBe("z19");
         }
 
-        [Test]
-        public void ListFollowing_FromMirrorAccount_ShouldReturnMirrorMembers()
-        {
-            usersEndPoint.ShouldNotBe(null);
-            var following = usersEndPoint.ListFollowing();
-            following.Count.ShouldBe(1);
-            following[0].display_name.ShouldBe("Jesper Noehr");
-        }
+        // the test doesn't work anymore because the data is not returned anymore
+        // and the endpoint will soon be removed: https://developer.atlassian.com/cloud/bitbucket/bitbucket-api-changes-gdpr/
+        // so it's useless to try to maintain it
+        ////[Test]
+        ////public void ListFollowing_FromMirrorAccount_ShouldReturnMirrorMembers()
+        ////{
+        ////    usersEndPoint.ShouldNotBe(null);
+        ////    var following = usersEndPoint.ListFollowing();
+        ////    following.Count.ShouldBe(1);
+        ////    following[0].display_name.ShouldBe("Jesper Noehr");
+        ////}
 
         [Test]
         public void ListRepositories_FromMirrorAccount_ShouldReturnMirrorsRepositories()

@@ -301,7 +301,7 @@ namespace SharpBucketTests.V2.EndPoints
 
             var exception = Assert.Throws<BitbucketV2Exception>(() => srcOfNotExistingRevision.GetFileContent("AnyFile.txt"));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
-            exception.Message.ShouldBe("Changeset not found.");
+            exception.Message.ShouldBe("Commit not found");
         }
 
         [Test]
