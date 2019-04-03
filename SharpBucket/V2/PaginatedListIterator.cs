@@ -59,7 +59,7 @@ namespace SharpBucket.V2
         /// <param name="max">Set to 0 for unlimited size.</param>
         /// <param name="requestParameters"></param>
         /// <returns></returns>
-        /// <exception cref="System.Net.WebException">Thrown when the server fails to respond.</exception>
+        /// <exception cref="BitbucketV2Exception">Thrown when the server fails to respond.</exception>
         public static List<TValue> GetPaginatedValues<TValue>(this SharpBucketV2 sharpBucketV2, string overrideUrl, int max = 0, IDictionary<string, object> requestParameters = null)
         {
             var isMaxConstrained = max > 0;

@@ -5,6 +5,8 @@ using SharpBucket.V1.Pocos;
 using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using SharpBucket;
 
 namespace SharpBucketTests.V1.EndPoints
 {
@@ -50,8 +52,9 @@ namespace SharpBucketTests.V1.EndPoints
             group.ShouldNotBeNull();
 
             groupsEndPoint.DeleteGroup(name);
-            group = groupsEndPoint.GetGroup(name);
-            group.ShouldBe(null);
+
+            var exception = Assert.Throws<BitbucketException>(() => groupsEndPoint.GetGroup(name));
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]

@@ -22,7 +22,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="max">Set to 0 for unlimited size.</param>
         /// <param name="requestParameters"></param>
         /// <returns></returns>
-        /// <exception cref="System.Net.WebException">Thrown when the server fails to respond.</exception>
+        /// <exception cref="BitbucketV2Exception">Thrown when the server fails to respond.</exception>
         protected List<TValue> GetPaginatedValues<TValue>(string overrideUrl, int max = 0, IDictionary<string, object> requestParameters = null)
         {
             return _sharpBucketV2.GetPaginatedValues<TValue>(overrideUrl, max, requestParameters);

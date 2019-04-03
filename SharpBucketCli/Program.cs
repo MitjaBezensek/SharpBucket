@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using SharpBucket.V2;
 using SharpBucket.V2.Pocos;
 
@@ -151,14 +152,10 @@ namespace SharpBucketCli
             {
                 this.Account = SharpBucket.UsersEndPoint(accountName).GetProfile();
             }
-            catch (Exception)
+            catch (BitbucketV2Exception e)
+                when(e.HttpStatusCode == HttpStatusCode.NotFound)
             {
-                this.Account = null;
-            }
-
-            // if account do not seem to be a simple user, try as a team
-            if (this.Account?.username == null)
-            {
+                // The given accountName do not seem to be a simple user, so try as a team
                 this.Account = SharpBucket.TeamsEndPoint().TeamResource(accountName).GetProfile();
             }
         }

@@ -42,13 +42,18 @@ namespace SharpBucket.Authentication
             client.AddHandler("application/json", new JsonDeserializer());
 
             var result = ExecuteRequestWithManualFollowRedirect(request, client, clientExecute);
-
-            if (result.ErrorException != null)
+            if (!result.IsSuccessful)
             {
-                throw new WebException("REST client encountered an error: " + result.ErrorMessage, result.ErrorException);
+                throw BuildBitbucketException(result);
             }
 
             return result;
+        }
+
+        protected virtual BitbucketException BuildBitbucketException(IRestResponse response)
+        {
+            // response.ErrorException is not useful for caller in that case, so it's useless to transmit it as an inner exception
+            throw new BitbucketException(response.StatusCode, response.Content);
         }
 
         private IRestRequest BuildRestRequest(string url, Method method, object body, IDictionary<string, object> requestParameters)

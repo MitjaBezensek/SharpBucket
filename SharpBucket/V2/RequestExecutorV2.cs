@@ -3,12 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using RestSharp;
 using SharpBucket.Authentication;
+using SharpBucket.V2.Pocos;
 using SimpleJson;
 
 namespace SharpBucket.V2
 {
     internal class RequestExecutorV2 : RequestExecutor
     {
+        protected override BitbucketException BuildBitbucketException(IRestResponse response)
+        {
+            // response.ErrorException is not useful for caller in that case, so it's useless to transmit it as an inner exception
+            return new BitbucketV2Exception(response.StatusCode, ExtractErrorResponse(response));
+        }
+
+        private static ErrorResponse ExtractErrorResponse(IRestResponse response)
+        {
+            try
+            {
+                var errorResponse = SimpleJson.SimpleJson.DeserializeObject<ErrorResponse>(response.Content);
+                return errorResponse;
+            }
+            catch (Exception)
+            {
+                return new ErrorResponse
+                {
+                    type = "Undefined",
+                    error = new Error
+                    {
+                        message = !string.IsNullOrWhiteSpace(response.Content)
+                            ? response.Content
+                            : !string.IsNullOrWhiteSpace(response.StatusDescription)
+                            ? response.StatusDescription
+                            : response.StatusCode.ToString()
+                    }
+                };
+            }
+        }
+
         protected override void AddBody(IRestRequest request, object body)
         {
             // Use a custom JsonSerializerStrategy to be able to ignore null properties during the serialization

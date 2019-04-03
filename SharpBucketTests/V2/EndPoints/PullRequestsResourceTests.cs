@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Net;
+using NUnit.Framework;
+using SharpBucket.V2;
 using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
@@ -19,10 +21,10 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void ListPullRequests_NotExistingPublicPullRequest_ReturnEmpty()
+        public void ListPullRequests_NotExistingRepository_ThrowException()
         {
-            var pullRequests = SampleRepositories.NotExistingRepository.PullRequestsResource().ListPullRequests();
-            pullRequests.ShouldBeEmpty();
+            var exception = Assert.Throws<BitbucketV2Exception>(() => SampleRepositories.NotExistingRepository.PullRequestsResource().ListPullRequests());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]
@@ -34,10 +36,10 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void GetPullRequestLog_NotExistingPublicPullRequest_ReturnEmpty()
+        public void GetPullRequestLog_NotExistingRepository_ThrowException()
         {
-            var pullRequestActivities = SampleRepositories.NotExistingRepository.PullRequestsResource().GetPullRequestLog();
-            pullRequestActivities.ShouldBeEmpty();
+            var exception = Assert.Throws<BitbucketV2Exception>(() => SampleRepositories.NotExistingRepository.PullRequestsResource().GetPullRequestLog());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
     }
 }
