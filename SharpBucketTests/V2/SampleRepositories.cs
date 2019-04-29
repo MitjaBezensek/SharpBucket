@@ -22,6 +22,11 @@ namespace SharpBucketTests.V2
         public static RepositoryResource EmptyTestRepository => _emptyTestRepository
                                                                 ?? (_emptyTestRepository = CreateTestRepository("Empty").RepositoryResource);
 
+        private static RepositoryResource _privateTestRepository;
+
+        public static RepositoryResource PrivateTestRepository => _privateTestRepository
+                                                                  ?? (_privateTestRepository = CreateTestRepository("Private", true).RepositoryResource);
+
         private static TestRepository _testRepository;
 
         public static TestRepository TestRepository
@@ -55,7 +60,7 @@ namespace SharpBucketTests.V2
         public static RepositoryResource NotExistingRepository => _notExistingRepository ??
                                                                 (_notExistingRepository = RepositoriesEndPoint.RepositoryResource(TestHelpers.AccountName, "not_existing_repository"));
 
-        private static RepositoryResourceWithArgs CreateTestRepository(string repositoryNamePrefix)
+        private static RepositoryResourceWithArgs CreateTestRepository(string repositoryNamePrefix, bool isPrivate = false)
         {
             var accountName = TestHelpers.AccountName;
             var repositoryName = $"{repositoryNamePrefix}_{Guid.NewGuid():N}";
@@ -64,7 +69,8 @@ namespace SharpBucketTests.V2
             {
                 name = repositoryName,
                 language = "c#",
-                scm = "git"
+                scm = "git",
+                is_private = isPrivate
             };
             repositoryResource.PostRepository(repository);
             return new RepositoryResourceWithArgs { RepositoryResource = repositoryResource, AccountName = accountName, RepositoryName = repositoryName };
@@ -83,6 +89,7 @@ namespace SharpBucketTests.V2
         protected void OneTimeTearDown()
         {
             _emptyTestRepository?.DeleteRepository();
+            _privateTestRepository?.DeleteRepository();
             _testRepository?.RepositoryResource.DeleteRepository();
         }
     }

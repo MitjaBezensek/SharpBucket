@@ -18,7 +18,7 @@ namespace SharpBucketTests.Authentication
         }
 
         [Test]
-        public void Create_ShouldUseMock()
+        public void MockAuthentication_ShouldUseMock()
         {
             string expected = "Hello from mock";
 
