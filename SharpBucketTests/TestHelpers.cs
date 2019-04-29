@@ -5,12 +5,17 @@ using SharpBucketTests.GitHelpers;
 
 namespace SharpBucketTests
 {
-    internal partial class TestHelpers
+    internal class TestHelpers
     {
         private const string TestInformationPath = "c:\\TestInformation.txt";
         private const string SbConsumerKey = "SB_CONSUMER_KEY";
         private const string SbConsumerSecretKey = "SB_CONSUMER_SECRET_KEY";
         private const string SbAccountName = "SB_ACCOUNT_NAME";
+
+        private static string _accountName;
+
+        public static string AccountName => _accountName
+                                            ?? (_accountName = Environment.GetEnvironmentVariable(SbAccountName)) ;
 
         private static string _oauthConsumerKey;
 
