@@ -1,3 +1,34 @@
+# [Authentication](https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication)
+
+- Basic
+  - Implemented by: `SharpBucket.BasicAuthentication(string username, string password)`
+  - Tested: **yes**
+- OAuth 1.0 (*warning*: OAuth1 is obsolete and [documentation](https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket) do not exists anymore)
+  - 2-LO
+    - Implemented by: `SharpBucket.OAuth1TwoLeggedAuthentication(string consumerKey, string consumerSecretKey)`
+    - Tested: **yes**
+  - 3-LO
+    - Implemented by: `SharpBucket.OAuth1ThreeLeggedAuthentication(string consumerKey, string consumerSecretKey, string callback = "oob")` and then `SharpBucket.OAuth1ThreeLeggedAuthentication(string consumerKey, string consumerSecretKey, string oauthToken, string oauthTokenSecret)`
+    - Tested: no
+- OAuth 2
+  1. Authorization Code Grant (4.1)
+     - Implemented by: none. Since it's OAuth2 equivalent of the the OAuth1 3-LO we had implemented, we probably need to implement that one too.
+     - Tested: no
+  2. Implicit Grant (4.2)
+     - Seems useful only for Javascript SPA applications and will not fit in a C# client.
+  3. Resource Owner Password Credentials Grant (4.3)
+     - Implemented by: none. No idea if needed.
+     - Tested: no
+  4. Client Credentials Grant (4.4)
+     - Implemented by: `SharpBucket.OAuth2ClientCredentials(string consumerKey, string consumerSecretKey)`
+     - Tested: **yes**
+  5. Bitbucket Cloud JWT Grant (urn:bitbucket:oauth2:jwt)
+     - Implemented by: none. No idea if needed.
+     - Tested: no
+  - Repository Cloning
+    - This require to expose the access token for external usages (git calls instead of http calls managed by that project).
+      It's currently discussed in [#111](https://github.com/MitjaBezensek/SharpBucket/issues/111)
+
 # [Api v2](https://developer.atlassian.com/bitbucket/api/2/reference/)
 Here we have listed [all the routes of the API V2](https://developer.atlassian.com/bitbucket/api/2/reference/resource/), and for each route describe the corresponding methods in SharpBucket and if our implementation is covered with tests.
 
@@ -629,14 +660,3 @@ The organization of all that routes may slightly differ in the SharpBucket class
 - /users/{username}/ssh-keys/ `GET` `PUT` `DELETE`
   - Implemented by: none
   - Tested: no
-
-# [Authentication][28] 
-- Basic **(done)**
-- Oauth 1.0a **(done)**
-- Oauth 2 **(done)**
-
-
-
-  [28]: https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket
-
-  
