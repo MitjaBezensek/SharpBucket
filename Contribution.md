@@ -16,7 +16,6 @@ Also create an environment variable with your user name (the name of your accoun
 
 Other prerequisites in your Bitbucket test account:
 - You should create one team (and by definition be member of it)
-- You should create a group named "AdminGroup" in the account referenced by SB_ACCOUNT_NAME
 
 # Where to get started
 
