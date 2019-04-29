@@ -73,7 +73,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void CreateRepository_NewPublicRepository_CorrectlyCreatesTheRepository()
         {
-            var accountName = TestHelpers.GetAccountName();
+            var accountName = TestHelpers.AccountName;
             var repositoryName = Guid.NewGuid().ToString("N");
             var repositoryResource = SampleRepositories.RepositoriesEndPoint.RepositoryResource(accountName, repositoryName);
             var repository = new Repository
@@ -117,7 +117,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void ApproveCommitAndDeleteCommitApproval_TestRepository_CommitStateChangedCorrectly()
         {
-            var currentUser = TestHelpers.GetAccountName();
+            var currentUser = TestHelpers.AccountName;
             var testRepository = SampleRepositories.TestRepository;
             var repositoryResource = testRepository.RepositoryResource;
             var firstCommit = testRepository.RepositoryInfo.FirstCommit;
