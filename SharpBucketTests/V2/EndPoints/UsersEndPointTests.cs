@@ -24,8 +24,21 @@ namespace SharpBucketTests.V2.EndPoints
         {
             usersEndPoint.ShouldNotBe(null);
             var profile = usersEndPoint.GetProfile();
-            profile.display_name.ShouldBe("mirror");
+
+            profile.uuid.ShouldNotBeNullOrEmpty(nameof(profile.uuid));
+            profile.account_id.ShouldNotBeNullOrEmpty(nameof(profile.account_id));
+            profile.nickname.ShouldBe("mirror", nameof(profile.nickname));
+            profile.type.ShouldBe("user", nameof(profile.type));
+            profile.display_name.ShouldBe("mirror", nameof(profile.display_name));
             profile.created_on.ShouldBe("2008-06-26T13:58:38+00:00");
+            profile.account_status.ShouldBe("active", nameof(profile.account_status));
+
+            // Obsolete properties. Their values are expected to become null or day or another
+#pragma warning disable 618
+            profile.username.ShouldBe("mirror", nameof(profile.username));
+            profile.website.ShouldBe("https://bitbucket.org/mirror/", nameof(profile.website));
+            profile.location.ShouldBeNull(nameof(profile.location));
+#pragma warning restore 618
         }
 
         [Test]
