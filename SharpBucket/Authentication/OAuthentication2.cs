@@ -21,7 +21,7 @@ namespace SharpBucket.Authentication
         {
             // TODO the token (and not just the access token) should be kept somewhere to implement refresh token scenario one day
             var tokenProvider = new OAuth2TokenProvider(ConsumerKey, ConsumerSecret);
-            _accessToken = tokenProvider.GetToken().AccessToken;
+            _accessToken = tokenProvider.GetClientCredentialsToken().AccessToken;
             _client = new RestClient(_baseUrl)
             {
                 Authenticator = new OAuth2AuthorizationRequestHeaderAuthenticator(_accessToken, TokenType)

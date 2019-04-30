@@ -14,7 +14,7 @@ namespace SharpBucket.Authentication
 
         private string BaseUrl { get; }
         private OAuth2TokenProvider TokenProvider { get; }
-        private Token Token { get; set; }
+        private OAuth2Token Token { get; set; }
         private DateTime TokenExpirationDate { get; set; }
 
         private IRestClient _client;
@@ -40,7 +40,7 @@ namespace SharpBucket.Authentication
 
         private IRestClient CreateClient()
         {
-            var token = TokenProvider.GetToken();
+            var token = TokenProvider.GetClientCredentialsToken();
             return this.CreateClient(token);
         }
 
@@ -50,10 +50,10 @@ namespace SharpBucket.Authentication
             return this.CreateClient(newToken);
         }
 
-        private IRestClient CreateClient(Token token)
+        private IRestClient CreateClient(OAuth2Token token)
         {
             this.Token = token;
-            this.TokenExpirationDate = DateTime.UtcNow.AddSeconds(token.ExpiresIn - RefreshMargin);
+            this.TokenExpirationDate = token.ExpiresAt.AddSeconds(0 - RefreshMargin);
 
             var accessToken = this.Token.AccessToken;
             return new RestClient(BaseUrl)
