@@ -121,9 +121,9 @@ namespace SharpBucketCli
             var repositories = repositoriesEndPoint.ListRepositories(this.Account.uuid);
             foreach (var repository in repositories)
             {
-                var repositoryResource = repositoriesEndPoint.RepositoryResource(repository.owner.username, repository.slug);
+                var repositoryResource = repositoriesEndPoint.RepositoryResource(this.Account.uuid, repository.slug);
                 repositoryResource.DeleteRepository();
-                Console.WriteLine($"Repository {repository.owner.username}/{repository.slug} has been deleted");
+                Console.WriteLine($"Repository {this.Account.nickname ?? this.Account.display_name}/{repository.slug} has been deleted");
             }
         }
 
