@@ -8,7 +8,7 @@ namespace SharpBucket.V2.Pocos
 
         public string uuid { get; set; }
 
-        [Obsolete("Expected to be removed on 29 April 2019 for GDPR concerns")]
+        [Obsolete("Expected to be removed on 29 April 2019 for GDPR concerns. Use nickname, display_name, uuid or account_id instead.")]
         public string username { get; set; }
 
         public string nickname { get; set; }

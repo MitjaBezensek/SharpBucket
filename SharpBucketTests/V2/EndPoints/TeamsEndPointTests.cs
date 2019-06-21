@@ -62,11 +62,11 @@ namespace SharpBucketTests.V2.EndPoints
             var teams = teamsEndPoint.GetUserTeams();
             teams.Count.ShouldBeGreaterThan(0);
 
-            var firstTeamEndPoint = sharpBucket.TeamsEndPoint(teams[0].username);
+            var firstTeamEndPoint = sharpBucket.TeamsEndPoint(teams[0].uuid);
             var members = firstTeamEndPoint.ListMembers(35);
             members.Count.ShouldBeGreaterThan(0);
             var userName = sharpBucket.UserEndPoint().GetUser().username;
-            members.ShouldContain(m => m.username == userName);
+            members.ShouldContain(m => m.nickname == userName);
         }
 
         [Test]

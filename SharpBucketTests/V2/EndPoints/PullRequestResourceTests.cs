@@ -32,7 +32,7 @@ namespace SharpBucketTests.V2.EndPoints
             var pullRequest = ExistingPullRequest.GetPullRequest();
             pullRequest.ShouldNotBeNull();
             pullRequest.id.ShouldBe(2);
-            pullRequest.author?.username.ShouldBe("goodtune");
+            pullRequest.author?.nickname.ShouldBe("goodtune");
             pullRequest.title.ShouldBe("Selective read/write or read-only repos with hg-ssh");
             pullRequest.state.ShouldBe("DECLINED");
         }

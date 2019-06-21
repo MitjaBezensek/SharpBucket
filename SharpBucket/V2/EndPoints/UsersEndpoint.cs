@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
@@ -34,6 +35,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
+        [Obsolete("The end point as been removed. See https://developer.atlassian.com/cloud/bitbucket/bitbucket-api-changes-gdpr/ for more details.")]
         public List<User> ListFollowers(int max = 0)
         {
             var overrideUrl = _baseUrl + "followers/";
@@ -45,6 +47,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
+        [Obsolete("The end point as been removed. See https://developer.atlassian.com/cloud/bitbucket/bitbucket-api-changes-gdpr/ for more details.")]
         public List<User> ListFollowing(int max = 0)
         {
             var overrideUrl = _baseUrl + "following/";

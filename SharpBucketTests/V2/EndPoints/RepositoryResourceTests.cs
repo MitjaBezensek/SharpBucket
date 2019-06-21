@@ -179,7 +179,7 @@ namespace SharpBucketTests.V2.EndPoints
             var repositoryResource = testRepository.RepositoryResource;
             var firstCommit = testRepository.RepositoryInfo.FirstCommit;
             var initialCommit = repositoryResource.GetCommit(firstCommit);
-            initialCommit?.participants.Any(p => p.User.username == currentUser && p.Approved).ShouldBe(false, "Initial state should be: 'not approved'");
+            initialCommit?.participants.Any(p => p.User.nickname == currentUser && p.Approved).ShouldBe(false, "Initial state should be: 'not approved'");
 
             var userRole = repositoryResource.ApproveCommit(firstCommit);
             var approvedCommit = repositoryResource.GetCommit(firstCommit);
@@ -187,10 +187,10 @@ namespace SharpBucketTests.V2.EndPoints
             var notApprovedCommit = repositoryResource.GetCommit(firstCommit);
 
             userRole.Approved.ShouldBe(true);
-            userRole.User.username.ShouldBe(currentUser);
+            userRole.User.nickname.ShouldBe(currentUser);
             userRole.Role.ShouldBe("PARTICIPANT");
-            approvedCommit?.participants.Any(p => p.User.username == currentUser && p.Approved).ShouldBe(true, "Commit should be approved after call to ApproveCommit");
-            notApprovedCommit?.participants.Any(p => p.User.username == currentUser && p.Approved).ShouldBe(false, "Commit should not be approved after call to DeleteCommitApproval");
+            approvedCommit?.participants.Any(p => p.User.nickname == currentUser && p.Approved).ShouldBe(true, "Commit should be approved after call to ApproveCommit");
+            notApprovedCommit?.participants.Any(p => p.User.nickname == currentUser && p.Approved).ShouldBe(false, "Commit should not be approved after call to DeleteCommitApproval");
         }
 
         [Test]
