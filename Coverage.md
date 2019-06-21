@@ -448,9 +448,12 @@ The organization of all that routes may slightly differ in the SharpBucket class
 - /repositories/{username}/{repo_slug}/refs/branches `POST`
   - Implemented by: none
   - Tested: no
-- /repositories/{username}/{repo_slug}/refs/branches/{name} `GET` `DELETE`
+- /repositories/{username}/{repo_slug}/refs/branches/{name} `GET`
   - Implemented by: none
   - Tested: no
+- /repositories/{username}/{repo_slug}/refs/branches/{name} `DELETE`
+  - Implemented by: `BranchResource.DeleteBranch(string)`
+  - Tested: **yes**
 
 ### [Tag resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/refs/tags/%7Bname%7D)
 - /repositories/{username}/{repo_slug}/refs/tags `GET`

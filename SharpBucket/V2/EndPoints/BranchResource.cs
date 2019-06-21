@@ -40,5 +40,14 @@ namespace SharpBucket.V2.EndPoints
                 throw new ArgumentNullException(nameof(parameters));
             return _repositoriesEndPoint.ListBranches(_accountName, _slug, parameters);
         }
+
+        /// <summary>
+        /// Removes a branch.
+        /// </summary>
+        /// <param name="branchName">The name of the branch to delete.</param>
+        public void DeleteBranch(string branchName)
+        {
+            _repositoriesEndPoint.DeleteBranch(_accountName, _slug, branchName);
+        }
     }
 }
