@@ -154,13 +154,19 @@ The organization of all that routes may slightly differ in the SharpBucket class
 
 ### [Commits resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits)
 - /repositories/{username}/{repo_slug}/commits `GET`
-  - Implemented by: `RepositoryResource.ListCommits(int)`
+  - Implemented by:
+    - `RepositoryResource.ListCommits()`
+    - `RepositoryResource.ListCommits(max:int)`
+    - `RepositoryResource.ListCommits(CommitsParameters)`
   - Tested: **yes**
 - /repositories/{username}/{repo_slug}/commits `POST`
   - Implemented by: none
   - Tested: no
 - /repositories/{username}/{repo_slug}/commits/{revision} `GET`
-  - Implemented by: `RepositoryResource.ListCommits(string,int)`
+  - Implemented by:
+    - `RepositoryResource.ListCommits(string)`
+    - `RepositoryResource.ListCommits(string,int)`
+    - `RepositoryResource.ListCommits(string,CommitsParameters)`
   - Tested: no
 - /repositories/{username}/{repo_slug}/commits/{revision} `POST`
   - Implemented by: none

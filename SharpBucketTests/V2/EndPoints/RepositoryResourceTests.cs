@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using NUnit.Framework;
 using SharpBucket.V2;
+using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
 using Shouldly;
 
@@ -68,6 +69,62 @@ namespace SharpBucketTests.V2.EndPoints
             repositoryResource.ShouldNotBe(null);
             var commits = repositoryResource.ListCommits(max: max);
             commits.Count.ShouldBe(max);
+        }
+
+        [Test]
+        public void ListCommits_OnASpecifiedBranch_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var allCommits = repositoryResource.ListCommits();
+            var commitsOnMaster = repositoryResource.ListCommits("master");
+            var commitsOnToAccept = repositoryResource.ListCommits("branchToAccept");
+            var commitsOnToDecline = repositoryResource.ListCommits("branchToDecline");
+
+            allCommits.Count.ShouldBe(5);
+            commitsOnMaster.Count.ShouldBe(2);
+            commitsOnToAccept.Count.ShouldBe(4);
+            commitsOnToDecline.Count.ShouldBe(3);
+        }
+
+        [Test]
+        public void ListCommits_ExcludingABranch_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var commits = repositoryResource.ListCommits(new CommitsParameters { Excludes = { "master" } });
+
+            commits.Count.ShouldBe(3);
+        }
+
+        [Test]
+        public void ListCommits_CombiningAnIncludeAndAnExclude_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var commits = repositoryResource.ListCommits(new CommitsParameters { Includes = { "branchToDecline" }, Excludes = { "master" } });
+
+            commits.Count.ShouldBe(1);
+        }
+
+        [Test]
+        public void ListCommits_OfABranchExcludingMaster_ShouldReturnOnlyBranchCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var commits = repositoryResource.ListCommits("branchToAccept", new CommitsParameters { Excludes = { "master" } });
+
+            commits.Count.ShouldBe(2);
+        }
+
+        [Test]
+        public void ListCommits_WithAPath_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var commits = repositoryResource.ListCommits(new CommitsParameters { Path = "src/" });
+
+            commits.Count.ShouldBe(4); // only the bad commit in branchToDecline do not change anything in src path
         }
 
         [Test]
