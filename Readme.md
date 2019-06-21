@@ -1,4 +1,7 @@
 # SharpBucket
+[![Build status](https://ci.appveyor.com/api/projects/status/jtlni3j2fq3j6pxy/branch/master?svg=true)](https://ci.appveyor.com/project/MitjaBezenek/sharpbucket/branch/master)
+[![NuGet Version and Downloads count](https://buildstats.info/nuget/SharpBucket)](https://www.nuget.org/packages/SharpBucket/)
+
 SharpBucket is a .Net wrapper for the Bitbucket's REST API. It is written in in C#. With it you can have all the data of your repositories / issues at your fingertips.
 
 ## How to get started
@@ -132,9 +135,7 @@ Contributions are always welcome! [Here is some short information](https://githu
 
 ## Continuous Integration from AppVeyor
 The project is using [AppVeyor's](http://www.appveyor.com/) Continuous Integration
-Service that is free for open source projects. It is enabled for Pull Requests as well as the main branch. Main branch's current status is:
-
-[![Build status](https://ci.appveyor.com/api/projects/status/jtlni3j2fq3j6pxy/branch/master)](https://ci.appveyor.com/project/MitjaBezenek/sharpbucket/branch/master)
+Service that is free for open source projects. It is enabled for Pull Requests as well as the main branch.
 
 ## Licensing, Dependencies and Influence
 SharpBucket is licensed under [MIT license](https://github.com/MitjaBezensek/SharpBucket/blob/master/LICENSE). 
