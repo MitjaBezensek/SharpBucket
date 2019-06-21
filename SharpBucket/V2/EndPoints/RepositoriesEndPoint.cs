@@ -376,10 +376,10 @@ namespace SharpBucket.V2.EndPoints
             return GetPaginatedValues<Branch>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 
-        internal Branch DeleteBranch(string accountName, string repSlug, string branchName)
+        internal void DeleteBranch(string accountName, string repSlug, string branchName)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repSlug, "refs/branches/" + branchName);
-            return _sharpBucketV2.Delete<Branch>(overrideUrl);
+            _sharpBucketV2.Delete(overrideUrl);
         }
 
         #endregion

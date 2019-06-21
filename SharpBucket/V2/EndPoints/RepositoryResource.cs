@@ -82,15 +82,6 @@ namespace SharpBucket.V2.EndPoints
         public BranchResource BranchesResource => this._branchesResource ??
                                                 (_branchesResource = new BranchResource(_accountName, _slug, _repositoriesEndPoint));
 
-        /// <summary>
-        /// Removes a branch.  
-        /// </summary>
-        /// <returns></returns>
-        public Branch DeleteBranch(string branchName)
-        {
-            return _repositoriesEndPoint.DeleteBranch(_accountName, _slug, branchName);
-        }
-
         #endregion
 
         #region Pull Requests Resource

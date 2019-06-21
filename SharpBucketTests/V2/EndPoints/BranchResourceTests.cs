@@ -19,5 +19,17 @@ namespace SharpBucketTests.V2.EndPoints
             var branches = SampleRepositories.MercurialRepository.BranchesResource.ListBranches();
             branches.ShouldNotBeEmpty("There is at least the main branch on a non empty repository");
         }
+
+        [Test]
+        public void DeleteBranch_ExistingBranch_BrancCouldNotBeListedAnymore()
+        {
+            var branchResource = SampleRepositories.TestRepository.RepositoryResource.BranchesResource;
+            var initialBranches = branchResource.ListBranches();
+
+            branchResource.DeleteBranch("branchToDelete");
+
+            var remainingBranches = branchResource.ListBranches();
+            remainingBranches.Count.ShouldBe(initialBranches.Count - 1);
+        }
     }
 }

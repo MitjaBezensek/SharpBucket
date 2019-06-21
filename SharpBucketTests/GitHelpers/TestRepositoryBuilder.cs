@@ -80,6 +80,10 @@ namespace SharpBucketTests.GitHelpers
                 AddOrUpdateFile(repository, "src/goodNewWork2.txt", "a second good work in the same pull request to have 2 commits in one pull request");
                 repository.Commit("second good work", testSignature, testSignature);
 
+                // create branchToDelete (no need commits inside, to avoid to lose commit when testing DeleteBranch)
+                Commands.Checkout(repository, repository.Branches["master"]);
+                CreateAndSwitchToNewBranch(repository, "branchToDelete");
+
                 // Push All branches
                 repository.Network.Push(repository.Branches, new PushOptions { CredentialsProvider = GitCredentialsProvider.GetCredentials });
             }
