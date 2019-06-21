@@ -47,7 +47,7 @@ namespace SharpBucketTests
         /// Gets the password to use for basic authentication on to the Bitbucket account to use to run the SharpBucket's tests
         /// </summary>
         public static string Password => _password
-                                         ?? (_userName = Environment.GetEnvironmentVariable(SbPassword));
+                                         ?? (_password = Environment.GetEnvironmentVariable(SbPassword));
 
         private static SharpBucketV2 _sharpBucketV2;
 

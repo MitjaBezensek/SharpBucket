@@ -44,8 +44,8 @@ namespace SharpBucketTests.V2.EndPoints
             var firstTeamResource = teamsEndPoint.TeamResource(teams[0].uuid);
             var members = firstTeamResource.ListMembers(35);
             members.Count.ShouldBeGreaterThan(0);
-            var userName = sharpBucket.UserEndPoint().GetUser().username;
-            members.ShouldContain(m => m.nickname == userName);
+            var nickname = sharpBucket.UserEndPoint().GetUser().nickname;
+            members.ShouldContain(m => m.nickname == nickname);
         }
 
         [Test]
