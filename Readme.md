@@ -52,6 +52,24 @@ var newRepository = new Repository
 var newRepositoryResult = repositoryResource.PostRepository(newRepository);
 ```
 
+Pagination is handled internally and we always return an aggregation of all pages by default.  
+However you can provide few parameters to manage that behavior
+```CSharp
+// you can give us a maximum number of results to fetch on all list method
+var followers = user.ListRepositories(50);
+
+// And on some advanced list methods you can provide a ListParameters object
+// that allow to inject filter and sort parameters
+// see Atlassian documentation for the filter and sort syntax:
+// https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering
+var listParameters = new ListParameters { Filter = "name ~ \"erik/\"", Sort = "-name", Max = 50 };
+var erikBranchesDesc = repositoryResource.BranchesResource.ListBranches(listParameters);
+
+// we also provide few helpers to build your filters in FilterBuilder class:
+FilterBuilder.ParseSingleQuotedString("name ~ 'erik/'"); // return "name ~ \"erik/\""
+FilterBuilder.FormatDateTime(DateTime.UtcNow); // return something like "2000-12-31T23:59:59.999z"
+```
+
 SharpBucket uses a strict naming convention:
 - methods starting with List will return a collection of items (ListIssues() returns a list of issues)
 - methods starting with Get will return an item (GetIssue(10) will return an issue with the id 10)

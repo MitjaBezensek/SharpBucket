@@ -284,14 +284,15 @@ namespace SharpBucket.V2.EndPoints
 
         #region Commits Resource
 
-        internal List<Commit> ListCommits(string accountName, string slug, string branchOrTag = null, int max = 0)
+        internal List<Commit> ListCommits(string accountName, string slug, string branchOrTag, CommitsParameters commitsParameters)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "commits/");
             if (!string.IsNullOrEmpty(branchOrTag))
             {
                 overrideUrl += branchOrTag;
             }
-            return GetPaginatedValues<Commit>(overrideUrl, max);
+
+            return GetPaginatedValues<Commit>(overrideUrl, commitsParameters?.Max ?? 0, commitsParameters?.ToDictionary());
         }
 
         internal Commit GetCommit(string accountName, string slug, string revision)

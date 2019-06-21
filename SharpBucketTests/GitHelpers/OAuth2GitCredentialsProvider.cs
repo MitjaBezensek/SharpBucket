@@ -24,7 +24,7 @@ namespace SharpBucketTests.GitHelpers
             if (OAuth2TokenCredentials == null)
             {
                 // TODO the token should be kept somewhere to implement refresh token scenario one day
-                var token = TokenProvider.GetToken();
+                var token = TokenProvider.GetClientCredentialsToken();
                 OAuth2TokenCredentials = new UsernamePasswordCredentials
                 {
                     Username = "x-token-auth",

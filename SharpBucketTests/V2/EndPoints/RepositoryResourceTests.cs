@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using NUnit.Framework;
 using SharpBucket.V2;
+using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
 using Shouldly;
 
@@ -71,9 +72,65 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
+        public void ListCommits_OnASpecifiedBranch_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var allCommits = repositoryResource.ListCommits();
+            var commitsOnMaster = repositoryResource.ListCommits("master");
+            var commitsOnToAccept = repositoryResource.ListCommits("branchToAccept");
+            var commitsOnToDecline = repositoryResource.ListCommits("branchToDecline");
+
+            allCommits.Count.ShouldBe(5);
+            commitsOnMaster.Count.ShouldBe(2);
+            commitsOnToAccept.Count.ShouldBe(4);
+            commitsOnToDecline.Count.ShouldBe(3);
+        }
+
+        [Test]
+        public void ListCommits_ExcludingABranch_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var commits = repositoryResource.ListCommits(new CommitsParameters { Excludes = { "master" } });
+
+            commits.Count.ShouldBe(3);
+        }
+
+        [Test]
+        public void ListCommits_CombiningAnIncludeAndAnExclude_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var commits = repositoryResource.ListCommits(new CommitsParameters { Includes = { "branchToDecline" }, Excludes = { "master" } });
+
+            commits.Count.ShouldBe(1);
+        }
+
+        [Test]
+        public void ListCommits_OfABranchExcludingMaster_ShouldReturnOnlyBranchCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var commits = repositoryResource.ListCommits("branchToAccept", new CommitsParameters { Excludes = { "master" } });
+
+            commits.Count.ShouldBe(2);
+        }
+
+        [Test]
+        public void ListCommits_WithAPath_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var commits = repositoryResource.ListCommits(new CommitsParameters { Path = "src/" });
+
+            commits.Count.ShouldBe(4); // only the bad commit in branchToDecline do not change anything in src path
+        }
+
+        [Test]
         public void CreateRepository_NewPublicRepository_CorrectlyCreatesTheRepository()
         {
-            var accountName = TestHelpers.GetAccountName();
+            var accountName = TestHelpers.AccountName;
             var repositoryName = Guid.NewGuid().ToString("N");
             var repositoryResource = SampleRepositories.RepositoriesEndPoint.RepositoryResource(accountName, repositoryName);
             var repository = new Repository
@@ -117,12 +174,12 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void ApproveCommitAndDeleteCommitApproval_TestRepository_CommitStateChangedCorrectly()
         {
-            var currentUser = TestHelpers.GetAccountName();
+            var currentUser = TestHelpers.AccountName;
             var testRepository = SampleRepositories.TestRepository;
             var repositoryResource = testRepository.RepositoryResource;
             var firstCommit = testRepository.RepositoryInfo.FirstCommit;
             var initialCommit = repositoryResource.GetCommit(firstCommit);
-            initialCommit?.participants.Any(p => p.User.username == currentUser && p.Approved).ShouldBe(false, "Initial state should be: 'not approved'");
+            initialCommit?.participants.Any(p => p.User.nickname == currentUser && p.Approved).ShouldBe(false, "Initial state should be: 'not approved'");
 
             var userRole = repositoryResource.ApproveCommit(firstCommit);
             var approvedCommit = repositoryResource.GetCommit(firstCommit);
@@ -130,10 +187,10 @@ namespace SharpBucketTests.V2.EndPoints
             var notApprovedCommit = repositoryResource.GetCommit(firstCommit);
 
             userRole.Approved.ShouldBe(true);
-            userRole.User.username.ShouldBe(currentUser);
+            userRole.User.nickname.ShouldBe(currentUser);
             userRole.Role.ShouldBe("PARTICIPANT");
-            approvedCommit?.participants.Any(p => p.User.username == currentUser && p.Approved).ShouldBe(true, "Commit should be approved after call to ApproveCommit");
-            notApprovedCommit?.participants.Any(p => p.User.username == currentUser && p.Approved).ShouldBe(false, "Commit should not be approved after call to DeleteCommitApproval");
+            approvedCommit?.participants.Any(p => p.User.nickname == currentUser && p.Approved).ShouldBe(true, "Commit should be approved after call to ApproveCommit");
+            notApprovedCommit?.participants.Any(p => p.User.nickname == currentUser && p.Approved).ShouldBe(false, "Commit should not be approved after call to DeleteCommitApproval");
         }
 
         [Test]

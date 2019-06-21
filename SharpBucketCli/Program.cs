@@ -58,7 +58,7 @@ namespace SharpBucketCli
             this.UseEnvironmentCredentials();
             while (true)
             {
-                Console.Write($"{this.Me?.username}:{this.Account?.username}> ");
+                Console.Write($"{this.Me?.nickname}:{this.Account?.display_name}> ");
                 var command = Console.ReadLine() ?? string.Empty;
                 var args = command.Split(' ');
                 var verb = args[0];
@@ -91,7 +91,7 @@ namespace SharpBucketCli
             {
                 this.SharpBucket.OAuth2ClientCredentials(consumerKey, consumerKeySecret);
                 Account = Me = this.SharpBucket.UserEndPoint().GetUser();
-                Console.WriteLine($"You have been automatically logged as {Me.username}");
+                Console.WriteLine($"You have been automatically logged as {Me.display_name}");
             }
         }
 
@@ -118,12 +118,12 @@ namespace SharpBucketCli
             }
 
             var repositoriesEndPoint = this.SharpBucket.RepositoriesEndPoint();
-            var repositories = repositoriesEndPoint.ListRepositories(this.Account.username);
+            var repositories = repositoriesEndPoint.ListRepositories(this.Account.uuid);
             foreach (var repository in repositories)
             {
-                var repositoryResource = repositoriesEndPoint.RepositoryResource(repository.owner.username, repository.slug);
+                var repositoryResource = repositoriesEndPoint.RepositoryResource(this.Account.uuid, repository.slug);
                 repositoryResource.DeleteRepository();
-                Console.WriteLine($"Repository {repository.owner.username}/{repository.slug} has been deleted");
+                Console.WriteLine($"Repository {this.Account.nickname ?? this.Account.display_name}/{repository.slug} has been deleted");
             }
         }
 

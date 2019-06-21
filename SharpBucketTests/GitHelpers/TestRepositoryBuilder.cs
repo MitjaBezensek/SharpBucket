@@ -60,7 +60,6 @@ namespace SharpBucketTests.GitHelpers
                 // now that first commit is done, push the head so it fully initiate the master branch
                 // and Bitbucket will assume that it's our main branch since it's the first one that we push
                 repository.Network.Push(repository.Head, new PushOptions { CredentialsProvider = GitCredentialsProvider.GetCredentials });
-                var master = repository.Branches["master"];
 
                 // do second commit
                 Commands.Remove(repository, "src/fileToDelete.txt");
@@ -74,7 +73,7 @@ namespace SharpBucketTests.GitHelpers
                 repository.Commit("bad work that will be declined", testSignature, testSignature);
 
                 // create and fill branchToAccept
-                Commands.Checkout(repository, master);
+                Commands.Checkout(repository, repository.Branches["master"]);
                 CreateAndSwitchToNewBranch(repository, "branchToAccept");
                 AddOrUpdateFile(repository, "src/goodNewWork.txt", "a good work that should become a pull request to accept");
                 repository.Commit("first good work", testSignature, testSignature);

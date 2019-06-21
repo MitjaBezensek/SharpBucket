@@ -203,7 +203,7 @@ namespace SharpBucket.V2.EndPoints
         #region Commits resource
 
         /// More info:
-        /// https://confluence.atlassian.com/display/BITBUCKET/commits+or+commit+Resource
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits#get
         /// <summary>
         /// Gets the commit information associated with a repository. 
         /// By default, this call returns all the commits across all branches, bookmarks, and tags. The newest commit is first. 
@@ -213,7 +213,34 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public List<Commit> ListCommits(string branchOrTag = null, int max = 0)
         {
-            return _repositoriesEndPoint.ListCommits(_accountName, _slug, branchOrTag, max);
+            return _repositoriesEndPoint.ListCommits(_accountName, _slug, branchOrTag, new CommitsParameters { Max = max });
+        }
+
+        /// More info:
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits#get
+        /// <summary>
+        /// Gets the commit information associated with a repository. 
+        /// By default, this call returns all the commits across all branches, bookmarks, and tags. The newest commit is first. 
+        /// </summary>
+        /// <param name="commitsParameters">Parameters that allow to filter the commits to return.</param>
+        /// <returns></returns>
+        public List<Commit> ListCommits(CommitsParameters commitsParameters)
+        {
+            return _repositoriesEndPoint.ListCommits(_accountName, _slug, null, commitsParameters);
+        }
+
+        /// More info:
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits#get
+        /// <summary>
+        /// Gets the commit information associated with a repository. 
+        /// By default, this call returns all the commits across all branches, bookmarks, and tags. The newest commit is first. 
+        /// </summary>
+        /// <param name="branchOrTag">The branch or tag to get, for example, master or default.</param>
+        /// <param name="commitsParameters">Optional parameters that allow to filter the commits to return.</param>
+        /// <returns></returns>
+        public List<Commit> ListCommits(string branchOrTag, CommitsParameters commitsParameters)
+        {
+            return _repositoriesEndPoint.ListCommits(_accountName, _slug, branchOrTag, commitsParameters);
         }
 
         /// <summary>
