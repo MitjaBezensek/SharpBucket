@@ -54,7 +54,7 @@ namespace SharpBucketTests.V2.EndPoints
             teamsEndPoint.ShouldNotBe(null);
             var followers = teamsEndPoint.TeamResource("atlassian").ListFollowers(8);
             followers.Count.ShouldBe(8);
-            followers[0].display_name.ShouldBe("Hector Malpica (Miuler)");
+            followers[0].display_name.ShouldBe("Hector Malpica");
         }
 
         [Test]
