@@ -378,7 +378,7 @@ The organization of all that routes may slightly differ in the SharpBucket class
   - Tested: **yes**
 - /repositories/{username}/{repo_slug}/pullrequests `POST`
   - Implemented by: `PullRequestsResource.PostPullRequest(PullRequest)`
-  - Tested: no
+  - Tested: **yes**
 - /repositories/{username}/{repo_slug}/pullrequests/activity `GET`
   - Implemented by: `PullRequestsResource.GetPullRequestLog()`
   - Tested: **yes**
