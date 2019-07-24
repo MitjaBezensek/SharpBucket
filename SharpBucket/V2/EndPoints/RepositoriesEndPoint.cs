@@ -182,10 +182,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Post<PullRequestInfo>(null, overrideUrl);
         }
 
-        internal PullRequestInfo RemovePullRequestApproval(string accountName, string slug, int pullRequestId)
+        internal void RemovePullRequestApproval(string accountName, string slug, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/approve/");
-            return _sharpBucketV2.Delete<PullRequestInfo>(overrideUrl);
+            _sharpBucketV2.Delete(overrideUrl);
         }
 
         internal object GetDiffForPullRequest(string accountName, string slug, int pullRequestId)

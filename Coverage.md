@@ -395,10 +395,10 @@ The organization of all that routes may slightly differ in the SharpBucket class
   - Tested: **yes**
 - /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/approve `POST`
   - Implemented by: `PullRequestResource.ApprovePullRequest()`
-  - Tested: no
+  - Tested: **yes**
 - /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/approve `DELETE`
   - Implemented by: `PullRequestResource.RemovePullRequestApproval()`
-  - Tested: no
+  - Tested: **yes**
 - /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments `GET`
   - Implemented by: `PullRequestResource.ListPullRequestComments()`
   - Tested: **yes**

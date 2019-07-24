@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
@@ -50,7 +51,7 @@ namespace SharpBucketTests.V2.EndPoints
             var activities = ExistingPullRequest.GetPullRequestActivity();
             activities.ShouldNotBeNull();
             activities.Count.ShouldBe(4);
-            activities[activities.Count - 4].update.state.ShouldBe("DECLINED");
+            activities[0].update.state.ShouldBe("DECLINED");
         }
 
         [Test]
@@ -136,6 +137,46 @@ namespace SharpBucketTests.V2.EndPoints
 
             var declinedPullRequest = pullRequestsResource.PullRequestResource(pullRequest.id.GetValueOrDefault()).DeclinePullRequest();
             declinedPullRequest.state.ShouldBe("DECLINED");
+        }
+
+        [Test]
+        public void ApprovePullRequestAndRemovePullRequestApproval_CreateAPullRequestThenChangeMyApproval_ActivityShouldFollowThatChanges()
+        {
+            // create the pull request
+            var pullRequestsResource = SampleRepositories.TestRepository.RepositoryResource.PullRequestsResource();
+            var pullRequestToApprove = new PullRequest
+            {
+                title = "a good work to approve",
+                source = new Source { branch = new Branch { name = "branchToAccept" } }
+            };
+            var pullRequest = pullRequestsResource.PostPullRequest(pullRequestToApprove);
+            var pullRequestResource = pullRequestsResource.PullRequestResource(pullRequest.id.GetValueOrDefault());
+
+            // approve the pull request
+            var approvalResult = pullRequestResource.ApprovePullRequest();
+            approvalResult.approved.ShouldBe(true);
+            approvalResult.user.nickname.ShouldBe(TestHelpers.AccountName);
+            approvalResult.role.ShouldBe("PARTICIPANT");
+
+            // validate pull request activities after approval
+            var activities = pullRequestResource.GetPullRequestActivity();
+            activities.Count.ShouldBeGreaterThanOrEqualTo(2, "creation twice (for an unknown reason that may change) and approve");
+            var approvalActivity = activities[0];
+            approvalActivity.comment.ShouldBe(null);
+            approvalActivity.update.ShouldBe(null);
+            approvalActivity.pull_request.ShouldNotBeNull();
+            approvalActivity.pull_request.title.ShouldBe("a good work to approve");
+            approvalActivity.approval.ShouldNotBeNull();
+            approvalActivity.approval.date.ShouldBe(DateTimeOffset.UtcNow, TimeSpan.FromMinutes(1));
+            approvalActivity.approval.user.nickname.ShouldBe(TestHelpers.AccountName);
+
+            // remove approval
+            pullRequestResource.RemovePullRequestApproval();
+
+            // validate pull request activities after having remove the approval
+            var activitiesAfterRemoveApproval = pullRequestResource.GetPullRequestActivity();
+            activitiesAfterRemoveApproval.Count.ShouldBe(activities.Count - 1, "Approval activity is removed, and removal is not traced.");
+            activitiesAfterRemoveApproval.ShouldAllBe(activity => activity.update != null, "should all be update activities");
         }
     }
 }

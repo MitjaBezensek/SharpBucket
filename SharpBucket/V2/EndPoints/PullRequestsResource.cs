@@ -107,9 +107,9 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.ApprovePullRequest(_accountName, _slug, pullRequestId);
         }
 
-        internal PullRequestInfo RemovePullRequestApproval(int pullRequestId)
+        internal void RemovePullRequestApproval(int pullRequestId)
         {
-            return _repositoriesEndPoint.RemovePullRequestApproval(_accountName, _slug, pullRequestId);
+            _repositoriesEndPoint.RemovePullRequestApproval(_accountName, _slug, pullRequestId);
         }
 
         internal object GetDiffForPullRequest(int pullRequestId)

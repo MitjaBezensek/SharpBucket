@@ -52,10 +52,9 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Revoke your approval on a pull request. You can remove approvals on behalf of the authenticated account.
         /// </summary>
-        /// <returns></returns>
-        public PullRequestInfo RemovePullRequestApproval()
+        public void RemovePullRequestApproval()
         {
-            return _repositoriesEndPoint.RemovePullRequestApproval(_accountName, _slug, _pullRequestId);
+            _repositoriesEndPoint.RemovePullRequestApproval(_accountName, _slug, _pullRequestId);
         }
 
         /// <summary>
