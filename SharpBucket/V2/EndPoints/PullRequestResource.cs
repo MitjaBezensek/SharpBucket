@@ -62,7 +62,7 @@ namespace SharpBucket.V2.EndPoints
         /// set to the URL that will perform a temporary merge and return the diff of it. The result is identical to diff in the UI.
         /// </summary>
         /// <returns></returns>
-        public object GetDiffForPullRequest()
+        public string GetDiffForPullRequest()
         {
             return _repositoriesEndPoint.GetDiffForPullRequest(_accountName, _slug, _pullRequestId);
         }

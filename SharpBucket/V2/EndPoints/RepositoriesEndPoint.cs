@@ -188,7 +188,7 @@ namespace SharpBucket.V2.EndPoints
             _sharpBucketV2.Delete(overrideUrl);
         }
 
-        internal object GetDiffForPullRequest(string accountName, string slug, int pullRequestId)
+        internal string GetDiffForPullRequest(string accountName, string slug, int pullRequestId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/diff/");
             return _sharpBucketV2.Get(overrideUrl);
