@@ -12,7 +12,7 @@
         public string full_name { get; set; }
         public string slug { get; set; }
         public bool? has_issues { get; set; }
-        public Owner owner { get; set; }
+        public UserShort owner { get; set; }
         public string updated_on { get; set; }
         public ulong? size { get; set; }
         public bool? is_private { get; set; }

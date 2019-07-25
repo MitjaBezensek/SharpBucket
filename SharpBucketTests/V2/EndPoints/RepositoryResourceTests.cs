@@ -6,6 +6,7 @@ using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
+using SharpBucketTests.V2.Pocos;
 using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
@@ -35,10 +36,9 @@ namespace SharpBucketTests.V2.EndPoints
             var uniqueNames = new HashSet<string>();
             foreach (var watcher in watchers)
             {
-                watcher.ShouldNotBe(null);
-                string id = watcher.username + watcher.display_name;
-                uniqueNames.ShouldNotContain(id);
-                uniqueNames.Add(id);
+                watcher.ShouldBeFilled();
+                uniqueNames.ShouldNotContain(watcher.uuid);
+                uniqueNames.Add(watcher.uuid);
             }
         }
 
@@ -125,6 +125,31 @@ namespace SharpBucketTests.V2.EndPoints
             var commits = repositoryResource.ListCommits(new CommitsParameters { Path = "src/" });
 
             commits.Count.ShouldBe(4); // only the bad commit in branchToDecline do not change anything in src path
+        }
+
+        [Test]
+        public void GetCommit_AKnownHashOnMercurialRepository_ShouldReturnCorrectData()
+        {
+            var repositoryResource = SampleRepositories.MercurialRepository;
+
+            var commit = repositoryResource.GetCommit("abae1eb695c077fa21b6ef0b7056f36d63cf0302");
+
+            commit.ShouldNotBeNull();
+            commit.hash.ShouldBe("abae1eb695c077fa21b6ef0b7056f36d63cf0302");
+            commit.date.ShouldNotBeNullOrWhiteSpace();
+            commit.message.ShouldNotBeNullOrWhiteSpace();
+            commit.author.raw.ShouldNotBeNullOrWhiteSpace();
+            commit.author.user.ShouldBeFilled();
+            commit.links.ShouldNotBeNull();
+            commit.parents[0].ShouldBeFilled();
+            commit.repository.uuid.ShouldNotBeNullOrWhiteSpace();
+            commit.repository.full_name.ShouldNotBeNullOrWhiteSpace();
+            commit.repository.name.ShouldNotBeNullOrWhiteSpace();
+            commit.repository.links.ShouldNotBeNull();
+            commit.summary.html.ShouldNotBeNullOrWhiteSpace();
+            commit.summary.markup.ShouldNotBeNullOrWhiteSpace();
+            commit.summary.raw.ShouldNotBeNullOrWhiteSpace();
+            commit.summary.type.ShouldBe("rendered");
         }
 
         [Test]

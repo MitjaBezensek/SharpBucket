@@ -107,10 +107,10 @@ namespace SharpBucket.V2.EndPoints
             return $"{_baseUrl}{accountName}/{slug}/{append}";
         }
 
-        internal List<Watcher> ListWatchers(string accountName, string slug, int max = 0)
+        internal List<UserShort> ListWatchers(string accountName, string slug, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "watchers");
-            return GetPaginatedValues<Watcher>(overrideUrl, max);
+            return GetPaginatedValues<UserShort>(overrideUrl, max);
         }
 
         internal List<Fork> ListForks(string accountName, string slug, int max = 0)

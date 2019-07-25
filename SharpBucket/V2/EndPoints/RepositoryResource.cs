@@ -59,7 +59,7 @@ namespace SharpBucket.V2.EndPoints
         /// Gets the list of accounts watching a repository. 
         /// </summary>
         /// <returns></returns>
-        public List<Watcher> ListWatchers()
+        public List<UserShort> ListWatchers()
         {
             return _repositoriesEndPoint.ListWatchers(_accountName, _slug);
         }
