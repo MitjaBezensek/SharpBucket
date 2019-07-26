@@ -153,10 +153,7 @@ namespace SharpBucketTests.V2.EndPoints
             commit.repository.full_name.ShouldNotBeNullOrWhiteSpace();
             commit.repository.name.ShouldNotBeNullOrWhiteSpace();
             commit.repository.links.ShouldNotBeNull();
-            commit.summary.html.ShouldNotBeNullOrWhiteSpace();
-            commit.summary.markup.ShouldNotBeNullOrWhiteSpace();
-            commit.summary.raw.ShouldNotBeNullOrWhiteSpace();
-            commit.summary.type.ShouldBe("rendered");
+            commit.summary.ShouldBeFilled();
         }
 
         [Test]

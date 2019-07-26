@@ -4,6 +4,7 @@ using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
+using SharpBucketTests.V2.Pocos;
 using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
@@ -67,6 +68,7 @@ namespace SharpBucketTests.V2.EndPoints
             var comments = ExistingPullRequest.ListPullRequestComments();
             comments.ShouldNotBeNull();
             comments.Count.ShouldBe(2);
+            comments[0].ShouldBeFilled();
             comments[0].content.raw.ShouldBe("This repo is not used for development, it's just a mirror (and I am just an infrequent contributor). Please consult http://mercurial.selenic.com/wiki/ContributingChanges and send your patch to ``mercurial-devel`` ML.");
         }
 
@@ -81,8 +83,18 @@ namespace SharpBucketTests.V2.EndPoints
         public void GetPullRequestComment_ExistingCommentOnAPublicPullRequest_ReturnValidInfo()
         {
             var comment = ExistingPullRequest.GetPullRequestComment(53789);
-            comment.ShouldNotBeNull();
+            comment.ShouldBeFilled();
             comment.content.raw.ShouldBe("This repo is not used for development, it's just a mirror (and I am just an infrequent contributor). Please consult http://mercurial.selenic.com/wiki/ContributingChanges and send your patch to ``mercurial-devel`` ML.");
+        }
+
+        [Test]
+        public void GetPullRequestComment_ExistingReplyCommentOnAPublicPullRequest_ReturnValidInfo()
+        {
+            var comment = SampleRepositories.RepositoriesEndPoint
+                .PullRequestsResource("tortoisehg", "thg")
+                .GetPullRequestComment(46, 61843122);
+            comment.ShouldBeFilled();
+            comment.parent.ShouldBeFilled();
         }
 
         [Test]

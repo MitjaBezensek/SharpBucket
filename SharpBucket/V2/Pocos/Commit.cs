@@ -12,6 +12,6 @@ namespace SharpBucket.V2.Pocos
         public List<CommitInfo> parents { get; set; }
         public string date { get; set; }
         public string message { get; set; }
-        public Summary summary { get; set; }
+        public Rendered summary { get; set; }
     }
 }
