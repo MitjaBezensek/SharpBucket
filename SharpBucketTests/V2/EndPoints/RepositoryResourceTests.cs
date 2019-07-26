@@ -20,8 +20,10 @@ namespace SharpBucketTests.V2.EndPoints
             var repositoryResource = SampleRepositories.MercurialRepository;
             repositoryResource.ShouldNotBe(null);
             var testRepository = repositoryResource.GetRepository();
-            testRepository.ShouldNotBe(null);
+
+            testRepository.ShouldBeFilled();
             testRepository.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
+            testRepository.website.ShouldNotBeNullOrEmpty(); // this repository is an example of one where website is filled
         }
 
         [Test]
@@ -54,7 +56,12 @@ namespace SharpBucketTests.V2.EndPoints
             var uniqueNames = new HashSet<string>();
             foreach (var fork in forks)
             {
-                fork.ShouldNotBe(null);
+                fork.ShouldBeFilled();
+
+                // since they are forks of mercurial, their parent should be mercurial
+                fork.parent.ShouldBeFilled();
+                fork.parent.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
+
                 uniqueNames.ShouldNotContain(fork.full_name);
                 uniqueNames.Add(fork.full_name);
             }
@@ -168,12 +175,12 @@ namespace SharpBucketTests.V2.EndPoints
             var repositoryFromPost = repositoryResource.PostRepository(repository);
             repositoryFromPost.name.ShouldBe(repositoryName);
             repositoryFromPost.scm.ShouldBe("git");
-            repositoryFromPost.scm.ShouldBe("git");
+            repositoryFromPost.language.ShouldBe("c#");
 
             var repositoryFromGet = repositoryResource.GetRepository();
             repositoryFromGet.name.ShouldBe(repositoryName);
             repositoryFromGet.scm.ShouldBe("git");
-            repositoryFromGet.scm.ShouldBe("git");
+            repositoryFromGet.language.ShouldBe("c#");
 
             repositoryFromPost.full_name.ShouldBe(repositoryFromGet.full_name);
             repositoryFromPost.uuid.ShouldBe(repositoryFromGet.uuid);

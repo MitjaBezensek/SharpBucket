@@ -8,9 +8,9 @@ namespace SharpBucketTests.V2.Pocos
         public static SrcFileLinks ShouldBeFilled(this SrcFileLinks srcLinks)
         {
             srcLinks.ShouldNotBeNull();
-            srcLinks.self.href.ShouldNotBeNull();
-            srcLinks.meta.href.ShouldNotBeNull();
-            srcLinks.history.href.ShouldNotBeNull();
+            srcLinks.self.ShouldBeFilled();
+            srcLinks.meta.ShouldBeFilled();
+            srcLinks.history.ShouldBeFilled();
 
             return srcLinks;
         }

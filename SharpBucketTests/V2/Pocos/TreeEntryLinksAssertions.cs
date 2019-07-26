@@ -8,8 +8,8 @@ namespace SharpBucketTests.V2.Pocos
         public static TreeEntryLinks ShouldBeFilled(this TreeEntryLinks treeEntryLinks)
         {
             treeEntryLinks.ShouldNotBeNull();
-            treeEntryLinks.self.href.ShouldNotBeNull();
-            treeEntryLinks.meta.href.ShouldNotBeNull();
+            treeEntryLinks.self.ShouldBeFilled();
+            treeEntryLinks.meta.ShouldBeFilled();
 
             return treeEntryLinks;
         }

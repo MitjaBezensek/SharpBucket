@@ -8,9 +8,9 @@ namespace SharpBucketTests.V2.Pocos
         public static TeamLinks ShouldBeFilled(this TeamLinks teamLinks)
         {
             teamLinks.ShouldNotBeNull();
-            teamLinks.self.href.ShouldNotBeNullOrEmpty();
-            teamLinks.html.href.ShouldNotBeNullOrEmpty();
-            teamLinks.avatar.href.ShouldNotBeNullOrEmpty();
+            teamLinks.self.ShouldBeFilled();
+            teamLinks.html.ShouldBeFilled();
+            teamLinks.avatar.ShouldBeFilled();
 
             return teamLinks;
         }
@@ -24,9 +24,9 @@ namespace SharpBucketTests.V2.Pocos
             else
             {
                 teamLinks.ShouldNotBeNull();
-                teamLinks.self.href.ShouldBe(expectedTeamLinks.self.href);
-                teamLinks.html.href.ShouldBe(expectedTeamLinks.html.href);
-                teamLinks.avatar.href.ShouldBe(expectedTeamLinks.avatar.href);
+                teamLinks.self.ShouldBeEquivalentTo(expectedTeamLinks.self);
+                teamLinks.html.ShouldBeEquivalentTo(expectedTeamLinks.html);
+                teamLinks.avatar.ShouldBeEquivalentTo(expectedTeamLinks.avatar);
             }
 
             return teamLinks;

@@ -113,10 +113,10 @@ namespace SharpBucket.V2.EndPoints
             return GetPaginatedValues<UserShort>(overrideUrl, max);
         }
 
-        internal List<Fork> ListForks(string accountName, string slug, int max = 0)
+        internal List<Repository> ListForks(string accountName, string slug, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "forks");
-            return GetPaginatedValues<Fork>(overrideUrl, max);
+            return GetPaginatedValues<Repository>(overrideUrl, max);
         }
 
         #endregion

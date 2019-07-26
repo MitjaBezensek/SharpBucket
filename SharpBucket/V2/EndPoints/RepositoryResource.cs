@@ -68,7 +68,7 @@ namespace SharpBucket.V2.EndPoints
         /// List of repository forks, This call returns a repository object for each fork.
         /// </summary>
         /// <returns></returns>
-        public List<Fork> ListForks()
+        public List<Repository> ListForks()
         {
             return _repositoriesEndPoint.ListForks(_accountName, _slug);
         }

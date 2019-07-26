@@ -10,6 +10,6 @@ namespace SharpBucket.V2.Pocos
         public Link followers { get; set; }
         public Link avatar { get; set; }
         public Link following { get; set; }
-        public List<Link> clone { get; set; }
+        public List<NamedLink> clone { get; set; }
     }
 }

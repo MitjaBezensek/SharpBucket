@@ -8,9 +8,9 @@ namespace SharpBucketTests.V2.Pocos
         public static ProjectLinks ShouldBeFilled(this ProjectLinks projectLinks)
         {
             projectLinks.ShouldNotBeNull();
-            projectLinks.self.href.ShouldNotBeNullOrEmpty();
-            projectLinks.html.href.ShouldNotBeNullOrEmpty();
-            projectLinks.avatar.href.ShouldNotBeNullOrEmpty();
+            projectLinks.self.ShouldBeFilled();
+            projectLinks.html.ShouldBeFilled();
+            projectLinks.avatar.ShouldBeFilled();
 
             return projectLinks;
         }
@@ -24,9 +24,9 @@ namespace SharpBucketTests.V2.Pocos
             else
             {
                 projectLinks.ShouldNotBeNull();
-                projectLinks.self.href.ShouldBe(expectedProjectLinks.self.href);
-                projectLinks.html.href.ShouldBe(expectedProjectLinks.html.href);
-                projectLinks.avatar.href.ShouldBe(expectedProjectLinks.avatar.href);
+                projectLinks.self.ShouldBeEquivalentTo(expectedProjectLinks.self);
+                projectLinks.html.ShouldBeEquivalentTo(expectedProjectLinks.html);
+                projectLinks.avatar.ShouldBeEquivalentTo(expectedProjectLinks.avatar);
             }
 
             return projectLinks;

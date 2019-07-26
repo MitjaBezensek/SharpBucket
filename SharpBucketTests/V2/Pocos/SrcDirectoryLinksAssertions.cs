@@ -8,8 +8,8 @@ namespace SharpBucketTests.V2.Pocos
         public static SrcDirectoryLinks ShouldBeFilled(this SrcDirectoryLinks srcDirectoryLinks)
         {
             srcDirectoryLinks.ShouldNotBeNull();
-            srcDirectoryLinks.self.href.ShouldNotBeNull();
-            srcDirectoryLinks.meta.href.ShouldNotBeNull();
+            srcDirectoryLinks.self.ShouldBeFilled();
+            srcDirectoryLinks.meta.ShouldBeFilled();
 
             return srcDirectoryLinks;
         }
