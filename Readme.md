@@ -2,7 +2,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/jtlni3j2fq3j6pxy/branch/master?svg=true)](https://ci.appveyor.com/project/MitjaBezenek/sharpbucket/branch/master)
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/SharpBucket)](https://www.nuget.org/packages/SharpBucket/)
 
-SharpBucket is a .Net wrapper for the Bitbucket's REST API. It is written in in C#. With it you can have all the data of your repositories / issues at your fingertips.
+SharpBucket is a .Net wrapper for the [Bitbucket Cloud's REST APIs](https://developer.atlassian.com/bitbucket/api/2/reference/). It is written in in C#. With it you can have all the data of your repositories / issues at your fingertips.
 
 ## How to get started
 ### Installation
