@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
@@ -115,6 +116,31 @@ namespace SharpBucket.V2.EndPoints
         public ProjectResource ProjectResource(string projectKey)
         {
             return new ProjectResource(_sharpBucketV2, _teamName, projectKey);
+        }
+
+        /// <summary>
+        /// Searches for passed string in team account repositories and processes them page by page with passed method.
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/search/code
+        /// </summary>
+        /// <param name="searchText">The string that is passed as search query.</param>
+        /// <param name="searchFilesProcessor">The method that passes page number and a list of found files for processing.</param>
+        /// <param name="max">The maximum number of items to process. 0 processes all items.</param>
+        public void ProcessSeacrhFiles(
+            string searchText,
+            Action<int, List<SearchFile>> searchFilesProcessor,
+            int max = 0)
+        {
+            var teamProfile = _sharpBucketV2.Get<Team>(_baseUrl);
+            var overrideUrl = $"teams/{HttpUtility.UrlEncode(teamProfile.uuid)}/search/code";
+            var requestParameters = new Dictionary<string, object>
+            {
+                { "search_query", searchText }
+            };
+            _sharpBucketV2.ProcessPaginatedValues(
+                overrideUrl,
+                searchFilesProcessor,
+                max,
+                requestParameters);
         }
     }
 }

@@ -60,7 +60,11 @@ namespace SharpBucket.V2
         /// <param name="requestParameters"></param>
         /// <returns></returns>
         /// <exception cref="BitbucketV2Exception">Thrown when the server fails to respond.</exception>
-        public static List<TValue> GetPaginatedValues<TValue>(this SharpBucketV2 sharpBucketV2, string overrideUrl, int max = 0, IDictionary<string, object> requestParameters = null)
+        public static List<TValue> GetPaginatedValues<TValue>(
+            this SharpBucketV2 sharpBucketV2,
+            string overrideUrl,
+            int max = 0,
+            IDictionary<string, object> requestParameters = null)
         {
             var isMaxConstrained = max > 0;
 
@@ -87,6 +91,50 @@ namespace SharpBucket.V2
             }
 
             return values;
+        }
+
+        /// <summary>
+        /// Processes returned values page by page with passed pageDataProcessor action method.
+        /// </summary>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="sharpBucketV2"></param>
+        /// <param name="overrideUrl">The override URL.</param>
+        /// <param name="pageDataProcessor">Action to process page items.</param>
+        /// <param name="max">Set to 0 for unlimited size.</param>
+        /// <param name="requestParameters"></param>
+        /// <exception cref="BitbucketV2Exception">Thrown when the server fails to respond.</exception>
+        public static void ProcessPaginatedValues<TValue>(
+            this SharpBucketV2 sharpBucketV2,
+            string overrideUrl,
+            Action<int, List<TValue>> pageDataProcessor,
+            int max = 0,
+            IDictionary<string, object> requestParameters = null)
+        {
+            var isMaxConstrained = max > 0;
+
+            var pageLen = (isMaxConstrained && max < DEFAULT_PAGE_LEN) ? max : DEFAULT_PAGE_LEN;
+
+            int processedCount = 0;
+            int pageNum = 0;
+
+            foreach (var page in IteratePages<TValue>(sharpBucketV2, overrideUrl, pageLen, requestParameters))
+            {
+                if (page == null)
+                {
+                    break;
+                }
+
+                var pageItems = isMaxConstrained
+                    ? page.GetRange(0, max - processedCount)
+                    : page;
+                pageDataProcessor(pageNum, pageItems);
+
+                processedCount += pageItems.Count;
+                if (isMaxConstrained && processedCount >= max)
+                    break;
+
+                ++pageNum;
+            }
         }
     }
 }
