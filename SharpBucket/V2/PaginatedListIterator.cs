@@ -10,7 +10,7 @@ namespace SharpBucket.V2
     internal static class PaginatedListIterator
     {
         // vanilla page length in many cases is 10, requiring lots of requests for larger collections
-        internal const int DEFAULT_PAGE_LEN = 50;
+        private const int DEFAULT_PAGE_LEN = 50;
 
         /// <summary>
         /// Generator that allows lazy access to paginated resources.
