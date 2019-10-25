@@ -22,13 +22,6 @@ namespace SharpBucket
 
         private RequestExecutor RequestExecutor { get; }
 
-        /// <summary>
-        /// Gets the number of requests send.
-        /// This is an internal counter metrics for unit tests which would be great to replace with counter performed by a mock implementation.
-        /// But for that we need to have interfaces like work started in pull request #71 so we can moq the SharpBucketV2 class...
-        /// </summary>
-        internal long RequestsCount { get; private set; }
-
         internal SharpBucket(string baseUrl, RequestExecutor requestExecutor)
         {
             this.BaseUrl = baseUrl;
@@ -219,14 +212,12 @@ namespace SharpBucket
 
         private string Send(object body, Method method, string relativeUrl, IDictionary<string, object> requestParameters = null)
         {
-            this.RequestsCount++;
             return authenticator.GetResponse(relativeUrl, method, body, requestParameters);
         }
 
         private T Send<T>(object body, Method method, string relativeUrl, IDictionary<string, object> requestParameters = null)
             where T : new()
         {
-            this.RequestsCount++;
             return authenticator.GetResponse<T>(relativeUrl, method, body, requestParameters);
         }
 
