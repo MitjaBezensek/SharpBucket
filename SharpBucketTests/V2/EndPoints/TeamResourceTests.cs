@@ -108,5 +108,24 @@ namespace SharpBucketTests.V2.EndPoints
                 teamResource.ProjectResource(project.key).DeleteProject();
             }
         }
+
+        [Test]
+        public void EnumerateSearchCodeSearchResults_SearchStringWordFromTeamAtlassian_ShouldReturnAtLeastOneResult()
+        {
+            teamsEndPoint.ShouldNotBe(null);
+
+            var searchResults = teamsEndPoint.TeamResource("atlassian").EnumerateSearchCodeSearchResults("string");
+            var firstResult = searchResults.FirstOrDefault();
+            firstResult.ShouldBeFilled();
+        }
+
+        [Test]
+        public void EnumerateSearchCodeSearchResults_SearchStringWordFromTeamAtlassianWithMaxAMaxSetToMoreThanOnePageAndNotAMultipleOfPageLength_ShouldReturnJustTheRequestedNumberOfResults()
+        {
+            teamsEndPoint.ShouldNotBe(null);
+
+            var searchResults = teamsEndPoint.TeamResource("atlassian").EnumerateSearchCodeSearchResults("string", 53);
+            searchResults.Count().ShouldBe(53);
+        }
     }
 }
