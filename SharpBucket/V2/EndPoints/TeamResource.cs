@@ -123,11 +123,11 @@ namespace SharpBucket.V2.EndPoints
         /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/search/code
         /// </summary>
         /// <param name="searchText">The string that is passed as search query.</param>
-        /// <param name="searchFilesProcessor">The method that passes page number and a list of found files for processing.</param>
+        /// <param name="searchFilesProcessor">The method that passes next batch of found files for processing.</param>
         /// <param name="max">The maximum number of items to process. 0 processes all items.</param>
         public void ProcessSeacrhFiles(
             string searchText,
-            Action<int, List<SearchFile>> searchFilesProcessor,
+            Action<List<SearchFile>> searchFilesProcessor,
             int max = 0)
         {
             var teamProfile = _sharpBucketV2.Get<Team>(_baseUrl);

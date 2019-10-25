@@ -106,7 +106,7 @@ namespace SharpBucket.V2
         public static void ProcessPaginatedValues<TValue>(
             this SharpBucketV2 sharpBucketV2,
             string overrideUrl,
-            Action<int, List<TValue>> pageDataProcessor,
+            Action<List<TValue>> pageDataProcessor,
             int max = 0,
             IDictionary<string, object> requestParameters = null)
         {
@@ -115,7 +115,6 @@ namespace SharpBucket.V2
             var pageLen = (isMaxConstrained && max < DEFAULT_PAGE_LEN) ? max : DEFAULT_PAGE_LEN;
 
             int processedCount = 0;
-            int pageNum = 0;
 
             foreach (var page in IteratePages<TValue>(sharpBucketV2, overrideUrl, pageLen, requestParameters))
             {
@@ -127,13 +126,11 @@ namespace SharpBucket.V2
                 var pageItems = isMaxConstrained
                     ? page.GetRange(0, max - processedCount)
                     : page;
-                pageDataProcessor(pageNum, pageItems);
+                pageDataProcessor(pageItems);
 
                 processedCount += pageItems.Count;
                 if (isMaxConstrained && processedCount >= max)
                     break;
-
-                ++pageNum;
             }
         }
     }
