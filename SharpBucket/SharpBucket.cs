@@ -259,13 +259,7 @@ namespace SharpBucket
 
         internal void Delete(string overrideUrl)
         {
-            Send(null, Method.DELETE, overrideUrl, null);
-        }
-
-        internal T Delete<T>(string overrideUrl)
-            where T : new()
-        {
-            return Send<T>(null, Method.DELETE, overrideUrl);
+            Send(null, Method.DELETE, overrideUrl);
         }
     }
 }

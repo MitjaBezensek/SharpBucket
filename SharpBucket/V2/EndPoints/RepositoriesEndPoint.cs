@@ -96,10 +96,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Post(repo, overrideUrl);
         }
 
-        internal Repository DeleteRepository(string accountName, string slug)
+        internal void DeleteRepository(string accountName, string slug)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, null);
-            return _sharpBucketV2.Delete<Repository>(overrideUrl);
+            _sharpBucketV2.Delete(overrideUrl);
         }
 
         private string GetRepositoryUrl(string accountName, string slug, string append)
@@ -258,10 +258,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Put(restriction, overrideUrl);
         }
 
-        internal BranchRestriction DeleteBranchRestriction(string accountName, string slug, int restrictionId)
+        internal void DeleteBranchRestriction(string accountName, string slug, int restrictionId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"branch-restrictions/{restrictionId}");
-            return _sharpBucketV2.Delete<BranchRestriction>(overrideUrl);
+            _sharpBucketV2.Delete(overrideUrl);
         }
 
         #endregion
@@ -322,7 +322,7 @@ namespace SharpBucket.V2.EndPoints
         internal void DeleteCommitApproval(string accountName, string slug, string revision)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/approve/");
-            _sharpBucketV2.Delete<object>(overrideUrl);
+            _sharpBucketV2.Delete(overrideUrl);
         }
 
         internal BuildInfo AddNewBuildStatus(string accountName, string slug, string revision, BuildInfo buildInfo)

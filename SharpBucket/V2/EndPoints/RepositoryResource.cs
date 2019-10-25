@@ -39,9 +39,9 @@ namespace SharpBucket.V2.EndPoints
         /// Removes a repository.  
         /// </summary>
         /// <returns></returns>
-        public Repository DeleteRepository()
+        public void DeleteRepository()
         {
-            return _repositoriesEndPoint.DeleteRepository(_accountName, _slug);
+            _repositoriesEndPoint.DeleteRepository(_accountName, _slug);
         }
 
 
@@ -150,9 +150,9 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="restrictionId">The restriction's identifier.</param>
         /// <returns></returns>
-        public BranchRestriction DeleteBranchRestriction(int restrictionId)
+        public void DeleteBranchRestriction(int restrictionId)
         {
-            return _repositoriesEndPoint.DeleteBranchRestriction(_accountName, _slug, restrictionId);
+            _repositoriesEndPoint.DeleteBranchRestriction(_accountName, _slug, restrictionId);
         }
 
         #endregion
