@@ -32,7 +32,7 @@ namespace SharpBucketTests.Authentication
 
             var client = new SharpBucketV2();
             client.MockAuthentication(_client.Object);
-            var output = client.Get(null);
+            var output = ((ISharpBucketRequesterV2)client).Get(null);
             output.ShouldBe(expected);
         }
     }

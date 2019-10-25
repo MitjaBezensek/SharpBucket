@@ -5,10 +5,10 @@ namespace SharpBucket.V2.EndPoints
 {
     public class EndPoint
     {
-        protected readonly SharpBucketV2 _sharpBucketV2;
+        protected readonly ISharpBucketRequesterV2 _sharpBucketV2;
         protected readonly string _baseUrl;
 
-        public EndPoint(SharpBucketV2 sharpBucketV2, string resourcePath)
+        public EndPoint(ISharpBucketRequesterV2 sharpBucketV2, string resourcePath)
         {
             _sharpBucketV2 = sharpBucketV2;
             _baseUrl = resourcePath;

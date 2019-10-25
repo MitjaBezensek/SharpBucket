@@ -13,13 +13,13 @@ namespace SharpBucket.V2.EndPoints
     {
         private readonly TeamResource _teamResource;
 
-        public TeamsEndPoint(SharpBucketV2 sharpBucketV2)
+        public TeamsEndPoint(ISharpBucketRequesterV2 sharpBucketV2)
             : base(sharpBucketV2, "teams/")
         {
         }
 
         [Obsolete("Use TeamResource class to manipulate a team")]
-        public TeamsEndPoint(SharpBucketV2 sharpBucketV2, string teamName)
+        public TeamsEndPoint(ISharpBucketRequesterV2 sharpBucketV2, string teamName)
             : this(sharpBucketV2)
         {
             // initially when teamName was null there where no check in the constructor

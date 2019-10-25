@@ -11,7 +11,7 @@ namespace SharpBucket
     /// More info:
     /// https://confluence.atlassian.com/display/BITBUCKET/Use+the+Bitbucket+REST+APIs
     /// </summary>
-    public abstract class SharpBucket
+    public abstract class SharpBucket : ISharpBucket
     {
         private Authenticate authenticator;
 
@@ -217,49 +217,46 @@ namespace SharpBucket
             authenticator = new MockAuthentication(client, BaseUrl) { RequestExecutor = this.RequestExecutor };
         }
 
-        private string Send(object body, Method method, string overrideUrl = null, IDictionary<string, object> requestParameters = null)
+        private string Send(object body, Method method, string relativeUrl, IDictionary<string, object> requestParameters = null)
         {
             this.RequestsCount++;
-            return authenticator.GetResponse(overrideUrl, method, body, requestParameters);
+            return authenticator.GetResponse(relativeUrl, method, body, requestParameters);
         }
 
-        private T Send<T>(object body, Method method, string overrideUrl = null, IDictionary<string, object> requestParameters = null)
+        private T Send<T>(object body, Method method, string relativeUrl, IDictionary<string, object> requestParameters = null)
             where T : new()
         {
             this.RequestsCount++;
-            return authenticator.GetResponse<T>(overrideUrl, method, body, requestParameters);
+            return authenticator.GetResponse<T>(relativeUrl, method, body, requestParameters);
         }
 
-        internal string Get(string overrideUrl, object requestParameters = null)
+        string ISharpBucketRequester.Get(string relativeUrl, object requestParameters)
         {
             //Convert to dictionary to avoid refactoring the Send method.
             var parameterDictionary = requestParameters.ToDictionary();
-            return Send(null, Method.GET, overrideUrl, parameterDictionary);
+            return Send(null, Method.GET, relativeUrl, parameterDictionary);
         }
 
-        internal T Get<T>(string overrideUrl, object requestParameters = null)
-            where T : new()
+        T ISharpBucketRequester.Get<T>(string relativeUrl, object requestParameters)
         {
             //Convert to dictionary to avoid refactoring the Send method.
             var parameterDictionary = requestParameters.ToDictionary();
-            return Send<T>(null, Method.GET, overrideUrl, parameterDictionary);
+            return Send<T>(null, Method.GET, relativeUrl, parameterDictionary);
         }
 
-        internal T Post<T>(T body, string overrideUrl)
-            where T : new()
+        T ISharpBucketRequester.Post<T>(T body, string relativeUrl)
         {
-            return Send<T>(body, Method.POST, overrideUrl);
+            return Send<T>(body, Method.POST, relativeUrl);
         }
 
-        internal T Put<T>(T body, string overrideUrl)
-            where T : new()
+        T ISharpBucketRequester.Put<T>(T body, string relativeUrl)
         {
-            return Send<T>(body, Method.PUT, overrideUrl);
+            return Send<T>(body, Method.PUT, relativeUrl);
         }
 
-        internal void Delete(string overrideUrl)
+        void ISharpBucketRequester.Delete(string relativeUrl)
         {
-            Send(null, Method.DELETE, overrideUrl);
+            Send(null, Method.DELETE, relativeUrl);
         }
     }
 }

@@ -15,12 +15,12 @@ namespace SharpBucket.V2
         /// <summary>
         /// Generator that allows lazy access to paginated resources.
         /// </summary>
-        private static IEnumerable<List<TValue>> IteratePages<TValue>(SharpBucketV2 sharpBucketV2, string overrideUrl, int pageLen = DEFAULT_PAGE_LEN, IDictionary<string, object> requestParameters = null)
+        private static IEnumerable<List<TValue>> IteratePages<TValue>(ISharpBucketRequester sharpBucketRequester, string relativeUrl, int pageLen = DEFAULT_PAGE_LEN, IDictionary<string, object> requestParameters = null)
         {
-            Debug.Assert(!string.IsNullOrEmpty(overrideUrl));
-            Debug.Assert(!overrideUrl.Contains("?"));
+            Debug.Assert(!string.IsNullOrEmpty(relativeUrl));
+            Debug.Assert(!relativeUrl.Contains("?"));
 
-            overrideUrl = overrideUrl.Replace(SharpBucketV2.BITBUCKET_URL, "");
+            relativeUrl = relativeUrl.Replace(SharpBucketV2.BITBUCKET_URL, "");
 
             if (requestParameters == null)
             {
@@ -31,7 +31,7 @@ namespace SharpBucket.V2
 
             while (true)
             {
-                var response = sharpBucketV2.Get<IteratorBasedPage<TValue>>(overrideUrl, requestParameters);
+                var response = sharpBucketRequester.Get<IteratorBasedPage<TValue>>(relativeUrl, requestParameters);
                 if (response == null)
                 {
                     break;
@@ -54,13 +54,13 @@ namespace SharpBucket.V2
         /// Returns a list of paginated values.
         /// </summary>
         /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="sharpBucketV2"></param>
-        /// <param name="overrideUrl">The override URL.</param>
+        /// <param name="sharpBucketRequester"></param>
+        /// <param name="relativeUrl">The relative URL to the paginated resource to call.</param>
         /// <param name="max">Set to 0 for unlimited size.</param>
         /// <param name="requestParameters"></param>
         /// <returns></returns>
         /// <exception cref="BitbucketV2Exception">Thrown when the server fails to respond.</exception>
-        public static List<TValue> GetPaginatedValues<TValue>(this SharpBucketV2 sharpBucketV2, string overrideUrl, int max = 0, IDictionary<string, object> requestParameters = null)
+        public static List<TValue> GetPaginatedValues<TValue>(this ISharpBucketRequester sharpBucketRequester, string relativeUrl, int max = 0, IDictionary<string, object> requestParameters = null)
         {
             var isMaxConstrained = max > 0;
 
@@ -68,7 +68,7 @@ namespace SharpBucket.V2
 
             var values = new List<TValue>();
 
-            foreach (var page in IteratePages<TValue>(sharpBucketV2, overrideUrl, pageLen, requestParameters))
+            foreach (var page in IteratePages<TValue>(sharpBucketRequester, relativeUrl, pageLen, requestParameters))
             {
                 if (page == null)
                 {
@@ -93,15 +93,15 @@ namespace SharpBucket.V2
         /// Returns an enumeration of paginated values. The pages are requested lazily while iterating on the values.
         /// </summary>
         /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="sharpBucketV2"></param>
-        /// <param name="overrideUrl">The override URL.</param>
+        /// <param name="sharpBucketRequester"></param>
+        /// <param name="relativeUrl">The relative URL to the paginated resource to call.</param>
         /// <param name="requestParameters"></param>
         /// <param name="pageLen">The size of a page.</param>
         /// <returns>A lazy enumerable over the values.</returns>
         /// <exception cref="BitbucketV2Exception">Thrown when the server fails to respond.</exception>
-        public static IEnumerable<TValue> EnumeratePaginatedValues<TValue>(this SharpBucketV2 sharpBucketV2, string overrideUrl, IDictionary<string, object> requestParameters = null, int? pageLen = null)
+        public static IEnumerable<TValue> EnumeratePaginatedValues<TValue>(this ISharpBucketRequester sharpBucketRequester, string relativeUrl, IDictionary<string, object> requestParameters = null, int? pageLen = null)
         {
-            return IteratePages<TValue>(sharpBucketV2, overrideUrl, pageLen ?? DEFAULT_PAGE_LEN, requestParameters)
+            return IteratePages<TValue>(sharpBucketRequester, relativeUrl, pageLen ?? DEFAULT_PAGE_LEN, requestParameters)
                 .TakeWhile(page => page != null)
                 .SelectMany(page => page);
         }
