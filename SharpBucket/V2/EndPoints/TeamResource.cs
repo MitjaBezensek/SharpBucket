@@ -122,18 +122,18 @@ namespace SharpBucket.V2.EndPoints
         /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/search/code
         /// </summary>
         /// <param name="searchQuery">The string that is passed as search query.</param>
-        /// <param name="max">The maximum number of results to enumerate. 0 enumerate all result.</param>
+        /// <param name="pageLen">The length of a page. If not defined the default page length will be used.</param>
         /// <returns>A lazy enumerable that will request results pages by pages while enumerating the results.</returns>
         public IEnumerable<SearchCodeSearchResult> EnumerateSearchCodeSearchResults(
             string searchQuery,
-            int max = 0)
+            int? pageLen = null)
         {
             var overrideUrl = $"{_baseUrl}search/code";
             var requestParameters = new Dictionary<string, object>
             {
                 { "search_query", searchQuery }
             };
-            return _sharpBucketV2.EnumeratePaginatedValues<SearchCodeSearchResult>(overrideUrl, max, requestParameters);
+            return _sharpBucketV2.EnumeratePaginatedValues<SearchCodeSearchResult>(overrideUrl, requestParameters, pageLen);
         }
     }
 }

@@ -120,12 +120,33 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void EnumerateSearchCodeSearchResults_SearchStringWordFromTeamAtlassianWithMaxAMaxSetToMoreThanOnePageAndNotAMultipleOfPageLength_ShouldReturnJustTheRequestedNumberOfResults()
+        public void EnumerateSearchCodeSearchResults_SearchStringWordFromTeamAtlassianWithPageLenLessThanTheNumberOfEnumeratedResults_RequestsCountShouldIncrementLazily()
         {
             teamsEndPoint.ShouldNotBe(null);
 
-            var searchResults = teamsEndPoint.TeamResource("atlassian").EnumerateSearchCodeSearchResults("string", 53);
-            searchResults.Count().ShouldBe(53);
+            var initialRequestsCount = sharpBucket.RequestsCount;
+            var searchResults = teamsEndPoint.TeamResource("atlassian").EnumerateSearchCodeSearchResults("string", 5);
+
+            sharpBucket.RequestsCount.ShouldBe(initialRequestsCount, "Building the enumerable should not produce any request");
+
+            var i = 0;
+            foreach (var _ in searchResults)
+            {
+                if (i < 5)
+                {
+                    sharpBucket.RequestsCount.ShouldBe(initialRequestsCount + 1);
+                }
+                else
+                {
+                    sharpBucket.RequestsCount.ShouldBe(initialRequestsCount + 2);
+                    if (i == 9)
+                    {
+                        break;
+                    }
+                }
+
+                i++;
+            }
         }
     }
 }

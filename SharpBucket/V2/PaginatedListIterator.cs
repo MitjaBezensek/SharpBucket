@@ -10,7 +10,7 @@ namespace SharpBucket.V2
     internal static class PaginatedListIterator
     {
         // vanilla page length in many cases is 10, requiring lots of requests for larger collections
-        private const int DEFAULT_PAGE_LEN = 50;
+        internal const int DEFAULT_PAGE_LEN = 50;
 
         /// <summary>
         /// Generator that allows lazy access to paginated resources.
@@ -95,35 +95,15 @@ namespace SharpBucket.V2
         /// <typeparam name="TValue">The type of the value.</typeparam>
         /// <param name="sharpBucketV2"></param>
         /// <param name="overrideUrl">The override URL.</param>
-        /// <param name="max">Set to 0 for unlimited size.</param>
         /// <param name="requestParameters"></param>
+        /// <param name="pageLen">The size of a page.</param>
         /// <returns>A lazy enumerable over the values.</returns>
         /// <exception cref="BitbucketV2Exception">Thrown when the server fails to respond.</exception>
-        public static IEnumerable<TValue> EnumeratePaginatedValues<TValue>(this SharpBucketV2 sharpBucketV2, string overrideUrl, int max = 0, IDictionary<string, object> requestParameters = null)
+        public static IEnumerable<TValue> EnumeratePaginatedValues<TValue>(this SharpBucketV2 sharpBucketV2, string overrideUrl, IDictionary<string, object> requestParameters = null, int? pageLen = null)
         {
-            var isMaxConstrained = max > 0;
-
-            var pageLen = (isMaxConstrained && max < DEFAULT_PAGE_LEN) ? max : DEFAULT_PAGE_LEN;
-
-            var valuesCount = 0;
-
-            foreach (var page in IteratePages<TValue>(sharpBucketV2, overrideUrl, pageLen, requestParameters))
-            {
-                if (page == null)
-                {
-                    break;
-                }
-
-                foreach (var value in page)
-                {
-                    valuesCount++;
-                    yield return value;
-                    if (isMaxConstrained && valuesCount >= max)
-                    {
-                        yield break;
-                    }
-                }
-            }
+            return IteratePages<TValue>(sharpBucketV2, overrideUrl, pageLen ?? DEFAULT_PAGE_LEN, requestParameters)
+                .TakeWhile(page => page != null)
+                .SelectMany(page => page);
         }
     }
 }
