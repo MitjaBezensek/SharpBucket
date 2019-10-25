@@ -116,5 +116,24 @@ namespace SharpBucket.V2.EndPoints
         {
             return new ProjectResource(_sharpBucketV2, _teamName, projectKey);
         }
+
+        /// <summary>
+        /// Searches for code in team account repositories, and lazily enumerate the search results.
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/search/code
+        /// </summary>
+        /// <param name="searchQuery">The string that is passed as search query.</param>
+        /// <param name="pageLen">The length of a page. If not defined the default page length will be used.</param>
+        /// <returns>A lazy enumerable that will request results pages by pages while enumerating the results.</returns>
+        public IEnumerable<SearchCodeSearchResult> EnumerateSearchCodeSearchResults(
+            string searchQuery,
+            int? pageLen = null)
+        {
+            var overrideUrl = $"{_baseUrl}search/code";
+            var requestParameters = new Dictionary<string, object>
+            {
+                { "search_query", searchQuery }
+            };
+            return _sharpBucketV2.EnumeratePaginatedValues<SearchCodeSearchResult>(overrideUrl, requestParameters, pageLen);
+        }
     }
 }

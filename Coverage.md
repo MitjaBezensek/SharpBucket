@@ -601,8 +601,8 @@ The organization of all that routes may slightly differ in the SharpBucket class
     - `[obsolete]TeamsEndPoint.ListRepositories(int)`
   - Tested: **yes**
 - /teams/{username}/search/code `GET`
-  - Implemented by: none
-  - Tested: no
+  - Implemented by: `TeamResource.EnumerateSearchCodeSearchResults(string,int)`
+  - Tested: **yes**
 
 ### [Project Resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/%7Bproject_key%7D)
 - /teams/{username}/projects/{project_key} `GET`

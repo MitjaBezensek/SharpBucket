@@ -88,5 +88,22 @@ namespace SharpBucket.V2
 
             return values;
         }
+
+        /// <summary>
+        /// Returns an enumeration of paginated values. The pages are requested lazily while iterating on the values.
+        /// </summary>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="sharpBucketV2"></param>
+        /// <param name="overrideUrl">The override URL.</param>
+        /// <param name="requestParameters"></param>
+        /// <param name="pageLen">The size of a page.</param>
+        /// <returns>A lazy enumerable over the values.</returns>
+        /// <exception cref="BitbucketV2Exception">Thrown when the server fails to respond.</exception>
+        public static IEnumerable<TValue> EnumeratePaginatedValues<TValue>(this SharpBucketV2 sharpBucketV2, string overrideUrl, IDictionary<string, object> requestParameters = null, int? pageLen = null)
+        {
+            return IteratePages<TValue>(sharpBucketV2, overrideUrl, pageLen ?? DEFAULT_PAGE_LEN, requestParameters)
+                .TakeWhile(page => page != null)
+                .SelectMany(page => page);
+        }
     }
 }
