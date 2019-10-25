@@ -75,6 +75,7 @@ FilterBuilder.FormatDateTime(DateTime.UtcNow); // return something like "2000-12
 
 SharpBucket uses a strict naming convention:
 - methods starting with List will return a collection of items (ListIssues() returns a list of issues)
+- methods starting with Enumerate will return a lazy enumeration of items (EnumerateSearchCodeSearchResults() returns a lazy page by page enumeration of SearchCodeSearchResults)
 - methods starting with Get will return an item (GetIssue(10) will return an issue with the id 10)
 - methods starting with Post are used for adding the item
 - methods starting with Put are used for updating the item
