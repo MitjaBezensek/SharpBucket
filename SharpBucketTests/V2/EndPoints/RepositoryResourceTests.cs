@@ -197,7 +197,7 @@ namespace SharpBucketTests.V2.EndPoints
 
             var exception = Assert.Throws<BitbucketV2Exception>(() => repositoryResource.PostRepository(repository));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.Forbidden);
-            exception.ErrorResponse.error.message.ShouldBe("You cannot administer other userspersonal accounts.");
+            exception.ErrorResponse.error.message.ShouldBe("You cannot administer personal accounts of other users.");
         }
 
         [Test]
