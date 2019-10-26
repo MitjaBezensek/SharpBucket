@@ -12,6 +12,8 @@ namespace SharpBucket.Authentication
 {
     internal abstract class RequestExecutor
     {
+        private readonly JsonDeserializer jsonDeserializer = new JsonDeserializer();
+
         public string ExecuteRequest(string url, Method method, object body, IRestClient client, IDictionary<string, object> requestParameters)
         {
             var result = ExecuteRequest(url, method, body, client, requestParameters, client.Execute);
@@ -21,8 +23,8 @@ namespace SharpBucket.Authentication
         public T ExecuteRequest<T>(string url, Method method, object body, IRestClient client, IDictionary<string, object> requestParameters)
             where T : new()
         {
-            var result = ExecuteRequest(url, method, body, client, requestParameters, client.Execute<T>);
-            return result.Data;
+            var result = ExecuteRequest(url, method, body, client, requestParameters, client.Execute);
+            return jsonDeserializer.Deserialize<T>(result);
         }
 
         private TRestResponse ExecuteRequest<TRestResponse>(
@@ -42,8 +44,16 @@ namespace SharpBucket.Authentication
             client.AddHandler("application/json", new JsonDeserializer());
 
             var result = ExecuteRequestWithManualFollowRedirect(request, client, clientExecute);
-            if (!result.IsSuccessful)
+            if (result.ResponseStatus != ResponseStatus.Completed)
             {
+                // There is an issue that prevents the request to complete (timeout, request aborted, ...).
+                // Throw the exception prepared by RestSharp
+                throw new Exception(result.ErrorMessage, result.ErrorException);
+            }
+            if ((int)result.StatusCode < 200 || (int)result.StatusCode >= 300)
+            {
+                // There is an issue which is described in the HTTP response.
+                // Build an throw a BitBucketException, since the message should be provided by BitBucket.
                 throw BuildBitbucketException(result);
             }
 
