@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using RestSharp;
 using RestSharp.Authenticators;
@@ -49,6 +51,18 @@ namespace SharpBucket.Authentication
             return base.GetResponse(url, method, body, requestParameters);
         }
 
+        public override async Task<string> GetResponseAsync(string url, Method method, object body, IDictionary<string, object> requestParameters, CancellationToken token)
+        {
+            if (_client == null)
+            {
+                _client = new RestClient(_baseUrl)
+                {
+                    Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)
+                };
+            }
+            return await base.GetResponseAsync(url, method, body, requestParameters, token);
+        }
+
         public override T GetResponse<T>(string url, Method method, object body, IDictionary<string, object> requestParameters)
         {
             if (_client == null)
@@ -59,6 +73,18 @@ namespace SharpBucket.Authentication
                 };
             }
             return base.GetResponse<T>(url, method, body, requestParameters);
+        }
+
+        public override async Task<T> GetResponseAsync<T>(string url, Method method, object body, IDictionary<string, object> requestParameters, CancellationToken token)
+        {
+            if (_client == null)
+            {
+                _client = new RestClient(_baseUrl)
+                {
+                    Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)
+                };
+            }
+            return await base.GetResponseAsync<T>(url, method, body, requestParameters, token);
         }
 
         /// <summary>

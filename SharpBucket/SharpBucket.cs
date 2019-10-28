@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using RestSharp;
 using SharpBucket.Authentication;
 using SharpBucket.Utility;
@@ -223,6 +225,12 @@ namespace SharpBucket
             return authenticator.GetResponse(overrideUrl, method, body, requestParameters);
         }
 
+        private async Task<string> SendAsync(object body, Method method, string overrideUrl, IDictionary<string, object> requestParameters, CancellationToken token)
+        {
+            this.RequestsCount++;
+            return await authenticator.GetResponseAsync(overrideUrl, method, body, requestParameters, token);
+        }
+
         private T Send<T>(object body, Method method, string overrideUrl = null, IDictionary<string, object> requestParameters = null)
             where T : new()
         {
@@ -230,11 +238,25 @@ namespace SharpBucket
             return authenticator.GetResponse<T>(overrideUrl, method, body, requestParameters);
         }
 
+        private async Task<T> SendAsync<T>(object body, Method method, string overrideUrl, IDictionary<string, object> requestParameters, CancellationToken token)
+            where T : new()
+        {
+            this.RequestsCount++;
+            return await authenticator.GetResponseAsync<T>(overrideUrl, method, body, requestParameters, token);
+        }
+
         internal string Get(string overrideUrl, object requestParameters = null)
         {
             //Convert to dictionary to avoid refactoring the Send method.
             var parameterDictionary = requestParameters.ToDictionary();
             return Send(null, Method.GET, overrideUrl, parameterDictionary);
+        }
+
+        internal async Task<string> GetAsync(string overrideUrl, object requestParameters = null, CancellationToken token = default(CancellationToken))
+        {
+            //Convert to dictionary to avoid refactoring the Send method.
+            var parameterDictionary = requestParameters.ToDictionary();
+            return await SendAsync(null, Method.GET, overrideUrl, parameterDictionary, token);
         }
 
         internal T Get<T>(string overrideUrl, object requestParameters = null)
@@ -245,10 +267,24 @@ namespace SharpBucket
             return Send<T>(null, Method.GET, overrideUrl, parameterDictionary);
         }
 
+        internal async Task<T> GetAsync<T>(string overrideUrl, object requestParameters = null, CancellationToken token = default(CancellationToken))
+            where T : new()
+        {
+            //Convert to dictionary to avoid refactoring the Send method.
+            var parameterDictionary = requestParameters.ToDictionary();
+            return await SendAsync<T>(null, Method.GET, overrideUrl, parameterDictionary, token);
+        }
+
         internal T Post<T>(T body, string overrideUrl)
             where T : new()
         {
             return Send<T>(body, Method.POST, overrideUrl);
+        }
+
+        internal async Task<T> PostAsync<T>(T body, string overrideUrl, CancellationToken token = default(CancellationToken))
+            where T : new()
+        {
+            return await SendAsync<T>(body, Method.POST, overrideUrl, null, token);
         }
 
         internal T Put<T>(T body, string overrideUrl)
@@ -257,9 +293,20 @@ namespace SharpBucket
             return Send<T>(body, Method.PUT, overrideUrl);
         }
 
+        internal async Task<T> PutAsync<T>(T body, string overrideUrl, CancellationToken token = default(CancellationToken))
+            where T : new()
+        {
+            return await SendAsync<T>(body, Method.PUT, overrideUrl, null, token);
+        }
+
         internal void Delete(string overrideUrl)
         {
             Send(null, Method.DELETE, overrideUrl);
+        }
+
+        internal async Task DeleteAsync(string overrideUrl, CancellationToken token = default(CancellationToken))
+        {
+            await SendAsync(null, Method.DELETE, overrideUrl, null, token);
         }
     }
 }
