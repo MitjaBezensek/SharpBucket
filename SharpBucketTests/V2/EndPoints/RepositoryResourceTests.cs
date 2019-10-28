@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
@@ -20,6 +21,18 @@ namespace SharpBucketTests.V2.EndPoints
             var repositoryResource = SampleRepositories.MercurialRepository;
             repositoryResource.ShouldNotBe(null);
             var testRepository = repositoryResource.GetRepository();
+
+            testRepository.ShouldBeFilled();
+            testRepository.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
+            testRepository.website.ShouldNotBeNullOrEmpty(); // this repository is an example of one where website is filled
+        }
+
+        [Test]
+        public async Task GetRepositoryAsync_FromMercurialRepo_CorrectlyFetchesTheRepoInfo()
+        {
+            var repositoryResource = SampleRepositories.MercurialRepository;
+            repositoryResource.ShouldNotBe(null);
+            var testRepository = await repositoryResource.GetRepositoryAsync();
 
             testRepository.ShouldBeFilled();
             testRepository.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
@@ -157,7 +170,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void CreateRepository_NewPublicRepository_CorrectlyCreatesTheRepository()
+        public void PostRepository_NewPublicRepository_CorrectlyCreatesTheRepository()
         {
             var accountName = TestHelpers.AccountName;
             var repositoryName = Guid.NewGuid().ToString("N");
@@ -186,7 +199,36 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void CreateRepository_InATeamWhereIHaveNoRights_ThrowAnException()
+        public async Task PostRepositoryAsync_NewPublicRepository_CorrectlyCreatesTheRepository()
+        {
+            var accountName = TestHelpers.AccountName;
+            var repositoryName = Guid.NewGuid().ToString("N");
+            var repositoryResource = SampleRepositories.RepositoriesEndPoint.RepositoryResource(accountName, repositoryName);
+            var repository = new Repository
+            {
+                name = repositoryName,
+                language = "c#",
+                scm = "git"
+            };
+
+            var repositoryFromPost = await repositoryResource.PostRepositoryAsync(repository);
+            repositoryFromPost.name.ShouldBe(repositoryName);
+            repositoryFromPost.scm.ShouldBe("git");
+            repositoryFromPost.language.ShouldBe("c#");
+
+            var repositoryFromGet = await repositoryResource.GetRepositoryAsync();
+            repositoryFromGet.name.ShouldBe(repositoryName);
+            repositoryFromGet.scm.ShouldBe("git");
+            repositoryFromGet.language.ShouldBe("c#");
+
+            repositoryFromPost.full_name.ShouldBe(repositoryFromGet.full_name);
+            repositoryFromPost.uuid.ShouldBe(repositoryFromGet.uuid);
+
+            await repositoryResource.DeleteRepositoryAsync();
+        }
+
+        [Test]
+        public void PostRepository_InATeamWhereIHaveNoRights_ThrowAnException()
         {
             var repositoryName = Guid.NewGuid().ToString("N");
             var repositoryResource = SampleRepositories.RepositoriesEndPoint.RepositoryResource(SampleRepositories.MERCURIAL_ACCOUNT_NAME, repositoryName);
@@ -196,6 +238,21 @@ namespace SharpBucketTests.V2.EndPoints
             };
 
             var exception = Assert.Throws<BitbucketV2Exception>(() => repositoryResource.PostRepository(repository));
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.Forbidden);
+            exception.ErrorResponse.error.message.ShouldBe("You cannot administer personal accounts of other users.");
+        }
+
+        [Test]
+        public void PostRepositoryAsync_InATeamWhereIHaveNoRights_ThrowAnException()
+        {
+            var repositoryName = Guid.NewGuid().ToString("N");
+            var repositoryResource = SampleRepositories.RepositoriesEndPoint.RepositoryResource(SampleRepositories.MERCURIAL_ACCOUNT_NAME, repositoryName);
+            var repository = new Repository
+            {
+                name = repositoryName
+            };
+
+            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await repositoryResource.PostRepositoryAsync(repository));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.Forbidden);
             exception.ErrorResponse.error.message.ShouldBe("You cannot administer personal accounts of other users.");
         }
