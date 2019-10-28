@@ -59,18 +59,7 @@ namespace SharpBucket.Authentication
             client.AddHandler("application/json", new JsonDeserializer());
 
             var result = ExecuteRequestWithManualFollowRedirect(request, client, clientExecute);
-            if (result.ResponseStatus != ResponseStatus.Completed)
-            {
-                // There is an issue that prevents the request to complete (timeout, request aborted, ...).
-                // Throw the exception prepared by RestSharp
-                throw new Exception(result.ErrorMessage, result.ErrorException);
-            }
-            if ((int)result.StatusCode < 200 || (int)result.StatusCode >= 300)
-            {
-                // There is an issue which is described in the HTTP response.
-                // Build an throw a BitBucketException, since the message should be provided by BitBucket.
-                throw BuildBitbucketException(result);
-            }
+            ThrowExceptionIsResponseIsInvalid(result);
 
             return result;
         }
@@ -91,20 +80,25 @@ namespace SharpBucket.Authentication
             client.AddHandler("application/json", new JsonDeserializer());
 
             var result = await ExecuteRequestWithManualFollowRedirectAsync(request, client, token);
-            if (result.ResponseStatus != ResponseStatus.Completed)
+            ThrowExceptionIsResponseIsInvalid(result);
+
+            return result;
+        }
+
+        private void ThrowExceptionIsResponseIsInvalid(IRestResponse response)
+        {
+            if (response.ResponseStatus != ResponseStatus.Completed)
             {
                 // There is an issue that prevents the request to complete (timeout, request aborted, ...).
                 // Throw the exception prepared by RestSharp
-                throw new Exception(result.ErrorMessage, result.ErrorException);
+                throw new Exception(response.ErrorMessage, response.ErrorException);
             }
-            if ((int)result.StatusCode < 200 || (int)result.StatusCode >= 300)
+            if ((int)response.StatusCode < 200 || (int)response.StatusCode >= 300)
             {
                 // There is an issue which is described in the HTTP response.
                 // Build an throw a BitBucketException, since the message should be provided by BitBucket.
-                throw BuildBitbucketException(result);
+                throw BuildBitbucketException(response);
             }
-
-            return result;
         }
 
         protected virtual BitbucketException BuildBitbucketException(IRestResponse response)
@@ -151,26 +145,7 @@ namespace SharpBucket.Authentication
             var result = clientExecute(request);
             if (result.StatusCode == HttpStatusCode.Redirect)
             {
-                var redirectUrl = GetRedirectUrl(result, client.BaseUrl.ToString());
-
-                NameValueCollection queryValues;
-                if (redirectUrl.Contains("?"))
-                {
-                    var urlAndQuery = redirectUrl.Split('?');
-                    redirectUrl = urlAndQuery[0];
-                    queryValues = HttpUtility.ParseQueryString(urlAndQuery[1]);
-                }
-                else
-                {
-                    queryValues = new NameValueCollection();
-                }
-
-                request = new RestRequest(redirectUrl, request.Method);
-                foreach (var queryKey in queryValues.AllKeys)
-                {
-                    request.AddQueryParameter(queryKey, queryValues[queryKey]);
-                }
-
+                request = BuildRedirectedRestRequest(request, client, result);
                 result = clientExecute(request);
             }
 
@@ -184,30 +159,37 @@ namespace SharpBucket.Authentication
             var result = await client.ExecuteTaskAsync(request, token);
             if (result.StatusCode == HttpStatusCode.Redirect)
             {
-                var redirectUrl = GetRedirectUrl(result, client.BaseUrl.ToString());
-
-                NameValueCollection queryValues;
-                if (redirectUrl.Contains("?"))
-                {
-                    var urlAndQuery = redirectUrl.Split('?');
-                    redirectUrl = urlAndQuery[0];
-                    queryValues = HttpUtility.ParseQueryString(urlAndQuery[1]);
-                }
-                else
-                {
-                    queryValues = new NameValueCollection();
-                }
-
-                request = new RestRequest(redirectUrl, request.Method);
-                foreach (var queryKey in queryValues.AllKeys)
-                {
-                    request.AddQueryParameter(queryKey, queryValues[queryKey]);
-                }
-
+                request = BuildRedirectedRestRequest(request, client, result);
                 result = await client.ExecuteTaskAsync(request, token);
             }
 
             return result;
+        }
+
+        private static IRestRequest BuildRedirectedRestRequest<TRestResponse>(IRestRequest request, IRestClient client,
+            TRestResponse result) where TRestResponse : IRestResponse
+        {
+            var redirectUrl = GetRedirectUrl(result, client.BaseUrl.ToString());
+
+            NameValueCollection queryValues;
+            if (redirectUrl.Contains("?"))
+            {
+                var urlAndQuery = redirectUrl.Split('?');
+                redirectUrl = urlAndQuery[0];
+                queryValues = HttpUtility.ParseQueryString(urlAndQuery[1]);
+            }
+            else
+            {
+                queryValues = new NameValueCollection();
+            }
+
+            request = new RestRequest(redirectUrl, request.Method);
+            foreach (var queryKey in queryValues.AllKeys)
+            {
+                request.AddQueryParameter(queryKey, queryValues[queryKey]);
+            }
+
+            return request;
         }
 
         private static string GetRedirectUrl(IRestResponse result, string requestBaseUrl)
