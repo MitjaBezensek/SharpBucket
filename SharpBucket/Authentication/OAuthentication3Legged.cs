@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using RestSharp;
 using RestSharp.Authenticators;
@@ -39,17 +41,29 @@ namespace SharpBucket.Authentication
 
         public override string GetResponse(string url, Method method, object body, IDictionary<string, object> requestParameters)
         {
-            if (_client == null)
-            {
-                _client = new RestClient(_baseUrl)
-                {
-                    Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)
-                };
-            }
+            this.EnsureClientIsBuild();
             return base.GetResponse(url, method, body, requestParameters);
         }
 
+        public override async Task<string> GetResponseAsync(string url, Method method, object body, IDictionary<string, object> requestParameters, CancellationToken token)
+        {
+            this.EnsureClientIsBuild();
+            return await base.GetResponseAsync(url, method, body, requestParameters, token);
+        }
+
         public override T GetResponse<T>(string url, Method method, object body, IDictionary<string, object> requestParameters)
+        {
+            this.EnsureClientIsBuild();
+            return base.GetResponse<T>(url, method, body, requestParameters);
+        }
+
+        public override async Task<T> GetResponseAsync<T>(string url, Method method, object body, IDictionary<string, object> requestParameters, CancellationToken token)
+        {
+            this.EnsureClientIsBuild();
+            return await base.GetResponseAsync<T>(url, method, body, requestParameters, token);
+        }
+
+        private void EnsureClientIsBuild()
         {
             if (_client == null)
             {
@@ -58,7 +72,6 @@ namespace SharpBucket.Authentication
                     Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)
                 };
             }
-            return base.GetResponse<T>(url, method, body, requestParameters);
         }
 
         /// <summary>

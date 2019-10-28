@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
@@ -36,6 +38,15 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Returns a single repository.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Repository> GetRepositoryAsync(CancellationToken token = default(CancellationToken))
+        {
+            return await _repositoriesEndPoint.GetRepositoryAsync(_accountName, _slug, token);
+        }
+
+        /// <summary>
         /// Removes a repository.  
         /// </summary>
         /// <returns></returns>
@@ -44,6 +55,14 @@ namespace SharpBucket.V2.EndPoints
             _repositoriesEndPoint.DeleteRepository(_accountName, _slug);
         }
 
+        /// <summary>
+        /// Removes a repository.  
+        /// </summary>
+        /// <returns></returns>
+        public async Task DeleteRepositoryAsync(CancellationToken token = default(CancellationToken))
+        {
+            await _repositoriesEndPoint.DeleteRepositoryAsync(_accountName, _slug, token);
+        }
 
         /// <summary>
         /// Creates a new repository.
@@ -53,6 +72,16 @@ namespace SharpBucket.V2.EndPoints
         public Repository PostRepository(Repository repository)
         {
             return _repositoriesEndPoint.PostRepository(repository, _accountName);
+        }
+
+        /// <summary>
+        /// Creates a new repository.
+        /// </summary>
+        /// <param name="repository">The repository to create.</param>
+        /// <returns>The created repository.</returns>
+        public async Task<Repository> PostRepositoryAsync(Repository repository, CancellationToken token = default(CancellationToken))
+        {
+            return await _repositoriesEndPoint.PostRepositoryAsync(repository, _accountName, token);
         }
 
         /// <summary>
