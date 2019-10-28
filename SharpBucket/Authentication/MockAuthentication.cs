@@ -3,10 +3,8 @@ using System;
 
 namespace SharpBucket.Authentication
 {
-    internal class MockAuthentication: Authenticate
+    internal sealed class MockAuthentication: Authenticate
     {
-        protected override IRestClient Client { get; }
-
         public MockAuthentication(IRestClient client, string baseUrl)
         {
             client.BaseUrl = new Uri(baseUrl);

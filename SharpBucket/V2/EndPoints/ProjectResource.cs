@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
@@ -32,11 +34,39 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Get the full project object located at this resource location
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/%7Bproject_key%7D#get
+        /// </summary>
+        /// <param name="token">The cancellation token</param>
+        public async Task<Project> GetProjectAsync(CancellationToken token = default(CancellationToken))
+        {
+            return await SharpBucketV2.GetAsync<Project>(ProjectUrl, token: token);
+        }
+
+        /// <summary>
         /// Create or update a project at this resource location.
         /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/%7Bproject_key%7D
         /// </summary>
         /// <param name="project">The project object to create or update</param>
         public Project PutProject(Project project)
+        {
+            var updateableFields = CreatePutProjectInstance(project);
+            return SharpBucketV2.Put(updateableFields, ProjectUrl);
+        }
+
+        /// <summary>
+        /// Create or update a project at this resource location.
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/%7Bproject_key%7D
+        /// </summary>
+        /// <param name="project">The project object to create or update</param>
+        /// <param name="token">The cancellation token</param>
+        public async Task<Project> PutProjectAsync(Project project, CancellationToken token = default(CancellationToken))
+        {
+            var updateableFields = CreatePutProjectInstance(project);
+            return await SharpBucketV2.PutAsync(updateableFields, ProjectUrl, token);
+        }
+
+        private Project CreatePutProjectInstance(Project project)
         {
             if (project == null) throw new ArgumentNullException(nameof(project));
 
@@ -54,7 +84,7 @@ namespace SharpBucket.V2.EndPoints
                 updateableFields.key = project.key;
             }
 
-            return SharpBucketV2.Put(updateableFields, ProjectUrl);
+            return updateableFields;
         }
 
         /// <summary>
@@ -64,6 +94,16 @@ namespace SharpBucket.V2.EndPoints
         public void DeleteProject()
         {
             SharpBucketV2.Delete(ProjectUrl);
+        }
+
+        /// <summary>
+        /// Delete the project located at this resource location.
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/%7Bproject_key%7D#delete
+        /// </summary>
+        /// <param name="token">The cancellation token</param>
+        public async Task DeleteProjectAsync(CancellationToken token = default(CancellationToken))
+        {
+            await SharpBucketV2.DeleteAsync(ProjectUrl, token);
         }
     }
 }

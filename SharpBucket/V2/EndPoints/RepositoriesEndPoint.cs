@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 using Comment = SharpBucket.V2.Pocos.Comment;
@@ -84,6 +86,12 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get<Repository>(overrideUrl);
         }
 
+        internal async Task<Repository> GetRepositoryAsync(string accountName, string slug, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, null);
+            return await _sharpBucketV2.GetAsync<Repository>(overrideUrl, token: token);
+        }
+
         internal Repository PutRepository(Repository repo, string accountName, string slug)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, null);
@@ -96,10 +104,22 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Post(repo, overrideUrl);
         }
 
+        internal async Task<Repository> PostRepositoryAsync(Repository repo, string accountName, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, repo.name.ToSlug(), null);
+            return await _sharpBucketV2.PostAsync(repo, overrideUrl, token);
+        }
+
         internal void DeleteRepository(string accountName, string slug)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, null);
             _sharpBucketV2.Delete(overrideUrl);
+        }
+
+        internal async Task DeleteRepositoryAsync(string accountName, string slug, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, null);
+            await _sharpBucketV2.DeleteAsync(overrideUrl, token);
         }
 
         private string GetRepositoryUrl(string accountName, string slug, string append)

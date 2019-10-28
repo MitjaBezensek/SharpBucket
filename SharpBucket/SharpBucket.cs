@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using RestSharp;
 using SharpBucket.Authentication;
 using SharpBucket.Utility;
@@ -215,10 +217,21 @@ namespace SharpBucket
             return authenticator.GetResponse(relativeUrl, method, body, requestParameters);
         }
 
+        private async Task<string> SendAsync(object body, Method method, string overrideUrl, IDictionary<string, object> requestParameters, CancellationToken token)
+        {
+            return await authenticator.GetResponseAsync(overrideUrl, method, body, requestParameters, token);
+        }
+
         private T Send<T>(object body, Method method, string relativeUrl, IDictionary<string, object> requestParameters = null)
             where T : new()
         {
             return authenticator.GetResponse<T>(relativeUrl, method, body, requestParameters);
+        }
+
+        private async Task<T> SendAsync<T>(object body, Method method, string overrideUrl, IDictionary<string, object> requestParameters, CancellationToken token)
+            where T : new()
+        {
+            return await authenticator.GetResponseAsync<T>(overrideUrl, method, body, requestParameters, token);
         }
 
         string ISharpBucketRequester.Get(string relativeUrl, object requestParameters)
@@ -228,6 +241,13 @@ namespace SharpBucket
             return Send(null, Method.GET, relativeUrl, parameterDictionary);
         }
 
+        async Task<string> ISharpBucketRequester.GetAsync(string overrideUrl, object requestParameters, CancellationToken token)
+        {
+            //Convert to dictionary to avoid refactoring the Send method.
+            var parameterDictionary = requestParameters.ToDictionary();
+            return await SendAsync(null, Method.GET, overrideUrl, parameterDictionary, token);
+        }
+
         T ISharpBucketRequester.Get<T>(string relativeUrl, object requestParameters)
         {
             //Convert to dictionary to avoid refactoring the Send method.
@@ -235,9 +255,21 @@ namespace SharpBucket
             return Send<T>(null, Method.GET, relativeUrl, parameterDictionary);
         }
 
+        async Task<T> ISharpBucketRequester.GetAsync<T>(string overrideUrl, object requestParameters, CancellationToken token)
+        {
+            //Convert to dictionary to avoid refactoring the Send method.
+            var parameterDictionary = requestParameters.ToDictionary();
+            return await SendAsync<T>(null, Method.GET, overrideUrl, parameterDictionary, token);
+        }
+
         T ISharpBucketRequester.Post<T>(T body, string relativeUrl)
         {
             return Send<T>(body, Method.POST, relativeUrl);
+        }
+
+        async Task<T> ISharpBucketRequester.PostAsync<T>(T body, string overrideUrl, CancellationToken token)
+        {
+            return await SendAsync<T>(body, Method.POST, overrideUrl, null, token);
         }
 
         T ISharpBucketRequester.Put<T>(T body, string relativeUrl)
@@ -245,9 +277,19 @@ namespace SharpBucket
             return Send<T>(body, Method.PUT, relativeUrl);
         }
 
+        async Task<T> ISharpBucketRequester.PutAsync<T>(T body, string overrideUrl, CancellationToken token)
+        {
+            return await SendAsync<T>(body, Method.PUT, overrideUrl, null, token);
+        }
+
         void ISharpBucketRequester.Delete(string relativeUrl)
         {
             Send(null, Method.DELETE, relativeUrl);
+        }
+
+        async Task ISharpBucketRequester.DeleteAsync(string overrideUrl, CancellationToken token)
+        {
+            await SendAsync(null, Method.DELETE, overrideUrl, null, token);
         }
     }
 }
