@@ -7,7 +7,7 @@ namespace SharpBucket.Authentication
     /// <summary>
     /// This class helps you authenticate with the BitBucket REST API via the OAuth2 client credentials authentication, including support of 
     /// </summary>
-    public class OAuth2ClientCredentials : Authenticate
+    public sealed class OAuth2ClientCredentials : Authenticate
     {
         private const string TokenType = "Bearer";
         private const int RefreshMargin = 5;
@@ -17,25 +17,25 @@ namespace SharpBucket.Authentication
         private OAuth2Token Token { get; set; }
         private DateTime TokenExpirationDate { get; set; }
 
-        private IRestClient _client;
         protected override IRestClient Client
         {
             get
             {
                 if (TokenExpirationDate <= DateTime.UtcNow)
                 {
-                    _client = RefreshClient();
+                    base.Client = RefreshClient();
                 }
 
-                return _client;
+                return base.Client;
             }
+            set => base.Client = value;
         }
 
         public OAuth2ClientCredentials(string consumerKey, string consumerSecret, string baseUrl)
         {
             TokenProvider = new OAuth2TokenProvider(consumerKey, consumerSecret);
             BaseUrl = baseUrl;
-            _client = CreateClient();
+            Client = CreateClient();
         }
 
         private IRestClient CreateClient()

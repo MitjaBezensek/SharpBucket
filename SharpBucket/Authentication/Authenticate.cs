@@ -8,7 +8,17 @@ namespace SharpBucket.Authentication
 {
     public abstract class Authenticate
     {
-        protected abstract IRestClient Client { get; }
+        private IRestClient _client;
+
+        protected virtual IRestClient Client
+        {
+            get => _client;
+            set
+            {
+                this.RequestExecutor.ConfigureRestClient(value);
+                _client = value;
+            }
+        }
 
         internal RequestExecutor RequestExecutor { get; set; } = new RequestExecutorV2(); // Use V2 by default since V1 should disappear soon
 

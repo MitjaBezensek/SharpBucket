@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Net;
 using System.Web;
 using RestSharp;
@@ -10,7 +9,7 @@ namespace SharpBucket.Authentication
     /// <summary>
     /// This class helps you authenticate with the BitBucket REST API via the 3 legged OAuth authentication.
     /// </summary>
-    public class OAuth1ThreeLeggedAuthentication : Authenticate
+    public sealed class OAuth1ThreeLeggedAuthentication : Authenticate
     {
         private const string RequestUrl = "oauth/request_token";
         private const string UserAuthorizeUrl = "oauth/authenticate";
@@ -24,25 +23,25 @@ namespace SharpBucket.Authentication
         private OAuth1Token RequestToken { get; set; }
         private OAuth1Token AccessToken { get; set; }
 
-        private IRestClient _client;
         protected override IRestClient Client
         {
             get
             {
-                if (_client == null)
+                if (Client == null)
                 {
                     if (AccessToken == null)
                     {
                         throw new InvalidOperationException("StartAuthentication and AuthenticateWithPin must be called before being able to do any request with this authentication mode");
                     }
-                    _client = new RestClient(BaseUrl)
+                    Client = new RestClient(BaseUrl)
                     {
                         Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, AccessToken.Token, AccessToken.Secret)
                     };
                 }
 
-                return _client;
+                return Client;
             }
+            set => base.Client = value;
         }
 
         private OAuth1ThreeLeggedAuthentication(string consumerKey, string consumerSecret, string baseUrl)

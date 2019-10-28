@@ -16,6 +16,20 @@ namespace SharpBucket.Authentication
     {
         private readonly JsonDeserializer jsonDeserializer = new JsonDeserializer();
 
+        /// <summary>
+        /// Configure a <see cref="IRestClient"/> instance to be compatible with the style of requests done by the <see cref="RequestExecutor"/>
+        /// </summary>
+        /// <param name="client">The client to configure</param>
+        public virtual void ConfigureRestClient(IRestClient client)
+        {
+            //Fixed bug that prevents RestClient for adding custom headers to the request
+            //https://stackoverflow.com/questions/22229393/why-is-restsharp-addheaderaccept-application-json-to-a-list-of-item
+            client.ClearHandlers();
+            client.AddHandler("application/json", new JsonDeserializer());
+
+            client.FollowRedirects = false;
+        }
+
         public string ExecuteRequest(string url, Method method, object body, IRestClient client, IDictionary<string, object> requestParameters)
         {
             var result = Execute(url, method, body, client, requestParameters);
@@ -50,12 +64,6 @@ namespace SharpBucket.Authentication
             IDictionary<string, object> requestParameters)
         {
             var request = BuildRestRequest(url, method, body, requestParameters);
-
-            //Fixed bug that prevents RestClient for adding custom headers to the request
-            //https://stackoverflow.com/questions/22229393/why-is-restsharp-addheaderaccept-application-json-to-a-list-of-item
-            client.ClearHandlers();
-            client.AddHandler("application/json", new JsonDeserializer());
-
             var result = ExecuteRequestWithManualFollowRedirect(request, client);
             ThrowExceptionIsResponseIsInvalid(result);
 
@@ -71,12 +79,6 @@ namespace SharpBucket.Authentication
             CancellationToken token)
         {
             var request = BuildRestRequest(url, method, body, requestParameters);
-
-            //Fixed bug that prevents RestClient for adding custom headers to the request
-            //https://stackoverflow.com/questions/22229393/why-is-restsharp-addheaderaccept-application-json-to-a-list-of-item
-            client.ClearHandlers();
-            client.AddHandler("application/json", new JsonDeserializer());
-
             var result = await ExecuteRequestWithManualFollowRedirectAsync(request, client, token);
             ThrowExceptionIsResponseIsInvalid(result);
 
@@ -137,8 +139,6 @@ namespace SharpBucket.Authentication
 
         private static IRestResponse ExecuteRequestWithManualFollowRedirect(IRestRequest request, IRestClient client)
         {
-            client.FollowRedirects = false;
-
             var result = client.Execute(request);
             if (result.StatusCode == HttpStatusCode.Redirect)
             {
@@ -151,8 +151,6 @@ namespace SharpBucket.Authentication
 
         private static async Task<IRestResponse>ExecuteRequestWithManualFollowRedirectAsync(IRestRequest request, IRestClient client, CancellationToken token)
         {
-            client.FollowRedirects = false;
-
             var result = await client.ExecuteTaskAsync(request, token);
             if (result.StatusCode == HttpStatusCode.Redirect)
             {
