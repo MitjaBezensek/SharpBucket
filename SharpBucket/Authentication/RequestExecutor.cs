@@ -18,7 +18,7 @@ namespace SharpBucket.Authentication
 
         public string ExecuteRequest(string url, Method method, object body, IRestClient client, IDictionary<string, object> requestParameters)
         {
-            var result = Execute(url, method, body, client, requestParameters, client.Execute);
+            var result = Execute(url, method, body, client, requestParameters);
             return result.Content;
         }
 
@@ -31,7 +31,7 @@ namespace SharpBucket.Authentication
         public T ExecuteRequest<T>(string url, Method method, object body, IRestClient client, IDictionary<string, object> requestParameters)
             where T : new()
         {
-            var result = Execute(url, method, body, client, requestParameters, client.Execute);
+            var result = Execute(url, method, body, client, requestParameters);
             return jsonDeserializer.Deserialize<T>(result);
         }
 
@@ -42,14 +42,12 @@ namespace SharpBucket.Authentication
             return jsonDeserializer.Deserialize<T>(result);
         }
 
-        private TRestResponse Execute<TRestResponse>(
+        private IRestResponse Execute(
             string url,
             Method method,
             object body,
             IRestClient client,
-            IDictionary<string, object> requestParameters,
-            Func<IRestRequest, TRestResponse> clientExecute)
-            where TRestResponse : IRestResponse
+            IDictionary<string, object> requestParameters)
         {
             var request = BuildRestRequest(url, method, body, requestParameters);
 
@@ -58,7 +56,7 @@ namespace SharpBucket.Authentication
             client.ClearHandlers();
             client.AddHandler("application/json", new JsonDeserializer());
 
-            var result = ExecuteRequestWithManualFollowRedirect(request, client, clientExecute);
+            var result = ExecuteRequestWithManualFollowRedirect(request, client);
             ThrowExceptionIsResponseIsInvalid(result);
 
             return result;
@@ -137,16 +135,15 @@ namespace SharpBucket.Authentication
 
         protected abstract void AddBody(IRestRequest request, object body);
 
-        private static TRestResponse ExecuteRequestWithManualFollowRedirect<TRestResponse>(IRestRequest request, IRestClient client, Func<IRestRequest, TRestResponse> clientExecute)
-            where TRestResponse : IRestResponse
+        private static IRestResponse ExecuteRequestWithManualFollowRedirect(IRestRequest request, IRestClient client)
         {
             client.FollowRedirects = false;
 
-            var result = clientExecute(request);
+            var result = client.Execute(request);
             if (result.StatusCode == HttpStatusCode.Redirect)
             {
                 request = BuildRedirectedRestRequest(request, client, result);
-                result = clientExecute(request);
+                result = client.Execute(request);
             }
 
             return result;
