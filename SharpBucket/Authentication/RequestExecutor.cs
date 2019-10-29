@@ -65,7 +65,7 @@ namespace SharpBucket.Authentication
         {
             var request = BuildRestRequest(url, method, body, requestParameters);
             var result = ExecuteRequestWithManualFollowRedirect(request, client);
-            ThrowExceptionIsResponseIsInvalid(result);
+            ThrowExceptionIfResponseIsInvalid(result);
 
             return result;
         }
@@ -80,12 +80,12 @@ namespace SharpBucket.Authentication
         {
             var request = BuildRestRequest(url, method, body, requestParameters);
             var result = await ExecuteRequestWithManualFollowRedirectAsync(request, client, token);
-            ThrowExceptionIsResponseIsInvalid(result);
+            ThrowExceptionIfResponseIsInvalid(result);
 
             return result;
         }
 
-        private void ThrowExceptionIsResponseIsInvalid(IRestResponse response)
+        private void ThrowExceptionIfResponseIsInvalid(IRestResponse response)
         {
             if (response.ResponseStatus != ResponseStatus.Completed)
             {
