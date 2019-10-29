@@ -245,6 +245,32 @@ namespace SharpBucket
             return await authenticator.GetResponseAsync<T>(overrideUrl, method, body, requestParameters, token);
         }
 
+        private Uri SendAndGetRedirectLocation(object body, Method method, string overrideUrl, IDictionary<string, object> requestParameters)
+        {
+            this.RequestsCount++;
+            return authenticator.GetRedirectLocation(overrideUrl, method, body, requestParameters);
+        }
+
+        private Task<Uri> SendAndGetRedirectLocationAsync(object body, Method method, string overrideUrl, IDictionary<string, object> requestParameters, CancellationToken token)
+        {
+            this.RequestsCount++;
+            return authenticator.GetRedirectLocationAsync(overrideUrl, method, body, requestParameters, token);
+        }
+
+        internal Uri GetRedirectLocation(string overrideUrl, object requestParameters = null)
+        {
+            //Convert to dictionary to avoid refactoring the Send method.
+            var parameterDictionary = requestParameters.ToDictionary();
+            return SendAndGetRedirectLocation(null, Method.GET, overrideUrl, parameterDictionary);
+        }
+
+        internal Task<Uri> GetRedirectLocationAsync(string overrideUrl, object requestParameters = null, CancellationToken token = default(CancellationToken))
+        {
+            //Convert to dictionary to avoid refactoring the Send method.
+            var parameterDictionary = requestParameters.ToDictionary();
+            return SendAndGetRedirectLocationAsync(null, Method.GET, overrideUrl, parameterDictionary, token);
+        }
+
         internal string Get(string overrideUrl, object requestParameters = null)
         {
             //Convert to dictionary to avoid refactoring the Send method.

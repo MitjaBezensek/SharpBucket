@@ -39,11 +39,10 @@ namespace SharpBucket.V2.EndPoints
                 {
                     try
                     {
-                        // This may potentially be optimized since this call will first hit a redirect toward an url that contains the revision
-                        // but the actual architecture of the code doesn't allow us to fetch just the redirect location of a GET request.
-                        // so we found back the data we need in the response of the call to the url where we are redirected.
-                        var rootEntry = repositoriesEndPoint.GetTreeEntry(rootSrcPath);
-                        revision = rootEntry.commit.hash;
+                        // calling the src endpoint redirect to the hash of the last commit of the main branch
+                        // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src#get
+                        var redirectLocation = repositoriesEndPoint.GetRedirectLocation(rootSrcPath);
+                        revision = redirectLocation.Segments[redirectLocation.Segments.Length - 1];
                     }
                     catch (BitbucketV2Exception e) when (e.HttpStatusCode == HttpStatusCode.NotFound)
                     {
