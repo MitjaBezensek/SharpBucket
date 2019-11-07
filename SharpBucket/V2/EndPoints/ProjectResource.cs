@@ -103,7 +103,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">The cancellation token</param>
         public async Task DeleteProjectAsync(CancellationToken token = default(CancellationToken))
         {
-            await SharpBucketV2.DeleteAsync(ProjectUrl, token);
+            await SharpBucketV2.DeleteAsync(ProjectUrl, token: token);
         }
     }
 }

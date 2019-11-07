@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -77,6 +79,19 @@ namespace SharpBucket.V2.EndPoints
         {
             if (_teamResource == null) throw new InvalidOperationException("This method could be used only with obsolete constructor, when a team name has been provided");
             return _teamResource.GetProfile();
+        }
+
+        /// <summary>
+        /// Gets the public information associated with a team. 
+        /// If the team's profile is private, the caller must be authenticated and authorized to view this information. 
+        /// </summary>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        [Obsolete("Use TeamResource.GetProfile() instead")]
+        public async Task<Team> GetProfileAsync(CancellationToken token = default(CancellationToken))
+        {
+            if (_teamResource == null) throw new InvalidOperationException("This method could be used only with obsolete constructor, when a team name has been provided");
+            return await _teamResource.GetProfileAsync(token: token);
         }
 
         /// <summary>

@@ -170,6 +170,28 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
+        public async Task GetCommitAsync_AKnownHashOnMercurialRepository_ShouldReturnCorrectData()
+        {
+            var repositoryResource = SampleRepositories.MercurialRepository;
+
+            var commit = await repositoryResource.GetCommitAsync("abae1eb695c077fa21b6ef0b7056f36d63cf0302");
+
+            commit.ShouldNotBeNull();
+            commit.hash.ShouldBe("abae1eb695c077fa21b6ef0b7056f36d63cf0302");
+            commit.date.ShouldNotBeNullOrWhiteSpace();
+            commit.message.ShouldNotBeNullOrWhiteSpace();
+            commit.author.raw.ShouldNotBeNullOrWhiteSpace();
+            commit.author.user.ShouldBeFilled();
+            commit.links.ShouldNotBeNull();
+            commit.parents[0].ShouldBeFilled();
+            commit.repository.uuid.ShouldNotBeNullOrWhiteSpace();
+            commit.repository.full_name.ShouldNotBeNullOrWhiteSpace();
+            commit.repository.name.ShouldNotBeNullOrWhiteSpace();
+            commit.repository.links.ShouldNotBeNull();
+            commit.summary.ShouldBeFilled();
+        }
+
+        [Test]
         public void PostRepository_NewPublicRepository_CorrectlyCreatesTheRepository()
         {
             var accountName = TestHelpers.AccountName;
@@ -280,6 +302,28 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
+        public async Task ApproveAsyncCommitAsyncAndDeleteCommitApprovalAsync_TestRepository_CommitStateChangedCorrectly()
+        {
+            var currentUser = TestHelpers.AccountName;
+            var testRepository = SampleRepositories.TestRepository;
+            var repositoryResource = testRepository.RepositoryResource;
+            var firstCommit = testRepository.RepositoryInfo.FirstCommit;
+            var initialCommit = await repositoryResource.GetCommitAsync(firstCommit);
+            initialCommit?.participants.Any(p => p.User.nickname == currentUser && p.Approved).ShouldBe(false, "Initial state should be: 'not approved'");
+
+            var userRole = await repositoryResource.ApproveCommitAsync(firstCommit);
+            var approvedCommit = await repositoryResource.GetCommitAsync(firstCommit);
+            await repositoryResource.DeleteCommitApprovalAsync(firstCommit);
+            var notApprovedCommit = await repositoryResource.GetCommitAsync(firstCommit);
+
+            userRole.Approved.ShouldBe(true);
+            userRole.User.nickname.ShouldBe(currentUser);
+            userRole.Role.ShouldBe("PARTICIPANT");
+            approvedCommit?.participants.Any(p => p.User.nickname == currentUser && p.Approved).ShouldBe(true, "Commit should be approved after call to ApproveCommit");
+            notApprovedCommit?.participants.Any(p => p.User.nickname == currentUser && p.Approved).ShouldBe(false, "Commit should not be approved after call to DeleteCommitApproval");
+        }
+
+        [Test]
         public void BuildStatusInfo_AddGetChangeOnFirstCommit_ShouldWork()
         {
             var testRepository = SampleRepositories.TestRepository;
@@ -306,6 +350,37 @@ namespace SharpBucketTests.V2.EndPoints
 
             getBuildInfo.state = BuildInfoState.SUCCESSFUL;
             var changedBuildInfo = repositoryResource.ChangeBuildStatusInfo(firstCommit, "FooBuild42", getBuildInfo);
+            changedBuildInfo.ShouldNotBeNull();
+            changedBuildInfo.state.ShouldBe(BuildInfoState.SUCCESSFUL);
+        }
+
+        [Test]
+        public async Task BuildStatusInfo_AddGetChangeOnFirstCommitAsync_ShouldWork()
+        {
+            var testRepository = SampleRepositories.TestRepository;
+            var repositoryResource = testRepository.RepositoryResource;
+            var firstCommit = testRepository.RepositoryInfo.FirstCommit;
+
+            var firstBuildStatus = new BuildInfo
+            {
+                key = "FooBuild42",
+                state = BuildInfoState.INPROGRESS,
+                url = "https://foo.com/builds/{repository.full_name}",
+                name = "Foo Build #42",
+                description = "fake build status from a fake build server"
+            };
+            var buildInfo = await repositoryResource.AddNewBuildStatusAsync(firstCommit, firstBuildStatus);
+            buildInfo.ShouldNotBeNull();
+            buildInfo.state.ShouldBe(firstBuildStatus.state);
+            buildInfo.name.ShouldBe(firstBuildStatus.name);
+            buildInfo.description.ShouldBe(firstBuildStatus.description);
+
+            var getBuildInfo = await repositoryResource.GetBuildStatusInfoAsync(firstCommit, "FooBuild42");
+            getBuildInfo.ShouldNotBeNull();
+            getBuildInfo.state.ShouldBe(BuildInfoState.INPROGRESS);
+
+            getBuildInfo.state = BuildInfoState.SUCCESSFUL;
+            var changedBuildInfo = await repositoryResource.ChangeBuildStatusInfoAsync(firstCommit, "FooBuild42", getBuildInfo);
             changedBuildInfo.ShouldNotBeNull();
             changedBuildInfo.state.ShouldBe(BuildInfoState.SUCCESSFUL);
         }

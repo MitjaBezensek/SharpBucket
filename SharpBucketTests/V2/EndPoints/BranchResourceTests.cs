@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Threading.Tasks;
+using NUnit.Framework;
 using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
@@ -27,6 +28,18 @@ namespace SharpBucketTests.V2.EndPoints
             var initialBranches = branchResource.ListBranches();
 
             branchResource.DeleteBranch("branchToDelete");
+
+            var remainingBranches = branchResource.ListBranches();
+            remainingBranches.Count.ShouldBe(initialBranches.Count - 1);
+        }
+
+        [Test]
+        public async Task DeleteBranchAsync_ExistingBranch_BrancCouldNotBeListedAnymore()
+        {
+            var branchResource = SampleRepositories.TestRepository.RepositoryResource.BranchesResource;
+            var initialBranches = branchResource.ListBranches();
+
+            await branchResource.DeleteBranchAsync("branchToDelete");
 
             var remainingBranches = branchResource.ListBranches();
             remainingBranches.Count.ShouldBe(initialBranches.Count - 1);

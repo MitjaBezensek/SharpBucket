@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
@@ -29,6 +31,16 @@ namespace SharpBucket.V2.EndPoints
         public Team GetProfile()
         {
             return _sharpBucketV2.Get<Team>(_baseUrl);
+        }
+
+        /// <summary>
+        /// Gets the public information associated with a team. 
+        /// If the team's profile is private, the caller must be authenticated and authorized to view this information. 
+        /// </summary>
+        /// <param name="token">The cancellation token</param>
+        public async Task<Team> GetProfileAsync(CancellationToken token = default(CancellationToken))
+        {
+            return await _sharpBucketV2.GetAsync<Team>(_baseUrl, token: token);
         }
 
         /// <summary>
@@ -106,6 +118,19 @@ namespace SharpBucket.V2.EndPoints
         {
             var overrideUrl = _baseUrl + "projects/";
             return _sharpBucketV2.Post(project, overrideUrl);
+        }
+
+        /// <summary>
+        /// Create a new project.
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/
+        /// </summary>
+        /// <param name="project"></param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns>A new project instance that fully represent the newly created project.</returns>
+        public async Task<Project> PostProjectAsync(Project project, CancellationToken token = default(CancellationToken))
+        {
+            var overrideUrl = _baseUrl + "projects/";
+            return await _sharpBucketV2.PostAsync(project, overrideUrl, token: token);
         }
 
         /// <summary>

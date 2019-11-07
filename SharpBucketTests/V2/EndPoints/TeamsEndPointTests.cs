@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
@@ -51,6 +52,15 @@ namespace SharpBucketTests.V2.EndPoints
         {
             sharpBucket.ShouldNotBe(null);
             var profile = sharpBucket.TeamsEndPoint("atlassian").GetProfile();
+            profile.display_name.ShouldBe("Atlassian");
+        }
+
+        [Test]
+        [Obsolete]
+        public async Task GetProfileAsync_FromTeamAtlassian_ReturnsAtlassianProfile()
+        {
+            sharpBucket.ShouldNotBe(null);
+            var profile = await sharpBucket.TeamsEndPoint("atlassian").GetProfileAsync();
             profile.display_name.ShouldBe("Atlassian");
         }
 

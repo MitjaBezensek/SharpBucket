@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Threading.Tasks;
+using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using Shouldly;
@@ -23,6 +24,14 @@ namespace SharpBucketTests.V2.EndPoints
         {
             userEndPoint.ShouldNotBe(null);
             var user = userEndPoint.GetUser();
+            user.ShouldNotBe(null);
+        }
+
+        [Test]
+        public async Task GetUserAsync_FromLoggedUser_ShouldReturnAUser()
+        {
+            userEndPoint.ShouldNotBe(null);
+            var user = await userEndPoint.GetUserAsync();
             user.ShouldNotBe(null);
         }
     }

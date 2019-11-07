@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
@@ -107,12 +109,38 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Gets the metadata of a specified sub path in this resource.
+        /// <remarks>
+        /// Since it can be difficult to guess which field is filled or not in a <see cref="TreeEntry"/>,
+        /// we suggest you to use <see cref="GetSrcEntry"/> method instead of that one,
+        /// except if you really want to retrieve the raw model as returned by BitBucket.
+        /// </remarks>
+        /// </summary>
+        /// <param name="subPath">The path to the file or directory, or null to retrieve the metadata of the root of this resource.</param>
+        /// <param name="token">The cancellation token</param>
+        public async Task<TreeEntry> GetTreeEntryAsync(string subPath = null, CancellationToken token = default(CancellationToken))
+        {
+            return await RepositoriesEndPoint.GetTreeEntryAsync(SrcPath.Value, subPath, token);
+        }
+
+        /// <summary>
         /// Gets the metadata of a specified file or directory in this resource.
         /// </summary>
         /// <param name="subPath">The path to the file or directory, or null to retrieve the metadata of the root of this resource.</param>
         public SrcEntry GetSrcEntry(string subPath = null)
         {
             return GetTreeEntry(subPath).ToSrcEntry();
+        }
+
+        /// <summary>
+        /// Gets the metadata of a specified file or directory in this resource.
+        /// </summary>
+        /// <param name="subPath">The path to the file or directory, or null to retrieve the metadata of the root of this resource.</param>
+        /// <param name="token">The cancellation token</param>
+        public async Task<SrcEntry> GetSrcEntryAsync(string subPath = null, CancellationToken token = default(CancellationToken))
+        {
+            var treeEntry = await GetTreeEntryAsync(subPath, token: token);
+            return treeEntry.ToSrcEntry();
         }
 
         /// <summary>
@@ -126,12 +154,35 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Gets the metadata of a specified file.
+        /// </summary>
+        /// <param name="filePath">The path to the file.</param>
+        /// <param name="token">The cancellation token</param>
+        public async Task<SrcFile> GetSrcFileAsync(string filePath, CancellationToken token = default(CancellationToken))
+        {
+            if (string.IsNullOrEmpty(filePath)) throw new ArgumentNullException(nameof(filePath));
+            var treeEntry = await GetTreeEntryAsync(filePath, token: token);
+            return (SrcFile)treeEntry.ToSrc();
+        }
+
+        /// <summary>
         /// Gets the metadata of a specified directory.
         /// </summary>
         /// <param name="directoryPath">The path to the directory, or null to retrieve the metadata of the root of this resource.</param>
         public SrcDirectory GetSrcDirectory(string directoryPath)
         {
             return (SrcDirectory)GetTreeEntry(directoryPath).ToSrc();
+        }
+
+        /// <summary>
+        /// Gets the metadata of a specified directory.
+        /// </summary>
+        /// <param name="directoryPath">The path to the directory, or null to retrieve the metadata of the root of this resource.</param>
+        /// <param name="token">The cancellation token</param>
+        public async Task<SrcDirectory> GetSrcDirectoryAsync(string directoryPath, CancellationToken token = default(CancellationToken))
+        {
+            var treeEntry = await GetTreeEntryAsync(directoryPath, token: token);
+            return (SrcDirectory)treeEntry.ToSrc();
         }
 
         /// <summary>
@@ -151,6 +202,16 @@ namespace SharpBucket.V2.EndPoints
         public string GetFileContent(string filePath)
         {
             return RepositoriesEndPoint.GetFileContent(SrcPath.Value, filePath);
+        }
+
+        /// <summary>
+        /// Gets the raw content of the specified file.
+        /// </summary>
+        /// <param name="filePath">The path to a file relative to the root of this resource.</param>
+        /// <param name="token">The cancellation token</param>
+        public async Task<string> GetFileContentAsync(string filePath, CancellationToken token = default(CancellationToken))
+        {
+            return await RepositoriesEndPoint.GetFileContentAsync(SrcPath.Value, filePath, token: token);
         }
     }
 }
