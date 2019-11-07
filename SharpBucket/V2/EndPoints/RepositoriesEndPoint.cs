@@ -376,7 +376,6 @@ namespace SharpBucket.V2.EndPoints
 
         internal async Task DeleteBranchRestrictionAsync(string accountName, string slug, int restrictionId, CancellationToken token = default(CancellationToken))
         {
-            //GetRepositoryUrl performed locally
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"branch-restrictions/{restrictionId}");
             await _sharpBucketV2.DeleteAsync(overrideUrl, token: token);
         }
