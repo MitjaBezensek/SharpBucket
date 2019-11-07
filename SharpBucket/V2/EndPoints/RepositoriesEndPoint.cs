@@ -557,7 +557,7 @@ namespace SharpBucket.V2.EndPoints
             _sharpBucketV2.Delete(overrideUrl);
         }
 
-        internal async Task DeleteBranchAsync(string accountName, string repSlug, string branchName, CancellationToken token)
+        internal async Task DeleteBranchAsync(string accountName, string repSlug, string branchName, CancellationToken token = default(CancellationToken))
         {
             var overrideUrl = GetRepositoryUrl(accountName, repSlug, "refs/branches/" + branchName);
             await _sharpBucketV2.DeleteAsync(overrideUrl, token: token);
