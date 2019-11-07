@@ -334,7 +334,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task GetSrcFileAsync_OfADirectory_ThrowsInvalidCastException()
+        public void GetSrcFileAsync_OfADirectory_ThrowsInvalidCastException()
         {
             var testRepo = SampleRepositories.TestRepository;
             var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource();
@@ -356,7 +356,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task GetSrcFileAsync_OfNull_ThrowsArgumentNullException()
+        public void GetSrcFileAsync_OfNull_ThrowsArgumentNullException()
         {
             var testRepo = SampleRepositories.TestRepository;
             var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource();
@@ -402,7 +402,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task GetSrcDirectoryAsync_OfAFile_ThrowsInvalidCastException()
+        public void GetSrcDirectoryAsync_OfAFile_ThrowsInvalidCastException()
         {
             var testRepo = SampleRepositories.TestRepository;
             var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource();
@@ -468,12 +468,12 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task GetFileContentAsync_OfAFileThatDoNotExists_ThrowAnException()
+        public void GetFileContentAsync_OfAFileThatDoNotExists_ThrowAnException()
         {
             var testRepo = SampleRepositories.TestRepository;
             var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource(testRepo.RepositoryInfo.FirstCommit);
 
-            var exception = Assert.Throws<BitbucketV2Exception>(async () => await rootOfFirstCommit.GetFileContentAsync("NotExistingFile.txt"));
+            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await rootOfFirstCommit.GetFileContentAsync("NotExistingFile.txt"));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
             exception.Message.ShouldBe("No such file or directory: NotExistingFile.txt");
         }
@@ -490,12 +490,12 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task GetFileContentAsync_OfAFileFromARevisionThatDoNotExists_ThrowAnException()
+        public void GetFileContentAsync_OfAFileFromARevisionThatDoNotExists_ThrowAnException()
         {
             var testRepo = SampleRepositories.TestRepository;
             var srcOfNotExistingRevision = testRepo.RepositoryResource.SrcResource("not_existing_revision");
 
-            var exception = Assert.Throws<BitbucketV2Exception>(async () => await srcOfNotExistingRevision.GetFileContentAsync("AnyFile.txt"));
+            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await srcOfNotExistingRevision.GetFileContentAsync("AnyFile.txt"));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
             exception.Message.ShouldBe("Commit not found");
         }
@@ -512,12 +512,12 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task GetFileContentAsync_OfAFileFromARepositoryThatDoNotExists_ThrowAnException()
+        public void GetFileContentAsync_OfAFileFromARepositoryThatDoNotExists_ThrowAnException()
         {
             var notExistingRepo = TestHelpers.SharpBucketV2.RepositoriesEndPoint().RepositoryResource("foo", "bar");
             var masterSrcResource = notExistingRepo.SrcResource("master");
 
-            var exception = Assert.Throws<BitbucketV2Exception>(async () => await masterSrcResource.GetFileContentAsync("AnyFile.txt"));
+            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await masterSrcResource.GetFileContentAsync("AnyFile.txt"));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
             exception.Message.ShouldBe("Repository foo/bar not found");
         }
@@ -534,12 +534,12 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task GetFileContentAsync_OfAFileFromARepositoryThatDoNotExistsWithoutSpecifyingRevision_ThrowAnException()
+        public void GetFileContentAsync_OfAFileFromARepositoryThatDoNotExistsWithoutSpecifyingRevision_ThrowAnException()
         {
             var notExistingRepo = TestHelpers.SharpBucketV2.RepositoriesEndPoint().RepositoryResource("foo", "bar");
             var masterSrcResource = notExistingRepo.SrcResource();
 
-            var exception = Assert.Throws<BitbucketV2Exception>(async () => await masterSrcResource.GetFileContentAsync("AnyFile.txt"));
+            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await masterSrcResource.GetFileContentAsync("AnyFile.txt"));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
             exception.Message.ShouldBe("Repository foo/bar not found");
         }

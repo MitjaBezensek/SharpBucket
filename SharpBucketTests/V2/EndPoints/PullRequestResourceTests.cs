@@ -59,9 +59,9 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task GetPullRequestAsync_NotExistingPublicPullRequest_ThrowException()
+        public void GetPullRequestAsync_NotExistingPublicPullRequest_ThrowException()
         {
-            var exception = Assert.Throws<BitbucketV2Exception>(async () => await NotExistingPullRequest.GetPullRequestAsync());
+            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await NotExistingPullRequest.GetPullRequestAsync());
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
@@ -142,9 +142,9 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task GetPullRequestCommentAsync_NotExistingCommentOnPublicPullRequest_ThrowException()
+        public void GetPullRequestCommentAsync_NotExistingCommentOnPublicPullRequest_ThrowException()
         {
-            var exception = Assert.Throws<BitbucketV2Exception>(async() => await ExistingPullRequest.GetPullRequestCommentAsync(int.MaxValue));
+            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async() => await ExistingPullRequest.GetPullRequestCommentAsync(int.MaxValue));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
@@ -188,9 +188,9 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task GetDiffForPullRequestAsync_NotExistingPublicPullRequest_ThrowException()
+        public void GetDiffForPullRequestAsync_NotExistingPublicPullRequest_ThrowException()
         {
-            var exception = Assert.Throws<BitbucketV2Exception>(async () => await NotExistingPullRequest.GetDiffForPullRequestAsync());
+            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await NotExistingPullRequest.GetDiffForPullRequestAsync());
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
