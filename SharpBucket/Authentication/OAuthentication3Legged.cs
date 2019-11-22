@@ -14,7 +14,7 @@ namespace SharpBucket.Authentication
     /// This class helps you authenticated with the BitBucket REST API via the 3 legged OAuth authentication.
     /// </summary>
     [Obsolete("Use OAuth1ThreeLeggedAuthentication instead")]
-    public class OAuthentication3Legged : OauthAuthentication
+    public sealed class OAuthentication3Legged : OauthAuthentication
     {
         private string OAuthToken;
         private string OauthTokenSecret;
@@ -22,9 +22,6 @@ namespace SharpBucket.Authentication
         private const string userAuthorizeUrl = "oauth/authenticate";
         private const string accessUrl = "oauth/access_token";
         private readonly string callback;
-
-        private IRestClient _client;
-        protected override IRestClient Client => _client;
 
         public OAuthentication3Legged(string consumerKey, string consumerSecret, string callback, string baseUrl)
             : base(consumerKey, consumerSecret, baseUrl)
@@ -41,50 +38,37 @@ namespace SharpBucket.Authentication
 
         public override string GetResponse(string url, Method method, object body, IDictionary<string, object> requestParameters)
         {
-            if (_client == null)
-            {
-                _client = new RestClient(_baseUrl)
-                {
-                    Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)
-                };
-            }
+            this.EnsureClientIsBuild();
             return base.GetResponse(url, method, body, requestParameters);
         }
 
         public override async Task<string> GetResponseAsync(string url, Method method, object body, IDictionary<string, object> requestParameters, CancellationToken token)
         {
-            if (_client == null)
-            {
-                _client = new RestClient(_baseUrl)
-                {
-                    Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)
-                };
-            }
+            this.EnsureClientIsBuild();
             return await base.GetResponseAsync(url, method, body, requestParameters, token);
         }
 
         public override T GetResponse<T>(string url, Method method, object body, IDictionary<string, object> requestParameters)
         {
-            if (_client == null)
-            {
-                _client = new RestClient(_baseUrl)
-                {
-                    Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)
-                };
-            }
+            this.EnsureClientIsBuild();
             return base.GetResponse<T>(url, method, body, requestParameters);
         }
 
         public override async Task<T> GetResponseAsync<T>(string url, Method method, object body, IDictionary<string, object> requestParameters, CancellationToken token)
         {
-            if (_client == null)
+            this.EnsureClientIsBuild();
+            return await base.GetResponseAsync<T>(url, method, body, requestParameters, token);
+        }
+
+        private void EnsureClientIsBuild()
+        {
+            if (Client == null)
             {
-                _client = new RestClient(_baseUrl)
+                Client = new RestClient(_baseUrl)
                 {
                     Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, OAuthToken, OauthTokenSecret)
                 };
             }
-            return await base.GetResponseAsync<T>(url, method, body, requestParameters, token);
         }
 
         /// <summary>

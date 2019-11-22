@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
@@ -55,6 +56,17 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Creates a new pull request. The request URL you provide is the destination repository URL. 
+        /// For this reason, you must specify an explicit source repository in the request object if you want to pull from a different repository.
+        /// </summary>
+        /// <param name="pullRequest">The pull request.</param>
+        /// <returns></returns>
+        public async Task<PullRequest> PostPullRequestAsync(PullRequest pullRequest)
+        {
+            return await _repositoriesEndPoint.PostPullRequestAsync(_accountName, _slug, pullRequest);
+        }
+
+        /// <summary>
         /// Updates an existing pull request. The pull request's status must be open. 
         /// With the exception of the source and destination parameters, the request body must include all the existing request parameters; 
         /// Omitting a parameter causes the server to drop the existing value. For example, if the pull requests already has 3 reviewers, 
@@ -65,6 +77,19 @@ namespace SharpBucket.V2.EndPoints
         public PullRequest PutPullRequest(PullRequest pullRequest)
         {
             return _repositoriesEndPoint.PutPullRequest(_accountName, _slug, pullRequest);
+        }
+
+        /// <summary>
+        /// Updates an existing pull request. The pull request's status must be open. 
+        /// With the exception of the source and destination parameters, the request body must include all the existing request parameters; 
+        /// Omitting a parameter causes the server to drop the existing value. For example, if the pull requests already has 3 reviewers, 
+        /// the request body must include these 3 reviewers to prevent Bitbucket from dropping them.
+        /// </summary>
+        /// <param name="pullRequest">The pull request.</param>
+        /// <returns></returns>
+        public async Task<PullRequest> PutPullRequestAsync(PullRequest pullRequest)
+        {
+            return await _repositoriesEndPoint.PutPullRequestAsync(_accountName, _slug, pullRequest);
         }
 
         /// <summary>
