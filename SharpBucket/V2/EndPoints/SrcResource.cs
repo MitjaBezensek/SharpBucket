@@ -130,7 +130,6 @@ namespace SharpBucket.V2.EndPoints
             return GetTreeEntry(subPath).ToSrcEntry();
         }
 
-
         /// <summary>
         /// Gets the metadata of a specified file.
         /// </summary>
