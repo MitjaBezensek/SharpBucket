@@ -60,6 +60,18 @@ namespace SharpBucket.Authentication
             return await base.GetResponseAsync<T>(url, method, body, requestParameters, token);
         }
 
+        public override Uri GetRedirectLocation(string url, IDictionary<string, object> requestParameters)
+        {
+            this.EnsureClientIsBuild();
+            return base.GetRedirectLocation(url, requestParameters);
+        }
+
+        public override Task<Uri> GetRedirectLocationAsync(string url, IDictionary<string, object> requestParameters, CancellationToken token)
+        {
+            this.EnsureClientIsBuild();
+            return base.GetRedirectLocationAsync(url, requestParameters, token);
+        }
+
         private void EnsureClientIsBuild()
         {
             if (Client == null)

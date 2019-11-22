@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using RestSharp;
@@ -42,6 +44,28 @@ namespace SharpBucket.Authentication
             where T : new()
         {
             return await RequestExecutor.ExecuteRequestAsync<T>(url, method, body, Client, requestParameters, token);
+        }
+
+        public virtual Uri GetRedirectLocation(string url, IDictionary<string, object> requestParameters)
+        {
+            var response = RequestExecutor.ExecuteRequestNoRedirect(url, Method.GET, null, Client, requestParameters);
+            return ExtractRedirectLocation(response);
+        }
+
+        public virtual async Task<Uri> GetRedirectLocationAsync(string url, IDictionary<string, object> requestParameters, CancellationToken token)
+        {
+            var response = await RequestExecutor.ExecuteRequestNoRedirectAsync(url, Method.GET, null, Client, requestParameters, token);
+            return ExtractRedirectLocation(response);
+        }
+
+        private Uri ExtractRedirectLocation(IRestResponse response)
+        {
+            if (response.StatusCode != System.Net.HttpStatusCode.Redirect)
+            {
+                throw new Exception($"Response is not a redirect. (Response status code: {response.StatusCode})");
+            }
+            var redirectUrl = response.Headers.Where(header => header.Name == "Location").Select(header => header.Value).First().ToString();
+            return new Uri(redirectUrl);
         }
     }
 }

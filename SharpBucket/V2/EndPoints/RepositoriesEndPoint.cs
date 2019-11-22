@@ -517,6 +517,12 @@ namespace SharpBucket.V2.EndPoints
             return await _sharpBucketV2.GetAsync<TreeEntry>(overrideUrl, new { format = "meta" });
         }
 
+        internal Uri GetRedirectLocation(string srcResourcePath)
+        {
+            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath);
+            return _sharpBucketV2.GetRedirectLocation(overrideUrl, new { format = "meta" });
+        }
+
         internal string GetFileContent(string srcResourcePath, string filePath)
         {
             var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath, filePath);
