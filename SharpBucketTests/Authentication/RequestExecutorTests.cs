@@ -52,7 +52,7 @@ namespace SharpBucketTests.Authentication
                                 {"search_query", "string"},
                             }),
                 "Using a bad POCO should produce an Exception, but not a BitbucketException since it's not an issue detected by BitBucket, but an issue in our code.");
-            exception.Message.ShouldBe("No parameterless constructor defined for this object.");
+            exception.Message.ShouldBe("No parameterless constructor defined for type 'SharpBucket.V2.Pocos.SearchContentMatch[]'.");
         }
 
         private class FakeRequestExecutor : RequestExecutor

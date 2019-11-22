@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
@@ -106,6 +107,20 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Gets the metadata of a specified sub path in this resource.
+        /// <remarks>
+        /// Since it can be difficult to guess which field is filled or not in a <see cref="TreeEntry"/>,
+        /// we suggest you to use <see cref="GetSrcEntry"/> method instead of that one,
+        /// except if you really want to retrieve the raw model as returned by BitBucket.
+        /// </remarks>
+        /// </summary>
+        /// <param name="subPath">The path to the file or directory, or null to retrieve the metadata of the root of this resource.</param>
+        public async Task<TreeEntry> GetTreeEntryAsync(string subPath = null)
+        {
+            return await RepositoriesEndPoint.GetTreeEntryAsync(SrcPath.Value, subPath);
+        }
+
+        /// <summary>
         /// Gets the metadata of a specified file or directory in this resource.
         /// </summary>
         /// <param name="subPath">The path to the file or directory, or null to retrieve the metadata of the root of this resource.</param>
@@ -150,6 +165,15 @@ namespace SharpBucket.V2.EndPoints
         public string GetFileContent(string filePath)
         {
             return RepositoriesEndPoint.GetFileContent(SrcPath.Value, filePath);
+        }
+
+        /// <summary>
+        /// Gets the raw content of the specified file.
+        /// </summary>
+        /// <param name="filePath">The path to a file relative to the root of this resource.</param>
+        public async Task<string> GetFileContentAsync(string filePath)
+        {
+            return await RepositoriesEndPoint.GetFileContentAsync(SrcPath.Value, filePath);
         }
     }
 }

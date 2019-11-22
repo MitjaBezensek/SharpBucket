@@ -102,6 +102,17 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.ListForks(_accountName, _slug);
         }
 
+#if CS_8
+        /// <summary>
+        /// Enumerate repository forks asynchronously, doing requests page by page.
+        /// This call returns a repository object for each fork.
+        /// </summary>
+        public IAsyncEnumerable<Repository> EnumerateForksAsync(int? pageLen = null, CancellationToken token = default)
+        {
+            return _repositoriesEndPoint.EnumerateForksAsync(_accountName, _slug, pageLen, token);
+        }
+#endif
+
         #endregion
 
         #region BranchResource
