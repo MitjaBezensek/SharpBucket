@@ -15,7 +15,7 @@ namespace SharpBucket.V2
         /// <summary>
         /// Generator that allows lazy access to paginated resources.
         /// </summary>
-        private static IEnumerable<List<TValue>> IteratePages<TValue>(ISharpBucketRequester sharpBucketRequester, string relativeUrl, int pageLen = DEFAULT_PAGE_LEN, IDictionary<string, object> requestParameters = null)
+        private static IEnumerable<List<TValue>> IteratePages<TValue>(ISharpBucketRequesterV2 sharpBucketRequesterV2, string relativeUrl, int pageLen = DEFAULT_PAGE_LEN, IDictionary<string, object> requestParameters = null)
         {
             Debug.Assert(!string.IsNullOrEmpty(relativeUrl));
             Debug.Assert(!relativeUrl.Contains("?"));
@@ -31,7 +31,7 @@ namespace SharpBucket.V2
 
             while (true)
             {
-                var response = sharpBucketRequester.Get<IteratorBasedPage<TValue>>(relativeUrl, requestParameters);
+                var response = sharpBucketRequesterV2.Get<IteratorBasedPage<TValue>>(relativeUrl, requestParameters);
                 if (response == null)
                 {
                     break;
@@ -60,7 +60,7 @@ namespace SharpBucket.V2
         /// <param name="requestParameters"></param>
         /// <returns></returns>
         /// <exception cref="BitbucketV2Exception">Thrown when the server fails to respond.</exception>
-        public static List<TValue> GetPaginatedValues<TValue>(this ISharpBucketRequester sharpBucketRequester, string relativeUrl, int max = 0, IDictionary<string, object> requestParameters = null)
+        public static List<TValue> GetPaginatedValues<TValue>(this ISharpBucketRequesterV2 sharpBucketRequesterV2, string relativeUrl, int max = 0, IDictionary<string, object> requestParameters = null)
         {
             var isMaxConstrained = max > 0;
 
@@ -68,7 +68,7 @@ namespace SharpBucket.V2
 
             var values = new List<TValue>();
 
-            foreach (var page in IteratePages<TValue>(sharpBucketRequester, relativeUrl, pageLen, requestParameters))
+            foreach (var page in IteratePages<TValue>(sharpBucketRequesterV2, relativeUrl, pageLen, requestParameters))
             {
                 if (page == null)
                 {
@@ -99,9 +99,9 @@ namespace SharpBucket.V2
         /// <param name="pageLen">The size of a page.</param>
         /// <returns>A lazy enumerable over the values.</returns>
         /// <exception cref="BitbucketV2Exception">Thrown when the server fails to respond.</exception>
-        public static IEnumerable<TValue> EnumeratePaginatedValues<TValue>(this ISharpBucketRequester sharpBucketRequester, string relativeUrl, IDictionary<string, object> requestParameters = null, int? pageLen = null)
+        public static IEnumerable<TValue> EnumeratePaginatedValues<TValue>(this ISharpBucketRequesterV2 sharpBucketRequesterV2, string relativeUrl, IDictionary<string, object> requestParameters = null, int? pageLen = null)
         {
-            return IteratePages<TValue>(sharpBucketRequester, relativeUrl, pageLen ?? DEFAULT_PAGE_LEN, requestParameters)
+            return IteratePages<TValue>(sharpBucketRequesterV2, relativeUrl, pageLen ?? DEFAULT_PAGE_LEN, requestParameters)
                 .TakeWhile(page => page != null)
                 .SelectMany(page => page);
         }

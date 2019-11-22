@@ -11,11 +11,11 @@ namespace SharpBucket.V2.EndPoints
     /// </summary>
     public class ProjectResource
     {
-        private ISharpBucketRequester SharpBucketV2 { get; }
+        private ISharpBucketRequesterV2 SharpBucketV2 { get; }
         private string ProjectKey { get; }
         private string ProjectUrl { get; }
 
-        public ProjectResource(ISharpBucketRequester sharpBucketV2, string teamName, string projectKey)
+        public ProjectResource(ISharpBucketRequesterV2 sharpBucketV2, string teamName, string projectKey)
         {
             this.SharpBucketV2 = sharpBucketV2 ?? throw new ArgumentNullException(nameof(sharpBucketV2));
             if (string.IsNullOrEmpty(teamName)) throw new ArgumentNullException(nameof(teamName));
