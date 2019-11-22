@@ -19,7 +19,7 @@ namespace SharpBucket.V2
         /// Generator that allows lazy access to paginated resources.
         /// </summary>
         private static async IAsyncEnumerable<List<TValue>> IteratePagesAsync<TValue>(
-            SharpBucketV2 sharpBucketV2,
+            ISharpBucketRequester sharpBucketRequester,
             string overrideUrl,
             int pageLen,
             IDictionary<string, object> requestParameters,
@@ -39,7 +39,7 @@ namespace SharpBucket.V2
 
             while (true)
             {
-                var response = await sharpBucketV2.GetAsync<IteratorBasedPage<TValue>>(overrideUrl, requestParameters, token: token);
+                var response = await sharpBucketRequester.GetAsync<IteratorBasedPage<TValue>>(overrideUrl, requestParameters, token: token);
                 if (response == null)
                 {
                     break;
@@ -62,20 +62,20 @@ namespace SharpBucket.V2
         /// Returns an enumeration of paginated values. The pages are requested lazily while iterating on the values.
         /// </summary>
         /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="sharpBucketV2"></param>
+        /// <param name="sharpBucketRequester"></param>
         /// <param name="overrideUrl">The override URL.</param>
         /// <param name="requestParameters"></param>
         /// <param name="pageLen">The size of a page.</param>
         /// <returns>A lazy enumerable over the values.</returns>
         /// <exception cref="BitbucketV2Exception">Thrown when the server fails to respond.</exception>
         public static async IAsyncEnumerable<TValue> EnumeratePaginatedValuesAsync<TValue>(
-            this SharpBucketV2 sharpBucketV2,
+            this ISharpBucketRequester sharpBucketRequester,
             string overrideUrl,
             IDictionary<string, object> requestParameters = null,
             int? pageLen = null,
             [EnumeratorCancellation]CancellationToken token = default)
         {
-            await foreach (var page in IteratePagesAsync<TValue>(sharpBucketV2, overrideUrl, pageLen ?? DEFAULT_PAGE_LEN, requestParameters, token))
+            await foreach (var page in IteratePagesAsync<TValue>(sharpBucketRequester, overrideUrl, pageLen ?? DEFAULT_PAGE_LEN, requestParameters, token))
             {
                 if (page == null)
                 {
