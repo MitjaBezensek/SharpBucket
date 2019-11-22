@@ -46,15 +46,15 @@ namespace SharpBucket.Authentication
             return await RequestExecutor.ExecuteRequestAsync<T>(url, method, body, Client, requestParameters, token);
         }
 
-        public virtual Uri GetRedirectLocation(string url, Method method, object body, IDictionary<string, object> requestParameters)
+        public virtual Uri GetRedirectLocation(string url, IDictionary<string, object> requestParameters)
         {
-            var response = RequestExecutor.ExecuteRequestNoRedirect(url, method, body, Client, requestParameters);
+            var response = RequestExecutor.ExecuteRequestNoRedirect(url, Method.GET, null, Client, requestParameters);
             return ExtractRedirectLocation(response);
         }
 
-        public virtual async Task<Uri> GetRedirectLocationAsync(string url, Method method, object body, IDictionary<string, object> requestParameters, CancellationToken token)
+        public virtual async Task<Uri> GetRedirectLocationAsync(string url, IDictionary<string, object> requestParameters, CancellationToken token)
         {
-            var response = await RequestExecutor.ExecuteRequestNoRedirectAsync(url, method, body, Client, requestParameters, token);
+            var response = await RequestExecutor.ExecuteRequestNoRedirectAsync(url, Method.GET, null, Client, requestParameters, token);
             return ExtractRedirectLocation(response);
         }
 

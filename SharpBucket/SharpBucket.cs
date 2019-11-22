@@ -245,30 +245,30 @@ namespace SharpBucket
             return await authenticator.GetResponseAsync<T>(overrideUrl, method, body, requestParameters, token);
         }
 
-        private Uri SendAndGetRedirectLocation(object body, Method method, string overrideUrl, IDictionary<string, object> requestParameters)
+        private Uri GetRedirectLocation(string overrideUrl, IDictionary<string, object> requestParameters)
         {
             this.RequestsCount++;
-            return authenticator.GetRedirectLocation(overrideUrl, method, body, requestParameters);
+            return authenticator.GetRedirectLocation(overrideUrl, requestParameters);
         }
 
-        private Task<Uri> SendAndGetRedirectLocationAsync(object body, Method method, string overrideUrl, IDictionary<string, object> requestParameters, CancellationToken token)
+        private Task<Uri> GetRedirectLocationAsync(string overrideUrl, IDictionary<string, object> requestParameters, CancellationToken token)
         {
             this.RequestsCount++;
-            return authenticator.GetRedirectLocationAsync(overrideUrl, method, body, requestParameters, token);
+            return authenticator.GetRedirectLocationAsync(overrideUrl, requestParameters, token);
         }
 
         internal Uri GetRedirectLocation(string overrideUrl, object requestParameters = null)
         {
             //Convert to dictionary to avoid refactoring the Send method.
             var parameterDictionary = requestParameters.ToDictionary();
-            return SendAndGetRedirectLocation(null, Method.GET, overrideUrl, parameterDictionary);
+            return GetRedirectLocation(overrideUrl, parameterDictionary);
         }
 
         internal Task<Uri> GetRedirectLocationAsync(string overrideUrl, object requestParameters = null, CancellationToken token = default(CancellationToken))
         {
             //Convert to dictionary to avoid refactoring the Send method.
             var parameterDictionary = requestParameters.ToDictionary();
-            return SendAndGetRedirectLocationAsync(null, Method.GET, overrideUrl, parameterDictionary, token);
+            return GetRedirectLocationAsync(overrideUrl, parameterDictionary, token);
         }
 
         internal string Get(string overrideUrl, object requestParameters = null)
