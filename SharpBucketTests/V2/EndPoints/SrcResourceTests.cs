@@ -234,7 +234,7 @@ namespace SharpBucketTests.V2.EndPoints
 
             Assert.That(
                 () => rootOfFirstCommit.GetSrcFile(null),
-                Throws.TypeOf<ArgumentNullException>().With.Message.EndsWith("filePath"));
+                Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("filePath"));
         }
 
         [Test]

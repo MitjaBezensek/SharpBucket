@@ -56,6 +56,16 @@ namespace SharpBucket.Authentication
             return jsonDeserializer.Deserialize<T>(result);
         }
 
+        public IRestResponse ExecuteRequestNoRedirect(string url, Method method, object body, IRestClient client, IDictionary<string, object> requestParameters)
+        {
+            return ExecuteNoRedirect(url, method, body, client, requestParameters);
+        }
+
+        public Task<IRestResponse> ExecuteRequestNoRedirectAsync(string url, Method method, object body, IRestClient client, IDictionary<string, object> requestParameters, CancellationToken token)
+        {
+            return ExecuteNoRedirectAsync(url, method, body, client, requestParameters, token);
+        }
+
         private IRestResponse Execute(
             string url,
             Method method,
@@ -65,7 +75,7 @@ namespace SharpBucket.Authentication
         {
             var request = BuildRestRequest(url, method, body, requestParameters);
             var result = ExecuteRequestWithManualFollowRedirect(request, client);
-            ThrowExceptionIsResponseIsInvalid(result);
+            ThrowExceptionIfResponseIsInvalid(result);
 
             return result;
         }
@@ -80,12 +90,41 @@ namespace SharpBucket.Authentication
         {
             var request = BuildRestRequest(url, method, body, requestParameters);
             var result = await ExecuteRequestWithManualFollowRedirectAsync(request, client, token);
-            ThrowExceptionIsResponseIsInvalid(result);
+            ThrowExceptionIfResponseIsInvalid(result);
 
             return result;
         }
 
-        private void ThrowExceptionIsResponseIsInvalid(IRestResponse response)
+        private IRestResponse ExecuteNoRedirect(
+            string url,
+            Method method,
+            object body,
+            IRestClient client,
+            IDictionary<string, object> requestParameters)
+        {
+            var request = BuildRestRequest(url, method, body, requestParameters);
+            var result = client.Execute(request);
+            ThrowExceptionIfResponseIsInvalid(result);
+
+            return result;
+        }
+
+        private async Task<IRestResponse> ExecuteNoRedirectAsync(
+            string url,
+            Method method,
+            object body,
+            IRestClient client,
+            IDictionary<string, object> requestParameters,
+            CancellationToken token)
+        {
+            var request = BuildRestRequest(url, method, body, requestParameters);
+            var result = await client.ExecuteTaskAsync(request, token);
+            ThrowExceptionIfResponseIsInvalid(result);
+
+            return result;
+        }
+
+        private void ThrowExceptionIfResponseIsInvalid(IRestResponse response)
         {
             if (response.ResponseStatus != ResponseStatus.Completed)
             {
@@ -93,7 +132,8 @@ namespace SharpBucket.Authentication
                 // Throw the exception prepared by RestSharp
                 throw new Exception(response.ErrorMessage, response.ErrorException);
             }
-            if ((int)response.StatusCode < 200 || (int)response.StatusCode >= 300)
+
+            if ((int)response.StatusCode >= 400)
             {
                 // There is an issue which is described in the HTTP response.
                 // Build an throw a BitBucketException, since the message should be provided by BitBucket.

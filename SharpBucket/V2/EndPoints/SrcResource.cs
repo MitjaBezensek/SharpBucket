@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
@@ -39,11 +40,10 @@ namespace SharpBucket.V2.EndPoints
                 {
                     try
                     {
-                        // This may potentially be optimized since this call will first hit a redirect toward an url that contains the revision
-                        // but the actual architecture of the code doesn't allow us to fetch just the redirect location of a GET request.
-                        // so we found back the data we need in the response of the call to the url where we are redirected.
-                        var rootEntry = repositoriesEndPoint.GetTreeEntry(rootSrcPath);
-                        revision = rootEntry.commit.hash;
+                        // calling the src endpoint redirect to the hash of the last commit of the main branch
+                        // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src#get
+                        var redirectLocation = repositoriesEndPoint.GetRedirectLocation(rootSrcPath);
+                        revision = redirectLocation.Segments[redirectLocation.Segments.Length - 1];
                     }
                     catch (BitbucketV2Exception e) when (e.HttpStatusCode == HttpStatusCode.NotFound)
                     {
@@ -107,6 +107,20 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Gets the metadata of a specified sub path in this resource.
+        /// <remarks>
+        /// Since it can be difficult to guess which field is filled or not in a <see cref="TreeEntry"/>,
+        /// we suggest you to use <see cref="GetSrcEntry"/> method instead of that one,
+        /// except if you really want to retrieve the raw model as returned by BitBucket.
+        /// </remarks>
+        /// </summary>
+        /// <param name="subPath">The path to the file or directory, or null to retrieve the metadata of the root of this resource.</param>
+        public async Task<TreeEntry> GetTreeEntryAsync(string subPath = null)
+        {
+            return await RepositoriesEndPoint.GetTreeEntryAsync(SrcPath.Value, subPath);
+        }
+
+        /// <summary>
         /// Gets the metadata of a specified file or directory in this resource.
         /// </summary>
         /// <param name="subPath">The path to the file or directory, or null to retrieve the metadata of the root of this resource.</param>
@@ -151,6 +165,15 @@ namespace SharpBucket.V2.EndPoints
         public string GetFileContent(string filePath)
         {
             return RepositoriesEndPoint.GetFileContent(SrcPath.Value, filePath);
+        }
+
+        /// <summary>
+        /// Gets the raw content of the specified file.
+        /// </summary>
+        /// <param name="filePath">The path to a file relative to the root of this resource.</param>
+        public async Task<string> GetFileContentAsync(string filePath)
+        {
+            return await RepositoriesEndPoint.GetFileContentAsync(SrcPath.Value, filePath);
         }
     }
 }

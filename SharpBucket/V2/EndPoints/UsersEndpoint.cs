@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
@@ -28,6 +29,16 @@ namespace SharpBucket.V2.EndPoints
         public User GetProfile()
         {
             return _sharpBucketV2.Get<User>(_baseUrl);
+        }
+
+        /// <summary>
+        /// Gets the public information associated with a user. 
+        /// If the user's profile is private, the caller must be authenticated as the account holder to view this information.  
+        /// </summary>
+        /// <returns></returns>
+        public async Task<User> GetProfileAsync()
+        {
+            return await _sharpBucketV2.GetAsync<User>(_baseUrl);
         }
 
         /// <summary>

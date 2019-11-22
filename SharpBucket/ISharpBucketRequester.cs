@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SharpBucket
@@ -17,6 +18,10 @@ namespace SharpBucket
 
         Task<T> GetAsync<T>(string overrideUrl, object requestParameters = null, CancellationToken token = default(CancellationToken))
             where T : new();
+
+        Uri GetRedirectLocation(string overrideUrl, object requestParameters = null);
+
+        Task<Uri> GetRedirectLocationAsync(string overrideUrl, object requestParameters = null, CancellationToken token = default(CancellationToken));
 
         T Post<T>(T body, string relativeUrl)
             where T : new();

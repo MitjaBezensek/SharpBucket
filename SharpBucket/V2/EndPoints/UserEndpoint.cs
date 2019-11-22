@@ -1,4 +1,5 @@
 ﻿using SharpBucket.V2.Pocos;
+using System.Threading.Tasks;
 
 namespace SharpBucket.V2.EndPoints
 {
@@ -12,6 +13,11 @@ namespace SharpBucket.V2.EndPoints
         public User GetUser()
         {
             return _sharpBucketV2.Get<User>(_baseUrl);
+        }
+
+        public async Task<User> GetUserAsync()
+        {
+            return await _sharpBucketV2.GetAsync<User>(_baseUrl);
         }
     }
 }

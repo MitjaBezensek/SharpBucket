@@ -234,6 +234,16 @@ namespace SharpBucket
             return await authenticator.GetResponseAsync<T>(overrideUrl, method, body, requestParameters, token);
         }
 
+        private Uri GetRedirectLocation(string overrideUrl, IDictionary<string, object> requestParameters)
+        {
+            return authenticator.GetRedirectLocation(overrideUrl, requestParameters);
+        }
+
+        private async Task<Uri> GetRedirectLocationAsync(string overrideUrl, IDictionary<string, object> requestParameters, CancellationToken token)
+        {
+            return await authenticator.GetRedirectLocationAsync(overrideUrl, requestParameters, token);
+        }
+
         string ISharpBucketRequester.Get(string relativeUrl, object requestParameters)
         {
             //Convert to dictionary to avoid refactoring the Send method.
@@ -260,6 +270,20 @@ namespace SharpBucket
             //Convert to dictionary to avoid refactoring the Send method.
             var parameterDictionary = requestParameters.ToDictionary();
             return await SendAsync<T>(null, Method.GET, overrideUrl, parameterDictionary, token);
+        }
+
+        Uri ISharpBucketRequester.GetRedirectLocation(string overrideUrl, object requestParameters)
+        {
+            //Convert to dictionary to avoid refactoring the Send method.
+            var parameterDictionary = requestParameters.ToDictionary();
+            return GetRedirectLocation(overrideUrl, parameterDictionary);
+        }
+
+        async Task<Uri> ISharpBucketRequester.GetRedirectLocationAsync(string overrideUrl, object requestParameters, CancellationToken token)
+        {
+            //Convert to dictionary to avoid refactoring the Send method.
+            var parameterDictionary = requestParameters.ToDictionary();
+            return await GetRedirectLocationAsync(overrideUrl, parameterDictionary, token);
         }
 
         T ISharpBucketRequester.Post<T>(T body, string relativeUrl)
