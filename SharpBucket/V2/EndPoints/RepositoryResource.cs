@@ -102,7 +102,7 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.ListForks(_accountName, _slug);
         }
 
-#if NETSTANDARD2_1
+#if CS_8
         /// <summary>
         /// Enumerate repository forks asynchronously, doing requests page by page.
         /// This call returns a repository object for each fork.

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFrameworks>net452;netstandard2.0;netstandard2.1</TargetFrameworks>
     <Version>0.13.0</Version>
@@ -15,10 +16,17 @@
     <PackageTags>BitBucket REST API C#</PackageTags>
     <PackageReleaseNotes>https://github.com/MitjaBezensek/SharpBucket/releases/tag/$(Version)</PackageReleaseNotes>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+    <DefineConstants>$(DefineConstants);CS_8</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\LICENSE" Link="LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="RestSharp" Version="106.3.1" />
   </ItemGroup>
+
 </Project>

@@ -139,7 +139,7 @@ namespace SharpBucket.V2.EndPoints
             return GetPaginatedValues<Repository>(overrideUrl, max);
         }
 
-#if NETSTANDARD2_1
+#if CS_8
         internal IAsyncEnumerable<Repository> EnumerateForksAsync(string accountName, string slug, int? pageLen, CancellationToken token)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "forks");
