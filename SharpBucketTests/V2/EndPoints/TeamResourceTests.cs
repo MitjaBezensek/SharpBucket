@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Net.Http;
 using Moq;
 using NUnit.Framework;
 using SharpBucket.V2;
@@ -123,18 +125,20 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void EnumerateSearchCodeSearchResults_SearchStringWordFromTeamAtlassianWithPageLenLessThanTheNumberOfEnumeratedResults_RequestsCountShouldIncrementLazily()
         {
-            var realSharpBucketRequesterV2 = (ISharpBucketRequesterV2)this.sharpBucket;
+            ISharpBucketRequesterV2 realSharpBucketRequesterV2 = this.sharpBucket;
             var sharpBucketRequesterV2Mock = new Mock<ISharpBucketRequesterV2>();
+            Expression<Func<ISharpBucketRequesterV2, IteratorBasedPage<SearchCodeSearchResult>>> sendMethod
+                = x => x.Send<IteratorBasedPage<SearchCodeSearchResult>>(It.IsAny<object>(), It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<object>());
             sharpBucketRequesterV2Mock
-                .Setup(x => x.Get<IteratorBasedPage<SearchCodeSearchResult>>(It.IsAny<string>(), It.IsAny<object>()))
-                .Returns<string, object>((s, o) => realSharpBucketRequesterV2.Get<IteratorBasedPage<SearchCodeSearchResult>>(s, o));
+                .Setup(sendMethod)
+                .Returns<object, HttpMethod, string, object>((o, m, s, p) => realSharpBucketRequesterV2.Send<IteratorBasedPage<SearchCodeSearchResult>>(o, m, s, p));
             var teamsEndPointIntercepted = new TeamsEndPoint(sharpBucketRequesterV2Mock.Object);
 
             var searchResults = teamsEndPointIntercepted.TeamResource("atlassian").EnumerateSearchCodeSearchResults("string", 5);
 
             sharpBucketRequesterV2Mock.Verify(
-                x => x.Get<IteratorBasedPage<SearchCodeSearchResult>>(It.IsAny<string>(), It.IsAny<object>()),
-                Times.Never,
+                sendMethod,
+                Times.Never(),
                 "Building the enumerable should not produce any request");
 
             var i = 0;
@@ -143,14 +147,14 @@ namespace SharpBucketTests.V2.EndPoints
                 if (i < 5)
                 {
                     sharpBucketRequesterV2Mock.Verify(
-                        x => x.Get<IteratorBasedPage<SearchCodeSearchResult>>(It.IsAny<string>(), It.IsAny<object>()),
+                        sendMethod,
                         Times.Exactly(1),
                         "Only first page should have been called");
                 }
                 else
                 {
                     sharpBucketRequesterV2Mock.Verify(
-                        x => x.Get<IteratorBasedPage<SearchCodeSearchResult>>(It.IsAny<string>(), It.IsAny<object>()),
+                        sendMethod,
                         Times.Exactly(2),
                         "Only two pages should have been called");
                     if (i == 9)

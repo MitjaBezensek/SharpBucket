@@ -3,6 +3,7 @@ using Shouldly;
 using Moq;
 using RestSharp;
 using SharpBucket.V2;
+using SharpBucket;
 
 namespace SharpBucketTests.Authentication
 {
@@ -32,7 +33,7 @@ namespace SharpBucketTests.Authentication
 
             var client = new SharpBucketV2();
             client.MockAuthentication(_client.Object);
-            var output = ((ISharpBucketRequesterV2)client).Get(null);
+            var output = client.Get(null);
             output.ShouldBe(expected);
         }
     }

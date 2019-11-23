@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,34 +10,18 @@ namespace SharpBucket
     /// </summary>
     public interface ISharpBucketRequester
     {
-        string Get(string relativeUrl, object requestParameters = null);
+        string Send(object body, HttpMethod method, string relativeUrl, object requestParameters = null);
 
-        Task<string> GetAsync(string overrideUrl, object requestParameters = null, CancellationToken token = default(CancellationToken));
+        Task<string> SendAsync(object body, HttpMethod method, string relativeUrl, object requestParameters = null, CancellationToken token = default(CancellationToken));
 
-        T Get<T>(string relativeUrl, object requestParameters = null)
+        T Send<T>(object body, HttpMethod method, string relativeUrl, object requestParameters = null)
             where T : new();
 
-        Task<T> GetAsync<T>(string overrideUrl, object requestParameters = null, CancellationToken token = default(CancellationToken))
+        Task<T> SendAsync<T>(object body, HttpMethod method, string relativeUrl, object requestParameters = null, CancellationToken token = default(CancellationToken))
             where T : new();
 
-        Uri GetRedirectLocation(string overrideUrl, object requestParameters = null);
+        Uri GetRedirectLocation(string relativeUrl, object requestParameters = null);
 
-        Task<Uri> GetRedirectLocationAsync(string overrideUrl, object requestParameters = null, CancellationToken token = default(CancellationToken));
-
-        T Post<T>(T body, string relativeUrl)
-            where T : new();
-
-        Task<T> PostAsync<T>(T body, string overrideUrl, CancellationToken token = default(CancellationToken))
-            where T : new();
-
-        T Put<T>(T body, string relativeUrl)
-            where T : new();
-
-        Task<T> PutAsync<T>(T body, string overrideUrl, CancellationToken token = default(CancellationToken))
-            where T : new();
-
-        void Delete(string relativeUrl);
-
-        Task DeleteAsync(string overrideUrl, CancellationToken token = default(CancellationToken));
+        Task<Uri> GetRedirectLocationAsync(string relativeUrl, object requestParameters = null, CancellationToken token = default(CancellationToken));
     }
 }

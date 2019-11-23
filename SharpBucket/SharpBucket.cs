@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using RestSharp;
@@ -212,108 +213,49 @@ namespace SharpBucket
             authenticator = new MockAuthentication(client, BaseUrl) { RequestExecutor = this.RequestExecutor };
         }
 
-        private string Send(object body, Method method, string relativeUrl, IDictionary<string, object> requestParameters = null)
+        private Method ToRestSharpEnum(HttpMethod method)
         {
-            return authenticator.GetResponse(relativeUrl, method, body, requestParameters);
+            return (Method)Enum.Parse(typeof(Method), method.Method, true);
         }
 
-        private async Task<string> SendAsync(object body, Method method, string overrideUrl, IDictionary<string, object> requestParameters, CancellationToken token)
+        string ISharpBucketRequester.Send(object body, HttpMethod method, string relativeUrl, object requestParameters)
         {
-            return await authenticator.GetResponseAsync(overrideUrl, method, body, requestParameters, token);
-        }
-
-        private T Send<T>(object body, Method method, string relativeUrl, IDictionary<string, object> requestParameters = null)
-            where T : new()
-        {
-            return authenticator.GetResponse<T>(relativeUrl, method, body, requestParameters);
-        }
-
-        private async Task<T> SendAsync<T>(object body, Method method, string overrideUrl, IDictionary<string, object> requestParameters, CancellationToken token)
-            where T : new()
-        {
-            return await authenticator.GetResponseAsync<T>(overrideUrl, method, body, requestParameters, token);
-        }
-
-        private Uri GetRedirectLocation(string overrideUrl, IDictionary<string, object> requestParameters)
-        {
-            return authenticator.GetRedirectLocation(overrideUrl, requestParameters);
-        }
-
-        private async Task<Uri> GetRedirectLocationAsync(string overrideUrl, IDictionary<string, object> requestParameters, CancellationToken token)
-        {
-            return await authenticator.GetRedirectLocationAsync(overrideUrl, requestParameters, token);
-        }
-
-        string ISharpBucketRequester.Get(string relativeUrl, object requestParameters)
-        {
-            //Convert to dictionary to avoid refactoring the Send method.
+            var restSharpMethod = ToRestSharpEnum(method);
             var parameterDictionary = requestParameters.ToDictionary();
-            return Send(null, Method.GET, relativeUrl, parameterDictionary);
+            return authenticator.GetResponse(relativeUrl, restSharpMethod, body, parameterDictionary);
         }
 
-        async Task<string> ISharpBucketRequester.GetAsync(string overrideUrl, object requestParameters, CancellationToken token)
+        async Task<string> ISharpBucketRequester.SendAsync(object body, HttpMethod method, string relativeUrl, object requestParameters, CancellationToken token)
         {
-            //Convert to dictionary to avoid refactoring the Send method.
+            var restSharpMethod = ToRestSharpEnum(method);
             var parameterDictionary = requestParameters.ToDictionary();
-            return await SendAsync(null, Method.GET, overrideUrl, parameterDictionary, token);
+            return await authenticator.GetResponseAsync(relativeUrl, restSharpMethod, body, parameterDictionary, token);
         }
 
-        T ISharpBucketRequester.Get<T>(string relativeUrl, object requestParameters)
+        T ISharpBucketRequester.Send<T>(object body, HttpMethod method, string relativeUrl, object requestParameters)
         {
-            //Convert to dictionary to avoid refactoring the Send method.
+            var restSharpMethod = ToRestSharpEnum(method);
             var parameterDictionary = requestParameters.ToDictionary();
-            return Send<T>(null, Method.GET, relativeUrl, parameterDictionary);
+            return authenticator.GetResponse<T>(relativeUrl, restSharpMethod, body, parameterDictionary);
         }
 
-        async Task<T> ISharpBucketRequester.GetAsync<T>(string overrideUrl, object requestParameters, CancellationToken token)
+        async Task<T> ISharpBucketRequester.SendAsync<T>(object body, HttpMethod method, string relativeUrl, object requestParameters, CancellationToken token)
         {
-            //Convert to dictionary to avoid refactoring the Send method.
+            var restSharpMethod = ToRestSharpEnum(method);
             var parameterDictionary = requestParameters.ToDictionary();
-            return await SendAsync<T>(null, Method.GET, overrideUrl, parameterDictionary, token);
+            return await authenticator.GetResponseAsync<T>(relativeUrl, restSharpMethod, body, parameterDictionary, token);
         }
 
-        Uri ISharpBucketRequester.GetRedirectLocation(string overrideUrl, object requestParameters)
+        Uri ISharpBucketRequester.GetRedirectLocation(string relativeUrl, object requestParameters)
         {
-            //Convert to dictionary to avoid refactoring the Send method.
             var parameterDictionary = requestParameters.ToDictionary();
-            return GetRedirectLocation(overrideUrl, parameterDictionary);
+            return authenticator.GetRedirectLocation(relativeUrl, parameterDictionary);
         }
 
-        async Task<Uri> ISharpBucketRequester.GetRedirectLocationAsync(string overrideUrl, object requestParameters, CancellationToken token)
+        async Task<Uri> ISharpBucketRequester.GetRedirectLocationAsync(string relativeUrl, object requestParameters, CancellationToken token)
         {
-            //Convert to dictionary to avoid refactoring the Send method.
             var parameterDictionary = requestParameters.ToDictionary();
-            return await GetRedirectLocationAsync(overrideUrl, parameterDictionary, token);
-        }
-
-        T ISharpBucketRequester.Post<T>(T body, string relativeUrl)
-        {
-            return Send<T>(body, Method.POST, relativeUrl);
-        }
-
-        async Task<T> ISharpBucketRequester.PostAsync<T>(T body, string overrideUrl, CancellationToken token)
-        {
-            return await SendAsync<T>(body, Method.POST, overrideUrl, null, token);
-        }
-
-        T ISharpBucketRequester.Put<T>(T body, string relativeUrl)
-        {
-            return Send<T>(body, Method.PUT, relativeUrl);
-        }
-
-        async Task<T> ISharpBucketRequester.PutAsync<T>(T body, string overrideUrl, CancellationToken token)
-        {
-            return await SendAsync<T>(body, Method.PUT, overrideUrl, null, token);
-        }
-
-        void ISharpBucketRequester.Delete(string relativeUrl)
-        {
-            Send(null, Method.DELETE, relativeUrl);
-        }
-
-        async Task ISharpBucketRequester.DeleteAsync(string overrideUrl, CancellationToken token)
-        {
-            await SendAsync(null, Method.DELETE, overrideUrl, null, token);
+            return await authenticator.GetRedirectLocationAsync(relativeUrl, parameterDictionary, token);
         }
     }
 }
