@@ -128,10 +128,10 @@ namespace SharpBucketTests.V2.EndPoints
             ISharpBucketRequesterV2 realSharpBucketRequesterV2 = this.sharpBucket;
             var sharpBucketRequesterV2Mock = new Mock<ISharpBucketRequesterV2>();
             Expression<Func<ISharpBucketRequesterV2, IteratorBasedPage<SearchCodeSearchResult>>> sendMethod
-                = x => x.Send<IteratorBasedPage<SearchCodeSearchResult>>(It.IsAny<object>(), It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<object>());
+                = x => x.Send<IteratorBasedPage<SearchCodeSearchResult>>(It.IsAny<HttpMethod>(), It.IsAny<object>(), It.IsAny<string>(), It.IsAny<object>());
             sharpBucketRequesterV2Mock
                 .Setup(sendMethod)
-                .Returns<object, HttpMethod, string, object>((o, m, s, p) => realSharpBucketRequesterV2.Send<IteratorBasedPage<SearchCodeSearchResult>>(o, m, s, p));
+                .Returns<HttpMethod, object, string, object>((m, b, u, p) => realSharpBucketRequesterV2.Send<IteratorBasedPage<SearchCodeSearchResult>>(m, b, u, p));
             var teamsEndPointIntercepted = new TeamsEndPoint(sharpBucketRequesterV2Mock.Object);
 
             var searchResults = teamsEndPointIntercepted.TeamResource("atlassian").EnumerateSearchCodeSearchResults("string", 5);

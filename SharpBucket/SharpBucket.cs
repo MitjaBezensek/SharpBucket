@@ -218,28 +218,28 @@ namespace SharpBucket
             return (Method)Enum.Parse(typeof(Method), method.Method, true);
         }
 
-        string ISharpBucketRequester.Send(object body, HttpMethod method, string relativeUrl, object requestParameters)
+        string ISharpBucketRequester.Send(HttpMethod method, object body, string relativeUrl, object requestParameters)
         {
             var restSharpMethod = ToRestSharpEnum(method);
             var parameterDictionary = requestParameters.ToDictionary();
             return authenticator.GetResponse(relativeUrl, restSharpMethod, body, parameterDictionary);
         }
 
-        async Task<string> ISharpBucketRequester.SendAsync(object body, HttpMethod method, string relativeUrl, object requestParameters, CancellationToken token)
+        async Task<string> ISharpBucketRequester.SendAsync(HttpMethod method, object body, string relativeUrl, object requestParameters, CancellationToken token)
         {
             var restSharpMethod = ToRestSharpEnum(method);
             var parameterDictionary = requestParameters.ToDictionary();
             return await authenticator.GetResponseAsync(relativeUrl, restSharpMethod, body, parameterDictionary, token);
         }
 
-        T ISharpBucketRequester.Send<T>(object body, HttpMethod method, string relativeUrl, object requestParameters)
+        T ISharpBucketRequester.Send<T>(HttpMethod method, object body, string relativeUrl, object requestParameters)
         {
             var restSharpMethod = ToRestSharpEnum(method);
             var parameterDictionary = requestParameters.ToDictionary();
             return authenticator.GetResponse<T>(relativeUrl, restSharpMethod, body, parameterDictionary);
         }
 
-        async Task<T> ISharpBucketRequester.SendAsync<T>(object body, HttpMethod method, string relativeUrl, object requestParameters, CancellationToken token)
+        async Task<T> ISharpBucketRequester.SendAsync<T>(HttpMethod method, object body, string relativeUrl, object requestParameters, CancellationToken token)
         {
             var restSharpMethod = ToRestSharpEnum(method);
             var parameterDictionary = requestParameters.ToDictionary();

@@ -10,14 +10,14 @@ namespace SharpBucket
     /// </summary>
     public interface ISharpBucketRequester
     {
-        string Send(object body, HttpMethod method, string relativeUrl, object requestParameters);
+        string Send(HttpMethod method, object body, string relativeUrl, object requestParameters);
 
-        Task<string> SendAsync(object body, HttpMethod method, string relativeUrl, object requestParameters, CancellationToken token);
+        Task<string> SendAsync(HttpMethod method, object body, string relativeUrl, object requestParameters, CancellationToken token);
 
-        T Send<T>(object body, HttpMethod method, string relativeUrl, object requestParameters)
+        T Send<T>(HttpMethod method, object body, string relativeUrl, object requestParameters)
             where T : new();
 
-        Task<T> SendAsync<T>(object body, HttpMethod method, string relativeUrl, object requestParameters, CancellationToken token)
+        Task<T> SendAsync<T>(HttpMethod method, object body, string relativeUrl, object requestParameters, CancellationToken token)
             where T : new();
 
         Uri GetRedirectLocation(string relativeUrl, object requestParameters);
