@@ -1,4 +1,5 @@
 ﻿using SharpBucket.V2.Pocos;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SharpBucket.V2.EndPoints
@@ -15,9 +16,9 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get<User>(_baseUrl);
         }
 
-        public async Task<User> GetUserAsync()
+        public async Task<User> GetUserAsync(CancellationToken token = default)
         {
-            return await _sharpBucketV2.GetAsync<User>(_baseUrl);
+            return await _sharpBucketV2.GetAsync<User>(_baseUrl, token);
         }
     }
 }

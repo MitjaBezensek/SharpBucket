@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
@@ -60,10 +61,10 @@ namespace SharpBucket.V2.EndPoints
         /// For this reason, you must specify an explicit source repository in the request object if you want to pull from a different repository.
         /// </summary>
         /// <param name="pullRequest">The pull request.</param>
-        /// <returns></returns>
-        public async Task<PullRequest> PostPullRequestAsync(PullRequest pullRequest)
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async Task<PullRequest> PostPullRequestAsync(PullRequest pullRequest, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.PostPullRequestAsync(_accountName, _slug, pullRequest);
+            return await _repositoriesEndPoint.PostPullRequestAsync(_accountName, _slug, pullRequest, token);
         }
 
         /// <summary>
@@ -86,10 +87,10 @@ namespace SharpBucket.V2.EndPoints
         /// the request body must include these 3 reviewers to prevent Bitbucket from dropping them.
         /// </summary>
         /// <param name="pullRequest">The pull request.</param>
-        /// <returns></returns>
-        public async Task<PullRequest> PutPullRequestAsync(PullRequest pullRequest)
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async Task<PullRequest> PutPullRequestAsync(PullRequest pullRequest, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.PutPullRequestAsync(_accountName, _slug, pullRequest);
+            return await _repositoriesEndPoint.PutPullRequestAsync(_accountName, _slug, pullRequest, token);
         }
 
         /// <summary>

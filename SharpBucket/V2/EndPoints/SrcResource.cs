@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
@@ -107,6 +108,20 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Gets the metadata of the root of this resource.
+        /// <remarks>
+        /// Since it can be difficult to guess which field is filled or not in a <see cref="TreeEntry"/>,
+        /// we suggest you to use <see cref="GetSrcEntry"/> method instead of that one,
+        /// except if you really want to retrieve the raw model as returned by BitBucket.
+        /// </remarks>
+        /// </summary>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public Task<TreeEntry> GetTreeEntryAsync(CancellationToken token = default)
+        {
+            return GetTreeEntryAsync(null, token);
+        }
+
+        /// <summary>
         /// Gets the metadata of a specified sub path in this resource.
         /// <remarks>
         /// Since it can be difficult to guess which field is filled or not in a <see cref="TreeEntry"/>,
@@ -115,9 +130,10 @@ namespace SharpBucket.V2.EndPoints
         /// </remarks>
         /// </summary>
         /// <param name="subPath">The path to the file or directory, or null to retrieve the metadata of the root of this resource.</param>
-        public async Task<TreeEntry> GetTreeEntryAsync(string subPath = null)
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async Task<TreeEntry> GetTreeEntryAsync(string subPath, CancellationToken token = default)
         {
-            return await RepositoriesEndPoint.GetTreeEntryAsync(SrcPath.Value, subPath);
+            return await RepositoriesEndPoint.GetTreeEntryAsync(SrcPath.Value, subPath, token);
         }
 
         /// <summary>
@@ -171,9 +187,10 @@ namespace SharpBucket.V2.EndPoints
         /// Gets the raw content of the specified file.
         /// </summary>
         /// <param name="filePath">The path to a file relative to the root of this resource.</param>
-        public async Task<string> GetFileContentAsync(string filePath)
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async Task<string> GetFileContentAsync(string filePath, CancellationToken token = default)
         {
-            return await RepositoriesEndPoint.GetFileContentAsync(SrcPath.Value, filePath);
+            return await RepositoriesEndPoint.GetFileContentAsync(SrcPath.Value, filePath, token);
         }
     }
 }
