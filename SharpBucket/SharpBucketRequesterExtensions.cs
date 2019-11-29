@@ -53,7 +53,7 @@ namespace SharpBucket
         public static T Post<T>(this ISharpBucketRequester requester, T body, string relativeUrl)
             where T : new()
         {
-            return requester.Send<T>(body, HttpMethod.Post, relativeUrl);
+            return requester.Send<T>(body, HttpMethod.Post, relativeUrl, null);
         }
 
         public static Task<T> PostAsync<T>(this ISharpBucketRequester requester, T body, string relativeUrl, CancellationToken token)
@@ -65,7 +65,7 @@ namespace SharpBucket
         public static T Put<T>(this ISharpBucketRequester requester, T body, string relativeUrl)
             where T : new()
         {
-            return requester.Send<T>(body, HttpMethod.Put, relativeUrl);
+            return requester.Send<T>(body, HttpMethod.Put, relativeUrl, null);
         }
 
         public static Task<T> PutAsync<T>(this ISharpBucketRequester requester, T body, string relativeUrl, CancellationToken token)
@@ -76,7 +76,7 @@ namespace SharpBucket
 
         public static void Delete(this ISharpBucketRequester requester, string relativeUrl)
         {
-            requester.Send(null, HttpMethod.Delete, relativeUrl);
+            requester.Send(null, HttpMethod.Delete, relativeUrl, null);
         }
 
         public static Task DeleteAsync(this ISharpBucketRequester requester, string relativeUrl, CancellationToken token)
