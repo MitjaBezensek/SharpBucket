@@ -176,10 +176,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Post(pullRequest, overrideUrl);
         }
 
-        internal async Task<PullRequest> PostPullRequestAsync(string accountName, string slug, PullRequest pullRequest)
+        internal async Task<PullRequest> PostPullRequestAsync(string accountName, string slug, PullRequest pullRequest, CancellationToken token)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/");
-            return await _sharpBucketV2.PostAsync(pullRequest, overrideUrl);
+            return await _sharpBucketV2.PostAsync(pullRequest, overrideUrl, token);
         }
 
         internal PullRequest PutPullRequest(string accountName, string slug, PullRequest pullRequest)
@@ -188,10 +188,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Put(pullRequest, overrideUrl);
         }
 
-        internal async Task<PullRequest> PutPullRequestAsync(string accountName, string slug, PullRequest pullRequest)
+        internal async Task<PullRequest> PutPullRequestAsync(string accountName, string slug, PullRequest pullRequest, CancellationToken token)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/");
-            return await _sharpBucketV2.PutAsync(pullRequest, overrideUrl);
+            return await _sharpBucketV2.PutAsync(pullRequest, overrideUrl, token);
         }
 
         internal List<Activity> GetPullRequestLog(string accountName, string slug, int max = 0)
@@ -210,10 +210,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get<PullRequest>(overrideUrl);
         }
 
-        internal async Task<PullRequest> GetPullRequestAsync(string accountName, string slug, int pullRequestId)
+        internal async Task<PullRequest> GetPullRequestAsync(string accountName, string slug, int pullRequestId, CancellationToken token)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/");
-            return await _sharpBucketV2.GetAsync<PullRequest>(overrideUrl);
+            return await _sharpBucketV2.GetAsync<PullRequest>(overrideUrl, token);
         }
 
         internal List<Commit> ListPullRequestCommits(string accountName, string slug, int pullRequestId, int max = 0)
@@ -228,10 +228,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Post<PullRequestInfo>(null, overrideUrl);
         }
 
-        internal async Task<PullRequestInfo> ApprovePullRequestAsync(string accountName, string slug, int pullRequestId)
+        internal async Task<PullRequestInfo> ApprovePullRequestAsync(string accountName, string slug, int pullRequestId, CancellationToken token)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/approve/");
-            return await _sharpBucketV2.PostAsync<PullRequestInfo>(null, overrideUrl);
+            return await _sharpBucketV2.PostAsync<PullRequestInfo>(null, overrideUrl, token);
         }
 
         internal void RemovePullRequestApproval(string accountName, string slug, int pullRequestId)
@@ -240,10 +240,10 @@ namespace SharpBucket.V2.EndPoints
             _sharpBucketV2.Delete(overrideUrl);
         }
 
-        internal async Task RemovePullRequestApprovalAsync(string accountName, string slug, int pullRequestId)
+        internal async Task RemovePullRequestApprovalAsync(string accountName, string slug, int pullRequestId, CancellationToken token)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/approve/");
-            await _sharpBucketV2.DeleteAsync(overrideUrl);
+            await _sharpBucketV2.DeleteAsync(overrideUrl, token);
         }
 
         internal string GetDiffForPullRequest(string accountName, string slug, int pullRequestId)
@@ -252,10 +252,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get(overrideUrl);
         }
 
-        internal async Task<string> GetDiffForPullRequestAsync(string accountName, string slug, int pullRequestId)
+        internal async Task<string> GetDiffForPullRequestAsync(string accountName, string slug, int pullRequestId, CancellationToken token)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/diff/");
-            return await _sharpBucketV2.GetAsync(overrideUrl);
+            return await _sharpBucketV2.GetAsync(overrideUrl, token);
         }
 
         internal List<Activity> GetPullRequestActivity(string accountName, string slug, int pullRequestId, int max = 0)
@@ -270,10 +270,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Post<Merge>(null, overrideUrl);
         }
 
-        internal async Task<Merge> AcceptAndMergePullRequestAsync(string accountName, string slug, int pullRequestId)
+        internal async Task<Merge> AcceptAndMergePullRequestAsync(string accountName, string slug, int pullRequestId, CancellationToken token)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/merge/");
-            return await _sharpBucketV2.PostAsync<Merge>(null, overrideUrl);
+            return await _sharpBucketV2.PostAsync<Merge>(null, overrideUrl, token);
         }
 
         internal PullRequest DeclinePullRequest(string accountName, string slug, int pullRequestId)
@@ -282,10 +282,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Post<PullRequest>(null, overrideUrl);
         }
 
-        internal async Task<PullRequest> DeclinePullRequestAsync(string accountName, string slug, int pullRequestId)
+        internal async Task<PullRequest> DeclinePullRequestAsync(string accountName, string slug, int pullRequestId, CancellationToken token)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/decline/");
-            return await _sharpBucketV2.PostAsync<PullRequest>(null, overrideUrl);
+            return await _sharpBucketV2.PostAsync<PullRequest>(null, overrideUrl, token);
         }
 
         internal List<Comment> ListPullRequestComments(string accountName, string slug, int pullRequestId, int max = 0)
@@ -300,10 +300,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get<Comment>(overrideUrl);
         }
 
-        internal async Task<Comment> GetPullRequestCommentAsync(string accountName, string slug, int pullRequestId, int commentId)
+        internal async Task<Comment> GetPullRequestCommentAsync(string accountName, string slug, int pullRequestId, int commentId, CancellationToken token)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/{commentId}/");
-            return await _sharpBucketV2.GetAsync<Comment>(overrideUrl);
+            return await _sharpBucketV2.GetAsync<Comment>(overrideUrl, token);
         }
 
         internal Comment PostPullRequestComment(string accountName, string slug, int pullRequestId, Comment comment)
@@ -312,10 +312,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Post(comment, overrideUrl);
         }
 
-        internal async Task<Comment> PostPullRequestCommentAsync(string accountName, string slug, int pullRequestId, Comment comment)
+        internal async Task<Comment> PostPullRequestCommentAsync(string accountName, string slug, int pullRequestId, Comment comment, CancellationToken token)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/");
-            return await _sharpBucketV2.PostAsync(comment, overrideUrl);
+            return await _sharpBucketV2.PostAsync(comment, overrideUrl, token);
         }
 
         #endregion
@@ -511,10 +511,15 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get<TreeEntry>(overrideUrl, new { format = "meta" });
         }
 
-        internal async Task<TreeEntry> GetTreeEntryAsync(string srcResourcePath, string subPath = null)
+        internal Task<TreeEntry> GetTreeEntryAsync(string srcResourcePath, CancellationToken token)
+        {
+            return GetTreeEntryAsync(srcResourcePath, null, token);
+        }
+
+        internal async Task<TreeEntry> GetTreeEntryAsync(string srcResourcePath, string subPath, CancellationToken token)
         {
             var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath, subPath);
-            return await _sharpBucketV2.GetAsync<TreeEntry>(overrideUrl, new { format = "meta" });
+            return await _sharpBucketV2.GetAsync<TreeEntry>(overrideUrl, new { format = "meta" }, token);
         }
 
         internal Uri GetRedirectLocation(string srcResourcePath)
@@ -529,10 +534,10 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get(overrideUrl);
         }
 
-        internal async Task<string> GetFileContentAsync(string srcResourcePath, string filePath)
+        internal async Task<string> GetFileContentAsync(string srcResourcePath, string filePath, CancellationToken token)
         {
             var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath, filePath);
-            return await _sharpBucketV2.GetAsync(overrideUrl);
+            return await _sharpBucketV2.GetAsync(overrideUrl, token);
         }
 
         #endregion
