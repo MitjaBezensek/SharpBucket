@@ -1,6 +1,6 @@
-﻿using SharpBucket.V2.Pocos;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
 {

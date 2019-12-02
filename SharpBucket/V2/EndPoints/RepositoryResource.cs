@@ -40,8 +40,9 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Returns a single repository.
         /// </summary>
+        /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<Repository> GetRepositoryAsync(CancellationToken token = default(CancellationToken))
+        public async Task<Repository> GetRepositoryAsync(CancellationToken token = default)
         {
             return await _repositoriesEndPoint.GetRepositoryAsync(_accountName, _slug, token);
         }
@@ -58,8 +59,9 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Removes a repository.  
         /// </summary>
+        /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task DeleteRepositoryAsync(CancellationToken token = default(CancellationToken))
+        public async Task DeleteRepositoryAsync(CancellationToken token = default)
         {
             await _repositoriesEndPoint.DeleteRepositoryAsync(_accountName, _slug, token);
         }
@@ -79,7 +81,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="repository">The repository to create.</param>
         /// <returns>The created repository.</returns>
-        public async Task<Repository> PostRepositoryAsync(Repository repository, CancellationToken token = default(CancellationToken))
+        public async Task<Repository> PostRepositoryAsync(Repository repository, CancellationToken token = default)
         {
             return await _repositoriesEndPoint.PostRepositoryAsync(repository, _accountName, token);
         }
@@ -166,6 +168,17 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Creates restrictions for the specified repository. You should specify a Content-Header with this call. 
+        /// </summary>
+        /// <param name="restriction">The branch restriction.</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        public async Task<BranchRestriction> PostBranchRestrictionAsync(BranchRestriction restriction, CancellationToken token = default)
+        {
+            return await _repositoriesEndPoint.PostBranchRestrictionAsync(_accountName, _slug, restriction, token);
+        }
+
+        /// <summary>
         /// Gets the information associated with specific restriction. 
         /// </summary>
         /// <param name="restrictionId">The restriction's identifier.</param>
@@ -173,6 +186,17 @@ namespace SharpBucket.V2.EndPoints
         public BranchRestriction GetBranchRestriction(int restrictionId)
         {
             return _repositoriesEndPoint.GetBranchRestriction(_accountName, _slug, restrictionId);
+        }
+
+        /// <summary>
+        /// Gets the information associated with specific restriction. 
+        /// </summary>
+        /// <param name="restrictionId">The restriction's identifier.</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        public async Task<BranchRestriction> GetBranchRestrictionAsync(int restrictionId, CancellationToken token = default)
+        {
+            return await _repositoriesEndPoint.GetBranchRestrictionAsync(_accountName, _slug, restrictionId, token);
         }
 
         /// <summary>
@@ -186,6 +210,17 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Updates a specific branch restriction. You cannot change the kind value with this call. 
+        /// </summary>
+        /// <param name="restriction">The branch restriction.</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        public async Task<BranchRestriction> PutBranchRestrictionAsync(BranchRestriction restriction, CancellationToken token = default)
+        {
+            return await _repositoriesEndPoint.PutBranchRestrictionAsync(_accountName, _slug, restriction, token);
+        }
+
+        /// <summary>
         /// Deletes the specified restriction.  
         /// </summary>
         /// <param name="restrictionId">The restriction's identifier.</param>
@@ -193,6 +228,17 @@ namespace SharpBucket.V2.EndPoints
         public void DeleteBranchRestriction(int restrictionId)
         {
             _repositoriesEndPoint.DeleteBranchRestriction(_accountName, _slug, restrictionId);
+        }
+
+        /// <summary>
+        /// Deletes the specified restriction.  
+        /// </summary>
+        /// <param name="restrictionId">The restriction's identifier.</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        public async Task DeleteBranchRestrictionAsync(int restrictionId, CancellationToken token = default)
+        {
+            await _repositoriesEndPoint.DeleteBranchRestrictionAsync(_accountName, _slug, restrictionId, token);
         }
 
         #endregion
@@ -219,6 +265,28 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.GetDiff(_accountName, _slug, spec, parameters);
         }
 
+        /// More info:
+        /// https://confluence.atlassian.com/display/BITBUCKET/diff+Resource
+        /// <summary>
+        /// Gets the diff for the current repository.
+        /// </summary>
+        /// <param name="spec">The diff spec (e.g., de3f2..78ab1).</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        public async Task<string> GetDiffAsync(string spec, CancellationToken token = default) => await GetDiffAsync(spec, new DiffParameters(), token);
+
+        /// <summary>
+        /// Gets the diff for the current repository.
+        /// </summary>
+        /// <param name="spec">The diff spec (e.g., de3f2..78ab1).</param>
+        /// <param name="parameters">Parameters for the diff.</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        public async Task<string> GetDiffAsync(string spec, DiffParameters parameters, CancellationToken token = default)
+        {
+            return await _repositoriesEndPoint.GetDiffAsync(_accountName, _slug, spec, parameters, token);
+        }
+
         /// <summary>
         /// Gets the patch for an individual specification. 
         /// </summary>
@@ -227,6 +295,17 @@ namespace SharpBucket.V2.EndPoints
         public string GetPatch(string spec)
         {
             return _repositoriesEndPoint.GetPatch(_accountName, _slug, spec);
+        }
+
+        /// <summary>
+        /// Gets the patch for an individual specification. 
+        /// </summary>
+        /// <param name="spec">The patch spec.</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        public async Task<string> GetPatchAsync(string spec, CancellationToken token = default)
+        {
+            return await _repositoriesEndPoint.GetPatchAsync(_accountName, _slug, spec, token);
         }
 
         #endregion
@@ -285,6 +364,17 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Gets the information associated with an individual commit. 
+        /// </summary>
+        /// <param name="revision">The SHA1 of the commit.</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        public async Task<Commit> GetCommitAsync(string revision, CancellationToken token = default)
+        {
+            return await _repositoriesEndPoint.GetCommitAsync(_accountName, _slug, revision, token);
+        }
+
+        /// <summary>
         /// List of comments on the specified commit.
         /// </summary>
         /// <param name="revision">The SHA1 of the commit.</param>
@@ -306,6 +396,18 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// To get an individual commit comment, just follow the object's self link.
+        /// </summary>
+        /// <param name="revision">The SHA1 of the commit.</param>
+        /// <param name="commentId">The comment identifier.</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        public async Task<Comment> GetCommitCommentAsync(string revision, int commentId, CancellationToken token = default)
+        {
+            return await _repositoriesEndPoint.GetCommitCommentAsync(_accountName, _slug, revision, commentId, token);
+        }
+
+        /// <summary>
         /// Give your approval on a commit.  
         /// You can only approve a comment on behalf of the authenticated account.  This returns the participant object for the current user.
         /// </summary>
@@ -317,6 +419,18 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Give your approval on a commit.  
+        /// You can only approve a comment on behalf of the authenticated account.  This returns the participant object for the current user.
+        /// </summary>
+        /// <param name="revision">The SHA1 of the commit.</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        public async Task<UserRole> ApproveCommitAsync(string revision, CancellationToken token = default)
+        {
+            return await _repositoriesEndPoint.ApproveCommitAsync(_accountName, _slug, revision, token);
+        }
+
+        /// <summary>
         /// Revoke your approval of a commit. You can remove approvals on behalf of the authenticated account. 
         /// </summary>
         /// <param name="revision">The SHA1 of the commit.</param>
@@ -324,6 +438,17 @@ namespace SharpBucket.V2.EndPoints
         public void DeleteCommitApproval(string revision)
         {
             _repositoriesEndPoint.DeleteCommitApproval(_accountName, _slug, revision);
+        }
+
+        /// <summary>
+        /// Revoke your approval of a commit. You can remove approvals on behalf of the authenticated account. 
+        /// </summary>
+        /// <param name="revision">The SHA1 of the commit.</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        public async Task DeleteCommitApprovalAsync(string revision, CancellationToken token = default)
+        {
+            await _repositoriesEndPoint.DeleteCommitApprovalAsync(_accountName, _slug, revision, token);
         }
 
         /// <summary>
@@ -338,6 +463,18 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Creates a new build status against the specified commit. If the specified key already exists, the existing status object will be overwritten.
+        /// </summary>
+        /// <param name="revision">The SHA1 of the commit</param>
+        /// <param name="buildInfo">The new commit status object</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        public async Task<BuildInfo> AddNewBuildStatusAsync(string revision, BuildInfo buildInfo, CancellationToken token = default)
+        {
+            return await _repositoriesEndPoint.AddNewBuildStatusAsync(_accountName, _slug, revision, buildInfo, token);
+        }
+
+        /// <summary>
         /// Returns the specified build status for a commit.
         /// </summary>
         /// <param name="revision">The SHA1 of the commit</param>
@@ -346,6 +483,18 @@ namespace SharpBucket.V2.EndPoints
         public BuildInfo GetBuildStatusInfo(string revision, string key)
         {
             return _repositoriesEndPoint.GetBuildStatusInfo(_accountName, _slug, revision, key);
+        }
+
+        /// <summary>
+        /// Returns the specified build status for a commit.
+        /// </summary>
+        /// <param name="revision">The SHA1 of the commit</param>
+        /// <param name="key">The build status' unique key</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        public async Task<BuildInfo> GetBuildStatusInfoAsync(string revision, string key, CancellationToken token = default)
+        {
+            return await _repositoriesEndPoint.GetBuildStatusInfoAsync(_accountName, _slug, revision, key, token);
         }
 
         /// <summary>
@@ -361,6 +510,20 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.ChangeBuildStatusInfo(_accountName, _slug, revision, key, buildInfo);
         }
 
+        /// <summary>
+        /// Used to update the current status of a build status object on the specific commit.
+        /// </summary>
+        /// <param name="revision">The SHA1 of the commit</param>
+        /// <param name="key">The build status' unique key</param>
+        /// <param name="buildInfo">The new commit status object</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        /// /// <remarks>This operation can also be used to change other properties of the build status: state, name, description, url, refname. The key cannot be changed.</remarks>
+        public async Task<BuildInfo> ChangeBuildStatusInfoAsync(string revision, string key, BuildInfo buildInfo, CancellationToken token = default)
+        {
+            return await _repositoriesEndPoint.ChangeBuildStatusInfoAsync(_accountName, _slug, revision, key, buildInfo, token);
+        }
+
         #endregion
 
         #region Default Reviewer Resource
@@ -373,6 +536,17 @@ namespace SharpBucket.V2.EndPoints
         public void PutDefaultReviewer(string targetUsername)
         {
             _repositoriesEndPoint.PutDefaultReviewer(_accountName, _slug, targetUsername);
+        }
+
+        /// <summary>
+        /// Adds a user as the default review for pull requests on a repository.
+        /// </summary>
+        /// <param name="targetUsername">The user to add as the default reviewer.</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns></returns>
+        public async Task PutDefaultReviewerAsync(string targetUsername, CancellationToken token = default)
+        {
+            await _repositoriesEndPoint.PutDefaultReviewerAsync(_accountName, _slug, targetUsername, token);
         }
 
         #endregion

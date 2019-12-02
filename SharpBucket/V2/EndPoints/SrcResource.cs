@@ -146,6 +146,17 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Gets the metadata of a specified file or directory in this resource.
+        /// </summary>
+        /// <param name="subPath">The path to the file or directory, or null to retrieve the metadata of the root of this resource.</param>
+        /// <param name="token">The cancellation token</param>
+        public async Task<SrcEntry> GetSrcEntryAsync(string subPath = null, CancellationToken token = default)
+        {
+            var treeEntry = await GetTreeEntryAsync(subPath, token: token);
+            return treeEntry.ToSrcEntry();
+        }
+
+        /// <summary>
         /// Gets the metadata of a specified file.
         /// </summary>
         /// <param name="filePath">The path to the file.</param>
@@ -156,12 +167,35 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Gets the metadata of a specified file.
+        /// </summary>
+        /// <param name="filePath">The path to the file.</param>
+        /// <param name="token">The cancellation token</param>
+        public async Task<SrcFile> GetSrcFileAsync(string filePath, CancellationToken token = default)
+        {
+            if (string.IsNullOrEmpty(filePath)) throw new ArgumentNullException(nameof(filePath));
+            var treeEntry = await GetTreeEntryAsync(filePath, token: token);
+            return (SrcFile)treeEntry.ToSrc();
+        }
+
+        /// <summary>
         /// Gets the metadata of a specified directory.
         /// </summary>
         /// <param name="directoryPath">The path to the directory, or null to retrieve the metadata of the root of this resource.</param>
         public SrcDirectory GetSrcDirectory(string directoryPath)
         {
             return (SrcDirectory)GetTreeEntry(directoryPath).ToSrc();
+        }
+
+        /// <summary>
+        /// Gets the metadata of a specified directory.
+        /// </summary>
+        /// <param name="directoryPath">The path to the directory, or null to retrieve the metadata of the root of this resource.</param>
+        /// <param name="token">The cancellation token</param>
+        public async Task<SrcDirectory> GetSrcDirectoryAsync(string directoryPath, CancellationToken token = default)
+        {
+            var treeEntry = await GetTreeEntryAsync(directoryPath, token: token);
+            return (SrcDirectory)treeEntry.ToSrc();
         }
 
         /// <summary>

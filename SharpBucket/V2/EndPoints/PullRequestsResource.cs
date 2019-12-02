@@ -118,61 +118,6 @@ namespace SharpBucket.V2.EndPoints
             return new PullRequestResource(_accountName, _slug, pullRequestId, _repositoriesEndPoint);
         }
 
-        internal PullRequest GetPullRequest(int pullRequestId)
-        {
-            return _repositoriesEndPoint.GetPullRequest(_accountName, _slug, pullRequestId);
-        }
-
-        internal List<Commit> ListPullRequestCommits(int pullRequestId)
-        {
-            return _repositoriesEndPoint.ListPullRequestCommits(_accountName, _slug, pullRequestId);
-        }
-
-        internal PullRequestInfo ApprovePullRequest(int pullRequestId)
-        {
-            return _repositoriesEndPoint.ApprovePullRequest(_accountName, _slug, pullRequestId);
-        }
-
-        internal void RemovePullRequestApproval(int pullRequestId)
-        {
-            _repositoriesEndPoint.RemovePullRequestApproval(_accountName, _slug, pullRequestId);
-        }
-
-        internal object GetDiffForPullRequest(int pullRequestId)
-        {
-            return _repositoriesEndPoint.GetDiffForPullRequest(_accountName, _slug, pullRequestId);
-        }
-
-        internal List<Activity> GetPullRequestActivity(int pullRequestId)
-        {
-            return _repositoriesEndPoint.GetPullRequestActivity(_accountName, _slug, pullRequestId);
-        }
-
-        internal Merge AcceptAndMergePullRequest(int pullRequestId)
-        {
-            return _repositoriesEndPoint.AcceptAndMergePullRequest(_accountName, _slug, pullRequestId);
-        }
-
-        internal PullRequest DeclinePullRequest(int pullRequestId)
-        {
-            return _repositoriesEndPoint.DeclinePullRequest(_accountName, _slug, pullRequestId);
-        }
-
-        internal List<Comment> ListPullRequestComments(int pullRequestId)
-        {
-            return _repositoriesEndPoint.ListPullRequestComments(_accountName, _slug, pullRequestId);
-        }
-
-        internal Comment GetPullRequestComment(int pullRequestId, int commentId)
-        {
-            return _repositoriesEndPoint.GetPullRequestComment(_accountName, _slug, pullRequestId, commentId);
-        }
-
-        internal Comment PostPullRequestComment(int pullRequestId, Comment comment)
-        {
-            return _repositoriesEndPoint.PostPullRequestComment(_accountName, _slug, pullRequestId, comment);
-        }
-
         #endregion
     }
 }
