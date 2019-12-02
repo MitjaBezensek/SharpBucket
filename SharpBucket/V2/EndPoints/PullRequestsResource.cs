@@ -61,11 +61,10 @@ namespace SharpBucket.V2.EndPoints
         /// For this reason, you must specify an explicit source repository in the request object if you want to pull from a different repository.
         /// </summary>
         /// <param name="pullRequest">The pull request.</param>
-        /// <param name="token">The cancellation token</param>
-        /// <returns></returns>
-        public async Task<PullRequest> PostPullRequestAsync(PullRequest pullRequest, CancellationToken token = default(CancellationToken))
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async Task<PullRequest> PostPullRequestAsync(PullRequest pullRequest, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.PostPullRequestAsync(_accountName, _slug, pullRequest, token: token);
+            return await _repositoriesEndPoint.PostPullRequestAsync(_accountName, _slug, pullRequest, token);
         }
 
         /// <summary>
@@ -88,11 +87,10 @@ namespace SharpBucket.V2.EndPoints
         /// the request body must include these 3 reviewers to prevent Bitbucket from dropping them.
         /// </summary>
         /// <param name="pullRequest">The pull request.</param>
-        /// <param name="token">The cancellation token</param>
-        /// <returns></returns>
-        public async Task<PullRequest> PutPullRequestAsync(PullRequest pullRequest, CancellationToken token = default(CancellationToken))
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async Task<PullRequest> PutPullRequestAsync(PullRequest pullRequest, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.PutPullRequestAsync(_accountName, _slug, pullRequest, token: token);
+            return await _repositoriesEndPoint.PutPullRequestAsync(_accountName, _slug, pullRequest, token);
         }
 
         /// <summary>
@@ -125,7 +123,7 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.GetPullRequest(_accountName, _slug, pullRequestId);
         }
 
-        internal async Task<PullRequest> GetPullRequestAsync(int pullRequestId, CancellationToken token = default(CancellationToken))
+        internal async Task<PullRequest> GetPullRequestAsync(int pullRequestId, CancellationToken token)
         {
             return await _repositoriesEndPoint.GetPullRequestAsync(_accountName, _slug, pullRequestId, token: token);
         }
@@ -140,7 +138,7 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.ApprovePullRequest(_accountName, _slug, pullRequestId);
         }
 
-        internal async Task<PullRequestInfo> ApprovePullRequestAsync(int pullRequestId, CancellationToken token = default(CancellationToken))
+        internal async Task<PullRequestInfo> ApprovePullRequestAsync(int pullRequestId, CancellationToken token)
         {
             return await _repositoriesEndPoint.ApprovePullRequestAsync(_accountName, _slug, pullRequestId, token: token);
         }
@@ -150,7 +148,7 @@ namespace SharpBucket.V2.EndPoints
             _repositoriesEndPoint.RemovePullRequestApproval(_accountName, _slug, pullRequestId);
         }
 
-        internal async Task RemovePullRequestApprovalAsync(int pullRequestId, CancellationToken token = default(CancellationToken))
+        internal async Task RemovePullRequestApprovalAsync(int pullRequestId, CancellationToken token)
         {
             await _repositoriesEndPoint.RemovePullRequestApprovalAsync(_accountName, _slug, pullRequestId, token: token);
         }
@@ -160,7 +158,7 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.GetDiffForPullRequest(_accountName, _slug, pullRequestId);
         }
 
-        internal async Task<object> GetDiffForPullRequestAsync(int pullRequestId, CancellationToken token = default(CancellationToken))
+        internal async Task<object> GetDiffForPullRequestAsync(int pullRequestId, CancellationToken token)
         {
             return await _repositoriesEndPoint.GetDiffForPullRequestAsync(_accountName, _slug, pullRequestId, token: token);
         }
@@ -175,7 +173,7 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.AcceptAndMergePullRequest(_accountName, _slug, pullRequestId);
         }
 
-        internal async Task<Merge> AcceptAndMergePullRequestAsync(int pullRequestId, CancellationToken token = default(CancellationToken))
+        internal async Task<Merge> AcceptAndMergePullRequestAsync(int pullRequestId, CancellationToken token)
         {
             return await _repositoriesEndPoint.AcceptAndMergePullRequestAsync(_accountName, _slug, pullRequestId, token: token);
         }
@@ -185,7 +183,7 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.DeclinePullRequest(_accountName, _slug, pullRequestId);
         }
 
-        internal async Task<PullRequest> DeclinePullRequestAsync(int pullRequestId, CancellationToken token = default(CancellationToken))
+        internal async Task<PullRequest> DeclinePullRequestAsync(int pullRequestId, CancellationToken token)
         {
             return await _repositoriesEndPoint.DeclinePullRequestAsync(_accountName, _slug, pullRequestId, token: token);
         }
@@ -200,7 +198,7 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.GetPullRequestComment(_accountName, _slug, pullRequestId, commentId);
         }
 
-        internal async Task<Comment> GetPullRequestCommentAsync(int pullRequestId, int commentId, CancellationToken token = default(CancellationToken))
+        internal async Task<Comment> GetPullRequestCommentAsync(int pullRequestId, int commentId, CancellationToken token)
         {
             return await _repositoriesEndPoint.GetPullRequestCommentAsync(_accountName, _slug, pullRequestId, commentId, token: token);
         }
@@ -210,7 +208,7 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.PostPullRequestComment(_accountName, _slug, pullRequestId, comment);
         }
 
-        internal async Task<Comment> PostPullRequestCommentAsync(int pullRequestId, Comment comment, CancellationToken token = default(CancellationToken))
+        internal async Task<Comment> PostPullRequestCommentAsync(int pullRequestId, Comment comment, CancellationToken token)
         {
             return await _repositoriesEndPoint.PostPullRequestCommentAsync(_accountName, _slug, pullRequestId, comment, token: token);
         }

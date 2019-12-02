@@ -35,10 +35,10 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Gets the <see cref="PullRequest"/>
         /// </summary>
-        /// <param name="token">The cancellation token</param>
-        public async Task<PullRequest> GetPullRequestAsync(CancellationToken token = default(CancellationToken))
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async Task<PullRequest> GetPullRequestAsync(CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetPullRequestAsync(_accountName, _slug, _pullRequestId, token: token);
+            return await _repositoriesEndPoint.GetPullRequestAsync(_accountName, _slug, _pullRequestId, token);
         }
 
         /// <summary>
@@ -64,9 +64,8 @@ namespace SharpBucket.V2.EndPoints
         /// Give your approval on a pull request. You can only approve a request on behalf of the authenticated account. 
         /// This returns the participant object for the current user.
         /// </summary>
-        /// <returns></returns>
-        /// <param name="token">The cancellation token</param>
-        public async Task<PullRequestInfo> ApprovePullRequestAsync(CancellationToken token = default(CancellationToken))
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async Task<PullRequestInfo> ApprovePullRequestAsync(CancellationToken token = default)
         {
             return await _repositoriesEndPoint.ApprovePullRequestAsync(_accountName, _slug, _pullRequestId, token);
         }
@@ -82,10 +81,10 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Revoke your approval on a pull request. You can remove approvals on behalf of the authenticated account.
         /// </summary>
-        /// <param name="token">The cancellation token</param>
-        public async Task RemovePullRequestApprovalAsync(CancellationToken token = default(CancellationToken))
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async Task RemovePullRequestApprovalAsync(CancellationToken token = default)
         {
-            await _repositoriesEndPoint.RemovePullRequestApprovalAsync(_accountName, _slug, _pullRequestId, token: token);
+            await _repositoriesEndPoint.RemovePullRequestApprovalAsync(_accountName, _slug, _pullRequestId, token);
         }
 
         /// <summary>
@@ -102,11 +101,10 @@ namespace SharpBucket.V2.EndPoints
         /// Gets the diff or patch for a pull request. This returns a 302 redirect response with the Location header 
         /// set to the URL that will perform a temporary merge and return the diff of it. The result is identical to diff in the UI.
         /// </summary>
-        /// <returns></returns>
-        /// <param name="token">The cancellation token</param>
-        public async Task<string> GetDiffForPullRequestAsync(CancellationToken token = default(CancellationToken))
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async Task<string> GetDiffForPullRequestAsync(CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetDiffForPullRequestAsync(_accountName, _slug, _pullRequestId, token: token);
+            return await _repositoriesEndPoint.GetDiffForPullRequestAsync(_accountName, _slug, _pullRequestId, token);
         }
 
         /// <summary>
@@ -130,11 +128,10 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Accept a pull request and merges into the destination branch. This requires write access on the destination repository.
         /// </summary>
-        /// <returns></returns>
-        /// <param name="token">The cancellation token</param>
-        public async Task<Merge> AcceptAndMergePullRequestAsync(CancellationToken token = default(CancellationToken))
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async Task<Merge> AcceptAndMergePullRequestAsync(CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.AcceptAndMergePullRequestAsync(_accountName, _slug, _pullRequestId);
+            return await _repositoriesEndPoint.AcceptAndMergePullRequestAsync(_accountName, _slug, _pullRequestId, token);
         }
 
         /// <summary>
@@ -149,11 +146,10 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Rejects a pull request. This requires write access on the destination repository.
         /// </summary>
-        /// <returns></returns>
-        /// <param name="token">The cancellation token</param>
-        public async Task<PullRequest> DeclinePullRequestAsync(CancellationToken token = default(CancellationToken))
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async Task<PullRequest> DeclinePullRequestAsync(CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.DeclinePullRequestAsync(_accountName, _slug, _pullRequestId);
+            return await _repositoriesEndPoint.DeclinePullRequestAsync(_accountName, _slug, _pullRequestId, token);
         }
 
         /// <summary>
@@ -178,10 +174,10 @@ namespace SharpBucket.V2.EndPoints
         /// Gets an individual comment on an request. Private repositories require authorization with an account that has appropriate access.
         /// </summary>
         /// <param name="commentId">The comment identifier.</param>
-        /// <param name="token">The cancellation token</param>          /// <returns></returns>
-        public async Task<Comment> GetPullRequestCommentAsync(int commentId, CancellationToken token = default(CancellationToken))
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async Task<Comment> GetPullRequestCommentAsync(int commentId, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetPullRequestCommentAsync(_accountName, _slug, _pullRequestId, commentId, token: token);
+            return await _repositoriesEndPoint.GetPullRequestCommentAsync(_accountName, _slug, _pullRequestId, commentId, token);
         }
 
         public Comment PostPullRequestComment(Comment comment)
@@ -189,9 +185,9 @@ namespace SharpBucket.V2.EndPoints
             return _repositoriesEndPoint.PostPullRequestComment(_accountName, _slug, _pullRequestId, comment);
         }
 
-        public async Task<Comment> PostPullRequestCommentAsync(Comment comment, CancellationToken token = default(CancellationToken))
+        public async Task<Comment> PostPullRequestCommentAsync(Comment comment, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.PostPullRequestCommentAsync(_accountName, _slug, _pullRequestId, comment, token: token);
+            return await _repositoriesEndPoint.PostPullRequestCommentAsync(_accountName, _slug, _pullRequestId, comment, token);
         }
     }
 }

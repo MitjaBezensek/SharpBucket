@@ -36,11 +36,10 @@ namespace SharpBucket.V2.EndPoints
         /// Gets the public information associated with a user. 
         /// If the user's profile is private, the caller must be authenticated as the account holder to view this information.  
         /// </summary>
-        /// <param name="token">The cancellation token</param>
-        /// <returns></returns>
-        public async Task<User> GetProfileAsync(CancellationToken token = default(CancellationToken))
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async Task<User> GetProfileAsync(CancellationToken token = default)
         {
-            return await _sharpBucketV2.GetAsync<User>(_baseUrl, token: token);
+            return await _sharpBucketV2.GetAsync<User>(_baseUrl, token);
         }
 
         /// <summary>

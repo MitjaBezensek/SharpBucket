@@ -80,6 +80,29 @@ namespace SharpBucketTests.V2.EndPoints
             }
         }
 
+        [Test]
+        public async Task EnumerateForksAsync_FromMercurialRepo_ShouldReturnMoreThan10UniqueForks()
+        {
+            var repositoryResource = SampleRepositories.MercurialRepository;
+            repositoryResource.ShouldNotBe(null);
+            var forks = repositoryResource.EnumerateForksAsync();
+            forks.ShouldNotBe(null);
+
+            var uniqueNames = new HashSet<string>();
+            await foreach (var fork in forks)
+            {
+                fork.ShouldBeFilled();
+
+                // since they are forks of mercurial, their parent should be mercurial
+                fork.parent.ShouldBeFilled();
+                fork.parent.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
+
+                uniqueNames.ShouldNotContain(fork.full_name);
+                uniqueNames.Add(fork.full_name);
+            }
+            uniqueNames.Count.ShouldBeGreaterThan(10);
+        }
+
         [TestCase(3)]
         [TestCase(103)]
         [Test]

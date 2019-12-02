@@ -16,9 +16,9 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get<User>(_baseUrl);
         }
 
-        public async Task<User> GetUserAsync(CancellationToken token = default(CancellationToken))
+        public async Task<User> GetUserAsync(CancellationToken token = default)
         {
-            return await _sharpBucketV2.GetAsync<User>(_baseUrl, token: token);
+            return await _sharpBucketV2.GetAsync<User>(_baseUrl, token);
         }
     }
 }
