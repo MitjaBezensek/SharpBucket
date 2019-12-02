@@ -88,10 +88,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
         [Obsolete("Use TeamResource.GetProfile() instead")]
-        public async Task<Team> GetProfileAsync(CancellationToken token = default(CancellationToken))
+        public async Task<Team> GetProfileAsync(CancellationToken token = default)
         {
             if (_teamResource == null) throw new InvalidOperationException("This method could be used only with obsolete constructor, when a team name has been provided");
-            return await _teamResource.GetProfileAsync(token: token);
+            return await _teamResource.GetProfileAsync(token);
         }
 
         /// <summary>

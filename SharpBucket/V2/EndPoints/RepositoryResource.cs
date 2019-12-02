@@ -42,7 +42,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<Repository> GetRepositoryAsync(CancellationToken token = default(CancellationToken))
+        public async Task<Repository> GetRepositoryAsync(CancellationToken token = default)
         {
             return await _repositoriesEndPoint.GetRepositoryAsync(_accountName, _slug, token);
         }
@@ -61,7 +61,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task DeleteRepositoryAsync(CancellationToken token = default(CancellationToken))
+        public async Task DeleteRepositoryAsync(CancellationToken token = default)
         {
             await _repositoriesEndPoint.DeleteRepositoryAsync(_accountName, _slug, token);
         }
@@ -81,7 +81,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="repository">The repository to create.</param>
         /// <returns>The created repository.</returns>
-        public async Task<Repository> PostRepositoryAsync(Repository repository, CancellationToken token = default(CancellationToken))
+        public async Task<Repository> PostRepositoryAsync(Repository repository, CancellationToken token = default)
         {
             return await _repositoriesEndPoint.PostRepositoryAsync(repository, _accountName, token);
         }
@@ -173,9 +173,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="restriction">The branch restriction.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<BranchRestriction> PostBranchRestrictionAsync(BranchRestriction restriction, CancellationToken token = default(CancellationToken))
+        public async Task<BranchRestriction> PostBranchRestrictionAsync(BranchRestriction restriction, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.PostBranchRestrictionAsync(_accountName, _slug, restriction, token: token);
+            return await _repositoriesEndPoint.PostBranchRestrictionAsync(_accountName, _slug, restriction, token);
         }
 
         /// <summary>
@@ -194,9 +194,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="restrictionId">The restriction's identifier.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<BranchRestriction> GetBranchRestrictionAsync(int restrictionId, CancellationToken token = default(CancellationToken))
+        public async Task<BranchRestriction> GetBranchRestrictionAsync(int restrictionId, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetBranchRestrictionAsync(_accountName, _slug, restrictionId, token: token);
+            return await _repositoriesEndPoint.GetBranchRestrictionAsync(_accountName, _slug, restrictionId, token);
         }
 
         /// <summary>
@@ -215,9 +215,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="restriction">The branch restriction.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<BranchRestriction> PutBranchRestrictionAsync(BranchRestriction restriction, CancellationToken token = default(CancellationToken))
+        public async Task<BranchRestriction> PutBranchRestrictionAsync(BranchRestriction restriction, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.PutBranchRestrictionAsync(_accountName, _slug, restriction, token: token);
+            return await _repositoriesEndPoint.PutBranchRestrictionAsync(_accountName, _slug, restriction, token);
         }
 
         /// <summary>
@@ -236,9 +236,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="restrictionId">The restriction's identifier.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task DeleteBranchRestrictionAsync(int restrictionId, CancellationToken token = default(CancellationToken))
+        public async Task DeleteBranchRestrictionAsync(int restrictionId, CancellationToken token = default)
         {
-            await _repositoriesEndPoint.DeleteBranchRestrictionAsync(_accountName, _slug, restrictionId, token: token);
+            await _repositoriesEndPoint.DeleteBranchRestrictionAsync(_accountName, _slug, restrictionId, token);
         }
 
         #endregion
@@ -273,7 +273,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="spec">The diff spec (e.g., de3f2..78ab1).</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<string> GetDiffAsync(string spec, CancellationToken token = default(CancellationToken)) => await GetDiffAsync(spec, new DiffParameters(), token = default(CancellationToken));
+        public async Task<string> GetDiffAsync(string spec, CancellationToken token = default) => await GetDiffAsync(spec, new DiffParameters(), token);
 
         /// <summary>
         /// Gets the diff for the current repository.
@@ -282,9 +282,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="parameters">Parameters for the diff.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<string> GetDiffAsync(string spec, DiffParameters parameters, CancellationToken token = default(CancellationToken))
+        public async Task<string> GetDiffAsync(string spec, DiffParameters parameters, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetDiffAsync(_accountName, _slug, spec, parameters);
+            return await _repositoriesEndPoint.GetDiffAsync(_accountName, _slug, spec, parameters, token);
         }
 
         /// <summary>
@@ -303,9 +303,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="spec">The patch spec.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<string> GetPatchAsync(string spec, CancellationToken token = default(CancellationToken))
+        public async Task<string> GetPatchAsync(string spec, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetPatchAsync(_accountName, _slug, spec, token: token);
+            return await _repositoriesEndPoint.GetPatchAsync(_accountName, _slug, spec, token);
         }
 
         #endregion
@@ -369,9 +369,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision">The SHA1 of the commit.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<Commit> GetCommitAsync(string revision, CancellationToken token = default(CancellationToken))
+        public async Task<Commit> GetCommitAsync(string revision, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetCommitAsync(_accountName, _slug, revision, token: token);
+            return await _repositoriesEndPoint.GetCommitAsync(_accountName, _slug, revision, token);
         }
 
         /// <summary>
@@ -402,9 +402,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="commentId">The comment identifier.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<Comment> GetCommitCommentAsync(string revision, int commentId, CancellationToken token = default(CancellationToken))
+        public async Task<Comment> GetCommitCommentAsync(string revision, int commentId, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetCommitCommentAsync(_accountName, _slug, revision, commentId, token: token);
+            return await _repositoriesEndPoint.GetCommitCommentAsync(_accountName, _slug, revision, commentId, token);
         }
 
         /// <summary>
@@ -425,9 +425,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision">The SHA1 of the commit.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<UserRole> ApproveCommitAsync(string revision, CancellationToken token = default(CancellationToken))
+        public async Task<UserRole> ApproveCommitAsync(string revision, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.ApproveCommitAsync(_accountName, _slug, revision, token: token);
+            return await _repositoriesEndPoint.ApproveCommitAsync(_accountName, _slug, revision, token);
         }
 
         /// <summary>
@@ -446,9 +446,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision">The SHA1 of the commit.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task DeleteCommitApprovalAsync(string revision, CancellationToken token = default(CancellationToken))
+        public async Task DeleteCommitApprovalAsync(string revision, CancellationToken token = default)
         {
-            await _repositoriesEndPoint.DeleteCommitApprovalAsync(_accountName, _slug, revision);
+            await _repositoriesEndPoint.DeleteCommitApprovalAsync(_accountName, _slug, revision, token);
         }
 
         /// <summary>
@@ -469,9 +469,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="buildInfo">The new commit status object</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<BuildInfo> AddNewBuildStatusAsync(string revision, BuildInfo buildInfo, CancellationToken token = default(CancellationToken))
+        public async Task<BuildInfo> AddNewBuildStatusAsync(string revision, BuildInfo buildInfo, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.AddNewBuildStatusAsync(_accountName, _slug, revision, buildInfo, token: token);
+            return await _repositoriesEndPoint.AddNewBuildStatusAsync(_accountName, _slug, revision, buildInfo, token);
         }
 
         /// <summary>
@@ -492,9 +492,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="key">The build status' unique key</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<BuildInfo> GetBuildStatusInfoAsync(string revision, string key, CancellationToken token = default(CancellationToken))
+        public async Task<BuildInfo> GetBuildStatusInfoAsync(string revision, string key, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetBuildStatusInfoAsync(_accountName, _slug, revision, key, token: token);
+            return await _repositoriesEndPoint.GetBuildStatusInfoAsync(_accountName, _slug, revision, key, token);
         }
 
         /// <summary>
@@ -519,9 +519,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
         /// /// <remarks>This operation can also be used to change other properties of the build status: state, name, description, url, refname. The key cannot be changed.</remarks>
-        public async Task<BuildInfo> ChangeBuildStatusInfoAsync(string revision, string key, BuildInfo buildInfo, CancellationToken token = default(CancellationToken))
+        public async Task<BuildInfo> ChangeBuildStatusInfoAsync(string revision, string key, BuildInfo buildInfo, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.ChangeBuildStatusInfoAsync(_accountName, _slug, revision, key, buildInfo, token: token);
+            return await _repositoriesEndPoint.ChangeBuildStatusInfoAsync(_accountName, _slug, revision, key, buildInfo, token);
         }
 
         #endregion
@@ -544,9 +544,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="targetUsername">The user to add as the default reviewer.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task PutDefaultReviewerAsync(string targetUsername, CancellationToken token = default(CancellationToken))
+        public async Task PutDefaultReviewerAsync(string targetUsername, CancellationToken token = default)
         {
-            await _repositoriesEndPoint.PutDefaultReviewerAsync(_accountName, _slug, targetUsername, token: token);
+            await _repositoriesEndPoint.PutDefaultReviewerAsync(_accountName, _slug, targetUsername, token);
         }
 
         #endregion

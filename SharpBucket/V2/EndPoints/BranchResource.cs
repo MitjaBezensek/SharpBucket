@@ -57,9 +57,9 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="branchName">The name of the branch to delete.</param>
         /// <param name="token">The cancellation token</param>
-        public async Task DeleteBranchAsync(string branchName, CancellationToken token = default(CancellationToken))
+        public async Task DeleteBranchAsync(string branchName, CancellationToken token = default)
         {
-            await _repositoriesEndPoint.DeleteBranchAsync(_accountName, _slug, branchName, token: token);
+            await _repositoriesEndPoint.DeleteBranchAsync(_accountName, _slug, branchName, token);
         }
     }
 }

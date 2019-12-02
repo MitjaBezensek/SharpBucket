@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using SharpBucket.V2;
@@ -119,7 +120,8 @@ namespace SharpBucketTests.V2.EndPoints
         {
             var comment = SampleRepositories.RepositoriesEndPoint
                 .PullRequestsResource("tortoisehg", "thg")
-                .GetPullRequestComment(46, 61843122);
+                .PullRequestResource(46)
+                .GetPullRequestComment(61843122);
             comment.ShouldBeFilled();
             comment.parent.ShouldBeFilled();
         }
@@ -129,7 +131,8 @@ namespace SharpBucketTests.V2.EndPoints
         {
             var comment = await SampleRepositories.RepositoriesEndPoint
                 .PullRequestsResource("tortoisehg", "thg")
-                .GetPullRequestCommentAsync(46, 61843122);
+                .PullRequestResource(46)
+                .GetPullRequestCommentAsync(61843122);
             comment.ShouldBeFilled();
             comment.parent.ShouldBeFilled();
         }
