@@ -82,19 +82,6 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// Gets the public information associated with a team. 
-        /// If the team's profile is private, the caller must be authenticated and authorized to view this information. 
-        /// </summary>
-        /// <param name="token">The cancellation token</param>
-        /// <returns></returns>
-        [Obsolete("Use TeamResource.GetProfile() instead")]
-        public async Task<Team> GetProfileAsync(CancellationToken token = default)
-        {
-            if (_teamResource == null) throw new InvalidOperationException("This method could be used only with obsolete constructor, when a team name has been provided");
-            return await _teamResource.GetProfileAsync(token);
-        }
-
-        /// <summary>
         /// Gets the team's members.
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>

@@ -57,15 +57,6 @@ namespace SharpBucketTests.V2.EndPoints
 
         [Test]
         [Obsolete]
-        public async Task GetProfileAsync_FromTeamAtlassian_ReturnsAtlassianProfile()
-        {
-            sharpBucket.ShouldNotBe(null);
-            var profile = await sharpBucket.TeamsEndPoint("atlassian").GetProfileAsync();
-            profile.display_name.ShouldBe("Atlassian");
-        }
-
-        [Test]
-        [Obsolete]
         public void ListMembers_FromFirstTeamOfLoggedUser_ShouldReturnManyMembers()
         {
             teamsEndPoint.ShouldNotBe(null);
