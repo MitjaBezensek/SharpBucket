@@ -363,7 +363,7 @@ namespace SharpBucketTests.V2.EndPoints
 
             Assert.That(
                 async () => await rootOfFirstCommit.GetSrcFileAsync(null),
-                Throws.TypeOf<ArgumentNullException>().With.Message.EndsWith("filePath"));
+                Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("filePath"));
         }
 
         [Test]

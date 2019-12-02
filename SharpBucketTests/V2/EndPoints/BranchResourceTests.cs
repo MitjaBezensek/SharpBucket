@@ -39,7 +39,7 @@ namespace SharpBucketTests.V2.EndPoints
             var branchResource = SampleRepositories.TestRepository.RepositoryResource.BranchesResource;
             var initialBranches = branchResource.ListBranches();
 
-            await branchResource.DeleteBranchAsync("branchToDelete");
+            await branchResource.DeleteBranchAsync("branchToDeleteAsync");
 
             var remainingBranches = branchResource.ListBranches();
             remainingBranches.Count.ShouldBe(initialBranches.Count - 1);

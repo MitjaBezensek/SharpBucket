@@ -83,6 +83,7 @@ namespace SharpBucketTests.GitHelpers
                 // create branchToDelete (no need commits inside, to avoid to lose commit when testing DeleteBranch)
                 Commands.Checkout(repository, repository.Branches["master"]);
                 CreateAndSwitchToNewBranch(repository, "branchToDelete");
+                CreateAndSwitchToNewBranch(repository, "branchToDeleteAsync");
 
                 // Push All branches
                 repository.Network.Push(repository.Branches, new PushOptions { CredentialsProvider = GitCredentialsProvider.GetCredentials });
