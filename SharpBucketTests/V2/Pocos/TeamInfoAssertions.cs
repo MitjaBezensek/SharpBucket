@@ -1,5 +1,4 @@
-﻿using System;
-using SharpBucket.V2.Pocos;
+﻿using SharpBucket.V2.Pocos;
 using Shouldly;
 
 namespace SharpBucketTests.V2.Pocos
