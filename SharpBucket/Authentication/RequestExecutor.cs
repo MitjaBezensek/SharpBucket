@@ -157,9 +157,9 @@ namespace SharpBucket.Authentication
                     var key = requestParameter.Key;
                     var val = requestParameter.Value;
 
-                    if (val is IEnumerable && !(val is string))
+                    if (val is IEnumerable enumerable && !(enumerable is string))
                     {
-                        foreach (var item in (IEnumerable)val)
+                        foreach (var item in enumerable)
                             request.AddParameter(key, item);
                     }
                     else

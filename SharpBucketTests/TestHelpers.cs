@@ -15,7 +15,7 @@ namespace SharpBucketTests
         private static string _accountName;
 
         public static string AccountName => _accountName
-                                            ?? (_accountName = Environment.GetEnvironmentVariable(SbAccountName)) ;
+                                            ??= Environment.GetEnvironmentVariable(SbAccountName);
 
         private static string _oauthConsumerKey;
 
@@ -23,7 +23,7 @@ namespace SharpBucketTests
         /// Gets the OAuth consumer key to use to authenticate to the Bitbucket account to use to run the SharpBucket's tests
         /// </summary>
         public static string OAuthConsumerKey => _oauthConsumerKey
-                                              ?? (_oauthConsumerKey = Environment.GetEnvironmentVariable(SbConsumerKey));
+                                              ??= Environment.GetEnvironmentVariable(SbConsumerKey);
 
         private static string _oauthConsumerSecretKey;
 
@@ -31,7 +31,7 @@ namespace SharpBucketTests
         /// Gets the OAuth consumer secret key to use to authenticate to the Bitbucket account to use to run the SharpBucket's tests
         /// </summary>
         public static string OAuthConsumerSecretKey => _oauthConsumerSecretKey
-                                                    ?? (_oauthConsumerSecretKey = Environment.GetEnvironmentVariable(SbConsumerSecretKey));
+                                                    ??= Environment.GetEnvironmentVariable(SbConsumerSecretKey);
 
         private static string _userName;
 
@@ -39,7 +39,7 @@ namespace SharpBucketTests
         /// Gets the username (email) to use for basic authentication on to the Bitbucket account to use to run the SharpBucket's tests
         /// </summary>
         public static string UserName => _userName
-                                         ?? (_userName = Environment.GetEnvironmentVariable(SbUserName));
+                                         ??= Environment.GetEnvironmentVariable(SbUserName);
 
         private static string _password;
 
@@ -47,7 +47,7 @@ namespace SharpBucketTests
         /// Gets the password to use for basic authentication on to the Bitbucket account to use to run the SharpBucket's tests
         /// </summary>
         public static string Password => _password
-                                         ?? (_password = Environment.GetEnvironmentVariable(SbPassword));
+                                         ??= Environment.GetEnvironmentVariable(SbPassword);
 
         private static SharpBucketV2 _sharpBucketV2;
 
@@ -56,7 +56,7 @@ namespace SharpBucketTests
         /// The goal is to avoid to open a new authentication for each individual test.
         /// </summary>
         public static SharpBucketV2 SharpBucketV2 => _sharpBucketV2
-                                                  ?? (_sharpBucketV2 = GetV2ClientAuthenticatedWithOAuth2());
+                                                  ??= GetV2ClientAuthenticatedWithOAuth2();
 
         private static SharpBucketV2 GetV2ClientAuthenticatedWithOAuth2()
         {

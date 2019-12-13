@@ -80,6 +80,7 @@ namespace SharpBucket.V2.EndPoints
         /// Creates a new repository.
         /// </summary>
         /// <param name="repository">The repository to create.</param>
+        /// <param name="token">The cancellation token</param>
         /// <returns>The created repository.</returns>
         public async Task<Repository> PostRepositoryAsync(Repository repository, CancellationToken token = default)
         {

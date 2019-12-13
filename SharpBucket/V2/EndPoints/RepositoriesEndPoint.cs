@@ -101,7 +101,7 @@ namespace SharpBucket.V2.EndPoints
         internal async Task<Repository> PutRepositoryAsync(Repository repo, string accountName, string slug, CancellationToken token)
         {
             var overrideURL = GetRepositoryUrl(accountName, slug, null);
-            return await _sharpBucketV2.PutAsync<Repository>(repo, overrideURL, token: token);
+            return await _sharpBucketV2.PutAsync(repo, overrideURL, token: token);
         }
 
         internal Repository PostRepository(Repository repo, string accountName)

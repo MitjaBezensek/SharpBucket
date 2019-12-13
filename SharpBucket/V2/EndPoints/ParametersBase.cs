@@ -21,7 +21,7 @@ namespace SharpBucket.V2.EndPoints
 
             foreach (var kvp in kvps.Where(p => p.HasValue))
             {
-                result = result ?? (result = new Dictionary<string, object>());
+                result = result ?? new Dictionary<string, object>();
                 result.Add(kvp.Value);                
             }
 

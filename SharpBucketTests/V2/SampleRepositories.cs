@@ -15,17 +15,17 @@ namespace SharpBucketTests.V2
         private static RepositoriesEndPoint _repositoriesEndPoint;
 
         public static RepositoriesEndPoint RepositoriesEndPoint => _repositoriesEndPoint
-                                                                   ?? (_repositoriesEndPoint = TestHelpers.SharpBucketV2.RepositoriesEndPoint());
+                                                                  ??= TestHelpers.SharpBucketV2.RepositoriesEndPoint();
 
         private static RepositoryResource _emptyTestRepository;
 
         public static RepositoryResource EmptyTestRepository => _emptyTestRepository
-                                                                ?? (_emptyTestRepository = CreateTestRepository("Empty").RepositoryResource);
+                                                                ??= CreateTestRepository("Empty").RepositoryResource;
 
         private static RepositoryResource _privateTestRepository;
 
         public static RepositoryResource PrivateTestRepository => _privateTestRepository
-                                                                  ?? (_privateTestRepository = CreateTestRepository("Private", true).RepositoryResource);
+                                                                  ??= CreateTestRepository("Private", true).RepositoryResource;
 
         private static TestRepository _testRepository;
 
@@ -38,12 +38,10 @@ namespace SharpBucketTests.V2
                     _testRepository = new TestRepository();
                     var testRepository = CreateTestRepository("Test");
                     _testRepository.RepositoryResource = testRepository.RepositoryResource;
-                    using (var testRepositoryBuilder = TestHelpers.GetTestRepositoryBuilder(testRepository.AccountName, testRepository.RepositoryName))
-                    {
-                        _testRepository.RepositoryInfo = testRepositoryBuilder.FillRepository();
-                        _testRepository.RepositoryInfo.AccountName = testRepository.AccountName;
-                        _testRepository.RepositoryInfo.RepositoryName = testRepository.RepositoryName;
-                    }
+                    using var testRepositoryBuilder = TestHelpers.GetTestRepositoryBuilder(testRepository.AccountName, testRepository.RepositoryName);
+                    _testRepository.RepositoryInfo = testRepositoryBuilder.FillRepository();
+                    _testRepository.RepositoryInfo.AccountName = testRepository.AccountName;
+                    _testRepository.RepositoryInfo.RepositoryName = testRepository.RepositoryName;
                 }
 
                 return _testRepository;
@@ -52,13 +50,13 @@ namespace SharpBucketTests.V2
 
         private static RepositoryResource _mercurialRepository;
 
-        public static RepositoryResource MercurialRepository => _mercurialRepository ??
-                                                             (_mercurialRepository = RepositoriesEndPoint.RepositoryResource(MERCURIAL_ACCOUNT_NAME, MERCURIAL_REPOSITORY_NAME));
+        public static RepositoryResource MercurialRepository => _mercurialRepository
+                                                                ??= RepositoriesEndPoint.RepositoryResource(MERCURIAL_ACCOUNT_NAME, MERCURIAL_REPOSITORY_NAME);
 
         private static RepositoryResource _notExistingRepository;
 
-        public static RepositoryResource NotExistingRepository => _notExistingRepository ??
-                                                                (_notExistingRepository = RepositoriesEndPoint.RepositoryResource(TestHelpers.AccountName, "not_existing_repository"));
+        public static RepositoryResource NotExistingRepository => _notExistingRepository
+                                                                  ??= RepositoriesEndPoint.RepositoryResource(TestHelpers.AccountName, "not_existing_repository");
 
         private static RepositoryResourceWithArgs CreateTestRepository(string repositoryNamePrefix, bool isPrivate = false)
         {
