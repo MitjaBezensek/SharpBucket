@@ -133,16 +133,36 @@ namespace SharpBucket.V2.EndPoints
             return $"{_baseUrl}{accountName}/{slug}/{append}";
         }
 
-        internal List<UserShort> ListWatchers(string accountName, string slug, int max = 0)
+        internal List<UserShort> ListWatchers(string accountName, string slug, int max)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "watchers");
             return GetPaginatedValues<UserShort>(overrideUrl, max);
         }
 
-        internal List<Repository> ListForks(string accountName, string slug, int max = 0)
+        internal IEnumerable<UserShort> EnumerateWatchers(string accountName, string slug, int? pageLen)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "watchers");
+            return _sharpBucketV2.EnumeratePaginatedValues<UserShort>(overrideUrl, pageLen: pageLen);
+        }
+
+#if CS_8
+        internal IAsyncEnumerable<UserShort> EnumerateWatchersAsync(string accountName, string slug, int? pageLen, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "watchers");
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, pageLen: pageLen, token: token);
+        }
+#endif
+
+        internal List<Repository> ListForks(string accountName, string slug, int max)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "forks");
             return GetPaginatedValues<Repository>(overrideUrl, max);
+        }
+
+        internal IEnumerable<Repository> EnumerateForks(string accountName, string slug, int? pageLen)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "forks");
+            return _sharpBucketV2.EnumeratePaginatedValues<Repository>(overrideUrl, pageLen: pageLen);
         }
 
 #if CS_8

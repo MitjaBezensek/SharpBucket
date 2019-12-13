@@ -43,27 +43,52 @@ namespace SharpBucketTests.V2.EndPoints
         public void ListWatchers_FromMercurialRepo_ShouldReturnMoreThan10UniqueWatchers()
         {
             var repositoryResource = SampleRepositories.MercurialRepository;
-            repositoryResource.ShouldNotBe(null);
             var watchers = repositoryResource.ListWatchers();
-            watchers.ShouldNotBe(null);
             watchers.Count.ShouldBeGreaterThan(10);
 
             var uniqueNames = new HashSet<string>();
             foreach (var watcher in watchers)
             {
                 watcher.ShouldBeFilled();
-                uniqueNames.ShouldNotContain(watcher.uuid);
-                uniqueNames.Add(watcher.uuid);
+                uniqueNames.Add(watcher.uuid).ShouldBe(true, $"value ${watcher.uuid} is not unique");
             }
+        }
+
+        [Test]
+        public void EnumerateWatchers_FromMercurialRepo_ShouldReturnMoreThan10UniqueWatchers()
+        {
+            var repositoryResource = SampleRepositories.MercurialRepository;
+            var watchers = repositoryResource.EnumerateWatchers();
+
+            var uniqueNames = new HashSet<string>();
+            foreach (var watcher in watchers)
+            {
+                watcher.ShouldBeFilled();
+                uniqueNames.Add(watcher.uuid).ShouldBe(true, $"value ${watcher.uuid} is not unique");
+            }
+            uniqueNames.Count.ShouldBeGreaterThan(10);
+        }
+
+        [Test]
+        public async Task EnumerateWatchersAsync_FromMercurialRepo_ShouldReturnMoreThan10UniqueWatchers()
+        {
+            var repositoryResource = SampleRepositories.MercurialRepository;
+            var watchers = repositoryResource.EnumerateWatchersAsync();
+
+            var uniqueNames = new HashSet<string>();
+            await foreach (var watcher in watchers)
+            {
+                watcher.ShouldBeFilled();
+                uniqueNames.Add(watcher.uuid).ShouldBe(true, $"value ${watcher.uuid} is not unique");
+            }
+            uniqueNames.Count.ShouldBeGreaterThan(10);
         }
 
         [Test]
         public void ListForks_FromMercurialRepo_ShouldReturnMoreThan10UniqueForks()
         {
             var repositoryResource = SampleRepositories.MercurialRepository;
-            repositoryResource.ShouldNotBe(null);
             var forks = repositoryResource.ListForks();
-            forks.ShouldNotBe(null);
             forks.Count.ShouldBeGreaterThan(10);
 
             var uniqueNames = new HashSet<string>();
@@ -75,18 +100,35 @@ namespace SharpBucketTests.V2.EndPoints
                 fork.parent.ShouldBeFilled();
                 fork.parent.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
 
-                uniqueNames.ShouldNotContain(fork.full_name);
-                uniqueNames.Add(fork.full_name);
+                uniqueNames.Add(fork.full_name).ShouldBe(true, $"value ${fork.full_name} is not unique");
             }
+        }
+
+        [Test]
+        public void EnumerateForks_FromMercurialRepo_ShouldReturnMoreThan10UniqueForks()
+        {
+            var repositoryResource = SampleRepositories.MercurialRepository;
+            var forks = repositoryResource.EnumerateForks();
+
+            var uniqueNames = new HashSet<string>();
+            foreach (var fork in forks)
+            {
+                fork.ShouldBeFilled();
+
+                // since they are forks of mercurial, their parent should be mercurial
+                fork.parent.ShouldBeFilled();
+                fork.parent.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
+
+                uniqueNames.Add(fork.full_name).ShouldBe(true, $"value ${fork.full_name} is not unique");
+            }
+            uniqueNames.Count.ShouldBeGreaterThan(10);
         }
 
         [Test]
         public async Task EnumerateForksAsync_FromMercurialRepo_ShouldReturnMoreThan10UniqueForks()
         {
             var repositoryResource = SampleRepositories.MercurialRepository;
-            repositoryResource.ShouldNotBe(null);
             var forks = repositoryResource.EnumerateForksAsync();
-            forks.ShouldNotBe(null);
 
             var uniqueNames = new HashSet<string>();
             await foreach (var fork in forks)
@@ -97,8 +139,7 @@ namespace SharpBucketTests.V2.EndPoints
                 fork.parent.ShouldBeFilled();
                 fork.parent.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
 
-                uniqueNames.ShouldNotContain(fork.full_name);
-                uniqueNames.Add(fork.full_name);
+                uniqueNames.Add(fork.full_name).ShouldBe(true, $"value ${fork.full_name} is not unique");
             }
             uniqueNames.Count.ShouldBeGreaterThan(10);
         }

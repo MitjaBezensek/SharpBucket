@@ -88,21 +88,69 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// Gets the list of accounts watching a repository. 
+        /// List accounts watching a repository. 
         /// </summary>
         /// <returns></returns>
         public List<UserShort> ListWatchers()
         {
-            return _repositoriesEndPoint.ListWatchers(_accountName, _slug);
+            return ListWatchers(0);
         }
 
         /// <summary>
-        /// List of repository forks, This call returns a repository object for each fork.
+        /// List accounts watching a repository.
+        /// </summary>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
+        public List<UserShort> ListWatchers(int max)
+        {
+            return _repositoriesEndPoint.ListWatchers(_accountName, _slug, max);
+        }
+
+        /// <summary>
+        /// Enumerate accounts watching a repository.
+        /// </summary>
+        /// <param name="pageLen">The length of a page. If not defined the default page length will be used.</param>
+        public IEnumerable<UserShort> EnumerateWatchers(int? pageLen = null)
+        {
+            return _repositoriesEndPoint.EnumerateWatchers(_accountName, _slug, pageLen);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate accounts watching a repository asynchronously, doing requests page by page.
+        /// </summary>
+        /// <param name="pageLen">The length of a page. If not defined the default page length will be used.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<UserShort> EnumerateWatchersAsync(int? pageLen = null, CancellationToken token = default)
+        {
+            return _repositoriesEndPoint.EnumerateWatchersAsync(_accountName, _slug, pageLen, token);
+        }
+#endif
+
+        /// <summary>
+        /// List repository forks, This call returns a repository object for each fork.
         /// </summary>
         /// <returns></returns>
         public List<Repository> ListForks()
         {
-            return _repositoriesEndPoint.ListForks(_accountName, _slug);
+            return ListForks(0);
+        }
+
+        /// <summary>
+        /// List repository forks, This call returns a repository object for each fork.
+        /// </summary>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
+        public List<Repository> ListForks(int max)
+        {
+            return _repositoriesEndPoint.ListForks(_accountName, _slug, max);
+        }
+
+        /// <summary>
+        /// Enumerate repository forks, This call returns a repository object for each fork.
+        /// </summary>
+        /// <param name="pageLen">The length of a page. If not defined the default page length will be used.</param>
+        public IEnumerable<Repository> EnumerateForks(int? pageLen = null)
+        {
+            return _repositoriesEndPoint.EnumerateForks(_accountName, _slug, pageLen);
         }
 
 #if CS_8
@@ -110,6 +158,8 @@ namespace SharpBucket.V2.EndPoints
         /// Enumerate repository forks asynchronously, doing requests page by page.
         /// This call returns a repository object for each fork.
         /// </summary>
+        /// <param name="pageLen">The length of a page. If not defined the default page length will be used.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public IAsyncEnumerable<Repository> EnumerateForksAsync(int? pageLen = null, CancellationToken token = default)
         {
             return _repositoriesEndPoint.EnumerateForksAsync(_accountName, _slug, pageLen, token);
