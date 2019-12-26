@@ -579,6 +579,20 @@ namespace SharpBucket.V2.EndPoints
             return GetPaginatedValues<Branch>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 
+        internal IEnumerable<Branch> EnumerateBranches(string accountName, string slug, EnumerateParameters parameters)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "refs/branches/");
+            return _sharpBucketV2.EnumeratePaginatedValues<Branch>(overrideUrl, parameters.ToDictionary(), parameters.PageLen);
+        }
+
+#if CS_8
+        internal IAsyncEnumerable<Branch> EnumerateBranchesAsync(string accountName, string slug, EnumerateParameters parameters, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "refs/branches/");
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Branch>(overrideUrl, parameters.ToDictionary(), parameters.PageLen, token);
+        }
+#endif
+
         internal void DeleteBranch(string accountName, string repSlug, string branchName)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repSlug, "refs/branches/" + branchName);

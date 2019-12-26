@@ -28,20 +28,55 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Lists all branches associated with a specific repository.
         /// </summary>
-        /// <returns></returns>
         public List<Branch> ListBranches() => ListBranches(new ListParameters());
 
         /// <summary>
         /// Lists all branches associated with a specific repository.
         /// </summary>
         /// <param name="parameters">Parameters for the query.</param>
-        /// <returns></returns>
         public List<Branch> ListBranches(ListParameters parameters)
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
             return _repositoriesEndPoint.ListBranches(_accountName, _slug, parameters);
         }
+
+        /// <summary>
+        /// Enumerate branches associated with a specific repository.
+        /// </summary>
+        public IEnumerable<Branch> EnumerateBranches() => EnumerateBranches(new EnumerateParameters());
+
+        /// <summary>
+        /// Enumerate branches associated with a specific repository.
+        /// </summary>
+        /// <param name="parameters">Parameters for the queries.</param>
+        public IEnumerable<Branch> EnumerateBranches(EnumerateParameters parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+            return _repositoriesEndPoint.EnumerateBranches(_accountName, _slug, parameters);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate branches associated with a specific repository asynchronously, doing requests page by page.
+        /// </summary>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Branch> EnumerateBranchesAsync(CancellationToken token = default)
+            => EnumerateBranchesAsync(new EnumerateParameters(), token);
+
+        /// <summary>
+        /// Enumerate branches associated with a specific repository asynchronously, doing requests page by page.
+        /// </summary>
+        /// <param name="parameters">Parameters for the queries.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Branch> EnumerateBranchesAsync(EnumerateParameters parameters, CancellationToken token = default)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+            return _repositoriesEndPoint.EnumerateBranchesAsync(_accountName, _slug, parameters, token);
+        }
+#endif
 
         /// <summary>
         /// Removes a branch.
