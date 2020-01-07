@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,6 +50,34 @@ namespace SharpBucket.V2.EndPoints
         {
             return _repositoriesEndPoint.ListPullRequestCommits(_accountName, _slug, _pullRequestId);
         }
+
+        /// <summary>
+        /// Enumerate the commits associated with a specific pull request, follow the pull request's commits link. This returns a paginated response.
+        /// </summary>
+        /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
+        public IEnumerable<Commit> EnumeratePullRequestCommits(int? pageLen = null)
+        {
+            return _repositoriesEndPoint.EnumeratePullRequestCommits(_accountName, _slug, _pullRequestId, pageLen);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate the commits associated with a specific pull request asynchronously, doing requests page by page.
+        /// </summary>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Commit> EnumeratePullRequestCommitsAsync(CancellationToken token = default)
+            => EnumeratePullRequestCommitsAsync(null, token);
+
+        /// <summary>
+        /// Enumerate the commits associated with a specific pull request asynchronously, doing requests page by page.
+        /// </summary>
+        /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Commit> EnumeratePullRequestCommitsAsync(int? pageLen, CancellationToken token = default)
+        {
+            return _repositoriesEndPoint.EnumeratePullRequestCommitsAsync(_accountName, _slug, _pullRequestId, pageLen, token);
+        }
+#endif
 
         /// <summary>
         /// Give your approval on a pull request. You can only approve a request on behalf of the authenticated account. 
@@ -110,11 +139,44 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Gets a log of the activity for a specific pull request.
         /// </summary>
-        /// <returns></returns>
-        public List<Activity> GetPullRequestActivity()
+        [Obsolete("Use ListPullRequestActivities instead which is the exact same method but with a name that respect the global namming rules of the project.")]
+        public List<Activity> GetPullRequestActivity() => ListPullRequestActivities();
+
+        /// <summary>
+        /// List the activities for a specific pull request.
+        /// </summary>
+        public List<Activity> ListPullRequestActivities()
         {
-            return _repositoriesEndPoint.GetPullRequestActivity(_accountName, _slug, _pullRequestId);
+            return _repositoriesEndPoint.ListPullRequestActivities(_accountName, _slug, _pullRequestId);
         }
+
+        /// <summary>
+        /// Enumerate the activities for a specific pull request. This returns a paginated response.
+        /// </summary>
+        /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
+        public IEnumerable<Activity> EnumeratePullRequestActivities(int? pageLen = null)
+        {
+            return _repositoriesEndPoint.EnumeratePullRequestActivities(_accountName, _slug, _pullRequestId, pageLen);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate the activities for a specific pull request asynchronously, doing requests page by page.
+        /// </summary>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Activity> EnumeratePullRequestActivitiesAsync(CancellationToken token = default)
+            => EnumeratePullRequestActivitiesAsync(null, token);
+
+        /// <summary>
+        /// Enumerate the activities for a specific pull request asynchronously, doing requests page by page.
+        /// </summary>
+        /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Activity> EnumeratePullRequestActivitiesAsync(int? pageLen, CancellationToken token = default)
+        {
+            return _repositoriesEndPoint.EnumeratePullRequestActivitiesAsync(_accountName, _slug, _pullRequestId, pageLen, token);
+        }
+#endif
 
         /// <summary>
         /// Accept a pull request and merges into the destination branch. This requires write access on the destination repository.
@@ -162,9 +224,37 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Enumerate the comments on the specified pull request. This returns a paginated response.
+        /// </summary>
+        /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
+        public IEnumerable<Comment> EnumeratePullRequestComments(int? pageLen = null)
+        {
+            return _repositoriesEndPoint.EnumeratePullRequestComments(_accountName, _slug, _pullRequestId, pageLen);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate the comments on the specified pull request asynchronously, doing requests page by page.
+        /// </summary>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Comment> EnumeratePullRequestCommentsAsync(CancellationToken token = default)
+            => EnumeratePullRequestCommentsAsync(null, token);
+
+        /// <summary>
+        /// Enumerate the comments on the specified pull request asynchronously, doing requests page by page.
+        /// </summary>
+        /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Comment> EnumeratePullRequestCommentsAsync(int? pageLen, CancellationToken token = default)
+        {
+            return _repositoriesEndPoint.EnumeratePullRequestCommentsAsync(_accountName, _slug, _pullRequestId, pageLen, token);
+        }
+#endif
+
+        /// <summary>
         /// Gets an individual comment on an request. Private repositories require authorization with an account that has appropriate access.
         /// </summary>
-        /// <param name="commentId">The comment identifier.</param>      /// <returns></returns>
+        /// <param name="commentId">The comment identifier.</param>
         public Comment GetPullRequestComment(int commentId)
         {
             return _repositoriesEndPoint.GetPullRequestComment(_accountName, _slug, _pullRequestId, commentId);

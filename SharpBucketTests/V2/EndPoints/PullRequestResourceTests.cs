@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -66,18 +67,50 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void GetPullRequestActivity_ExistingPublicPullRequest_ReturnValidInfo()
+        public void ListPullRequestActivities_ExistingPublicPullRequest_ReturnValidInfo()
         {
-            var activities = ExistingPullRequest.GetPullRequestActivity();
+            var activities = ExistingPullRequest.ListPullRequestActivities();
             activities.ShouldNotBeNull();
             activities.Count.ShouldBe(4);
             activities[0].update.state.ShouldBe("DECLINED");
         }
 
         [Test]
-        public void GetPullRequestActivity_NotExistingPublicPullRequest_ThrowException()
+        public void ListPullRequestActivities_NotExistingPublicPullRequest_ThrowException()
         {
-            var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.GetPullRequestActivity());
+            var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.ListPullRequestActivities());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+        }
+
+        [Test]
+        public void EnumeratePullRequestActivities_ExistingPublicPullRequest_ReturnValidInfo()
+        {
+            var activities = ExistingPullRequest.EnumeratePullRequestActivities();
+            activities.ShouldNotBeNull();
+            activities.ShouldNotBeEmpty();
+        }
+
+        [Test]
+        public void EnumeratePullRequestActivities_NotExistingPublicPullRequest_ThrowExceptionWhenStartEnumerate()
+        {
+            var activities = NotExistingPullRequest.EnumeratePullRequestActivities();
+            var exception = Assert.Throws<BitbucketV2Exception>(() => activities.First());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+        }
+
+        [Test]
+        public async Task EnumeratePullRequestActivitiesAsync_ExistingPublicPullRequest_ReturnValidInfo()
+        {
+            var activities = ExistingPullRequest.EnumeratePullRequestActivitiesAsync();
+            activities.ShouldNotBeNull();
+            (await activities.ToListAsync()).ShouldNotBeEmpty();
+        }
+
+        [Test]
+        public void EnumeratePullRequestActivitiesAsync_NotExistingPublicPullRequest_ThrowExceptionWhenStartEnumerate()
+        {
+            var activities = NotExistingPullRequest.EnumeratePullRequestActivitiesAsync();
+            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await activities.FirstAsync());
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
@@ -95,6 +128,38 @@ namespace SharpBucketTests.V2.EndPoints
         public void ListPullRequestComments_NotExistingPublicPullRequest_ThrowException()
         {
             var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.ListPullRequestComments());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+        }
+
+        [Test]
+        public void EnumeratePullRequestComments_ExistingPublicPullRequest_ReturnValidInfo()
+        {
+            var comments = ExistingPullRequest.EnumeratePullRequestComments();
+            comments.ShouldNotBeNull();
+            comments.ShouldNotBeEmpty();
+        }
+
+        [Test]
+        public void EnumeratePullRequestComments_NotExistingPublicPullRequest_ThrowExceptionWhenStartEnumerate()
+        {
+            var comments = NotExistingPullRequest.EnumeratePullRequestComments();
+            var exception = Assert.Throws<BitbucketV2Exception>(() => comments.First());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+        }
+
+        [Test]
+        public async Task EnumeratePullRequestCommentsAsync_ExistingPublicPullRequest_ReturnValidInfo()
+        {
+            var comments = ExistingPullRequest.EnumeratePullRequestCommentsAsync();
+            comments.ShouldNotBeNull();
+            (await comments.ToListAsync()).ShouldNotBeEmpty();
+        }
+
+        [Test]
+        public void EnumeratePullRequestCommentsAsync_NotExistingPublicPullRequest_ThrowExceptionWhenStartEnumerate()
+        {
+            var comments = NotExistingPullRequest.EnumeratePullRequestCommentsAsync();
+            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await comments.FirstAsync());
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
@@ -163,6 +228,38 @@ namespace SharpBucketTests.V2.EndPoints
         public void ListPullRequestCommits_NotExistingPublicPullRequest_ThrowException()
         {
             var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.ListPullRequestCommits());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+        }
+
+        [Test]
+        public void EnumeratePullRequestCommits_ExistingPublicPullRequest_ReturnValidInfo()
+        {
+            var commits = ExistingPullRequest.EnumeratePullRequestCommits();
+            commits.ShouldNotBeNull();
+            commits.ShouldNotBeEmpty();
+        }
+
+        [Test]
+        public void EnumeratePullRequestCommits_NotExistingPublicPullRequest_ThrowExceptionWhenStartToEnumerate()
+        {
+            var commits = NotExistingPullRequest.EnumeratePullRequestCommits();
+            var exception = Assert.Throws<BitbucketV2Exception>(() => commits.First());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+        }
+
+        [Test]
+        public async Task EnumeratePullRequestCommitsAsync_ExistingPublicPullRequest_ReturnValidInfo()
+        {
+            var commits = ExistingPullRequest.EnumeratePullRequestCommitsAsync();
+            commits.ShouldNotBeNull();
+            (await commits.ToListAsync()).ShouldNotBeEmpty();
+        }
+
+        [Test]
+        public void EnumeratePullRequestCommitsAsync_NotExistingPublicPullRequest_ThrowExceptionWhenStartToEnumerate()
+        {
+            var commits = NotExistingPullRequest.EnumeratePullRequestCommitsAsync();
+            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await commits.FirstAsync());
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
@@ -248,7 +345,7 @@ namespace SharpBucketTests.V2.EndPoints
             approvalResult.role.ShouldBe("PARTICIPANT");
 
             // validate pull request activities after approval
-            var activities = pullRequestResource.GetPullRequestActivity();
+            var activities = pullRequestResource.ListPullRequestActivities();
             activities.Count.ShouldBeGreaterThanOrEqualTo(2, "creation twice (for an unknown reason that may change) and approve");
             var approvalActivity = activities[0];
             approvalActivity.comment.ShouldBe(null);
@@ -263,7 +360,7 @@ namespace SharpBucketTests.V2.EndPoints
             pullRequestResource.RemovePullRequestApproval();
 
             // validate pull request activities after having remove the approval
-            var activitiesAfterRemoveApproval = pullRequestResource.GetPullRequestActivity();
+            var activitiesAfterRemoveApproval = pullRequestResource.ListPullRequestActivities();
             activitiesAfterRemoveApproval.Count.ShouldBe(activities.Count - 1, "Approval activity is removed, and removal is not traced.");
             activitiesAfterRemoveApproval.ShouldAllBe(activity => activity.update != null, "should all be update activities");
         }
@@ -288,7 +385,7 @@ namespace SharpBucketTests.V2.EndPoints
             approvalResult.role.ShouldBe("PARTICIPANT");
 
             // validate pull request activities after approval
-            var activities = pullRequestResource.GetPullRequestActivity();
+            var activities = pullRequestResource.ListPullRequestActivities();
             activities.Count.ShouldBeGreaterThanOrEqualTo(2, "creation twice (for an unknown reason that may change) and approve");
             var approvalActivity = activities[0];
             approvalActivity.comment.ShouldBe(null);
@@ -303,7 +400,7 @@ namespace SharpBucketTests.V2.EndPoints
             await pullRequestResource.RemovePullRequestApprovalAsync();
 
             // validate pull request activities after having remove the approval
-            var activitiesAfterRemoveApproval = pullRequestResource.GetPullRequestActivity();
+            var activitiesAfterRemoveApproval = pullRequestResource.ListPullRequestActivities();
             activitiesAfterRemoveApproval.Count.ShouldBe(activities.Count - 1, "Approval activity is removed, and removal is not traced.");
             activitiesAfterRemoveApproval.ShouldAllBe(activity => activity.update != null, "should all be update activities");
         }
