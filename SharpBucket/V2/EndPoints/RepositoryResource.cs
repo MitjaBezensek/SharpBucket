@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using SharpBucket.Utility;
@@ -604,9 +605,54 @@ namespace SharpBucket.V2.EndPoints
 
         #region Src resource
 
+        public string GetMainBranchRevision()
+        {
+            var repoPath = $"{_accountName}/{_slug}";
+            var rootSrcPath = $"{repoPath}/src/";
+
+            try
+            {
+                // calling the src endpoint redirect to the hash of the last commit of the main branch
+                // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src#get
+                var redirectLocation = _repositoriesEndPoint.GetSrcRootRedirectLocation(rootSrcPath);
+                return redirectLocation.Segments[redirectLocation.Segments.Length - 1].TrimEnd('/');
+            }
+            catch (BitbucketV2Exception e) when (e.HttpStatusCode == HttpStatusCode.NotFound)
+            {
+                // mimic the error that bitbucket send when we perform calls on src endpoint with a revision name
+                var errorResponse = new ErrorResponse { type = "Error", error = new Error { message = $"Repository {repoPath} not found" } };
+                throw new BitbucketV2Exception(HttpStatusCode.NotFound, errorResponse);
+            }
+        }
+
+        public async Task<string> GetMainBranchRevisionAsync(CancellationToken token = default)
+        {
+            var repoPath = $"{_accountName}/{_slug}";
+            var rootSrcPath = $"{repoPath}/src/";
+
+            try
+            {
+                // calling the src endpoint redirect to the hash of the last commit of the main branch
+                // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src#get
+                var redirectLocation = await _repositoriesEndPoint.GetSrcRootRedirectLocationAsync(rootSrcPath, token);
+                return redirectLocation.Segments[redirectLocation.Segments.Length - 1].TrimEnd('/');
+            }
+            catch (BitbucketV2Exception e) when (e.HttpStatusCode == HttpStatusCode.NotFound)
+            {
+                // mimic the error that bitbucket send when we perform calls on src endpoint with a revision name
+                var errorResponse = new ErrorResponse { type = "Error", error = new Error { message = $"Repository {repoPath} not found" } };
+                throw new BitbucketV2Exception(HttpStatusCode.NotFound, errorResponse);
+            }
+        }
+
         /// <summary>
         /// Get a Src resource that allows to browse the content of the repository
         /// </summary>
+        /// <remarks>
+        /// If revision is null a non async request will occurs.
+        /// if you want a fullly async experience, you should do yourseulf an explicit call to <see cref="GetMainBranchRevisionAsync(CancellationToken)"/>
+        /// and then provide the result in the <paramref name="revision"/> parameter.
+        /// </remarks>
         /// <param name="revision">The name of the revision to browse. This may be a commit hash, a branch name, a tag name, or null to target the last commit of the main branch.</param>
         /// <param name="path">An optional path to a sub directory if you want to start to browse somewhere else that at the root path.</param>
         public SrcResource SrcResource(string revision = null, string path = null)

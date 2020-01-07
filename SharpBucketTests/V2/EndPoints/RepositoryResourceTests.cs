@@ -448,5 +448,47 @@ namespace SharpBucketTests.V2.EndPoints
             changedBuildInfo.ShouldNotBeNull();
             changedBuildInfo.state.ShouldBe(BuildInfoState.SUCCESSFUL);
         }
+
+        [Test]
+        public void GetMainBranchRevision_TestRepository_GetShaOfTheLastCommitOnMainBranch()
+        {
+            var testRepository = SampleRepositories.TestRepository;
+            var repositoryResource = testRepository.RepositoryResource;
+
+            var revision = repositoryResource.GetMainBranchRevision();
+
+            revision.ShouldBe(testRepository.RepositoryInfo.MainBranchLastCommit);
+        }
+
+        [Test]
+        public async Task GetMainBranchRevisionAsync_TestRepository_GetShaOfTheLastCommitOnMainBranch()
+        {
+            var testRepository = SampleRepositories.TestRepository;
+            var repositoryResource = testRepository.RepositoryResource;
+
+            var revision = await repositoryResource.GetMainBranchRevisionAsync();
+
+            revision.ShouldBe(testRepository.RepositoryInfo.MainBranchLastCommit);
+        }
+
+        [Test]
+        public void GetMainBranchRevision_FromARepositoryThatDoNotExists_ThrowAnException()
+        {
+            var notExistingRepo = TestHelpers.SharpBucketV2.RepositoriesEndPoint().RepositoryResource("foo", "bar");
+
+            var exception = Assert.Throws<BitbucketV2Exception>(() => notExistingRepo.GetMainBranchRevision());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+            exception.Message.ShouldBe("Repository foo/bar not found");
+        }
+
+        [Test]
+        public void GetMainBranchRevisionAsync_FromARepositoryThatDoNotExists_ThrowAnException()
+        {
+            var notExistingRepo = TestHelpers.SharpBucketV2.RepositoriesEndPoint().RepositoryResource("foo", "bar");
+
+            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await notExistingRepo.GetMainBranchRevisionAsync());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+            exception.Message.ShouldBe("Repository foo/bar not found");
+        }
     }
 }

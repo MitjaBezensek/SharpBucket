@@ -20,6 +20,11 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Initializes a new instance of <see cref="SrcResource"/>.
         /// </summary>
+        /// <remarks>
+        /// If revision is null a non async request will occurs.
+        /// if you want a fullly async experience, you should do yourseulf an explicit call to <see cref="RepositoryResource.GetMainBranchRevisionAsync(CancellationToken)"/>
+        /// and then provide the result in the <paramref name="revision"/> parameter.
+        /// </remarks>
         /// <param name="repositoriesEndPoint">The base end point extended by this resource.</param>
         /// <param name="accountName">The name of the account or team in which is located the repository we want to browse.</param>
         /// <param name="repoSlugOrName">The slug or name of the repository we want to browse. (this may also be the repository UUID).</param>
@@ -35,26 +40,12 @@ namespace SharpBucket.V2.EndPoints
             // only when caller really try to do a request and not when building the resource object
             string BuildSrcPath()
             {
-                var rootSrcPath = $"{repoPath}/src/";
-
                 if (string.IsNullOrEmpty(revision))
                 {
-                    try
-                    {
-                        // calling the src endpoint redirect to the hash of the last commit of the main branch
-                        // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src#get
-                        var redirectLocation = repositoriesEndPoint.GetRedirectLocation(rootSrcPath);
-                        revision = redirectLocation.Segments[redirectLocation.Segments.Length - 1];
-                    }
-                    catch (BitbucketV2Exception e) when (e.HttpStatusCode == HttpStatusCode.NotFound)
-                    {
-                        // mimic the error that bitbucket send when we perform calls on src endpoint with a revision name
-                        var errorResponse = new ErrorResponse {type = "Error", error = new Error {message = $"Repository {repoPath} not found"}};
-                        throw new BitbucketV2Exception(HttpStatusCode.NotFound, errorResponse);
-                    }
+                    revision = repositoriesEndPoint.RepositoryResource(accountName, repoSlugOrName).GetMainBranchRevision();
                 }
 
-                return UrlHelper.ConcatPathSegments(rootSrcPath, revision, path).EnsureEndsWith('/');
+                return UrlHelper.ConcatPathSegments($"{repoPath}/src/", revision, path).EnsureEndsWith('/');
             }
 
             SrcPath = new Lazy<string>(BuildSrcPath);

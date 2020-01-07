@@ -8,5 +8,6 @@
         public string AccountName { get; set; }
         public string RepositoryName { get; set; }
         public string FirstCommit { get; set; }
+        public string MainBranchLastCommit { get; set; }
     }
 }
