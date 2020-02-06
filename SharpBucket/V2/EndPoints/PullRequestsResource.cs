@@ -28,22 +28,73 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// List all of a repository's open pull requests.
+        /// List open pull requests on the repository.
         /// </summary>
         /// <returns></returns>
-        public List<PullRequest> ListPullRequests() => ListPullRequests(new ListParameters());
+        public List<PullRequest> ListPullRequests()
+            => ListPullRequests(new ListPullRequestsParameters());
 
         /// <summary>
-        /// List all of a repository's open pull requests.
+        /// List open pull requests on the repository.
         /// </summary>
         /// <param name="parameters">Parameters for the query.</param>
         /// <returns></returns>
+        [Obsolete("Prefer the ListPullRequests(ListPullRequestsParameters) overload.")]
         public List<PullRequest> ListPullRequests(ListParameters parameters)
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
             return _repositoriesEndPoint.ListPullRequests(_accountName, _slug, parameters);
         }
+
+        /// <summary>
+        /// List pull requests on the repository.
+        /// </summary>
+        /// <param name="parameters">Parameters for the query.</param>
+        public List<PullRequest> ListPullRequests(ListPullRequestsParameters parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+            return _repositoriesEndPoint.ListPullRequests(_accountName, _slug, parameters);
+        }
+
+        /// <summary>
+        /// Enumerate open pull requests on the repository.
+        /// </summary>
+        public IEnumerable<PullRequest> EnumeratePullRequests()
+            => EnumeratePullRequests(new EnumeratePullRequestsParameters());
+
+        /// <summary>
+        /// Enumerate pull requests on the repository.
+        /// </summary>
+        /// <param name="parameters">Parameters for the queries.</param>
+        public IEnumerable<PullRequest> EnumeratePullRequests(EnumeratePullRequestsParameters parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+            return _repositoriesEndPoint.EnumeratePullRequests(_accountName, _slug, parameters);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate open pull requests on the repository asynchronously, doing requests page by page.
+        /// </summary>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<PullRequest> EnumeratePullRequestsAsync(CancellationToken token = default)
+            => EnumeratePullRequestsAsync(new EnumeratePullRequestsParameters(), token);
+
+        /// <summary>
+        /// Enumerate pull requests on the repository asynchronously, doing requests page by page.
+        /// </summary>
+        /// <param name="parameters">Parameters for the queries.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<PullRequest> EnumeratePullRequestsAsync(EnumeratePullRequestsParameters parameters, CancellationToken token = default)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+            return _repositoriesEndPoint.EnumeratePullRequestsAsync(_accountName, _slug, parameters, token);
+        }
+#endif
 
         /// <summary>
         /// Creates a new pull request. The request URL you provide is the destination repository URL. 
@@ -94,13 +145,48 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// Returns all the pull request activity for a repository. This call returns a historical log of all the pull request activity within a repository.
+        /// Returns activity log for all the pull requests on the repository.
         /// </summary>
-        /// <returns></returns>
+        [Obsolete("Use GetPullRequestsActivities instead (naming improved, and max parameter exposed)")]
         public List<Activity> GetPullRequestLog()
+            => GetPullRequestsActivities();
+
+        /// <summary>
+        /// Returns activity log for all the pull requests on the repository.
+        /// </summary>
+        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
+        public List<Activity> GetPullRequestsActivities(int max = 0)
         {
-            return _repositoriesEndPoint.GetPullRequestLog(_accountName, _slug);
+            return _repositoriesEndPoint.GetPullRequestsActivities(_accountName, _slug, max);
         }
+
+        /// <summary>
+        /// Enumerate activity log for all the pull requests on the repository.
+        /// </summary>
+        /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
+        public IEnumerable<Activity> EnumeratePullRequestsActivities(int? pageLen = null)
+        {
+            return _repositoriesEndPoint.EnumeratePullRequestsActivities(_accountName, _slug, pageLen);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate open pull requests on the repository asynchronously, doing requests page by page.
+        /// </summary>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Activity> EnumeratePullRequestsActivitiesAsync(CancellationToken token = default)
+            => EnumeratePullRequestsActivitiesAsync(null, token);
+
+        /// <summary>
+        /// Enumerate pull requests on the repository asynchronously, doing requests page by page.
+        /// </summary>
+        /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Activity> EnumeratePullRequestsActivitiesAsync(int? pageLen, CancellationToken token = default)
+        {
+            return _repositoriesEndPoint.EnumeratePullRequestsActivitiesAsync(_accountName, _slug, pageLen, token);
+        }
+#endif
 
         #endregion
 

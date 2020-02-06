@@ -190,11 +190,32 @@ namespace SharpBucket.V2.EndPoints
             return new PullRequestsResource(accountName, repoSlugOrName, this);
         }
 
+        [Obsolete("Prefer the ListPullRequests(string, string, ListPullRequestsParameters) overload.")]
         internal List<PullRequest> ListPullRequests(string accountName, string slug, ListParameters parameters)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/");
             return GetPaginatedValues<PullRequest>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
+
+        internal List<PullRequest> ListPullRequests(string accountName, string slug, ListPullRequestsParameters parameters)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/");
+            return GetPaginatedValues<PullRequest>(overrideUrl, parameters.Max, parameters.ToDictionary());
+        }
+
+        internal IEnumerable<PullRequest> EnumeratePullRequests(string accountName, string slug, EnumeratePullRequestsParameters parameters)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/");
+            return _sharpBucketV2.EnumeratePaginatedValues<PullRequest>(overrideUrl, parameters.ToDictionary(), parameters.PageLen);
+        }
+
+#if CS_8
+        internal IAsyncEnumerable<PullRequest> EnumeratePullRequestsAsync(string accountName, string slug, EnumeratePullRequestsParameters parameters, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/");
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<PullRequest>(overrideUrl, parameters.ToDictionary(), parameters.PageLen, token);
+        }
+#endif
 
         internal PullRequest PostPullRequest(string accountName, string slug, PullRequest pullRequest)
         {
@@ -220,11 +241,25 @@ namespace SharpBucket.V2.EndPoints
             return await _sharpBucketV2.PutAsync(pullRequest, overrideUrl, token);
         }
 
-        internal List<Activity> GetPullRequestLog(string accountName, string slug, int max = 0)
+        internal List<Activity> GetPullRequestsActivities(string accountName, string slug, int max)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/activity/");
             return GetPaginatedValues<Activity>(overrideUrl, max);
         }
+
+        internal IEnumerable<Activity> EnumeratePullRequestsActivities(string accountName, string slug, int? pageLen)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/activity/");
+            return _sharpBucketV2.EnumeratePaginatedValues<Activity>(overrideUrl, null, pageLen);
+        }
+
+#if CS_8
+        internal IAsyncEnumerable<Activity> EnumeratePullRequestsActivitiesAsync(string accountName, string slug, int? pageLen, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/activity/");
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Activity>(overrideUrl, null, pageLen, token);
+        }
+#endif
 
         #endregion
 
