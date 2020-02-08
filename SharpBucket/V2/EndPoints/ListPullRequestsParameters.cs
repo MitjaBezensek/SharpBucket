@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
 {
+    /// <summary>
+    /// An object that can be passed on methods that list pull requests.
+    /// </summary>
     public class ListPullRequestsParameters : ListParameters
     {
         /// <summary>

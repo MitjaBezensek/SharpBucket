@@ -13,7 +13,7 @@ namespace SharpBucket.V2.EndPoints
     /// The repositories endpoint has a number of resources you can use to manage repository resources. 
     /// For all repository resources, you supply a  repo_slug that identifies the specific repository.
     /// More info:
-    /// https://confluence.atlassian.com/display/BITBUCKET/repositories+Endpoint
+    /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories
     /// </summary>
     public class RepositoriesEndPoint : EndPoint
     {
@@ -27,20 +27,22 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
         /// this method returns a collection containing public and private repositories. 
-        /// Otherwise, this method returns a collection of the public repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
         /// </summary>
         /// <param name="accountName">The account whose repositories you wish to get.</param>
         /// <returns></returns>
-        public List<Repository> ListRepositories(string accountName) => ListRepositories(accountName, new ListParameters());
+        public List<Repository> ListRepositories(string accountName)
+            => ListRepositories(accountName, new ListRepositoriesParameters());
 
         /// <summary>
         /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
         /// this method returns a collection containing public and private repositories. 
-        /// Otherwise, this method returns a collection of the public repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
         /// </summary>
         /// <param name="accountName">The account whose repositories you wish to get.</param>
         /// <param name="parameters">Parameters for the query.</param>
         /// <returns></returns>
+        [Obsolete("Prefer overload using a ListRepositoriesParameters")]
         public List<Repository> ListRepositories(string accountName, ListParameters parameters)
         {
             if (parameters == null)
@@ -51,9 +53,80 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// List of all the public repositories on Bitbucket.  This produces a paginated response. 
-        /// Pagination only goes forward (it's not possible to navigate to previous pages) and navigation is done by following the URL for the next page.
-        /// The returned repositories are ordered by creation date, oldest repositories first. Only public repositories are returned.
+        /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
+        /// this method returns a collection containing public and private repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
+        /// </summary>
+        /// <param name="accountName">The account whose repositories you wish to get.</param>
+        /// <param name="parameters">Parameters for the query.</param>
+        /// <returns></returns>
+        public List<Repository> ListRepositories(string accountName, ListRepositoriesParameters parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            var overrideUrl = $"{_baseUrl}{accountName.GuidOrValue()}/";
+            return GetPaginatedValues<Repository>(overrideUrl, parameters.Max, parameters.ToDictionary());
+        }
+
+        /// <summary>
+        /// Enumerate repositories associated with an account. If the caller is properly authenticated and authorized, 
+        /// this method returns a collection containing public and private repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
+        /// </summary>
+        /// <param name = "accountName" > The account whose repositories you wish to get.</param>
+        public IEnumerable<Repository> EnumerateRepositories(string accountName)
+            => EnumerateRepositories(accountName, new EnumerateRepositoriesParameters());
+
+        /// <summary>
+        /// Enumerate repositories associated with an account. If the caller is properly authenticated and authorized, 
+        /// this method returns a collection containing public and private repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
+        /// </summary>
+        /// <param name="accountName">The account whose repositories you wish to get.</param>
+        /// <param name="parameters">Parameters for the queries.</param>
+        public IEnumerable<Repository> EnumerateRepositories(string accountName, EnumerateRepositoriesParameters parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            var overrideUrl = $"{_baseUrl}{accountName.GuidOrValue()}/";
+            return _sharpBucketV2.EnumeratePaginatedValues<Repository>(overrideUrl, parameters.ToDictionary(), parameters.PageLen);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate repositories associated with an account, doing requests page by page.
+        /// If the caller is properly authenticated and authorized, 
+        /// this method returns a collection containing public and private repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
+        /// </summary>
+        /// <param name="accountName">The account whose repositories you wish to get.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Repository> EnumerateRepositoriesAsync(string accountName, CancellationToken token = default)
+            => EnumerateRepositoriesAsync(accountName, new EnumerateRepositoriesParameters(), token);
+
+        /// <summary>
+        /// Enumerate repositories associated with an account, doing requests page by page.
+        /// If the caller is properly authenticated and authorized, 
+        /// this method returns a collection containing public and private repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
+        /// </summary>
+        /// <param name="accountName">The account whose repositories you wish to get.</param>
+        /// <param name="parameters">Parameters for the queries.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Repository> EnumerateRepositoriesAsync(string accountName, EnumerateRepositoriesParameters parameters, CancellationToken token = default)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            var overrideUrl = $"{_baseUrl}{accountName.GuidOrValue()}/";
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Repository>(overrideUrl, parameters.ToDictionary(), parameters.PageLen, token);
+        }
+#endif
+
+        /// <summary>
+        /// List of all the public repositories on Bitbucket.
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
@@ -61,6 +134,46 @@ namespace SharpBucket.V2.EndPoints
         {
             return GetPaginatedValues<Repository>(_baseUrl, max);
         }
+
+        /// <summary>
+        /// List of all the public repositories on Bitbucket.
+        /// </summary>
+        /// <param name="parameters">Parameters for the queries.</param>
+        /// <returns></returns>
+        public List<Repository> ListPublicRepositories(ListPublicRepositoriesParameters parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            return GetPaginatedValues<Repository>(_baseUrl, parameters.Max, parameters.ToDictionary());
+        }
+
+        /// <summary>
+        /// Enumerate all public repositories on Bitbucket.
+        /// </summary>
+        /// <param name="parameters">Parameters for the queries.</param>
+        public IEnumerable<Repository> EnumeratePublicRepositories(EnumeratePublicRepositoriesParameters parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            return _sharpBucketV2.EnumeratePaginatedValues<Repository>(_baseUrl, parameters.ToDictionary(), parameters.PageLen);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate all public repositories on BitBucket, doing requests page by page.
+        /// </summary>m>
+        /// <param name="parameters">Parameters for the queries.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Repository> EnumeratePublicRepositoriesAsync(EnumeratePublicRepositoriesParameters parameters, CancellationToken token = default)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Repository>(_baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
+        }
+#endif
 
         #endregion
 
@@ -149,7 +262,7 @@ namespace SharpBucket.V2.EndPoints
         internal IAsyncEnumerable<UserShort> EnumerateWatchersAsync(string accountName, string slug, int? pageLen, CancellationToken token)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "watchers");
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, pageLen: pageLen, token: token);
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, new Dictionary<string, object>(), pageLen, token);
         }
 #endif
 
@@ -169,7 +282,7 @@ namespace SharpBucket.V2.EndPoints
         internal IAsyncEnumerable<Repository> EnumerateForksAsync(string accountName, string slug, int? pageLen, CancellationToken token)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "forks");
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Repository>(overrideUrl, pageLen: pageLen, token: token);
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Repository>(overrideUrl, new Dictionary<string, object>(), pageLen, token);
         }
 #endif
 

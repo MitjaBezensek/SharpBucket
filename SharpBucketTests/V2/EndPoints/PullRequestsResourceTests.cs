@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
+using SharpBucket.V2.Pocos;
 using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
