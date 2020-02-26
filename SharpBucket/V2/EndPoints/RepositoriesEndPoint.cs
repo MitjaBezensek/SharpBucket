@@ -13,7 +13,7 @@ namespace SharpBucket.V2.EndPoints
     /// The repositories endpoint has a number of resources you can use to manage repository resources. 
     /// For all repository resources, you supply a  repo_slug that identifies the specific repository.
     /// More info:
-    /// https://confluence.atlassian.com/display/BITBUCKET/repositories+Endpoint
+    /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories
     /// </summary>
     public class RepositoriesEndPoint : EndPoint
     {
@@ -27,20 +27,22 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
         /// this method returns a collection containing public and private repositories. 
-        /// Otherwise, this method returns a collection of the public repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
         /// </summary>
         /// <param name="accountName">The account whose repositories you wish to get.</param>
         /// <returns></returns>
-        public List<Repository> ListRepositories(string accountName) => ListRepositories(accountName, new ListParameters());
+        public List<Repository> ListRepositories(string accountName)
+            => ListRepositories(accountName, new ListRepositoriesParameters());
 
         /// <summary>
         /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
         /// this method returns a collection containing public and private repositories. 
-        /// Otherwise, this method returns a collection of the public repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
         /// </summary>
         /// <param name="accountName">The account whose repositories you wish to get.</param>
         /// <param name="parameters">Parameters for the query.</param>
         /// <returns></returns>
+        [Obsolete("Prefer overload using a ListRepositoriesParameters")]
         public List<Repository> ListRepositories(string accountName, ListParameters parameters)
         {
             if (parameters == null)
@@ -51,9 +53,80 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// List of all the public repositories on Bitbucket.  This produces a paginated response. 
-        /// Pagination only goes forward (it's not possible to navigate to previous pages) and navigation is done by following the URL for the next page.
-        /// The returned repositories are ordered by creation date, oldest repositories first. Only public repositories are returned.
+        /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
+        /// this method returns a collection containing public and private repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
+        /// </summary>
+        /// <param name="accountName">The account whose repositories you wish to get.</param>
+        /// <param name="parameters">Parameters for the query.</param>
+        /// <returns></returns>
+        public List<Repository> ListRepositories(string accountName, ListRepositoriesParameters parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            var overrideUrl = $"{_baseUrl}{accountName.GuidOrValue()}/";
+            return GetPaginatedValues<Repository>(overrideUrl, parameters.Max, parameters.ToDictionary());
+        }
+
+        /// <summary>
+        /// Enumerate repositories associated with an account. If the caller is properly authenticated and authorized, 
+        /// this method returns a collection containing public and private repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
+        /// </summary>
+        /// <param name = "accountName" > The account whose repositories you wish to get.</param>
+        public IEnumerable<Repository> EnumerateRepositories(string accountName)
+            => EnumerateRepositories(accountName, new EnumerateRepositoriesParameters());
+
+        /// <summary>
+        /// Enumerate repositories associated with an account. If the caller is properly authenticated and authorized, 
+        /// this method returns a collection containing public and private repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
+        /// </summary>
+        /// <param name="accountName">The account whose repositories you wish to get.</param>
+        /// <param name="parameters">Parameters for the queries.</param>
+        public IEnumerable<Repository> EnumerateRepositories(string accountName, EnumerateRepositoriesParameters parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            var overrideUrl = $"{_baseUrl}{accountName.GuidOrValue()}/";
+            return _sharpBucketV2.EnumeratePaginatedValues<Repository>(overrideUrl, parameters.ToDictionary(), parameters.PageLen);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate repositories associated with an account, doing requests page by page.
+        /// If the caller is properly authenticated and authorized, 
+        /// this method returns a collection containing public and private repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
+        /// </summary>
+        /// <param name="accountName">The account whose repositories you wish to get.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Repository> EnumerateRepositoriesAsync(string accountName, CancellationToken token = default)
+            => EnumerateRepositoriesAsync(accountName, new EnumerateRepositoriesParameters(), token);
+
+        /// <summary>
+        /// Enumerate repositories associated with an account, doing requests page by page.
+        /// If the caller is properly authenticated and authorized, 
+        /// this method returns a collection containing public and private repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
+        /// </summary>
+        /// <param name="accountName">The account whose repositories you wish to get.</param>
+        /// <param name="parameters">Parameters for the queries.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Repository> EnumerateRepositoriesAsync(string accountName, EnumerateRepositoriesParameters parameters, CancellationToken token = default)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            var overrideUrl = $"{_baseUrl}{accountName.GuidOrValue()}/";
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Repository>(overrideUrl, parameters.ToDictionary(), parameters.PageLen, token);
+        }
+#endif
+
+        /// <summary>
+        /// List of all the public repositories on Bitbucket.
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
@@ -61,6 +134,46 @@ namespace SharpBucket.V2.EndPoints
         {
             return GetPaginatedValues<Repository>(_baseUrl, max);
         }
+
+        /// <summary>
+        /// List of all the public repositories on Bitbucket.
+        /// </summary>
+        /// <param name="parameters">Parameters for the queries.</param>
+        /// <returns></returns>
+        public List<Repository> ListPublicRepositories(ListPublicRepositoriesParameters parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            return GetPaginatedValues<Repository>(_baseUrl, parameters.Max, parameters.ToDictionary());
+        }
+
+        /// <summary>
+        /// Enumerate all public repositories on Bitbucket.
+        /// </summary>
+        /// <param name="parameters">Parameters for the queries.</param>
+        public IEnumerable<Repository> EnumeratePublicRepositories(EnumeratePublicRepositoriesParameters parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            return _sharpBucketV2.EnumeratePaginatedValues<Repository>(_baseUrl, parameters.ToDictionary(), parameters.PageLen);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate all public repositories on BitBucket, doing requests page by page.
+        /// </summary>m>
+        /// <param name="parameters">Parameters for the queries.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Repository> EnumeratePublicRepositoriesAsync(EnumeratePublicRepositoriesParameters parameters, CancellationToken token = default)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Repository>(_baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
+        }
+#endif
 
         #endregion
 
@@ -98,6 +211,12 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Put(repo, overrideUrl);
         }
 
+        internal async Task<Repository> PutRepositoryAsync(Repository repo, string accountName, string slug, CancellationToken token)
+        {
+            var overrideURL = GetRepositoryUrl(accountName, slug, null);
+            return await _sharpBucketV2.PutAsync(repo, overrideURL, token: token);
+        }
+
         internal Repository PostRepository(Repository repo, string accountName)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repo.name.ToSlug(), null);
@@ -127,23 +246,43 @@ namespace SharpBucket.V2.EndPoints
             return $"{_baseUrl}{accountName}/{slug}/{append}";
         }
 
-        internal List<UserShort> ListWatchers(string accountName, string slug, int max = 0)
+        internal List<UserShort> ListWatchers(string accountName, string slug, int max)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "watchers");
             return GetPaginatedValues<UserShort>(overrideUrl, max);
         }
 
-        internal List<Repository> ListForks(string accountName, string slug, int max = 0)
+        internal IEnumerable<UserShort> EnumerateWatchers(string accountName, string slug, int? pageLen)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "watchers");
+            return _sharpBucketV2.EnumeratePaginatedValues<UserShort>(overrideUrl, pageLen: pageLen);
+        }
+
+#if CS_8
+        internal IAsyncEnumerable<UserShort> EnumerateWatchersAsync(string accountName, string slug, int? pageLen, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "watchers");
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, new Dictionary<string, object>(), pageLen, token);
+        }
+#endif
+
+        internal List<Repository> ListForks(string accountName, string slug, int max)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "forks");
             return GetPaginatedValues<Repository>(overrideUrl, max);
+        }
+
+        internal IEnumerable<Repository> EnumerateForks(string accountName, string slug, int? pageLen)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "forks");
+            return _sharpBucketV2.EnumeratePaginatedValues<Repository>(overrideUrl, pageLen: pageLen);
         }
 
 #if CS_8
         internal IAsyncEnumerable<Repository> EnumerateForksAsync(string accountName, string slug, int? pageLen, CancellationToken token)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "forks");
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Repository>(overrideUrl, pageLen: pageLen, token: token);
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Repository>(overrideUrl, new Dictionary<string, object>(), pageLen, token);
         }
 #endif
 
@@ -164,11 +303,32 @@ namespace SharpBucket.V2.EndPoints
             return new PullRequestsResource(accountName, repoSlugOrName, this);
         }
 
+        [Obsolete("Prefer the ListPullRequests(string, string, ListPullRequestsParameters) overload.")]
         internal List<PullRequest> ListPullRequests(string accountName, string slug, ListParameters parameters)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/");
             return GetPaginatedValues<PullRequest>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
+
+        internal List<PullRequest> ListPullRequests(string accountName, string slug, ListPullRequestsParameters parameters)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/");
+            return GetPaginatedValues<PullRequest>(overrideUrl, parameters.Max, parameters.ToDictionary());
+        }
+
+        internal IEnumerable<PullRequest> EnumeratePullRequests(string accountName, string slug, EnumeratePullRequestsParameters parameters)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/");
+            return _sharpBucketV2.EnumeratePaginatedValues<PullRequest>(overrideUrl, parameters.ToDictionary(), parameters.PageLen);
+        }
+
+#if CS_8
+        internal IAsyncEnumerable<PullRequest> EnumeratePullRequestsAsync(string accountName, string slug, EnumeratePullRequestsParameters parameters, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/");
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<PullRequest>(overrideUrl, parameters.ToDictionary(), parameters.PageLen, token);
+        }
+#endif
 
         internal PullRequest PostPullRequest(string accountName, string slug, PullRequest pullRequest)
         {
@@ -194,11 +354,25 @@ namespace SharpBucket.V2.EndPoints
             return await _sharpBucketV2.PutAsync(pullRequest, overrideUrl, token);
         }
 
-        internal List<Activity> GetPullRequestLog(string accountName, string slug, int max = 0)
+        internal List<Activity> GetPullRequestsActivities(string accountName, string slug, int max)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "pullrequests/activity/");
             return GetPaginatedValues<Activity>(overrideUrl, max);
         }
+
+        internal IEnumerable<Activity> EnumeratePullRequestsActivities(string accountName, string slug, int? pageLen)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/activity/");
+            return _sharpBucketV2.EnumeratePaginatedValues<Activity>(overrideUrl, null, pageLen);
+        }
+
+#if CS_8
+        internal IAsyncEnumerable<Activity> EnumeratePullRequestsActivitiesAsync(string accountName, string slug, int? pageLen, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/activity/");
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Activity>(overrideUrl, null, pageLen, token);
+        }
+#endif
 
         #endregion
 
@@ -221,6 +395,20 @@ namespace SharpBucket.V2.EndPoints
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/commits/");
             return GetPaginatedValues<Commit>(overrideUrl, max);
         }
+
+        internal IEnumerable<Commit> EnumeratePullRequestCommits(string accountName, string slug, int pullRequestId, int? pageLen)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/commits/");
+            return _sharpBucketV2.EnumeratePaginatedValues<Commit>(overrideUrl, null, pageLen);
+        }
+
+#if CS_8
+        internal IAsyncEnumerable<Commit> EnumeratePullRequestCommitsAsync(string accountName, string slug, int pullRequestId, int? pageLen, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/commits/");
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Commit>(overrideUrl, null, pageLen, token);
+        }
+#endif
 
         internal PullRequestInfo ApprovePullRequest(string accountName, string slug, int pullRequestId)
         {
@@ -258,11 +446,25 @@ namespace SharpBucket.V2.EndPoints
             return await _sharpBucketV2.GetAsync(overrideUrl, token);
         }
 
-        internal List<Activity> GetPullRequestActivity(string accountName, string slug, int pullRequestId, int max = 0)
+        internal List<Activity> ListPullRequestActivities(string accountName, string slug, int pullRequestId, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/activity/");
             return GetPaginatedValues<Activity>(overrideUrl, max);
         }
+
+        internal IEnumerable<Activity> EnumeratePullRequestActivities(string accountName, string slug, int pullRequestId, int? pageLen)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/activity/");
+            return _sharpBucketV2.EnumeratePaginatedValues<Activity>(overrideUrl, null, pageLen);
+        }
+
+#if CS_8
+        internal IAsyncEnumerable<Activity> EnumeratePullRequestActivitiesAsync(string accountName, string slug, int pullRequestId, int? pageLen, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/activity/");
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Activity>(overrideUrl, null, pageLen, token);
+        }
+#endif
 
         internal Merge AcceptAndMergePullRequest(string accountName, string slug, int pullRequestId)
         {
@@ -293,6 +495,20 @@ namespace SharpBucket.V2.EndPoints
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/");
             return GetPaginatedValues<Comment>(overrideUrl, max);
         }
+
+        internal IEnumerable<Comment> EnumeratePullRequestComments(string accountName, string slug, int pullRequestId, int? pageLen)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/");
+            return _sharpBucketV2.EnumeratePaginatedValues<Comment>(overrideUrl, null, pageLen);
+        }
+
+#if CS_8
+        internal IAsyncEnumerable<Comment> EnumeratePullRequestCommentsAsync(string accountName, string slug, int pullRequestId, int? pageLen, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/");
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Comment>(overrideUrl, null, pageLen, token);
+        }
+#endif
 
         internal Comment GetPullRequestComment(string accountName, string slug, int pullRequestId, int commentId)
         {
@@ -334,10 +550,28 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Post(restriction, overrideUrl);
         }
 
+        internal async Task<BranchRestriction> PostBranchRestrictionAsync(string accountName, string slug, BranchRestriction restriction, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "branch-restrictions/");
+            return await _sharpBucketV2.PostAsync(restriction, overrideUrl, token: token);
+        }
+
+        internal async Task<BranchRestriction> BranchRestrictionAsync(string accountName, string slug, BranchRestriction restriction, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "branch-restrictions/");
+            return await _sharpBucketV2.PostAsync(restriction, overrideUrl, token: token);
+        }
+
         internal BranchRestriction GetBranchRestriction(string accountName, string slug, int restrictionId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"branch-restrictions/{restrictionId}");
             return _sharpBucketV2.Get<BranchRestriction>(overrideUrl);
+        }
+
+        internal async Task<BranchRestriction> GetBranchRestrictionAsync(string accountName, string slug, int restrictionId, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"branch-restrictions/{restrictionId}");
+            return await _sharpBucketV2.GetAsync<BranchRestriction>(overrideUrl, token: token);
         }
 
         internal BranchRestriction PutBranchRestriction(string accountName, string slug, BranchRestriction restriction)
@@ -346,10 +580,22 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Put(restriction, overrideUrl);
         }
 
+        internal async Task<BranchRestriction> PutBranchRestrictionAsync(string accountName, string slug, BranchRestriction restriction, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"branch-restrictions/{restriction.id}");
+            return await _sharpBucketV2.PutAsync(restriction, overrideUrl, token: token);
+        }
+
         internal void DeleteBranchRestriction(string accountName, string slug, int restrictionId)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"branch-restrictions/{restrictionId}");
             _sharpBucketV2.Delete(overrideUrl);
+        }
+
+        internal async Task DeleteBranchRestrictionAsync(string accountName, string slug, int restrictionId, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"branch-restrictions/{restrictionId}");
+            await _sharpBucketV2.DeleteAsync(overrideUrl, token: token);
         }
 
         #endregion
@@ -362,10 +608,22 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get(overrideUrl, parameters.ToDictionary());
         }
 
+        internal async Task<string> GetDiffAsync(string accountName, string slug, string spec, DiffParameters parameters, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "diff/" + spec);
+            return await _sharpBucketV2.GetAsync(overrideUrl, parameters.ToDictionary(), token: token);
+        }
+
         internal string GetPatch(string accountName, string slug, string spec)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "patch/" + spec);
             return _sharpBucketV2.Get(overrideUrl);
+        }
+
+        internal async Task<string> GetPatchAsync(string accountName, string slug, string spec, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "patch/" + spec);
+            return await _sharpBucketV2.GetAsync(overrideUrl, token: token);
         }
 
         #endregion
@@ -389,6 +647,12 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get<Commit>(overrideUrl);
         }
 
+        internal async Task<Commit> GetCommitAsync(string accountName, string slug, string revision, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}");
+            return await _sharpBucketV2.GetAsync<Commit>(overrideUrl, token: token);
+        }
+
         internal List<Comment> ListCommitComments(string accountName, string slug, string revision, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"commits/{revision}/comments/");
@@ -401,10 +665,22 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get<Comment>(overrideUrl);
         }
 
+        internal async Task<Comment> GetCommitCommentAsync(string accountName, string slug, string revision, int commentId, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commits/{revision}/comments/{revision}/{commentId}/");
+            return await _sharpBucketV2.GetAsync<Comment>(overrideUrl, token: token);
+        }
+
         internal UserRole ApproveCommit(string accountName, string slug, string revision)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/approve/");
             return _sharpBucketV2.Post<UserRole>(null, overrideUrl);
+        }
+
+        internal async Task<UserRole> ApproveCommitAsync(string accountName, string slug, string revision, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/approve/");
+            return await _sharpBucketV2.PostAsync<UserRole>(null, overrideUrl, token: token);
         }
 
         internal void DeleteCommitApproval(string accountName, string slug, string revision)
@@ -413,10 +689,22 @@ namespace SharpBucket.V2.EndPoints
             _sharpBucketV2.Delete(overrideUrl);
         }
 
+        internal async Task DeleteCommitApprovalAsync(string accountName, string slug, string revision, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/approve/");
+            await _sharpBucketV2.DeleteAsync(overrideUrl, token: token);
+        }
+
         internal BuildInfo AddNewBuildStatus(string accountName, string slug, string revision, BuildInfo buildInfo)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/statuses/build/");
             return _sharpBucketV2.Post(buildInfo, overrideUrl);
+        }
+
+        internal async Task<BuildInfo> AddNewBuildStatusAsync(string accountName, string slug, string revision, BuildInfo buildInfo, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/statuses/build/");
+            return await _sharpBucketV2.PostAsync(buildInfo, overrideUrl, token: token);
         }
 
         internal BuildInfo GetBuildStatusInfo(string accountName, string slug, string revision, string key)
@@ -425,12 +713,23 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.Get<BuildInfo>(overrideUrl);
         }
 
+        internal async Task<BuildInfo> GetBuildStatusInfoAsync(string accountName, string slug, string revision, string key, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/statuses/build/" + key);
+            return await _sharpBucketV2.GetAsync<BuildInfo>(overrideUrl, token: token);
+        }
+
         internal BuildInfo ChangeBuildStatusInfo(string accountName, string slug, string revision, string key, BuildInfo buildInfo)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/statuses/build/{key}");
             return _sharpBucketV2.Put(buildInfo, overrideUrl);
         }
 
+        internal async Task<BuildInfo> ChangeBuildStatusInfoAsync(string accountName, string slug, string revision, string key, BuildInfo buildInfo, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}/statuses/build/{key}");
+            return await _sharpBucketV2.PutAsync(buildInfo, overrideUrl, token: token);
+        }
         #endregion
 
         #region Default Reviewer Resource
@@ -439,6 +738,12 @@ namespace SharpBucket.V2.EndPoints
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"default-reviewers/{targetUsername}");
             _sharpBucketV2.Put(new object(), overrideUrl);
+        }
+
+        internal async Task PutDefaultReviewerAsync(string accountName, string slug, string targetUsername, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"default-reviewers/{targetUsername}");
+            await _sharpBucketV2.PutAsync(new object(), overrideUrl, token: token);
         }
 
         #endregion
@@ -464,10 +769,30 @@ namespace SharpBucket.V2.EndPoints
             return GetPaginatedValues<Branch>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 
+        internal IEnumerable<Branch> EnumerateBranches(string accountName, string slug, EnumerateParameters parameters)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "refs/branches/");
+            return _sharpBucketV2.EnumeratePaginatedValues<Branch>(overrideUrl, parameters.ToDictionary(), parameters.PageLen);
+        }
+
+#if CS_8
+        internal IAsyncEnumerable<Branch> EnumerateBranchesAsync(string accountName, string slug, EnumerateParameters parameters, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "refs/branches/");
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Branch>(overrideUrl, parameters.ToDictionary(), parameters.PageLen, token);
+        }
+#endif
+
         internal void DeleteBranch(string accountName, string repSlug, string branchName)
         {
             var overrideUrl = GetRepositoryUrl(accountName, repSlug, "refs/branches/" + branchName);
             _sharpBucketV2.Delete(overrideUrl);
+        }
+
+        internal async Task DeleteBranchAsync(string accountName, string repSlug, string branchName, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, repSlug, "refs/branches/" + branchName);
+            await _sharpBucketV2.DeleteAsync(overrideUrl, token: token);
         }
 
         #endregion
@@ -522,10 +847,16 @@ namespace SharpBucket.V2.EndPoints
             return await _sharpBucketV2.GetAsync<TreeEntry>(overrideUrl, new { format = "meta" }, token);
         }
 
-        internal Uri GetRedirectLocation(string srcResourcePath)
+        internal Uri GetSrcRootRedirectLocation(string srcResourcePath)
         {
             var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath);
             return _sharpBucketV2.GetRedirectLocation(overrideUrl, new { format = "meta" });
+        }
+
+        internal Task<Uri> GetSrcRootRedirectLocationAsync(string srcResourcePath, CancellationToken token)
+        {
+            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath);
+            return _sharpBucketV2.GetRedirectLocationAsync(overrideUrl, new { format = "meta" }, token);
         }
 
         internal string GetFileContent(string srcResourcePath, string filePath)

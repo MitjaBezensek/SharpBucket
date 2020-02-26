@@ -43,27 +43,52 @@ namespace SharpBucketTests.V2.EndPoints
         public void ListWatchers_FromMercurialRepo_ShouldReturnMoreThan10UniqueWatchers()
         {
             var repositoryResource = SampleRepositories.MercurialRepository;
-            repositoryResource.ShouldNotBe(null);
             var watchers = repositoryResource.ListWatchers();
-            watchers.ShouldNotBe(null);
             watchers.Count.ShouldBeGreaterThan(10);
 
             var uniqueNames = new HashSet<string>();
             foreach (var watcher in watchers)
             {
                 watcher.ShouldBeFilled();
-                uniqueNames.ShouldNotContain(watcher.uuid);
-                uniqueNames.Add(watcher.uuid);
+                uniqueNames.Add(watcher.uuid).ShouldBe(true, $"value ${watcher.uuid} is not unique");
             }
+        }
+
+        [Test]
+        public void EnumerateWatchers_FromMercurialRepo_ShouldReturnMoreThan10UniqueWatchers()
+        {
+            var repositoryResource = SampleRepositories.MercurialRepository;
+            var watchers = repositoryResource.EnumerateWatchers();
+
+            var uniqueNames = new HashSet<string>();
+            foreach (var watcher in watchers)
+            {
+                watcher.ShouldBeFilled();
+                uniqueNames.Add(watcher.uuid).ShouldBe(true, $"value ${watcher.uuid} is not unique");
+            }
+            uniqueNames.Count.ShouldBeGreaterThan(10);
+        }
+
+        [Test]
+        public async Task EnumerateWatchersAsync_FromMercurialRepo_ShouldReturnMoreThan10UniqueWatchers()
+        {
+            var repositoryResource = SampleRepositories.MercurialRepository;
+            var watchers = repositoryResource.EnumerateWatchersAsync();
+
+            var uniqueNames = new HashSet<string>();
+            await foreach (var watcher in watchers)
+            {
+                watcher.ShouldBeFilled();
+                uniqueNames.Add(watcher.uuid).ShouldBe(true, $"value ${watcher.uuid} is not unique");
+            }
+            uniqueNames.Count.ShouldBeGreaterThan(10);
         }
 
         [Test]
         public void ListForks_FromMercurialRepo_ShouldReturnMoreThan10UniqueForks()
         {
             var repositoryResource = SampleRepositories.MercurialRepository;
-            repositoryResource.ShouldNotBe(null);
             var forks = repositoryResource.ListForks();
-            forks.ShouldNotBe(null);
             forks.Count.ShouldBeGreaterThan(10);
 
             var uniqueNames = new HashSet<string>();
@@ -75,18 +100,35 @@ namespace SharpBucketTests.V2.EndPoints
                 fork.parent.ShouldBeFilled();
                 fork.parent.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
 
-                uniqueNames.ShouldNotContain(fork.full_name);
-                uniqueNames.Add(fork.full_name);
+                uniqueNames.Add(fork.full_name).ShouldBe(true, $"value ${fork.full_name} is not unique");
             }
+        }
+
+        [Test]
+        public void EnumerateForks_FromMercurialRepo_ShouldReturnMoreThan10UniqueForks()
+        {
+            var repositoryResource = SampleRepositories.MercurialRepository;
+            var forks = repositoryResource.EnumerateForks();
+
+            var uniqueNames = new HashSet<string>();
+            foreach (var fork in forks)
+            {
+                fork.ShouldBeFilled();
+
+                // since they are forks of mercurial, their parent should be mercurial
+                fork.parent.ShouldBeFilled();
+                fork.parent.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
+
+                uniqueNames.Add(fork.full_name).ShouldBe(true, $"value ${fork.full_name} is not unique");
+            }
+            uniqueNames.Count.ShouldBeGreaterThan(10);
         }
 
         [Test]
         public async Task EnumerateForksAsync_FromMercurialRepo_ShouldReturnMoreThan10UniqueForks()
         {
             var repositoryResource = SampleRepositories.MercurialRepository;
-            repositoryResource.ShouldNotBe(null);
             var forks = repositoryResource.EnumerateForksAsync();
-            forks.ShouldNotBe(null);
 
             var uniqueNames = new HashSet<string>();
             await foreach (var fork in forks)
@@ -97,8 +139,7 @@ namespace SharpBucketTests.V2.EndPoints
                 fork.parent.ShouldBeFilled();
                 fork.parent.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
 
-                uniqueNames.ShouldNotContain(fork.full_name);
-                uniqueNames.Add(fork.full_name);
+                uniqueNames.Add(fork.full_name).ShouldBe(true, $"value ${fork.full_name} is not unique");
             }
             uniqueNames.Count.ShouldBeGreaterThan(10);
         }
@@ -176,6 +217,28 @@ namespace SharpBucketTests.V2.EndPoints
             var repositoryResource = SampleRepositories.MercurialRepository;
 
             var commit = repositoryResource.GetCommit("abae1eb695c077fa21b6ef0b7056f36d63cf0302");
+
+            commit.ShouldNotBeNull();
+            commit.hash.ShouldBe("abae1eb695c077fa21b6ef0b7056f36d63cf0302");
+            commit.date.ShouldNotBeNullOrWhiteSpace();
+            commit.message.ShouldNotBeNullOrWhiteSpace();
+            commit.author.raw.ShouldNotBeNullOrWhiteSpace();
+            commit.author.user.ShouldBeFilled();
+            commit.links.ShouldNotBeNull();
+            commit.parents[0].ShouldBeFilled();
+            commit.repository.uuid.ShouldNotBeNullOrWhiteSpace();
+            commit.repository.full_name.ShouldNotBeNullOrWhiteSpace();
+            commit.repository.name.ShouldNotBeNullOrWhiteSpace();
+            commit.repository.links.ShouldNotBeNull();
+            commit.summary.ShouldBeFilled();
+        }
+
+        [Test]
+        public async Task GetCommitAsync_AKnownHashOnMercurialRepository_ShouldReturnCorrectData()
+        {
+            var repositoryResource = SampleRepositories.MercurialRepository;
+
+            var commit = await repositoryResource.GetCommitAsync("abae1eb695c077fa21b6ef0b7056f36d63cf0302");
 
             commit.ShouldNotBeNull();
             commit.hash.ShouldBe("abae1eb695c077fa21b6ef0b7056f36d63cf0302");
@@ -303,6 +366,28 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
+        public async Task ApproveAsyncCommitAsyncAndDeleteCommitApprovalAsync_TestRepository_CommitStateChangedCorrectly()
+        {
+            var currentUser = TestHelpers.AccountName;
+            var testRepository = SampleRepositories.TestRepository;
+            var repositoryResource = testRepository.RepositoryResource;
+            var firstCommit = testRepository.RepositoryInfo.FirstCommit;
+            var initialCommit = await repositoryResource.GetCommitAsync(firstCommit);
+            initialCommit?.participants.Any(p => p.User.nickname == currentUser && p.Approved).ShouldBe(false, "Initial state should be: 'not approved'");
+
+            var userRole = await repositoryResource.ApproveCommitAsync(firstCommit);
+            var approvedCommit = await repositoryResource.GetCommitAsync(firstCommit);
+            await repositoryResource.DeleteCommitApprovalAsync(firstCommit);
+            var notApprovedCommit = await repositoryResource.GetCommitAsync(firstCommit);
+
+            userRole.Approved.ShouldBe(true);
+            userRole.User.nickname.ShouldBe(currentUser);
+            userRole.Role.ShouldBe("PARTICIPANT");
+            approvedCommit?.participants.Any(p => p.User.nickname == currentUser && p.Approved).ShouldBe(true, "Commit should be approved after call to ApproveCommit");
+            notApprovedCommit?.participants.Any(p => p.User.nickname == currentUser && p.Approved).ShouldBe(false, "Commit should not be approved after call to DeleteCommitApproval");
+        }
+
+        [Test]
         public void BuildStatusInfo_AddGetChangeOnFirstCommit_ShouldWork()
         {
             var testRepository = SampleRepositories.TestRepository;
@@ -331,6 +416,79 @@ namespace SharpBucketTests.V2.EndPoints
             var changedBuildInfo = repositoryResource.ChangeBuildStatusInfo(firstCommit, "FooBuild42", getBuildInfo);
             changedBuildInfo.ShouldNotBeNull();
             changedBuildInfo.state.ShouldBe(BuildInfoState.SUCCESSFUL);
+        }
+
+        [Test]
+        public async Task BuildStatusInfo_AddGetChangeOnFirstCommitAsync_ShouldWork()
+        {
+            var testRepository = SampleRepositories.TestRepository;
+            var repositoryResource = testRepository.RepositoryResource;
+            var firstCommit = testRepository.RepositoryInfo.FirstCommit;
+
+            var firstBuildStatus = new BuildInfo
+            {
+                key = "FooBuild42",
+                state = BuildInfoState.INPROGRESS,
+                url = "https://foo.com/builds/{repository.full_name}",
+                name = "Foo Build #42",
+                description = "fake build status from a fake build server"
+            };
+            var buildInfo = await repositoryResource.AddNewBuildStatusAsync(firstCommit, firstBuildStatus);
+            buildInfo.ShouldNotBeNull();
+            buildInfo.state.ShouldBe(firstBuildStatus.state);
+            buildInfo.name.ShouldBe(firstBuildStatus.name);
+            buildInfo.description.ShouldBe(firstBuildStatus.description);
+
+            var getBuildInfo = await repositoryResource.GetBuildStatusInfoAsync(firstCommit, "FooBuild42");
+            getBuildInfo.ShouldNotBeNull();
+            getBuildInfo.state.ShouldBe(BuildInfoState.INPROGRESS);
+
+            getBuildInfo.state = BuildInfoState.SUCCESSFUL;
+            var changedBuildInfo = await repositoryResource.ChangeBuildStatusInfoAsync(firstCommit, "FooBuild42", getBuildInfo);
+            changedBuildInfo.ShouldNotBeNull();
+            changedBuildInfo.state.ShouldBe(BuildInfoState.SUCCESSFUL);
+        }
+
+        [Test]
+        public void GetMainBranchRevision_TestRepository_GetShaOfTheLastCommitOnMainBranch()
+        {
+            var testRepository = SampleRepositories.TestRepository;
+            var repositoryResource = testRepository.RepositoryResource;
+
+            var revision = repositoryResource.GetMainBranchRevision();
+
+            revision.ShouldBe(testRepository.RepositoryInfo.MainBranchLastCommit);
+        }
+
+        [Test]
+        public async Task GetMainBranchRevisionAsync_TestRepository_GetShaOfTheLastCommitOnMainBranch()
+        {
+            var testRepository = SampleRepositories.TestRepository;
+            var repositoryResource = testRepository.RepositoryResource;
+
+            var revision = await repositoryResource.GetMainBranchRevisionAsync();
+
+            revision.ShouldBe(testRepository.RepositoryInfo.MainBranchLastCommit);
+        }
+
+        [Test]
+        public void GetMainBranchRevision_FromARepositoryThatDoNotExists_ThrowAnException()
+        {
+            var notExistingRepo = TestHelpers.SharpBucketV2.RepositoriesEndPoint().RepositoryResource("foo", "bar");
+
+            var exception = Assert.Throws<BitbucketV2Exception>(() => notExistingRepo.GetMainBranchRevision());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+            exception.Message.ShouldBe("Repository foo/bar not found");
+        }
+
+        [Test]
+        public void GetMainBranchRevisionAsync_FromARepositoryThatDoNotExists_ThrowAnException()
+        {
+            var notExistingRepo = TestHelpers.SharpBucketV2.RepositoriesEndPoint().RepositoryResource("foo", "bar");
+
+            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await notExistingRepo.GetMainBranchRevisionAsync());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+            exception.Message.ShouldBe("Repository foo/bar not found");
         }
     }
 }

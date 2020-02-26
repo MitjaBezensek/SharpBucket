@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SharpBucket.V2.EndPoints
 {
@@ -25,7 +21,7 @@ namespace SharpBucket.V2.EndPoints
 
             foreach (var kvp in kvps.Where(p => p.HasValue))
             {
-                result = result ?? (result = new Dictionary<string, object>());
+                result = result ?? new Dictionary<string, object>();
                 result.Add(kvp.Value);                
             }
 

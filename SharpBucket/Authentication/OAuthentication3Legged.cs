@@ -87,10 +87,11 @@ namespace SharpBucket.Authentication
         /// Sets the authentication tokens.
         /// </summary>
         /// <param name="client">The client.</param>
+        /// <param name="resource">path (relative url) to the resource to call to get the authentication tokens that should be stored in that instance.</param>
         /// <exception cref="System.Net.WebException">REST client encountered an error:  + response.ErrorMessage</exception>
-        private void SetAuthTokens(IRestClient client, string method)
+        private void SetAuthTokens(IRestClient client, string resource)
         {
-            var request = new RestRequest(method, Method.POST);
+            var request = new RestRequest(resource, Method.POST);
             var response = client.Execute(request);
 
             if (response.ErrorException != null)

@@ -71,9 +71,9 @@ namespace SharpBucket.V2
         public static async IAsyncEnumerable<TValue> EnumeratePaginatedValuesAsync<TValue>(
             this ISharpBucketRequesterV2 sharpBucketRequesterV2,
             string overrideUrl,
-            IDictionary<string, object> requestParameters = null,
-            int? pageLen = null,
-            [EnumeratorCancellation]CancellationToken token = default)
+            IDictionary<string, object> requestParameters,
+            int? pageLen,
+            [EnumeratorCancellation]CancellationToken token)
         {
             await foreach (var page in IteratePagesAsync<TValue>(sharpBucketRequesterV2, overrideUrl, pageLen ?? DEFAULT_PAGE_LEN, requestParameters, token))
             {

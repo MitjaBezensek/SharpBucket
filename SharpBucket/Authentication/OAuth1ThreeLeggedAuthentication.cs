@@ -27,19 +27,19 @@ namespace SharpBucket.Authentication
         {
             get
             {
-                if (Client == null)
+                if (base.Client == null)
                 {
                     if (AccessToken == null)
                     {
                         throw new InvalidOperationException("StartAuthentication and AuthenticateWithPin must be called before being able to do any request with this authentication mode");
                     }
-                    Client = new RestClient(BaseUrl)
+                    base.Client = new RestClient(BaseUrl)
                     {
                         Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, AccessToken.Token, AccessToken.Secret)
                     };
                 }
 
-                return Client;
+                return base.Client;
             }
             set => base.Client = value;
         }

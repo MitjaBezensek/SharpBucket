@@ -65,7 +65,8 @@ namespace SharpBucketTests.GitHelpers
                 Commands.Remove(repository, "src/fileToDelete.txt");
                 AddOrUpdateFile(repository, "src/fileToChange.txt", "This is a file that will be changed in second commit to show some change diff\nCurrent state: changed");
                 Commands.Move(repository, "src/fileToRename.txt", "fileWithNewName.txt");
-                repository.Commit("Second commit which perform various type of operations", testSignature, testSignature);
+                var lastCommit = repository.Commit("Second commit which perform various type of operations", testSignature, testSignature);
+                info.MainBranchLastCommit = lastCommit.Sha;
 
                 // create and fill branchToDecline
                 CreateAndSwitchToNewBranch(repository, "branchToDecline");
@@ -83,6 +84,7 @@ namespace SharpBucketTests.GitHelpers
                 // create branchToDelete (no need commits inside, to avoid to lose commit when testing DeleteBranch)
                 Commands.Checkout(repository, repository.Branches["master"]);
                 CreateAndSwitchToNewBranch(repository, "branchToDelete");
+                CreateAndSwitchToNewBranch(repository, "branchToDeleteAsync");
 
                 // Push All branches
                 repository.Network.Push(repository.Branches, new PushOptions { CredentialsProvider = GitCredentialsProvider.GetCredentials });

@@ -77,16 +77,66 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// Gets the list of the team's repositories. 
+        /// List of repositories associated to the team.
+        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
+        /// </summary>
+        public List<Repository> ListRepositories()
+            => this.ListRepositories(new ListRepositoriesParameters());
+
+        /// <summary>
+        /// List of repositories associated to the team.
         /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
         /// </summary>
         /// <param name="parameters">Parameters for the query.</param>
-        public List<Repository> ListRepositories(ListParameters parameters = null)
-        {
+        [Obsolete("Prefer overload using a ListRepositoriesParameters")]
+        public List<Repository> ListRepositories(ListParameters parameters)
             // The /teams/{username}/repositories request redirect to the repositories/{username}/ request
             // So to improve performances we directly do the the call to the repositories endpoint
-            return _sharpBucketV2.RepositoriesEndPoint().ListRepositories(_teamName, parameters ?? new ListParameters());
-        }
+            => _sharpBucketV2.RepositoriesEndPoint().ListRepositories(_teamName, parameters ?? new ListParameters());
+
+        /// <summary>
+        /// List of repositories associated to the team.
+        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
+        /// </summary>
+        /// <param name="parameters">Parameters for the query.</param>
+        public List<Repository> ListRepositories(ListRepositoriesParameters parameters)
+            // The /teams/{username}/repositories request redirect to the repositories/{username}/ request
+            // So to improve performances we directly do the the call to the repositories endpoint
+            => _sharpBucketV2.RepositoriesEndPoint().ListRepositories(_teamName, parameters);
+
+        /// <summary>
+        /// Enumerate repositories associated to the team.
+        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
+        /// </summary>
+        public IEnumerable<Repository> EnumerateRepositories()
+            => EnumerateRepositories(new EnumerateRepositoriesParameters());
+
+        /// <summary>
+        /// Enumerate repositories associated to the team.
+        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
+        /// </summary>
+        /// <param name="parameters">Parameters for the queries.</param>
+        public IEnumerable<Repository> EnumerateRepositories(EnumerateRepositoriesParameters parameters)
+            => _sharpBucketV2.RepositoriesEndPoint().EnumerateRepositories(_teamName, parameters);
+
+#if CS_8
+        /// <summary>
+        /// Enumerate repositories associated to the team, doing requests page by page.
+        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
+        /// </summary>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Repository> EnumerateRepositoriesAsync(CancellationToken token = default)
+            => EnumerateRepositoriesAsync(new EnumerateRepositoriesParameters(), token);
+
+        /// <summary>
+        /// Enumerate repositories associated to the team, doing requests page by page.
+        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
+        /// </summary>
+        /// <param name="parameters">Parameters for the queries.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<Repository> EnumerateRepositoriesAsync(EnumerateRepositoriesParameters parameters, CancellationToken token = default)
+            => _sharpBucketV2.RepositoriesEndPoint().EnumerateRepositoriesAsync(_teamName, parameters, token);
+#endif
 
         /// <summary>
         /// Gets a <see cref="RepositoryResource"/> for a specified repository name, owned by the team represented by this resource.
