@@ -1,0 +1,22 @@
+root = true
+
+[*]
+end_of_line = lf
+indent_style = space
+indent_size = 4
+insert_final_newline = true # true  => for text files because we may need to add some lines after the last one.
+                            # false => for files that always end by some special characters, like '}' or '>'.
+                            #          Because we won't add a line after the last one in such type of files.
+
+[*.config]
+insert_final_newline = false
+
+[*.cs]
+insert_final_newline = false
+
+[*.csproj]
+indent_size = 2
+insert_final_newline = false
+
+[*.md]
+insert_final_newline = true
