@@ -3,6 +3,7 @@ using Shouldly;
 using Moq;
 using RestSharp;
 using SharpBucket.V2;
+using SharpBucket;
 
 namespace SharpBucketTests.Authentication
 {

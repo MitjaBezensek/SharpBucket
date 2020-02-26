@@ -6,7 +6,7 @@ namespace SharpBucket.V2.EndPoints
 {
     public class UserEndpoint : EndPoint
     {
-        public UserEndpoint(SharpBucketV2 sharpBucketV2)
+        public UserEndpoint(ISharpBucketRequesterV2 sharpBucketV2)
             : base(sharpBucketV2, "user/")
         {
         }

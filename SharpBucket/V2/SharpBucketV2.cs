@@ -8,7 +8,7 @@ namespace SharpBucket.V2
     /// You can read more about the V2 of the API here:
     /// https://confluence.atlassian.com/display/BITBUCKET/Version+2
     /// </summary>
-    public sealed class SharpBucketV2 : SharpBucket
+    public sealed class SharpBucketV2 : SharpBucket, ISharpBucketV2
     {
         internal const string BITBUCKET_URL = "https://api.bitbucket.org/2.0";
 
@@ -23,7 +23,8 @@ namespace SharpBucket.V2
         }
 
         /// <summary>
-        /// Get the Teams End Point.
+        /// Get the Teams end pPoint.
+        ///  Give access to the data relative to the teams.
         /// </summary>
         public TeamsEndPoint TeamsEndPoint()
         {
@@ -42,24 +43,28 @@ namespace SharpBucket.V2
         }
 
         /// <summary>
-        /// Get the Repositories End point.
+        /// Get the Repositories end point.
+        /// Give access to the data relative to the public repositories and private repositories of the logged in user.
         /// </summary>
-        /// <returns></returns>
         public RepositoriesEndPoint RepositoriesEndPoint()
         {
             return new RepositoriesEndPoint(this);
         }
 
         /// <summary>
-        /// Get the UsersEndPoint End Point.
+        /// Get the Users end point.
+        /// Give access to the data relative to a specified user.
         /// </summary>
-        /// <param name="accountName">The account for which you wish to get the UsersEndPoint End Point.</param>
-        /// <returns></returns>
+        /// <param name="accountName">The account for which you wish to get the end point.</param>
         public UsersEndpoint UsersEndPoint(string accountName)
         {
             return new UsersEndpoint(accountName, this);
         }
 
+        /// <summary>
+        /// Get the User end point.
+        /// Give access to the data relative to the currently logged in user.
+        /// </summary>
         public UserEndpoint UserEndPoint()
         {
             return new UserEndpoint(this);

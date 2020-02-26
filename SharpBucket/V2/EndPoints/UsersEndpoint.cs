@@ -16,7 +16,7 @@ namespace SharpBucket.V2.EndPoints
     {
         private readonly string _repositoriesUrl;
 
-        public UsersEndpoint(string accountName, SharpBucketV2 sharpBucketV2) :
+        public UsersEndpoint(string accountName, ISharpBucketRequesterV2 sharpBucketV2) :
             base(sharpBucketV2, $"users/{accountName.GuidOrValue()}/")
         {
             _repositoriesUrl = $"repositories/{accountName.GuidOrValue()}/";

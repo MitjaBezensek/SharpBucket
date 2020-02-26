@@ -9,13 +9,13 @@ namespace SharpBucket.V2.EndPoints
 {
     public class TeamResource
     {
-        private readonly SharpBucketV2 _sharpBucketV2;
+        private readonly ISharpBucketRequesterV2 _sharpBucketV2;
 
         private readonly string _teamName;
 
         private readonly string _baseUrl;
 
-        public TeamResource(SharpBucketV2 sharpBucketV2, string teamName)
+        public TeamResource(ISharpBucketRequesterV2 sharpBucketV2, string teamName)
         {
             _sharpBucketV2 = sharpBucketV2 ?? throw new ArgumentNullException(nameof(sharpBucketV2));
 

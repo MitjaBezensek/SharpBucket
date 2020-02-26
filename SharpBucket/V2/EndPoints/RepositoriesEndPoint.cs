@@ -19,7 +19,7 @@ namespace SharpBucket.V2.EndPoints
     {
         #region Repositories End Point
 
-        public RepositoriesEndPoint(SharpBucketV2 sharpBucketV2)
+        public RepositoriesEndPoint(ISharpBucketRequesterV2 sharpBucketV2)
             : base(sharpBucketV2, "repositories/")
         {
         }
