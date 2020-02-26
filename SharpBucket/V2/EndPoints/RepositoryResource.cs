@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -199,15 +200,76 @@ namespace SharpBucket.V2.EndPoints
         #region Branch Restrictions Resource
 
         /// More info:
-        /// https://confluence.atlassian.com/display/BITBUCKET/branch-restrictions+Resource
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/branch-restrictions#get
         /// <summary>
         /// List the information associated with a repository's branch restrictions. 
         /// </summary>
-        /// <returns></returns>
         public List<BranchRestriction> ListBranchRestrictions()
+            => ListBranchRestrictions(new ListBranchRestrictionsParameters());
+
+        /// <summary>
+        /// List the information associated with a repository's branch restrictions. 
+        /// </summary>
+        /// <param name="parameters">Query parameters that can be used to filter the results.</param>
+        public List<BranchRestriction> ListBranchRestrictions(
+            ListBranchRestrictionsParameters parameters)
         {
-            return _repositoriesEndPoint.ListBranchRestrictions(_accountName, _slug);
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
+            return _repositoriesEndPoint.ListBranchRestrictions(_accountName, _slug, parameters, parameters.Max);
         }
+
+        /// <summary>
+        /// Enumerate the information associated with a repository's branch restrictions.
+        /// Requests will be done page by page while enumerating.
+        /// </summary>
+        public IEnumerable<BranchRestriction> EnumerateBranchRestrictions()
+            => EnumerateBranchRestrictions(new EnumerateBranchRestrictionsParameters());
+
+        /// <summary>
+        /// Enumerate the information associated with a repository's branch restrictions.
+        /// Requests will be done page by page while enumerating.
+        /// </summary>
+        /// <param name="parameters">Query parameters that can be used to filter the results.</param>
+        public IEnumerable<BranchRestriction> EnumerateBranchRestrictions(
+            EnumerateBranchRestrictionsParameters parameters)
+        {
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
+            return _repositoriesEndPoint.EnumerateBranchRestrictions(
+                _accountName,
+                _slug,
+                parameters,
+                parameters.PageLen);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate the information associated with a repository's branch restrictions asynchronously,
+        /// doing requests page by page.
+        /// </summary>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<BranchRestriction> EnumerateBranchRestrictionsAsync(
+            CancellationToken token = default)
+            => EnumerateBranchRestrictionsAsync(new EnumerateBranchRestrictionsParameters(), token);
+
+        /// <summary>
+        /// Enumerate the information associated with a repository's branch restrictions asynchronously,
+        /// doing requests page by page.
+        /// </summary>
+        /// <param name="parameters">Query parameters that can be used to filter the results.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public IAsyncEnumerable<BranchRestriction> EnumerateBranchRestrictionsAsync(
+            EnumerateBranchRestrictionsParameters parameters,
+            CancellationToken token = default)
+        {
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
+            return _repositoriesEndPoint.EnumerateBranchRestrictionsAsync(
+                _accountName,
+                _slug,
+                parameters,
+                parameters.PageLen,
+                token);
+        }
+#endif
 
         /// <summary>
         /// Creates restrictions for the specified repository. You should specify a Content-Header with this call. 

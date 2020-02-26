@@ -538,11 +538,34 @@ namespace SharpBucket.V2.EndPoints
 
         #region Branch Restrictions resource
 
-        internal List<BranchRestriction> ListBranchRestrictions(string accountName, string slug, int max = 0)
+        internal List<BranchRestriction> ListBranchRestrictions(string accountName, string slug, BranchRestrictionsParameters parameters, int max = 0)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "branch-restrictions/");
-            return GetPaginatedValues<BranchRestriction>(overrideUrl, max);
+            return GetPaginatedValues<BranchRestriction>(overrideUrl, max, parameters.ToDictionary());
         }
+
+        internal IEnumerable<BranchRestriction> EnumerateBranchRestrictions(string accountName, string slug, BranchRestrictionsParameters parameters, int? pageLen)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "branch-restrictions/");
+            return _sharpBucketV2.EnumeratePaginatedValues<BranchRestriction>(overrideUrl, parameters.ToDictionary(), pageLen);
+        }
+
+#if CS_8
+        internal IAsyncEnumerable<BranchRestriction> EnumerateBranchRestrictionsAsync(
+            string accountName,
+            string slug,
+            BranchRestrictionsParameters parameters,
+            int? pageLen,
+            CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "branch-restrictions/");
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<BranchRestriction>(
+                overrideUrl,
+                parameters.ToDictionary(),
+                pageLen,
+                token);
+        }
+#endif
 
         internal BranchRestriction PostBranchRestriction(string accountName, string slug, BranchRestriction restriction)
         {
