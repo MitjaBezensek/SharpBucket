@@ -1,0 +1,2 @@
+# Deactivate autocrlf. Let .editorconfig do the work.
+* -text
