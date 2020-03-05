@@ -3,20 +3,18 @@
 namespace SharpBucket.V2.EndPoints
 {
     /// <summary>
-    /// An object that can be passed to the commits resource to filter the returned list of commits.
+    /// Base class that provide query parameters supported to GET the commits resource.
     /// </summary>
-    public class CommitsParameters : ParametersBase
+    public abstract class CommitsParameters : ParametersBase
     {
-        /// <summary>
-        /// The maximum number of items to return. 0 returns all items.
-        /// </summary>
-        public int Max { get; set; }
-
         /// <summary>
         /// An optional path parameter that will limit the results to commits that affect that path.
         /// path can either be a file or a directory.
-        /// If a directory is specified, commits are returned that have modified any file in the directory tree rooted by path.
-        /// It is important to note that if the path parameter is specified, the commits returned by this endpoint may no longer be a DAG, parent commits that do not modify the path will be omitted from the response.
+        /// If a directory is specified, commits are returned that have modified any file in the
+        /// directory tree rooted by path.
+        /// It is important to note that if the path parameter is specified, the commits returned
+        /// by this endpoint may no longer be a DAG, parent commits that do not modify the path
+        /// will be omitted from the response.
         /// </summary>
         public string Path { get; set; }
 
@@ -26,7 +24,8 @@ namespace SharpBucket.V2.EndPoints
         public ICollection<string> Includes { get; } = new List<string>();
 
         /// <summary>
-        /// Names of the references (branch, tag, sha1) that should not contain the commits to return.
+        /// Names of the references (branch, tag, sha1) that should not contain the commits to
+        /// return.
         /// </summary>
         public ICollection<string> Excludes { get; } = new List<string>();
 

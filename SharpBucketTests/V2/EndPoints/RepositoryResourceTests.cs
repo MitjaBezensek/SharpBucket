@@ -176,7 +176,7 @@ namespace SharpBucketTests.V2.EndPoints
         {
             var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
 
-            var commits = repositoryResource.ListCommits(new CommitsParameters { Excludes = { "master" } });
+            var commits = repositoryResource.ListCommits(new ListCommitsParameters { Excludes = { "master" } });
 
             commits.Count.ShouldBe(3);
         }
@@ -186,7 +186,7 @@ namespace SharpBucketTests.V2.EndPoints
         {
             var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
 
-            var commits = repositoryResource.ListCommits(new CommitsParameters { Includes = { "branchToDecline" }, Excludes = { "master" } });
+            var commits = repositoryResource.ListCommits(new ListCommitsParameters { Includes = { "branchToDecline" }, Excludes = { "master" } });
 
             commits.Count.ShouldBe(1);
         }
@@ -196,7 +196,7 @@ namespace SharpBucketTests.V2.EndPoints
         {
             var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
 
-            var commits = repositoryResource.ListCommits("branchToAccept", new CommitsParameters { Excludes = { "master" } });
+            var commits = repositoryResource.ListCommits("branchToAccept", new ListCommitsParameters { Excludes = { "master" } });
 
             commits.Count.ShouldBe(2);
         }
@@ -206,9 +206,93 @@ namespace SharpBucketTests.V2.EndPoints
         {
             var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
 
-            var commits = repositoryResource.ListCommits(new CommitsParameters { Path = "src/" });
+            var commits = repositoryResource.ListCommits(new ListCommitsParameters { Path = "src/" });
 
             commits.Count.ShouldBe(4); // only the bad commit in branchToDecline do not change anything in src path
+        }
+
+        [Test]
+        public void EnumerateCommits_OnASpecifiedBranch_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var allCommits = repositoryResource.EnumerateCommits();
+            var commitsOnMaster = repositoryResource.EnumerateCommits("master");
+
+            allCommits.Count().ShouldBe(5);
+            commitsOnMaster.Count().ShouldBe(2);
+        }
+
+        [Test]
+        public void EnumerateCommits_ExcludingABranch_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var commits = repositoryResource.EnumerateCommits(new EnumerateCommitsParameters { Excludes = { "master" } });
+
+            commits.Count().ShouldBe(3);
+        }
+
+        [Test]
+        public void EnumerateCommits_CombiningAnIncludeAndAnExclude_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var commits = repositoryResource.EnumerateCommits(new EnumerateCommitsParameters { Includes = { "branchToDecline" }, Excludes = { "master" } });
+
+            commits.Count().ShouldBe(1);
+        }
+
+        [Test]
+        public void EnumerateCommits_WithAPath_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var commits = repositoryResource.EnumerateCommits(new EnumerateCommitsParameters { Path = "src/" });
+
+            commits.Count().ShouldBe(4); // only the bad commit in branchToDecline do not change anything in src path
+        }
+
+        [Test]
+        public async Task EnumerateCommitsAsync_OnASpecifiedBranch_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var allCommits = repositoryResource.EnumerateCommitsAsync();
+            var commitsOnMaster = repositoryResource.EnumerateCommitsAsync("master");
+
+            (await allCommits.CountAsync()).ShouldBe(5);
+            (await commitsOnMaster.CountAsync()).ShouldBe(2);
+        }
+
+        [Test]
+        public async Task EnumerateCommitsAsync_ExcludingABranch_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var commits = repositoryResource.EnumerateCommitsAsync(new EnumerateCommitsParameters { Excludes = { "master" } });
+
+            (await commits.CountAsync()).ShouldBe(3);
+        }
+
+        [Test]
+        public async Task EnumerateCommitsAsync_CombiningAnIncludeAndAnExclude_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var commits = repositoryResource.EnumerateCommitsAsync(new EnumerateCommitsParameters { Includes = { "branchToDecline" }, Excludes = { "master" } });
+
+            (await commits.CountAsync()).ShouldBe(1);
+        }
+
+        [Test]
+        public async Task EnumerateCommitsAsync_WithAPath_ShouldReturnTheRightNumberOfCommits()
+        {
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+
+            var commits = repositoryResource.EnumerateCommitsAsync(new EnumerateCommitsParameters { Path = "src/" });
+
+            (await commits.CountAsync()).ShouldBe(4); // only the bad commit in branchToDecline do not change anything in src path
         }
 
         [Test]

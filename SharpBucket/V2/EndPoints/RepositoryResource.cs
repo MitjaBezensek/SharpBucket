@@ -427,45 +427,119 @@ namespace SharpBucket.V2.EndPoints
         #region Commits resource
 
         /// More info:
-        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits#get
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/commits#get
         /// <summary>
-        /// Gets the commit information associated with a repository. 
-        /// By default, this call returns all the commits across all branches, bookmarks, and tags. The newest commit is first. 
+        /// Gets the commit information associated with a repository.
+        /// By default, this call returns all the commits across all branches, bookmarks, and tags.
+        /// The newest commit is first.
         /// </summary>
         /// <param name="branchOrTag">The branch or tag to get, for example, master or default.</param>
         /// <param name="max">Values greater than 0 will set a maximum number of records to return. 0 or less returns all.</param>
-        /// <returns></returns>
         public List<Commit> ListCommits(string branchOrTag = null, int max = 0)
         {
-            return _repositoriesEndPoint.ListCommits(_accountName, _slug, branchOrTag, new CommitsParameters { Max = max });
+            return _repositoriesEndPoint.ListCommits(_accountName, _slug, branchOrTag, new ListCommitsParameters { Max = max });
         }
 
-        /// More info:
-        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits#get
         /// <summary>
-        /// Gets the commit information associated with a repository. 
-        /// By default, this call returns all the commits across all branches, bookmarks, and tags. The newest commit is first. 
+        /// Gets the commit information associated with a repository.
+        /// By default, this call returns all the commits across all branches, bookmarks, and tags.
+        /// The newest commit is first.
         /// </summary>
         /// <param name="commitsParameters">Parameters that allow to filter the commits to return.</param>
-        /// <returns></returns>
-        public List<Commit> ListCommits(CommitsParameters commitsParameters)
+        public List<Commit> ListCommits(ListCommitsParameters commitsParameters)
         {
             return _repositoriesEndPoint.ListCommits(_accountName, _slug, null, commitsParameters);
         }
 
-        /// More info:
-        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits#get
         /// <summary>
-        /// Gets the commit information associated with a repository. 
-        /// By default, this call returns all the commits across all branches, bookmarks, and tags. The newest commit is first. 
+        /// Gets the commit information associated with a repository in a specified branch.
+        /// The newest commit is first.
         /// </summary>
         /// <param name="branchOrTag">The branch or tag to get, for example, master or default.</param>
         /// <param name="commitsParameters">Optional parameters that allow to filter the commits to return.</param>
-        /// <returns></returns>
-        public List<Commit> ListCommits(string branchOrTag, CommitsParameters commitsParameters)
+        public List<Commit> ListCommits(string branchOrTag, ListCommitsParameters commitsParameters)
         {
             return _repositoriesEndPoint.ListCommits(_accountName, _slug, branchOrTag, commitsParameters);
         }
+
+        /// <summary>
+        /// Enumerate the commits information associated with a repository.
+        /// By default, this call returns all the commits across all branches, bookmarks, and tags.
+        /// The newest commit is first.
+        /// </summary>
+        /// <param name="branchOrTag">The branch or tag to get, for example, master or default.</param>
+        public IEnumerable<Commit> EnumerateCommits(string branchOrTag = null)
+        {
+            return _repositoriesEndPoint.EnumerateCommits(_accountName, _slug, branchOrTag, new EnumerateCommitsParameters());
+        }
+
+        /// <summary>
+        /// Enumerate the commit information associated with a repository.
+        /// By default, this call returns all the commits across all branches, bookmarks, and tags.
+        /// The newest commit is first.
+        /// </summary>
+        /// <param name="commitsParameters">Parameters that allow to filter the commits to return.</param>
+        public IEnumerable<Commit> EnumerateCommits(EnumerateCommitsParameters commitsParameters)
+        {
+            return _repositoriesEndPoint.EnumerateCommits(_accountName, _slug, null, commitsParameters);
+        }
+
+        /// <summary>
+        /// Enumerate the commit information associated with a repository in a specified branch.
+        /// The newest commit is first.
+        /// </summary>
+        /// <param name="branchOrTag">The branch or tag to get, for example, master or default.</param>
+        /// <param name="commitsParameters">Optional parameters that allow to filter the commits to return.</param>
+        public IEnumerable<Commit> EnumerateCommits(string branchOrTag, EnumerateCommitsParameters commitsParameters)
+        {
+            return _repositoriesEndPoint.EnumerateCommits(_accountName, _slug, branchOrTag, commitsParameters);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate the commits information associated with a repository.
+        /// By default, this call returns all the commits across all branches, bookmarks, and tags.
+        /// The newest commit is first.
+        /// </summary>
+        /// /// <param name="token">The cancellation token</param>
+        public IAsyncEnumerable<Commit> EnumerateCommitsAsync(CancellationToken token = default)
+        {
+            return _repositoriesEndPoint.EnumerateCommitsAsync(_accountName, _slug, null, new EnumerateCommitsParameters(), token);
+        }
+
+        /// <summary>
+        /// Enumerate the commits information associated with a repository in a specified branch.
+        /// The newest commit is first.
+        /// </summary>
+        /// <param name="branchOrTag">The branch or tag to get, for example, master or default.</param>
+        /// <param name="token">The cancellation token</param>
+        public IAsyncEnumerable<Commit> EnumerateCommitsAsync(string branchOrTag, CancellationToken token = default)
+        {
+            return _repositoriesEndPoint.EnumerateCommitsAsync(_accountName, _slug, branchOrTag, new EnumerateCommitsParameters(), token);
+        }
+
+        /// <summary>
+        /// Enumerate the commit information associated with a repository.
+        /// By default, this call returns all the commits across all branches, bookmarks, and tags.
+        /// The newest commit is first.
+        /// </summary>
+        /// <param name="commitsParameters">Parameters that allow to filter the commits to return.</param>
+        public IAsyncEnumerable<Commit> EnumerateCommitsAsync(EnumerateCommitsParameters commitsParameters, CancellationToken token = default)
+        {
+            return _repositoriesEndPoint.EnumerateCommitsAsync(_accountName, _slug, null, commitsParameters, token);
+        }
+
+        /// <summary>
+        /// Enumerate the commit information associated with a repository in a specified branch.
+        /// The newest commit is first.
+        /// </summary>
+        /// <param name="branchOrTag">The branch or tag to get, for example, master or default.</param>
+        /// <param name="commitsParameters">Optional parameters that allow to filter the commits to return.</param>
+        public IAsyncEnumerable<Commit> EnumerateCommitsAsync(string branchOrTag, EnumerateCommitsParameters commitsParameters, CancellationToken token = default)
+        {
+            return _repositoriesEndPoint.EnumerateCommitsAsync(_accountName, _slug, branchOrTag, commitsParameters, token);
+        }
+#endif
 
         /// <summary>
         /// Gets the information associated with an individual commit. 

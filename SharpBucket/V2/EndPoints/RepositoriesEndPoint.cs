@@ -653,7 +653,7 @@ namespace SharpBucket.V2.EndPoints
 
         #region Commits Resource
 
-        internal List<Commit> ListCommits(string accountName, string slug, string branchOrTag, CommitsParameters commitsParameters)
+        internal List<Commit> ListCommits(string accountName, string slug, string branchOrTag, ListCommitsParameters commitsParameters)
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, "commits/");
             if (!string.IsNullOrEmpty(branchOrTag))
@@ -663,6 +663,29 @@ namespace SharpBucket.V2.EndPoints
 
             return GetPaginatedValues<Commit>(overrideUrl, commitsParameters?.Max ?? 0, commitsParameters?.ToDictionary());
         }
+
+        internal IEnumerable<Commit> EnumerateCommits(string accountName, string slug, string branchOrTag, EnumerateCommitsParameters commitsParameters)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "commits/");
+            if (!string.IsNullOrEmpty(branchOrTag))
+            {
+                overrideUrl += branchOrTag;
+            }
+
+            return _sharpBucketV2.EnumeratePaginatedValues<Commit>(overrideUrl, commitsParameters.ToDictionary(), commitsParameters.PageLen);
+        }
+#if CS_8
+        internal IAsyncEnumerable<Commit> EnumerateCommitsAsync(string accountName, string slug, string branchOrTag, EnumerateCommitsParameters commitsParameters, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "commits/");
+            if (!string.IsNullOrEmpty(branchOrTag))
+            {
+                overrideUrl += branchOrTag;
+            }
+
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Commit>(overrideUrl, commitsParameters.ToDictionary(), commitsParameters.PageLen, token);
+        }
+#endif
 
         internal Commit GetCommit(string accountName, string slug, string revision)
         {

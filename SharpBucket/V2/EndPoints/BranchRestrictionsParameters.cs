@@ -3,8 +3,7 @@
 namespace SharpBucket.V2.EndPoints
 {
     /// <summary>
-    /// Base class that provide query parameters supported to GET the
-    /// branch-restrictions resource.
+    /// Base class that provide query parameters supported to GET the branch-restrictions resource.
     /// </summary>
     public abstract class BranchRestrictionsParameters : ParametersBase
     {
