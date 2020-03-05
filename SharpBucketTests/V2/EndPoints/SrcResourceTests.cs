@@ -110,6 +110,200 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
+        public void EnumerateTreeEntries_AtRootOfLastCommitOfMainBranch_GetAListing()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var currentRoot = testRepo.RepositoryResource.SrcResource();
+
+            var treeEntries = currentRoot.EnumerateTreeEntries().ToList();
+
+            treeEntries.ShouldNotBeNull();
+            treeEntries.Count.ShouldBeGreaterThan(0);
+        }
+
+        [Test]
+        public void EnumerateTreeEntries_AtRootOfFirstCommit_GetOneFileAndOneDirectory()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource(testRepo.RepositoryInfo.FirstCommit);
+
+            var treeEntries = rootOfFirstCommit.EnumerateTreeEntries().ToList();
+
+            treeEntries.ShouldNotBeNull();
+            treeEntries.Count.ShouldBe(2);
+
+            var readMeFile = treeEntries.FirstOrDefault(treeEntry => treeEntry.type == "commit_file");
+            readMeFile.ShouldBeFilled()
+                .And().ShouldBeFile("readme.md");
+
+            var srcDir = treeEntries.FirstOrDefault(treeEntry => treeEntry.type == "commit_directory");
+            srcDir.ShouldBeFilled()
+                .And().ShouldBeDirectory("src");
+        }
+
+        [Test]
+        public void EnumerateTreeEntries_AtRootOfASubPath_GetListingOfThatSubPath()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource(testRepo.RepositoryInfo.FirstCommit);
+            var rootOfASubPath = rootOfFirstCommit.SubSrcResource("src");
+
+            var treeEntries = rootOfASubPath.EnumerateTreeEntries().ToList();
+
+            treeEntries.ShouldNotBeNull();
+            treeEntries.Count.ShouldBe(4, "4 elements should be listed");
+            treeEntries.Count(treeEntry => treeEntry.type == "commit_file").ShouldBe(3, "3 elements should be files");
+            treeEntries.Count(treeEntry => treeEntry.type == "commit_directory").ShouldBe(1, "1 element should be a directory");
+        }
+
+        [Test]
+        public void EnumerateTreeEntries_ASubPathAtRootOfFirstCommit_GetListingOfThatSubPath()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource(testRepo.RepositoryInfo.FirstCommit);
+
+            var treeEntries = rootOfFirstCommit.EnumerateTreeEntries("src").ToList();
+
+            treeEntries.ShouldNotBeNull();
+            treeEntries.Count.ShouldBe(4, "4 elements should be listed");
+            treeEntries.Count(treeEntry => treeEntry.type == "commit_file").ShouldBe(3, "3 elements should be files");
+            treeEntries.Count(treeEntry => treeEntry.type == "commit_directory").ShouldBe(1, "1 element should be a directory");
+        }
+
+        [Test]
+        public void EnumerateTreeEntries_WithAFilter_GetAFilteredListing()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource(testRepo.RepositoryInfo.FirstCommit, "src");
+
+            var treeEntries = rootOfFirstCommit
+                .EnumerateTreeEntries(parameters: new EnumerateParameters { Filter = "path ~ \".txt\"" })
+                .ToList();
+
+            treeEntries.ShouldNotBeNull();
+            treeEntries.Count.ShouldBe(3, "3 elements should be listed");
+            treeEntries.Count(treeEntry => treeEntry.type == "commit_file").ShouldBe(3, "the 3 elements should be files");
+            treeEntries.Count(treeEntry => treeEntry.path.Contains(".txt")).ShouldBe(3, "the 3 elements path should contains '.txt' as requested in the filter query");
+        }
+
+        [Test]
+        public void EnumerateSrcEntries_AtRootOfFirstCommit_GetOneFileAndOneDirectory()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource(testRepo.RepositoryInfo.FirstCommit);
+
+            var srcEntries = rootOfFirstCommit.EnumerateSrcEntries().ToList();
+
+            srcEntries.ShouldNotBeNull();
+            srcEntries.Count.ShouldBe(2);
+
+            var readMeFile = srcEntries.FirstOrDefault(srcEntry => srcEntry.IsFile);
+            readMeFile.ShouldBeFilled()
+                .And().ShouldBeFile("readme.md");
+
+            var srcDir = srcEntries.FirstOrDefault(treeEntry => treeEntry.IsDirectory);
+            srcDir.ShouldBeFilled()
+                .And().ShouldBeDirectory("src");
+        }
+
+        [Test]
+        public async Task EnumerateTreeEntriesAsync_AtRootOfLastCommitOfMainBranch_GetAListing()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var currentRoot = testRepo.RepositoryResource.SrcResource();
+
+            var treeEntries = await currentRoot.EnumerateTreeEntriesAsync().ToListAsync();
+
+            treeEntries.ShouldNotBeNull();
+            treeEntries.Count.ShouldBeGreaterThan(0);
+        }
+
+        [Test]
+        public async Task EnumerateTreeEntriesAsync_AtRootOfFirstCommit_GetOneFileAndOneDirectory()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource(testRepo.RepositoryInfo.FirstCommit);
+
+            var treeEntries = await rootOfFirstCommit.EnumerateTreeEntriesAsync().ToListAsync();
+
+            treeEntries.ShouldNotBeNull();
+            treeEntries.Count.ShouldBe(2);
+
+            var readMeFile = treeEntries.FirstOrDefault(treeEntry => treeEntry.type == "commit_file");
+            readMeFile.ShouldBeFilled()
+                .And().ShouldBeFile("readme.md");
+
+            var srcDir = treeEntries.FirstOrDefault(treeEntry => treeEntry.type == "commit_directory");
+            srcDir.ShouldBeFilled()
+                .And().ShouldBeDirectory("src");
+        }
+
+        [Test]
+        public async Task EnumerateTreeEntriesAsync_AtRootOfASubPath_GetListingOfThatSubPath()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource(testRepo.RepositoryInfo.FirstCommit);
+            var rootOfASubPath = rootOfFirstCommit.SubSrcResource("src");
+
+            var treeEntries = await rootOfASubPath.EnumerateTreeEntriesAsync().ToListAsync();
+
+            treeEntries.ShouldNotBeNull();
+            treeEntries.Count.ShouldBe(4, "4 elements should be listed");
+            treeEntries.Count(treeEntry => treeEntry.type == "commit_file").ShouldBe(3, "3 elements should be files");
+            treeEntries.Count(treeEntry => treeEntry.type == "commit_directory").ShouldBe(1, "1 element should be a directory");
+        }
+
+        [Test]
+        public async Task EnumerateTreeEntriesAsync_ASubPathAtRootOfFirstCommit_GetListingOfThatSubPath()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource(testRepo.RepositoryInfo.FirstCommit);
+
+            var treeEntries = await rootOfFirstCommit.EnumerateTreeEntriesAsync("src").ToListAsync();
+
+            treeEntries.ShouldNotBeNull();
+            treeEntries.Count.ShouldBe(4, "4 elements should be listed");
+            treeEntries.Count(treeEntry => treeEntry.type == "commit_file").ShouldBe(3, "3 elements should be files");
+            treeEntries.Count(treeEntry => treeEntry.type == "commit_directory").ShouldBe(1, "1 element should be a directory");
+        }
+
+        [Test]
+        public async Task EnumerateTreeEntriesAsync_WithAFilter_GetAFilteredListing()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource(testRepo.RepositoryInfo.FirstCommit, "src");
+
+            var treeEntries = await rootOfFirstCommit
+                .EnumerateTreeEntriesAsync(parameters: new EnumerateParameters { Filter = "path ~ \".txt\"" })
+                .ToListAsync();
+
+            treeEntries.ShouldNotBeNull();
+            treeEntries.Count.ShouldBe(3, "3 elements should be listed");
+            treeEntries.Count(treeEntry => treeEntry.type == "commit_file").ShouldBe(3, "the 3 elements should be files");
+            treeEntries.Count(treeEntry => treeEntry.path.Contains(".txt")).ShouldBe(3, "the 3 elements path should contains '.txt' as requested in the filter query");
+        }
+
+        [Test]
+        public async Task EnumerateSrcEntriesAsync_AtRootOfFirstCommit_GetOneFileAndOneDirectory()
+        {
+            var testRepo = SampleRepositories.TestRepository;
+            var rootOfFirstCommit = testRepo.RepositoryResource.SrcResource(testRepo.RepositoryInfo.FirstCommit);
+
+            var srcEntries = await rootOfFirstCommit.EnumerateSrcEntriesAsync().ToListAsync();
+
+            srcEntries.ShouldNotBeNull();
+            srcEntries.Count.ShouldBe(2);
+
+            var readMeFile = srcEntries.FirstOrDefault(srcEntry => srcEntry.IsFile);
+            readMeFile.ShouldBeFilled()
+                .And().ShouldBeFile("readme.md");
+
+            var srcDir = srcEntries.FirstOrDefault(treeEntry => treeEntry.IsDirectory);
+            srcDir.ShouldBeFilled()
+                .And().ShouldBeDirectory("src");
+        }
+
+        [Test]
         public void GetTreeEntry_OfAFileInLastCommitOfMainBranch_GetFileMetadata()
         {
             var testRepo = SampleRepositories.TestRepository;

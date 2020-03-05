@@ -868,13 +868,31 @@ namespace SharpBucket.V2.EndPoints
 
         #region Src Resource
 
-        internal List<TreeEntry> ListTreeEntries(string srcResourcePath, string subDirPath = null, ListParameters listParameters = null)
+        internal List<TreeEntry> ListTreeEntries(string srcResourcePath, string subDirPath, ListParameters listParameters)
         {
             var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath, subDirPath);
             return listParameters == null
                 ? GetPaginatedValues<TreeEntry>(overrideUrl)
                 : GetPaginatedValues<TreeEntry>(overrideUrl, listParameters.Max, listParameters.ToDictionary());
         }
+
+        internal IEnumerable<TreeEntry> EnumerateTreeEntries(
+            string srcResourcePath, string subDirPath, EnumerateParameters parameters)
+        {
+            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath, subDirPath);
+            return _sharpBucketV2.EnumeratePaginatedValues<TreeEntry>(
+                overrideUrl, parameters?.ToDictionary(), parameters?.PageLen);
+        }
+
+#if CS_8
+        internal IAsyncEnumerable<TreeEntry> EnumerateTreeEntriesAsync(
+            string srcResourcePath, string subDirPath, EnumerateParameters parameters, CancellationToken token)
+        {
+            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath, subDirPath);
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<TreeEntry>(
+                overrideUrl, parameters?.ToDictionary(), parameters?.PageLen, token);
+        }
+#endif
 
         internal TreeEntry GetTreeEntry(string srcResourcePath, string subPath = null)
         {

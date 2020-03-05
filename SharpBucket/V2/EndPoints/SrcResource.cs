@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using SharpBucket.Utility;
@@ -83,6 +83,70 @@ namespace SharpBucket.V2.EndPoints
                 .Select(treeEntry => treeEntry.ToSrcEntry())
                 .ToList();
         }
+
+        /// <summary>
+        /// Enumerate the tree entries that are present at the root of this resource, or in the specified sub directory.
+        /// <remarks>
+        /// Since it can be difficult to guess which field is filled or not in a <see cref="TreeEntry"/>,
+        /// we suggest you to use <see cref="EnumerateSrcEntries"/> method instead of that one,
+        /// except if you really want to retrieve the raw model as returned by BitBucket.
+        /// </remarks>
+        /// </summary>
+        /// <param name="subDirPath">The path to a sub directory, or null to list the root directory of this resource.</param>
+        /// <param name="parameters">Parameters for the query.</param>
+        public IEnumerable<TreeEntry> EnumerateTreeEntries(string subDirPath = null, EnumerateParameters parameters = null)
+        {
+            return RepositoriesEndPoint.EnumerateTreeEntries(SrcPath.Value, subDirPath, parameters);
+        }
+
+        /// <summary>
+        /// Enumerate the source files and directories that are present at the root of this resource,
+        /// or in the specified sub directory.
+        /// </summary>
+        /// <param name="subDirPath">The path to a sub directory, or null to list the root directory of this resource.</param>
+        /// <param name="parameters">Parameters for the query.</param>
+        public IEnumerable<SrcEntry> EnumerateSrcEntries(string subDirPath = null, EnumerateParameters parameters = null)
+        {
+            return EnumerateTreeEntries(subDirPath, parameters)
+                .Select(treeEntry => treeEntry.ToSrcEntry());
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate the tree entries that are present at the root of this resource, or in the specified sub directory.
+        /// <remarks>
+        /// Since it can be difficult to guess which field is filled or not in a <see cref="TreeEntry"/>,
+        /// we suggest you to use <see cref="EnumerateSrcEntriesAsync"/> method instead of that one,
+        /// except if you really want to retrieve the raw model as returned by BitBucket.
+        /// </remarks>
+        /// </summary>
+        /// <param name="subDirPath">The path to a sub directory, or null to list the root directory of this resource.</param>
+        /// <param name="parameters">Parameters for the query.</param>
+        /// <param name="token">The cancellation token</param>
+        public IAsyncEnumerable<TreeEntry> EnumerateTreeEntriesAsync(
+            string subDirPath = null, EnumerateParameters parameters = null, CancellationToken token = default)
+        {
+            return RepositoriesEndPoint.EnumerateTreeEntriesAsync(SrcPath.Value, subDirPath, parameters, token);
+        }
+
+        /// <summary>
+        /// Enumerate the source files and directories that are present at the root of this resource,
+        /// or in the specified sub directory.
+        /// </summary>
+        /// <param name="subDirPath">The path to a sub directory, or null to list the root directory of this resource.</param>
+        /// <param name="parameters">Parameters for the query.</param>
+        /// <param name="token">The cancellation token</param>
+        public async IAsyncEnumerable<SrcEntry> EnumerateSrcEntriesAsync(
+            string subDirPath = null,
+            EnumerateParameters parameters = null,
+            [EnumeratorCancellation]CancellationToken token = default)
+        {
+            await foreach (var treeEntry in EnumerateTreeEntriesAsync(subDirPath, parameters, token))
+            {
+                yield return treeEntry.ToSrcEntry();
+            }
+        }
+#endif
 
         /// <summary>
         /// Gets the metadata of a specified sub path in this resource.
