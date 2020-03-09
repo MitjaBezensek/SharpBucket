@@ -12,6 +12,10 @@ namespace SharpBucketTests.V2
 
         public const string MERCURIAL_REPOSITORY_NAME = "mercurial";
 
+        public const string BOT_TEST_REPOSITORY_ACCOUNT_NAME = "penev92";
+
+        public const string BOT_TEST_REPOSITORY_NAME = "bottestrepository";
+
         private static RepositoriesEndPoint _repositoriesEndPoint;
 
         public static RepositoriesEndPoint RepositoriesEndPoint => _repositoriesEndPoint
@@ -52,6 +56,11 @@ namespace SharpBucketTests.V2
 
         public static RepositoryResource MercurialRepository => _mercurialRepository
                                                                 ??= RepositoriesEndPoint.RepositoryResource(MERCURIAL_ACCOUNT_NAME, MERCURIAL_REPOSITORY_NAME);
+
+        private static RepositoryResource _botTestRepository;
+
+        public static RepositoryResource BotTestRepository => _botTestRepository
+            ??= RepositoriesEndPoint.RepositoryResource(BOT_TEST_REPOSITORY_ACCOUNT_NAME, BOT_TEST_REPOSITORY_NAME);
 
         private static RepositoryResource _notExistingRepository;
 
