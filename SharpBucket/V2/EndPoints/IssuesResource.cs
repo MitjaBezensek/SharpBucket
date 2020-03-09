@@ -55,5 +55,21 @@ namespace SharpBucket.V2.EndPoints
                 throw new ArgumentNullException(nameof(parameters));
             return _repositoriesEndPoint.EnumerateIssues(_accountName, _slug, parameters);
         }
+
+        #region Issue Resource
+
+        /// <summary>
+        /// Get the Issue Resource.
+        /// BitBucket does not have this Resource so this is a "Virtual" resource
+        /// which offers easier manipulation of a specific Issue.
+        /// </summary>
+        /// <param name="issueId">The issue identifier.</param>
+        /// <returns></returns>
+        public IssueResource IssueResource(int issueId)
+        {
+            return new IssueResource(_accountName, _slug, issueId, _repositoriesEndPoint);
+        }
+
+        #endregion
     }
 }

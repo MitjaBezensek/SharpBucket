@@ -907,6 +907,18 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.EnumeratePaginatedValues<Issue>(overrideUrl, parameters.ToDictionary(), parameters.PageLen);
         }
 
+        internal Issue GetIssue(string accountName, string slug, int issueId)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"issues/{issueId}/");
+            return _sharpBucketV2.Get<Issue>(overrideUrl);
+        }
+
+        internal async Task<Issue> GetIssueAsync(string accountName, string slug, int issueId, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, $"issues/{issueId}/");
+            return await _sharpBucketV2.GetAsync<Issue>(overrideUrl, token);
+        }
+
         #endregion
     }
 }
