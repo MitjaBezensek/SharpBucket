@@ -797,5 +797,17 @@ namespace SharpBucket.V2.EndPoints
         }
 
         #endregion
+
+        #region tags resource
+
+        private TagsResource _tagsResource;
+
+        /// <summary>
+        /// Gets the reqource that allow to manage tags for this repository.
+        /// </summary>
+        public TagsResource TagsResource => this._tagsResource ??
+                                                (_tagsResource = new TagsResource(_accountName, _slug, _repositoriesEndPoint));
+
+        #endregion
     }
 }

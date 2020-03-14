@@ -10,6 +10,7 @@ namespace SharpBucket.V2.EndPoints
     /// More info:
     /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/refs/tags
     /// </summary>
+    [Obsolete("Use TagsResource instead")]
     public class TagResource
     {
         private readonly string _accountName;

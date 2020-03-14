@@ -852,7 +852,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="accountName">The owner of the repository.</param>
         /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
-        /// <returns></returns>
+        [Obsolete("Use RepositoryResource(string,string).TagsResource instead")]
         public TagResource TagResource(string accountName, string repoSlugOrName)
         {
             return new TagResource(accountName, repoSlugOrName, this);
@@ -863,6 +863,20 @@ namespace SharpBucket.V2.EndPoints
             var overrideUrl = GetRepositoryUrl(accountName, slug, "refs/tags/");
             return GetPaginatedValues<Tag>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
+
+        internal IEnumerable<Tag> EnumerateTags(string accountName, string slug, EnumerateParameters parameters)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "refs/tags/");
+            return _sharpBucketV2.EnumeratePaginatedValues<Tag>(overrideUrl, parameters.ToDictionary(), parameters.PageLen);
+        }
+
+#if CS_8
+        internal IAsyncEnumerable<Tag> EnumerateTagsAsync(string accountName, string slug, EnumerateParameters parameters, CancellationToken token)
+        {
+            var overrideUrl = GetRepositoryUrl(accountName, slug, "refs/tags/");
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Tag>(overrideUrl, parameters.ToDictionary(), parameters.PageLen, token);
+        }
+#endif
 
         #endregion
 
