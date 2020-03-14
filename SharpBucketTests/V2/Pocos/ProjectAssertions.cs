@@ -43,12 +43,11 @@ namespace SharpBucketTests.V2.Pocos
             }
             else
             {
-                (project as ProjectInfo).ShouldBeEquivalentTo(expectedProject);
+                (project as ProjectInfo).ShouldBeEquivalentExceptAvatarTimeStampTo(expectedProject);
                 project.created_on.ShouldBe(expectedProject.created_on);
                 DateTime.Parse(project.updated_on).ShouldBeGreaterThan(DateTime.Parse(expectedProject.updated_on));
                 project.description.ShouldBe(expectedProject.description);
                 project.owner.ShouldBeEquivalentTo(expectedProject.owner);
-                
             }
 
             return project;

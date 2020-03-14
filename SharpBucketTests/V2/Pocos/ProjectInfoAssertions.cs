@@ -34,5 +34,24 @@ namespace SharpBucketTests.V2.Pocos
 
             return projectInfo;
         }
+
+        public static ProjectInfo ShouldBeEquivalentExceptAvatarTimeStampTo(this ProjectInfo projectInfo, ProjectInfo expectedProjectInfo)
+        {
+            if (expectedProjectInfo == null)
+            {
+                projectInfo.ShouldBeNull();
+            }
+            else
+            {
+                projectInfo.ShouldNotBeNull();
+                projectInfo.key.ShouldBe(expectedProjectInfo.key);
+                projectInfo.name.ShouldBe(expectedProjectInfo.name);
+                projectInfo.uuid.ShouldBe(expectedProjectInfo.uuid);
+                projectInfo.links.ShouldBeEquivalentExceptAvatarTimeStampTo(expectedProjectInfo.links);
+            }
+
+
+            return projectInfo;
+        }
     }
 }
