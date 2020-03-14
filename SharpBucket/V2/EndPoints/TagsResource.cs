@@ -63,6 +63,7 @@ namespace SharpBucket.V2.EndPoints
         /// Enumerate all Tags associated with a specific repository,
         /// doing reqests page by page while enumerating.
         /// </summary>
+        /// <param name="token">The cancellation token</param>
         public IAsyncEnumerable<Tag> EnumerateTagsAsync(CancellationToken token = default)
             => EnumerateTagsAsync(new EnumerateParameters(), token);
 
@@ -71,6 +72,7 @@ namespace SharpBucket.V2.EndPoints
         /// doing reqests page by page while enumerating.
         /// </summary>
         /// <param name="parameters">Parameters for the query.</param>
+        /// <param name="token">The cancellation token</param>
         public IAsyncEnumerable<Tag> EnumerateTagsAsync(EnumerateParameters parameters, CancellationToken token = default)
         {
             if (parameters == null)
