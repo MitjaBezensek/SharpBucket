@@ -190,7 +190,7 @@ namespace SharpBucket.V2.EndPoints
         /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/#get
         /// </summary>
         public IAsyncEnumerable<Project> EnumerateProjectsAsync(CancellationToken token = default)
-            => EnumerateProjectsAsync(new EnumerateParameters());
+            => EnumerateProjectsAsync(new EnumerateParameters(), token);
 
         /// <summary>
         /// Enumerate projects that belong to the team,
