@@ -29,14 +29,14 @@ namespace SharpBucketTests.Authentication
             var repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
 
             sharpBucket.OAuth2ClientCredentials(TestHelpers.OAuthConsumerKey, TestHelpers.OAuthConsumerSecretKey);
-            var accountRepos = repositoriesEndPoint.ListRepositories(TestHelpers.AccountName);
+            var accountRepos = repositoriesEndPoint.RepositoriesResource(TestHelpers.AccountName).ListRepositories();
             accountRepos.ShouldNotBe(null);
             accountRepos.Any(p => p.name == privateRepo.name).ShouldBe(true);
             accountRepos.Any(p => p.is_private == true).ShouldBe(true);
             accountRepos.Any(p => p.is_private == false && p.name == publicRepo.name).ShouldBe(true);
 
             sharpBucket.NoAuthentication();
-            accountRepos = repositoriesEndPoint.ListRepositories(TestHelpers.AccountName);
+            accountRepos = repositoriesEndPoint.RepositoriesResource(TestHelpers.AccountName).ListRepositories();
             accountRepos.ShouldNotBe(null);
             accountRepos.Any(p => p.name == privateRepo.name).ShouldBe(false);
             accountRepos.Any(p => p.is_private == true).ShouldBe(false);

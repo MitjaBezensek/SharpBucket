@@ -25,107 +25,6 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
-        /// this method returns a collection containing public and private repositories. 
-        /// Otherwise, this method returns a collection of the public repositories.
-        /// </summary>
-        /// <param name="accountName">The account whose repositories you wish to get.</param>
-        /// <returns></returns>
-        public List<Repository> ListRepositories(string accountName)
-            => ListRepositories(accountName, new ListRepositoriesParameters());
-
-        /// <summary>
-        /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
-        /// this method returns a collection containing public and private repositories. 
-        /// Otherwise, this method returns a collection of the public repositories.
-        /// </summary>
-        /// <param name="accountName">The account whose repositories you wish to get.</param>
-        /// <param name="parameters">Parameters for the query.</param>
-        /// <returns></returns>
-        [Obsolete("Prefer overload using a ListRepositoriesParameters")]
-        public List<Repository> ListRepositories(string accountName, ListParameters parameters)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
-
-            var overrideUrl = $"{_baseUrl}{accountName.GuidOrValue()}/";
-            return GetPaginatedValues<Repository>(overrideUrl, parameters.Max, parameters.ToDictionary());
-        }
-
-        /// <summary>
-        /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
-        /// this method returns a collection containing public and private repositories. 
-        /// Otherwise, this method returns a collection of the public repositories.
-        /// </summary>
-        /// <param name="accountName">The account whose repositories you wish to get.</param>
-        /// <param name="parameters">Parameters for the query.</param>
-        /// <returns></returns>
-        public List<Repository> ListRepositories(string accountName, ListRepositoriesParameters parameters)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
-
-            var overrideUrl = $"{_baseUrl}{accountName.GuidOrValue()}/";
-            return GetPaginatedValues<Repository>(overrideUrl, parameters.Max, parameters.ToDictionary());
-        }
-
-        /// <summary>
-        /// Enumerate repositories associated with an account. If the caller is properly authenticated and authorized, 
-        /// this method returns a collection containing public and private repositories. 
-        /// Otherwise, this method returns a collection of the public repositories.
-        /// </summary>
-        /// <param name = "accountName" > The account whose repositories you wish to get.</param>
-        public IEnumerable<Repository> EnumerateRepositories(string accountName)
-            => EnumerateRepositories(accountName, new EnumerateRepositoriesParameters());
-
-        /// <summary>
-        /// Enumerate repositories associated with an account. If the caller is properly authenticated and authorized, 
-        /// this method returns a collection containing public and private repositories. 
-        /// Otherwise, this method returns a collection of the public repositories.
-        /// </summary>
-        /// <param name="accountName">The account whose repositories you wish to get.</param>
-        /// <param name="parameters">Parameters for the queries.</param>
-        public IEnumerable<Repository> EnumerateRepositories(string accountName, EnumerateRepositoriesParameters parameters)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
-
-            var overrideUrl = $"{_baseUrl}{accountName.GuidOrValue()}/";
-            return _sharpBucketV2.EnumeratePaginatedValues<Repository>(overrideUrl, parameters.ToDictionary(), parameters.PageLen);
-        }
-
-#if CS_8
-        /// <summary>
-        /// Enumerate repositories associated with an account, doing requests page by page.
-        /// If the caller is properly authenticated and authorized, 
-        /// this method returns a collection containing public and private repositories. 
-        /// Otherwise, this method returns a collection of the public repositories.
-        /// </summary>
-        /// <param name="accountName">The account whose repositories you wish to get.</param>
-        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public IAsyncEnumerable<Repository> EnumerateRepositoriesAsync(string accountName, CancellationToken token = default)
-            => EnumerateRepositoriesAsync(accountName, new EnumerateRepositoriesParameters(), token);
-
-        /// <summary>
-        /// Enumerate repositories associated with an account, doing requests page by page.
-        /// If the caller is properly authenticated and authorized, 
-        /// this method returns a collection containing public and private repositories. 
-        /// Otherwise, this method returns a collection of the public repositories.
-        /// </summary>
-        /// <param name="accountName">The account whose repositories you wish to get.</param>
-        /// <param name="parameters">Parameters for the queries.</param>
-        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public IAsyncEnumerable<Repository> EnumerateRepositoriesAsync(string accountName, EnumerateRepositoriesParameters parameters, CancellationToken token = default)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
-
-            var overrideUrl = $"{_baseUrl}{accountName.GuidOrValue()}/";
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Repository>(overrideUrl, parameters.ToDictionary(), parameters.PageLen, token);
-        }
-#endif
-
-        /// <summary>
         /// List of all the public repositories on Bitbucket.
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
@@ -174,6 +73,49 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.EnumeratePaginatedValuesAsync<Repository>(_baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
+
+        #endregion
+
+        #region Repositories Account Resource
+
+        /// <summary>
+        /// Gets the <see cref="RepositoriesAccountResource"/> that will allow to list the repositories of a specified
+        /// account.
+        /// </summary>
+        /// <param name="accountName"The account whose repositories you wish to get.></param>
+        public RepositoriesAccountResource RepositoriesResource(string accountName)
+        {
+            return new RepositoriesAccountResource(_sharpBucketV2, accountName, this);
+        }
+
+        /// <summary>
+        /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
+        /// this method returns a collection containing public and private repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
+        /// </summary>
+        /// <param name="accountName">The account whose repositories you wish to get.</param>
+        /// <returns></returns>
+        [Obsolete("Prefer go through the RepositoriesAccountResource(accountName) method.")]
+        public List<Repository> ListRepositories(string accountName)
+            => RepositoriesResource(accountName).ListRepositories();
+
+        /// <summary>
+        /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
+        /// this method returns a collection containing public and private repositories. 
+        /// Otherwise, this method returns a collection of the public repositories.
+        /// </summary>
+        /// <param name="accountName">The account whose repositories you wish to get.</param>
+        /// <param name="parameters">Parameters for the query.</param>
+        /// <returns></returns>
+        [Obsolete("Prefer go through the RepositoriesAccountResource(accountName) method, and use a method using a ListRepositoriesParameters.")]
+        public List<Repository> ListRepositories(string accountName, ListParameters parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            var overrideUrl = $"{_baseUrl}{accountName.GuidOrValue()}/";
+            return GetPaginatedValues<Repository>(overrideUrl, parameters.Max, parameters.ToDictionary());
+        }
 
         #endregion
 

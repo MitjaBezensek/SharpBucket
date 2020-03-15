@@ -109,12 +109,13 @@ namespace SharpBucketTests.V2.EndPoints
                 language = "c#",
                 scm = "git"
             };
-            var teamRepoResource = UserFirstTeamResource.RepositoryResource(repositoryName);
+            var teamRepositoriesResource = UserFirstTeamResource.RepositoriesResource;
+            var teamRepoResource = teamRepositoriesResource.RepositoryResource(repositoryName);
             teamRepoResource.PostRepository(teamRepository);
 
             try
             {
-                var repositories = UserFirstTeamResource.ListRepositories();
+                var repositories = teamRepositoriesResource.ListRepositories();
                 repositories.ShouldNotBeEmpty();
                 repositories.Any(r => r.name == teamRepository.name).ShouldBe(true);
             }

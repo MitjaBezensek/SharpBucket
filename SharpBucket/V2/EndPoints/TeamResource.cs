@@ -15,6 +15,8 @@ namespace SharpBucket.V2.EndPoints
 
         private readonly string _baseUrl;
 
+        private readonly Lazy<RepositoriesAccountResource> _repositoriesResource;
+
         public TeamResource(ISharpBucketRequesterV2 sharpBucketV2, string teamName)
         {
             _sharpBucketV2 = sharpBucketV2 ?? throw new ArgumentNullException(nameof(sharpBucketV2));
@@ -22,7 +24,20 @@ namespace SharpBucket.V2.EndPoints
             if (string.IsNullOrEmpty(teamName)) throw new ArgumentNullException(nameof(teamName));
             _teamName = teamName.GuidOrValue();
             _baseUrl = $"teams/{teamName}/";
+
+            _repositoriesResource = new Lazy<RepositoriesAccountResource>(
+                () => new RepositoriesAccountResource(
+                    sharpBucketV2, _teamName, new RepositoriesEndPoint(sharpBucketV2)));
         }
+
+        /// <summary>
+        /// Gets the <see cref="RepositoriesAccountResource"/> corresponding to the team of this resource.
+        /// </summary>
+        /// <remarks>
+        /// The /teams/{username}/repositories request redirect to the /repositories/{username} request
+        /// It's why providing here a shortcut to the /repositories/{username} resource is valid and equivalent.
+        /// </remarks>
+        public RepositoriesAccountResource RepositoriesResource => _repositoriesResource.Value;
 
         /// <summary>
         /// Gets the public information associated with a team. 
@@ -203,68 +218,17 @@ namespace SharpBucket.V2.EndPoints
         /// List of repositories associated to the team.
         /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
         /// </summary>
-        public List<Repository> ListRepositories()
-            => this.ListRepositories(new ListRepositoriesParameters());
-
-        /// <summary>
-        /// List of repositories associated to the team.
-        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
-        /// </summary>
         /// <param name="parameters">Parameters for the query.</param>
-        [Obsolete("Prefer overload using a ListRepositoriesParameters")]
+        [Obsolete("Prefer go through the RepositoriesResource property.")]
         public List<Repository> ListRepositories(ListParameters parameters)
-            // The /teams/{username}/repositories request redirect to the repositories/{username}/ request
-            // So to improve performances we directly do the the call to the repositories endpoint
             => new RepositoriesEndPoint(_sharpBucketV2).ListRepositories(_teamName, parameters ?? new ListParameters());
 
-        /// <summary>
-        /// List of repositories associated to the team.
-        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
-        /// </summary>
-        /// <param name="parameters">Parameters for the query.</param>
-        public List<Repository> ListRepositories(ListRepositoriesParameters parameters)
-            // The /teams/{username}/repositories request redirect to the repositories/{username}/ request
-            // So to improve performances we directly do the the call to the repositories endpoint
-            => new RepositoriesEndPoint(_sharpBucketV2).ListRepositories(_teamName, parameters);
-
-        /// <summary>
-        /// Enumerate repositories associated to the team.
-        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
-        /// </summary>
-        public IEnumerable<Repository> EnumerateRepositories()
-            => EnumerateRepositories(new EnumerateRepositoriesParameters());
-
-        /// <summary>
-        /// Enumerate repositories associated to the team.
-        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
-        /// </summary>
-        /// <param name="parameters">Parameters for the queries.</param>
-        public IEnumerable<Repository> EnumerateRepositories(EnumerateRepositoriesParameters parameters)
-            => new RepositoriesEndPoint(_sharpBucketV2).EnumerateRepositories(_teamName, parameters);
-
-#if CS_8
-        /// <summary>
-        /// Enumerate repositories associated to the team, doing requests page by page.
-        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
-        /// </summary>
-        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public IAsyncEnumerable<Repository> EnumerateRepositoriesAsync(CancellationToken token = default)
-            => EnumerateRepositoriesAsync(new EnumerateRepositoriesParameters(), token);
-
-        /// <summary>
-        /// Enumerate repositories associated to the team, doing requests page by page.
-        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
-        /// </summary>
-        /// <param name="parameters">Parameters for the queries.</param>
-        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public IAsyncEnumerable<Repository> EnumerateRepositoriesAsync(EnumerateRepositoriesParameters parameters, CancellationToken token = default)
-            => new RepositoriesEndPoint(_sharpBucketV2).EnumerateRepositoriesAsync(_teamName, parameters, token);
-#endif
 
         /// <summary>
         /// Gets a <see cref="RepositoryResource"/> for a specified repository name, owned by the team represented by this resource.
         /// </summary>
         /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
+        [Obsolete("Prefer go through the RepositoriesResource property.")]
         public RepositoryResource RepositoryResource(string repoSlugOrName)
         {
             return new RepositoryResource(_teamName, repoSlugOrName, new RepositoriesEndPoint(_sharpBucketV2));

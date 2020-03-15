@@ -86,6 +86,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
+        [Obsolete("Test of an obsolete method")]
         public void ListRepositories_FromMirrorAccount_ShouldReturnMirrorsRepositories()
         {
             usersEndPoint.ShouldNotBe(null);

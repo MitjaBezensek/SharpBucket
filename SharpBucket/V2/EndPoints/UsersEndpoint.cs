@@ -14,13 +14,24 @@ namespace SharpBucket.V2.EndPoints
     /// </summary>
     public class UsersEndpoint : EndPoint
     {
-        private readonly string _repositoriesUrl;
+        private readonly Lazy<RepositoriesAccountResource> _repositoriesResource;
 
         public UsersEndpoint(string accountName, ISharpBucketRequesterV2 sharpBucketV2) :
             base(sharpBucketV2, $"users/{accountName.GuidOrValue()}/")
         {
-            _repositoriesUrl = $"repositories/{accountName.GuidOrValue()}/";
+            _repositoriesResource = new Lazy<RepositoriesAccountResource>(
+                () => new RepositoriesAccountResource(
+                    sharpBucketV2, accountName, new RepositoriesEndPoint(sharpBucketV2)));
         }
+
+        /// <summary>
+        /// Gets the <see cref="RepositoriesAccountResource"/> corresponding to the account of this endpoint.
+        /// </summary>
+        /// <remarks>
+        /// The /users/{username}/repositories request redirect to the /repositories/{username} request
+        /// It's why providing here a shortcut to the /repositories/{username} resource is valid and equivalent.
+        /// </remarks>
+        public RepositoriesAccountResource RepositoriesResource => _repositoriesResource.Value;
 
         /// <summary>
         /// Gets the public information associated with a user. 
@@ -71,10 +82,8 @@ namespace SharpBucket.V2.EndPoints
         /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
-        /// <returns></returns>
+        [Obsolete("Prefer go through the RepositoriesResource property.")]
         public List<Repository> ListRepositories(int max = 0)
-        {
-            return GetPaginatedValues<Repository>(_repositoriesUrl, max);
-        }
+            => this.RepositoriesResource.ListRepositories(new ListRepositoriesParameters { Max = max });
     }
 }

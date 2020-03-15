@@ -16,7 +16,8 @@ namespace SharpBucketTests.Authentication
 
             var sharpBucket = new SharpBucketV2();
             sharpBucket.OAuth2ClientCredentials(TestHelpers.OAuthConsumerKey, TestHelpers.OAuthConsumerSecretKey);
-            var accountRepos = sharpBucket.RepositoriesEndPoint().ListRepositories(TestHelpers.AccountName);
+            var accountRepos = sharpBucket.RepositoriesEndPoint()
+                .RepositoriesResource(TestHelpers.AccountName).ListRepositories();
             accountRepos.ShouldNotBe(null);
             accountRepos.Any(p => p.is_private == true && p.name == privateRepo.name).ShouldBe(true);
         }

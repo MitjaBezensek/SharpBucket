@@ -118,7 +118,7 @@ namespace SharpBucketCli
             }
 
             var repositoriesEndPoint = this.SharpBucket.RepositoriesEndPoint();
-            var repositories = repositoriesEndPoint.ListRepositories(this.Account.uuid);
+            var repositories = repositoriesEndPoint.RepositoriesResource(this.Account.uuid).ListRepositories();
             foreach (var repository in repositories)
             {
                 var repositoryResource = repositoriesEndPoint.RepositoryResource(this.Account.uuid, repository.slug);
