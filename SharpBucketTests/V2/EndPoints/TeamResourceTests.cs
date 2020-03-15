@@ -16,55 +16,85 @@ namespace SharpBucketTests.V2.EndPoints
     [TestFixture]
     class TeamResourceTests
     {
-        private SharpBucketV2 sharpBucket;
-        private TeamsEndPoint teamsEndPoint;
-        private TeamResource teamResource;
+        private TeamResource AtlassianTeamResource { get; set; }
+
+        private TeamResource UserFirstTeamResource { get; set; }
 
         [OneTimeSetUp]
         public void Init()
         {
-            sharpBucket = TestHelpers.SharpBucketV2;
-            teamsEndPoint = sharpBucket.TeamsEndPoint();
+            var sharpBucket = TestHelpers.SharpBucketV2;
+            var teamsEndPoint = sharpBucket.TeamsEndPoint();
+
+            this.AtlassianTeamResource = teamsEndPoint.TeamResource("atlassian");
 
             var team = teamsEndPoint.GetUserTeamsWithAdminRole()[0];
-            teamResource = teamsEndPoint.TeamResource(team.username);
+            this.UserFirstTeamResource = teamsEndPoint.TeamResource(team.username);
         }
 
         [Test]
         public void GetProfile_FromTeamAtlassian_ReturnsAtlassianProfile()
         {
-            teamsEndPoint.ShouldNotBe(null);
-            var profile = teamsEndPoint.TeamResource("atlassian").GetProfile();
+            var profile = this.AtlassianTeamResource.GetProfile();
             profile.display_name.ShouldBe("Atlassian");
         }
 
         [Test]
         public async Task GetProfileAsync_FromTeamAtlassian_ReturnsAtlassianProfile()
         {
-            teamsEndPoint.ShouldNotBe(null);
-            var profile = await teamsEndPoint.TeamResource("atlassian").GetProfileAsync();
+            var profile = await this.AtlassianTeamResource.GetProfileAsync();
             profile.display_name.ShouldBe("Atlassian");
         }
 
         [Test]
-        public void ListMembers_FromFirstTeamOfLoggedUser_ShouldReturnManyMembers()
+        public void ListMembers_FromUserFirstTeam_ShouldReturnLoggedUser()
         {
-            teamsEndPoint.ShouldNotBe(null);
-            var teams = teamsEndPoint.GetUserTeams();
-            teams.Count.ShouldBeGreaterThan(0);
+            var members = this.UserFirstTeamResource.ListMembers();
 
-            var firstTeamResource = teamsEndPoint.TeamResource(teams[0].uuid);
-            var members = firstTeamResource.ListMembers(35);
-            members.Count.ShouldBeGreaterThan(0);
-            var nickname = sharpBucket.UserEndPoint().GetUser().nickname;
+            var nickname = TestHelpers.AccountName;
+            members.ShouldContain(m => m.nickname == nickname);
+        }
+
+        [Test]
+        public void EnumerateMembers_FromUserFirstTeam_ShouldReturnLoggedUser()
+        {
+            var members = this.UserFirstTeamResource.EnumerateMembers();
+
+            var nickname = TestHelpers.AccountName;
+            members.ShouldContain(m => m.nickname == nickname);
+        }
+
+        [Test]
+        public async Task EnumerateMembersAsync_FromUserFirstTeam_ShouldReturnLoggedUser()
+        {
+            var members = await this.UserFirstTeamResource.EnumerateMembersAsync().ToListAsync();
+
+            var nickname = TestHelpers.AccountName;
             members.ShouldContain(m => m.nickname == nickname);
         }
 
         [Test]
         public void ListFollowers_FromTeamAtlassian_ShouldReturnManyFollowers()
         {
-            teamsEndPoint.ShouldNotBe(null);
-            var followers = teamsEndPoint.TeamResource("atlassian").ListFollowers(8);
+            var followers = this.AtlassianTeamResource.ListFollowers(8);
+            followers.Count.ShouldBe(8);
+            followers[0].display_name.ShouldBe("Hector Malpica");
+        }
+
+        [Test]
+        public void EnumerateFollowers_FromTeamAtlassian_ShouldReturnManyFollowers()
+        {
+            var followers = this.AtlassianTeamResource.EnumerateFollowers(8)
+                .Take(8).ToList();
+            followers.Count.ShouldBe(8);
+            followers[0].display_name.ShouldBe("Hector Malpica");
+        }
+
+        [Test]
+        public async Task EnumerateFollowersAsync_FromTeamAtlassian_ShouldReturnManyFollowers()
+        {
+            var followers = await this.AtlassianTeamResource.EnumerateFollowersAsync(8)
+                .Take(8).ToListAsync();
             followers.Count.ShouldBe(8);
             followers[0].display_name.ShouldBe("Hector Malpica");
         }
@@ -79,12 +109,12 @@ namespace SharpBucketTests.V2.EndPoints
                 language = "c#",
                 scm = "git"
             };
-            var teamRepoResource = teamResource.RepositoryResource(repositoryName);
+            var teamRepoResource = UserFirstTeamResource.RepositoryResource(repositoryName);
             teamRepoResource.PostRepository(teamRepository);
 
             try
             {
-                var repositories = teamResource.ListRepositories();
+                var repositories = UserFirstTeamResource.ListRepositories();
                 repositories.ShouldNotBeEmpty();
                 repositories.Any(r => r.name == teamRepository.name).ShouldBe(true);
             }
@@ -105,26 +135,26 @@ namespace SharpBucketTests.V2.EndPoints
                 is_private = true,
                 description = "project created by the unit test ListProjects_AfterHavingAddAProject_ShouldReturnAtLestTheCreatedProject"
             };
-            project = teamResource.PostProject(project);
+            project = UserFirstTeamResource.PostProject(project);
 
             try
             {
-                var projects = teamResource.ListProjects();
+                var projects = UserFirstTeamResource.ListProjects();
                 projects.ShouldNotBeEmpty();
                 projects.Any(r => r.name == project.name).ShouldBe(true);
                 projects.Select(p => p.ShouldBeFilled())
                     .Any(r => r.name == project.name).ShouldBe(true);
 
                 // also quickly check other sync methods here to avoid to create and delete to much projects
-                projects = teamResource.ListProjects(new ListParameters { Filter = "name ~ \"nomatchexpected\"" });
+                projects = UserFirstTeamResource.ListProjects(new ListParameters { Filter = "name ~ \"nomatchexpected\"" });
                 projects.ShouldBeEmpty();
 
-                projects = teamResource.EnumerateProjects().ToList();
+                projects = UserFirstTeamResource.EnumerateProjects().ToList();
                 projects.ShouldNotBeEmpty();
             }
             finally
             {
-                teamResource.ProjectResource(project.key).DeleteProject();
+                UserFirstTeamResource.ProjectResource(project.key).DeleteProject();
             }
         }
 
@@ -139,11 +169,11 @@ namespace SharpBucketTests.V2.EndPoints
                 is_private = true,
                 description = "project created by the unit test ListProjects_AfterHavingAddAProject_ShouldReturnAtLestTheCreatedProject"
             };
-            project = await teamResource.PostProjectAsync(project);
+            project = await UserFirstTeamResource.PostProjectAsync(project);
 
             try
             {
-                var projects = await teamResource.EnumerateProjectsAsync().ToListAsync();
+                var projects = await UserFirstTeamResource.EnumerateProjectsAsync().ToListAsync();
                 projects.ShouldNotBeEmpty();
                 projects.Any(r => r.name == project.name).ShouldBe(true);
                 projects.Select(p => p.ShouldBeFilled())
@@ -151,16 +181,14 @@ namespace SharpBucketTests.V2.EndPoints
             }
             finally
             {
-                await teamResource.ProjectResource(project.key).DeleteProjectAsync();
+                await UserFirstTeamResource.ProjectResource(project.key).DeleteProjectAsync();
             }
         }
 
         [Test]
         public void EnumerateSearchCodeSearchResults_SearchStringWordFromTeamAtlassian_ShouldReturnAtLeastOneResult()
         {
-            teamsEndPoint.ShouldNotBe(null);
-
-            var searchResults = teamsEndPoint.TeamResource("atlassian").EnumerateSearchCodeSearchResults("string");
+            var searchResults = this.AtlassianTeamResource.EnumerateSearchCodeSearchResults("string");
             var firstResult = searchResults.FirstOrDefault();
             firstResult.ShouldBeFilled();
         }
@@ -168,7 +196,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void EnumerateSearchCodeSearchResults_SearchStringWordFromTeamAtlassianWithPageLenLessThanTheNumberOfEnumeratedResults_RequestsCountShouldIncrementLazily()
         {
-            ISharpBucketRequesterV2 realSharpBucketRequesterV2 = this.sharpBucket;
+            ISharpBucketRequesterV2 realSharpBucketRequesterV2 = TestHelpers.SharpBucketV2;
             var sharpBucketRequesterV2Mock = new Mock<ISharpBucketRequesterV2>();
             Expression<Func<ISharpBucketRequesterV2, IteratorBasedPage<SearchCodeSearchResult>>> sendMethod
                 = x => x.Send<IteratorBasedPage<SearchCodeSearchResult>>(It.IsAny<HttpMethod>(), It.IsAny<object>(), It.IsAny<string>(), It.IsAny<object>());

@@ -48,33 +48,156 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<Team> ListMembers(int max = 0)
+        public List<UserShort> ListMembers(int max = 0)
         {
             var overrideUrl = _baseUrl + "members/";
-            return _sharpBucketV2.GetPaginatedValues<Team>(overrideUrl, max);
+            return _sharpBucketV2.GetPaginatedValues<UserShort>(overrideUrl, max);
         }
+
+        /// <summary>
+        /// Enumerate the team's members,
+        /// doing requests page by page while enumerating.
+        /// </summary>
+        /// <param name="pageLen">
+        /// The length of a page. If not defined the default page length will be used
+        /// </param>
+        public IEnumerable<UserShort> EnumerateMembers(int? pageLen = null)
+        {
+            var overrideUrl = _baseUrl + "members/";
+            return _sharpBucketV2.EnumeratePaginatedValues<UserShort>(overrideUrl, pageLen: pageLen);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate the team's members,
+        /// doing requests page by page while enumerating.
+        /// </summary>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public IAsyncEnumerable<UserShort> EnumerateMembersAsync(CancellationToken token = default)
+            => EnumerateMembersAsync(null, token);
+
+        /// <summary>
+        /// Enumerate the team's members,
+        /// doing requests page by page while enumerating.
+        /// </summary>
+        /// <param name="pageLen">
+        /// The length of a page. If not defined the default page length will be used
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public IAsyncEnumerable<UserShort> EnumerateMembersAsync(int? pageLen, CancellationToken token = default)
+        {
+            var overrideUrl = _baseUrl + "members/";
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, null, pageLen, token);
+        }
+#endif
 
         /// <summary>
         /// Gets the list of accounts following the team.
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<Team> ListFollowers(int max = 0)
+        public List<UserShort> ListFollowers(int max = 0)
         {
             var overrideUrl = _baseUrl + "followers/";
-            return _sharpBucketV2.GetPaginatedValues<Team>(overrideUrl, max);
+            return _sharpBucketV2.GetPaginatedValues<UserShort>(overrideUrl, max);
         }
+
+        /// <summary>
+        /// Enumerate the accounts following the team,
+        /// doing requests page by page while enumerating.
+        /// </summary>
+        /// <param name="pageLen">
+        /// The length of a page. If not defined the default page length will be used
+        /// </param>
+        public IEnumerable<UserShort> EnumerateFollowers(int? pageLen = null)
+        {
+            var overrideUrl = _baseUrl + "followers/";
+            return _sharpBucketV2.EnumeratePaginatedValues<UserShort>(overrideUrl, pageLen: pageLen);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate the accounts following the team,
+        /// doing requests page by page while enumerating.
+        /// </summary>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public IAsyncEnumerable<UserShort> EnumerateFollowersAsync(CancellationToken token = default)
+            => EnumerateFollowersAsync(null, token);
+
+        /// <summary>
+        /// Enumerate the accounts following the team,
+        /// doing requests page by page while enumerating.
+        /// </summary>
+        /// <param name="pageLen">
+        /// The length of a page. If not defined the default page length will be used
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public IAsyncEnumerable<UserShort> EnumerateFollowersAsync(int? pageLen, CancellationToken token = default)
+        {
+            var overrideUrl = _baseUrl + "followers/";
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, null, pageLen, token);
+        }
+#endif
 
         /// <summary>
         /// Gets a list of accounts the team is following.
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
-        public List<Team> ListFollowing(int max = 0)
+        public List<UserShort> ListFollowing(int max = 0)
         {
             var overrideUrl = _baseUrl + "following/";
-            return _sharpBucketV2.GetPaginatedValues<Team>(overrideUrl, max);
+            return _sharpBucketV2.GetPaginatedValues<UserShort>(overrideUrl, max);
         }
+
+        /// <summary>
+        /// Enumerate the accounts the team is following,
+        /// doing requests page by page while enumerating.
+        /// </summary>
+        /// <param name="pageLen">
+        /// The length of a page. If not defined the default page length will be used
+        /// </param>
+        public IEnumerable<UserShort> EnumerateFollowing(int? pageLen = null)
+        {
+            var overrideUrl = _baseUrl + "following/";
+            return _sharpBucketV2.EnumeratePaginatedValues<UserShort>(overrideUrl, pageLen: pageLen);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate the accounts the team is following,
+        /// doing requests page by page while enumerating.
+        /// </summary>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public IAsyncEnumerable<UserShort> EnumerateFollowingAsync(CancellationToken token = default)
+            => EnumerateFollowingAsync(null, token);
+
+        /// <summary>
+        /// Enumerate the accounts the team is following,
+        /// doing requests page by page while enumerating.
+        /// </summary>
+        /// <param name="pageLen">
+        /// The length of a page. If not defined the default page length will be used
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public IAsyncEnumerable<UserShort> EnumerateFollowingAsync(int? pageLen, CancellationToken token = default)
+        {
+            var overrideUrl = _baseUrl + "following/";
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, null, pageLen, token);
+        }
+#endif
 
         /// <summary>
         /// List of repositories associated to the team.

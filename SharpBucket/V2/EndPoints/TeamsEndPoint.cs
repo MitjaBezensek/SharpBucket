@@ -11,24 +11,9 @@ namespace SharpBucket.V2.EndPoints
     /// </summary>
     public class TeamsEndPoint : EndPoint
     {
-        private readonly TeamResource _teamResource;
-
         public TeamsEndPoint(ISharpBucketRequesterV2 sharpBucketV2)
             : base(sharpBucketV2, "teams/")
         {
-        }
-
-        [Obsolete("Use TeamResource class to manipulate a team")]
-        public TeamsEndPoint(ISharpBucketRequesterV2 sharpBucketV2, string teamName)
-            : this(sharpBucketV2)
-        {
-            // initially when teamName was null there where no check in the constructor
-            // which means that only the methods that need it will fails and methods that doesn't works
-            // this test is here to reproduce that legacy behaviour until we delete the obsolete code
-            if (!string.IsNullOrEmpty(teamName))
-            {
-                _teamResource = new TeamResource(sharpBucketV2, teamName);
-            }
         }
 
         /// <summary>
@@ -65,67 +50,6 @@ namespace SharpBucket.V2.EndPoints
         public TeamResource TeamResource(string teamName)
         {
             return new TeamResource(this._sharpBucketV2, teamName);
-        }
-
-        /// <summary>
-        /// Gets the public information associated with a team. 
-        /// If the team's profile is private, the caller must be authenticated and authorized to view this information. 
-        /// </summary>
-        /// <returns></returns>
-        [Obsolete("Use TeamResource.GetProfile() instead")]
-        public Team GetProfile()
-        {
-            if (_teamResource == null) throw new InvalidOperationException("This method could be used only with obsolete constructor, when a team name has been provided");
-            return _teamResource.GetProfile();
-        }
-
-        /// <summary>
-        /// Gets the team's members.
-        /// </summary>
-        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
-        /// <returns></returns>
-        [Obsolete("Use TeamResource.ListMembers() instead")]
-        public List<Team> ListMembers(int max = 0)
-        {
-            if (_teamResource == null) throw new InvalidOperationException("This method could be used only with obsolete constructor, when a team name has been provided");
-            return _teamResource.ListMembers(max);
-        }
-
-        /// <summary>
-        /// Gets the list of accounts following the team.
-        /// </summary>
-        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
-        /// <returns></returns>
-        [Obsolete("Use TeamResource.ListFollowers() instead")]
-        public List<Team> ListFollowers(int max = 0)
-        {
-            if (_teamResource == null) throw new InvalidOperationException("This method could be used only with obsolete constructor, when a team name has been provided");
-            return _teamResource.ListFollowers(max);
-        }
-
-        /// <summary>
-        /// Gets a list of accounts the team is following.
-        /// </summary>
-        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
-        /// <returns></returns>
-        [Obsolete("Use TeamResource.ListFollowing() instead")]
-        public List<Team> ListFollowing(int max = 0)
-        {
-            if (_teamResource == null) throw new InvalidOperationException("This method could be used only with obsolete constructor, when a team name has been provided");
-            return _teamResource.ListFollowing(max);
-        }
-
-        /// <summary>
-        /// Gets the list of the team's repositories. 
-        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
-        /// </summary>
-        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
-        /// <returns></returns>
-        [Obsolete("Use TeamResource.ListRepositories() instead")]
-        public List<Repository> ListRepositories(int max = 0)
-        {
-            if (_teamResource == null) throw new InvalidOperationException("This method could be used only with obsolete constructor, when a team name has been provided");
-            return _teamResource.ListRepositories(new ListParameters { Max = max });
         }
     }
 }

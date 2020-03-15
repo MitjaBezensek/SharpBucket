@@ -32,17 +32,6 @@ namespace SharpBucket.V2
         }
 
         /// <summary>
-        /// Get the Teams End Point for a specific team.
-        /// </summary>
-        /// <param name="teamName">The team whose team End Point you wish to get.</param>
-        /// <returns></returns>
-        [Obsolete("Use TeamsEndPoint().TeamResource(teamName) instead")]
-        public TeamsEndPoint TeamsEndPoint(string teamName)
-        {
-            return new TeamsEndPoint(this, teamName);
-        }
-
-        /// <summary>
         /// Get the Repositories end point.
         /// Give access to the data relative to the public repositories and private repositories of the logged in user.
         /// </summary>
