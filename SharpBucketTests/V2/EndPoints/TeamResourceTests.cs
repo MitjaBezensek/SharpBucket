@@ -114,10 +114,44 @@ namespace SharpBucketTests.V2.EndPoints
                 projects.Any(r => r.name == project.name).ShouldBe(true);
                 projects.Select(p => p.ShouldBeFilled())
                     .Any(r => r.name == project.name).ShouldBe(true);
+
+                // also quickly check other sync methods here to avoid to create and delete to much projects
+                projects = teamResource.ListProjects(new ListParameters { Filter = "name ~ \"nomatchexpected\"" });
+                projects.ShouldBeEmpty();
+
+                projects = teamResource.EnumerateProjects().ToList();
+                projects.ShouldNotBeEmpty();
             }
             finally
             {
                 teamResource.ProjectResource(project.key).DeleteProject();
+            }
+        }
+
+        [Test]
+        public async Task EnumerateProjectsAsync_AfterHavingCreateOneProjectInTeam_ShouldReturnAtLestTheCreatedProject()
+        {
+            var projectKey = "Test_" + Guid.NewGuid().ToString("N"); // must start by a letter
+            var project = new Project
+            {
+                key = projectKey,
+                name = "Name of " + projectKey,
+                is_private = true,
+                description = "project created by the unit test ListProjects_AfterHavingAddAProject_ShouldReturnAtLestTheCreatedProject"
+            };
+            project = await teamResource.PostProjectAsync(project);
+
+            try
+            {
+                var projects = await teamResource.EnumerateProjectsAsync().ToListAsync();
+                projects.ShouldNotBeEmpty();
+                projects.Any(r => r.name == project.name).ShouldBe(true);
+                projects.Select(p => p.ShouldBeFilled())
+                    .Any(r => r.name == project.name).ShouldBe(true);
+            }
+            finally
+            {
+                await teamResource.ProjectResource(project.key).DeleteProjectAsync();
             }
         }
 

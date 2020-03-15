@@ -153,10 +153,58 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         public List<Project> ListProjects(int max = 0)
+            => ListProjects(new ListParameters { Max = max });
+
+        public List<Project> ListProjects(ListParameters parameters)
         {
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
             var overrideUrl = _baseUrl + "projects/";
-            return _sharpBucketV2.GetPaginatedValues<Project>(overrideUrl, max);
+            return _sharpBucketV2.GetPaginatedValues<Project>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
+
+        /// <summary>
+        /// Enumerate projects that belong to the team,
+        /// doing requests page by page while enumerating.
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/#get
+        /// </summary>
+        public IEnumerable<Project> EnumerateProjects()
+            => EnumerateProjects(new EnumerateParameters());
+
+        /// <summary>
+        /// Enumerate projects that belong to the team,
+        /// doing requests page by page while enumerating.
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/#get
+        /// </summary>
+        /// <param name="parameters">Parameters for the query.</param>
+        public IEnumerable<Project> EnumerateProjects(EnumerateParameters parameters)
+        {
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
+            var overrideUrl = _baseUrl + "projects/";
+            return _sharpBucketV2.EnumeratePaginatedValues<Project>(overrideUrl, parameters.ToDictionary(), parameters.PageLen);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate projects that belong to the team,
+        /// doing requests page by page while enumerating.
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/#get
+        /// </summary>
+        public IAsyncEnumerable<Project> EnumerateProjectsAsync(CancellationToken token = default)
+            => EnumerateProjectsAsync(new EnumerateParameters());
+
+        /// <summary>
+        /// Enumerate projects that belong to the team,
+        /// doing requests page by page while enumerating.
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/#get
+        /// </summary>
+        /// <param name="parameters">Parameters for the query.</param>
+        public IAsyncEnumerable<Project> EnumerateProjectsAsync(EnumerateParameters parameters, CancellationToken token = default)
+        {
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
+            var overrideUrl = _baseUrl + "projects/";
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Project>(overrideUrl, parameters.ToDictionary(), parameters.PageLen, token);
+        }
+#endif
 
         /// <summary>
         /// Create a new project.
