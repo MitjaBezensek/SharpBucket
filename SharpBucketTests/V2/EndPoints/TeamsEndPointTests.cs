@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using Shouldly;
@@ -40,6 +42,39 @@ namespace SharpBucketTests.V2.EndPoints
             teamsEndPoint.ShouldNotBe(null);
             var teams = teamsEndPoint.GetUserTeamsWithContributorRole();
             teams.Count.ShouldBeGreaterThan(0);
+        }
+
+        [Test]
+        public void EnumerateUserTeams_FromLoggedUser_ShouldReturnManyTeams()
+        {
+            teamsEndPoint.ShouldNotBe(null);
+            var teams = teamsEndPoint.EnumerateUserTeams();
+            teams.ShouldNotBeEmpty();
+        }
+
+        [Test]
+        public void EnumerateUserTeams_WithAdminRoleFromLoggedUser_ShouldReturnManyTeams()
+        {
+            teamsEndPoint.ShouldNotBe(null);
+            var parameters = new EnumerateTeamsParameters { Role = SharpBucket.V2.Pocos.Role.Admin };
+            var teams = teamsEndPoint.EnumerateUserTeams(parameters);
+            teams.ShouldNotBeEmpty();
+        }
+
+        [Test]
+        public void EnumerateUserTeams_WithOwnerRoleFromLoggedUser_ShouldThrowBitBucketException()
+        {
+            teamsEndPoint.ShouldNotBe(null);
+            var parameters = new EnumerateTeamsParameters { Role = SharpBucket.V2.Pocos.Role.Owner };
+            Should.Throw<BitbucketV2Exception>(() => teamsEndPoint.EnumerateUserTeams(parameters).First());
+        }
+
+        [Test]
+        public async Task EnumerateUserTeamsAsync_FromLoggedUser_ShouldReturnManyTeams()
+        {
+            teamsEndPoint.ShouldNotBe(null);
+            var teams = await teamsEndPoint.EnumerateUserTeamsAsync().ToListAsync();
+            teams.ShouldNotBeEmpty();
         }
     }
 }

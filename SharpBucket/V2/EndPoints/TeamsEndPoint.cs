@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -42,6 +43,43 @@ namespace SharpBucket.V2.EndPoints
             var parameters = new Dictionary<string, object> { { "role", "admin" } };
             return GetPaginatedValues<Team>(_baseUrl, max, parameters);
         }
+
+        /// <summary>
+        /// Enumerate all the teams that the authenticated user is associated with.
+        /// </summary>
+        public IEnumerable<Team> EnumerateUserTeams()
+            => EnumerateUserTeams(new EnumerateTeamsParameters());
+
+        /// <summary>
+        /// Enumerate all the teams that the authenticated user is associated with.
+        /// </summary>
+        /// <param name="parameters">Parameters for the query.</param>
+        public IEnumerable<Team> EnumerateUserTeams(EnumerateTeamsParameters parameters)
+        {
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
+            return _sharpBucketV2.EnumeratePaginatedValues<Team>(
+                _baseUrl, parameters.ToDictionary(), parameters.PageLen);
+        }
+
+#if CS_8
+        /// <summary>
+        /// Enumerate all the teams that the authenticated user is associated with.
+        /// </summary>
+        public IAsyncEnumerable<Team> EnumerateUserTeamsAsync(CancellationToken token = default)
+            => EnumerateUserTeamsAsync(new EnumerateTeamsParameters(), token);
+
+        /// <summary>
+        /// Enumerate all the teams that the authenticated user is associated with.
+        /// </summary>
+        /// <param name="parameters">Parameters for the query.</param>
+        public IAsyncEnumerable<Team> EnumerateUserTeamsAsync(
+            EnumerateTeamsParameters parameters, CancellationToken token = default)
+        {
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Team>(
+                _baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
+        }
+#endif
 
         /// <summary>
         /// Gets a <see cref="TeamResource"/> for a specified team.
