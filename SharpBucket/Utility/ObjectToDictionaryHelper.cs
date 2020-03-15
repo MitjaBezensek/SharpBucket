@@ -8,28 +8,24 @@ namespace SharpBucket.Utility
         // http://stackoverflow.com/questions/11576886/how-to-convert-object-to-dictionarytkey-tvalue-in-c
         public static IDictionary<string, object> ToDictionary(this object source)
         {
-            var dictionary = source as IDictionary<string, object>;
-            return dictionary ?? source.ToDictionary<object>();
-        }
+            if (source == null)
+            {
+                return null;
+            }
 
-        public static Dictionary<string, T> ToDictionary<T>(this object source)
-        {
-            if (source == null) return null;
+            if (source is IDictionary<string, object> sourceDictionary)
+            {
+                return sourceDictionary;
+            }
 
-            var dictionary = new Dictionary<string, T>();
-            foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(source)) AddPropertyToDictionary(property, source, dictionary);
+            var dictionary = new Dictionary<string, object>();
+            foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(source))
+            {
+                var value = property.GetValue(source);
+                dictionary.Add(property.Name, value);
+            }
+
             return dictionary;
-        }
-
-        private static void AddPropertyToDictionary<T>(PropertyDescriptor property, object source, Dictionary<string, T> dictionary)
-        {
-            object value = property.GetValue(source);
-            if (IsOfType<T>(value)) dictionary.Add(property.Name, (T)value);
-        }
-
-        private static bool IsOfType<T>(object value)
-        {
-            return value is T;
         }
     }
 }
