@@ -92,7 +92,7 @@ namespace SharpBucket.V2.EndPoints
         public List<Repository> ListRepositories(ListParameters parameters)
             // The /teams/{username}/repositories request redirect to the repositories/{username}/ request
             // So to improve performances we directly do the the call to the repositories endpoint
-            => _sharpBucketV2.RepositoriesEndPoint().ListRepositories(_teamName, parameters ?? new ListParameters());
+            => new RepositoriesEndPoint(_sharpBucketV2).ListRepositories(_teamName, parameters ?? new ListParameters());
 
         /// <summary>
         /// List of repositories associated to the team.
@@ -102,7 +102,7 @@ namespace SharpBucket.V2.EndPoints
         public List<Repository> ListRepositories(ListRepositoriesParameters parameters)
             // The /teams/{username}/repositories request redirect to the repositories/{username}/ request
             // So to improve performances we directly do the the call to the repositories endpoint
-            => _sharpBucketV2.RepositoriesEndPoint().ListRepositories(_teamName, parameters);
+            => new RepositoriesEndPoint(_sharpBucketV2).ListRepositories(_teamName, parameters);
 
         /// <summary>
         /// Enumerate repositories associated to the team.
@@ -117,7 +117,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="parameters">Parameters for the queries.</param>
         public IEnumerable<Repository> EnumerateRepositories(EnumerateRepositoriesParameters parameters)
-            => _sharpBucketV2.RepositoriesEndPoint().EnumerateRepositories(_teamName, parameters);
+            => new RepositoriesEndPoint(_sharpBucketV2).EnumerateRepositories(_teamName, parameters);
 
 #if CS_8
         /// <summary>
@@ -135,7 +135,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="parameters">Parameters for the queries.</param>
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public IAsyncEnumerable<Repository> EnumerateRepositoriesAsync(EnumerateRepositoriesParameters parameters, CancellationToken token = default)
-            => _sharpBucketV2.RepositoriesEndPoint().EnumerateRepositoriesAsync(_teamName, parameters, token);
+            => new RepositoriesEndPoint(_sharpBucketV2).EnumerateRepositoriesAsync(_teamName, parameters, token);
 #endif
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
         public RepositoryResource RepositoryResource(string repoSlugOrName)
         {
-            return new RepositoryResource(_teamName, repoSlugOrName, _sharpBucketV2.RepositoriesEndPoint());
+            return new RepositoryResource(_teamName, repoSlugOrName, new RepositoriesEndPoint(_sharpBucketV2));
         }
 
         /// <summary>

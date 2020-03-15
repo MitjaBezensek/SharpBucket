@@ -6,6 +6,12 @@ namespace SharpBucket
     /// Interface that expose all the methods available on the <see cref="SharpBucket"/> class.
     /// This interface should be used for mocking <see cref="SharpBucket"/>.
     /// </summary>
+    /// <remarks>
+    /// Since this interface may change in the future (typically to declare new authentication methods),
+    /// We recommend to not create wrappers in our code and limit usages to mocking senarios.
+    /// If you want to create wrappers or similar things, it's prefered to just do it over the
+    /// <see cref="ISharpBucketRequester"/> interface/ which is expected to be more stable in future developments.
+    /// </remarks>
     public interface ISharpBucket : ISharpBucketRequester
     {
         /// <summary>
