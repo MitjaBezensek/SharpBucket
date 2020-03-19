@@ -10,20 +10,32 @@ namespace SharpBucket.V2.EndPoints
     /// <summary>
     /// A "Virtual" resource that offers easier manipulation of the pull request.
     /// </summary>
-    public class PullRequestResource
+    public class PullRequestResource : EndPoint
     {
         private readonly int _pullRequestId;
         private readonly RepositoriesEndPoint _repositoriesEndPoint;
         private readonly string _slug;
         private readonly string _accountName;
 
+        private readonly Lazy<CommentsResource> _comments;
+
         public PullRequestResource(string accountName, string repoSlugOrName, int pullRequestId, RepositoriesEndPoint repositoriesEndPoint)
+            : base(
+                  repositoriesEndPoint,
+                  $"{accountName.GuidOrValue()}/{repoSlugOrName.ToSlug()}/pullrequests/{pullRequestId}")
         {
             _accountName = accountName.GuidOrValue();
             _slug = repoSlugOrName.ToSlug();
             _repositoriesEndPoint = repositoriesEndPoint;
             _pullRequestId = pullRequestId;
+
+            _comments = new Lazy<CommentsResource>(() => new CommentsResource(this));
         }
+
+        /// <summary>
+        /// Gets the <see cref="CommentResource"/> relative to this pull request.
+        /// </summary>
+        public CommentsResource Comments => _comments.Value;
 
         /// <summary>
         /// Gets the <see cref="PullRequest"/>
@@ -218,18 +230,20 @@ namespace SharpBucket.V2.EndPoints
         /// List of comments on the specified pull request. 
         /// </summary>
         /// <returns></returns>
+        [Obsolete("Prefer Comments.List()")]
         public List<Comment> ListPullRequestComments()
         {
-            return _repositoriesEndPoint.ListPullRequestComments(_accountName, _slug, _pullRequestId);
+            return Comments.List();
         }
 
         /// <summary>
         /// Enumerate the comments on the specified pull request. This returns a paginated response.
         /// </summary>
         /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
+        [Obsolete("Prefer Comments.Enumerate()")]
         public IEnumerable<Comment> EnumeratePullRequestComments(int? pageLen = null)
         {
-            return _repositoriesEndPoint.EnumeratePullRequestComments(_accountName, _slug, _pullRequestId, pageLen);
+            return Comments.Enumerate(new EnumerateParameters { PageLen = pageLen });
         }
 
 #if CS_8
@@ -237,6 +251,7 @@ namespace SharpBucket.V2.EndPoints
         /// Enumerate the comments on the specified pull request asynchronously, doing requests page by page.
         /// </summary>
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        [Obsolete("Prefer Comments.EnumerateAsync()")]
         public IAsyncEnumerable<Comment> EnumeratePullRequestCommentsAsync(CancellationToken token = default)
             => EnumeratePullRequestCommentsAsync(null, token);
 
@@ -245,9 +260,10 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        [Obsolete("Prefer Comments.EnumerateAsync(EnumerateParameters)")]
         public IAsyncEnumerable<Comment> EnumeratePullRequestCommentsAsync(int? pageLen, CancellationToken token = default)
         {
-            return _repositoriesEndPoint.EnumeratePullRequestCommentsAsync(_accountName, _slug, _pullRequestId, pageLen, token);
+            return Comments.EnumerateAsync(new EnumerateParameters { PageLen = pageLen }, token);
         }
 #endif
 
@@ -255,9 +271,10 @@ namespace SharpBucket.V2.EndPoints
         /// Gets an individual comment on an request. Private repositories require authorization with an account that has appropriate access.
         /// </summary>
         /// <param name="commentId">The comment identifier.</param>
+        [Obsolete("Prefer Comments.Comment(commentId).Get()")]
         public Comment GetPullRequestComment(int commentId)
         {
-            return _repositoriesEndPoint.GetPullRequestComment(_accountName, _slug, _pullRequestId, commentId);
+            return Comments.Comment(commentId).Get();
         }
 
         /// <summary>
@@ -265,19 +282,22 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="commentId">The comment identifier.</param>
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async Task<Comment> GetPullRequestCommentAsync(int commentId, CancellationToken token = default)
+        [Obsolete("Prefer Comments.Comment(commentId).GetAsync()")]
+        public Task<Comment> GetPullRequestCommentAsync(int commentId, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetPullRequestCommentAsync(_accountName, _slug, _pullRequestId, commentId, token);
+            return Comments.Comment(commentId).GetAsync(token);
         }
 
+        [Obsolete("Prefer Comments.Post(comment)")]
         public Comment PostPullRequestComment(Comment comment)
         {
-            return _repositoriesEndPoint.PostPullRequestComment(_accountName, _slug, _pullRequestId, comment);
+            return Comments.Post(comment);
         }
 
-        public async Task<Comment> PostPullRequestCommentAsync(Comment comment, CancellationToken token = default)
+        [Obsolete("Prefer Comments.PostAsync(comment)")]
+        public Task<Comment> PostPullRequestCommentAsync(Comment comment, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.PostPullRequestCommentAsync(_accountName, _slug, _pullRequestId, comment, token);
+            return Comments.PostAsync(comment, token);
         }
     }
 }

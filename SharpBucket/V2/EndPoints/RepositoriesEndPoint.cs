@@ -432,50 +432,6 @@ namespace SharpBucket.V2.EndPoints
             return await _sharpBucketV2.PostAsync<PullRequest>(null, overrideUrl, token);
         }
 
-        internal List<Comment> ListPullRequestComments(string accountName, string slug, int pullRequestId, int max = 0)
-        {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/");
-            return GetPaginatedValues<Comment>(overrideUrl, max);
-        }
-
-        internal IEnumerable<Comment> EnumeratePullRequestComments(string accountName, string slug, int pullRequestId, int? pageLen)
-        {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/");
-            return _sharpBucketV2.EnumeratePaginatedValues<Comment>(overrideUrl, null, pageLen);
-        }
-
-#if CS_8
-        internal IAsyncEnumerable<Comment> EnumeratePullRequestCommentsAsync(string accountName, string slug, int pullRequestId, int? pageLen, CancellationToken token)
-        {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/");
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Comment>(overrideUrl, null, pageLen, token);
-        }
-#endif
-
-        internal Comment GetPullRequestComment(string accountName, string slug, int pullRequestId, int commentId)
-        {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/{commentId}/");
-            return _sharpBucketV2.Get<Comment>(overrideUrl);
-        }
-
-        internal async Task<Comment> GetPullRequestCommentAsync(string accountName, string slug, int pullRequestId, int commentId, CancellationToken token)
-        {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/{commentId}/");
-            return await _sharpBucketV2.GetAsync<Comment>(overrideUrl, token);
-        }
-
-        internal Comment PostPullRequestComment(string accountName, string slug, int pullRequestId, Comment comment)
-        {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/");
-            return _sharpBucketV2.Post(comment, overrideUrl);
-        }
-
-        internal async Task<Comment> PostPullRequestCommentAsync(string accountName, string slug, int pullRequestId, Comment comment, CancellationToken token)
-        {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, $"pullrequests/{pullRequestId}/comments/");
-            return await _sharpBucketV2.PostAsync(comment, overrideUrl, token);
-        }
-
         #endregion
 
         #region Branch Restrictions resource
@@ -639,24 +595,6 @@ namespace SharpBucket.V2.EndPoints
         {
             var overrideUrl = GetRepositoryUrl(accountName, slug, $"commit/{revision}");
             return await _sharpBucketV2.GetAsync<Commit>(overrideUrl, token: token);
-        }
-
-        internal List<Comment> ListCommitComments(string accountName, string slug, string revision, int max = 0)
-        {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commits/{revision}/comments/");
-            return GetPaginatedValues<Comment>(overrideUrl, max);
-        }
-
-        internal Comment GetCommitComment(string accountName, string slug, string revision, int commentId)
-        {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commits/{revision}/comments/{revision}/{commentId}/");
-            return _sharpBucketV2.Get<Comment>(overrideUrl);
-        }
-
-        internal async Task<Comment> GetCommitCommentAsync(string accountName, string slug, string revision, int commentId, CancellationToken token)
-        {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, $"commits/{revision}/comments/{revision}/{commentId}/");
-            return await _sharpBucketV2.GetAsync<Comment>(overrideUrl, token: token);
         }
 
         internal UserRole ApproveCommit(string accountName, string slug, string revision)

@@ -15,7 +15,7 @@ namespace SharpBucket.V2.EndPoints
     /// More info:
     /// https://confluence.atlassian.com/display/BITBUCKET/repository+Resource
     /// </summary>
-    public class RepositoryResource
+    public class RepositoryResource : EndPoint
     {
         private readonly RepositoriesEndPoint _repositoriesEndPoint;
         private readonly string _accountName;
@@ -24,6 +24,7 @@ namespace SharpBucket.V2.EndPoints
         #region Repository Resource
 
         public RepositoryResource(string accountName, string repoSlugOrName, RepositoriesEndPoint repositoriesEndPoint)
+            : base(repositoriesEndPoint, $"{accountName.GuidOrValue()}/{repoSlugOrName.ToSlug()}/")
         {
             _slug = repoSlugOrName.ToSlug();
             _accountName = accountName.GuidOrValue();
@@ -541,6 +542,11 @@ namespace SharpBucket.V2.EndPoints
         }
 #endif
 
+        public CommitResource Commit(string revision)
+        {
+            return new CommitResource(this, revision);
+        }
+
         /// <summary>
         /// Gets the information associated with an individual commit. 
         /// </summary>
@@ -567,9 +573,10 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="revision">The SHA1 of the commit.</param>
         /// <returns></returns>
+        [Obsolete("Prefer Commit(revision).Comments.List() or any other listing method in Commit(revision).Comments")]
         public List<Comment> ListCommitComments(string revision)
         {
-            return _repositoriesEndPoint.ListCommitComments(_accountName, _slug, revision);
+            return Commit(revision).Comments.List();
         }
 
         /// <summary>
@@ -577,10 +584,10 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="revision">The SHA1 of the commit.</param>
         /// <param name="commentId">The comment identifier.</param>
-        /// <returns></returns>
+        [Obsolete("Prefer Commit(revision).Comments.Comment(commentId).Get()")]
         public Comment GetCommitComment(string revision, int commentId)
         {
-            return _repositoriesEndPoint.GetCommitComment(_accountName, _slug, revision, commentId);
+            return Commit(revision).Comments.Comment(commentId).Get();
         }
 
         /// <summary>
@@ -589,10 +596,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision">The SHA1 of the commit.</param>
         /// <param name="commentId">The comment identifier.</param>
         /// <param name="token">The cancellation token</param>
-        /// <returns></returns>
-        public async Task<Comment> GetCommitCommentAsync(string revision, int commentId, CancellationToken token = default)
+        [Obsolete("Prefer Commit(revision).Comments.Comment(commentId).GetAsync(token)")]
+        public Task<Comment> GetCommitCommentAsync(string revision, int commentId, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetCommitCommentAsync(_accountName, _slug, revision, commentId, token);
+            return Commit(revision).Comments.Comment(commentId).GetAsync(token);
         }
 
         /// <summary>
