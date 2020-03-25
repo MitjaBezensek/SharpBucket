@@ -1,4 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System.Net;
+using System.Threading.Tasks;
+using NUnit.Framework;
+using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
 using SharpBucketTests.V2.Pocos;
@@ -9,6 +12,17 @@ namespace SharpBucketTests.V2.EndPoints
     [TestFixture]
     public class CommentResourceTests
     {
+        private PullRequestResource ExistingPullRequest { get; set; }
+
+        [OneTimeSetUp]
+        protected void Init()
+        {
+            // pull request number 2 on MercurialRepository is public and declined
+            // so we could expect that it will be always accessible and won't change
+            // which is what we need to have reproducible tests
+            ExistingPullRequest = SampleRepositories.MercurialRepository.PullRequestsResource().PullRequestResource(2);
+        }
+
         [Test]
         public void PostGetPutAndDeleteACommentOnACommit()
         {
@@ -68,6 +82,64 @@ namespace SharpBucketTests.V2.EndPoints
             inlineComment.ShouldBeFilled().And().ShouldBeAnInlineComment();
 
             PostAReplyOnAComment(commentsResource, inlineComment);
+        }
+
+        [Test]
+        public void Get_ExistingCommentOnAPublicPullRequest_ReturnValidInfo()
+        {
+            var comment = ExistingPullRequest.Comments.Comment(53789).Get();
+            comment.ShouldBeFilled();
+            comment.content.raw.ShouldBe("This repo is not used for development, it's just a mirror (and I am just an infrequent contributor). Please consult http://mercurial.selenic.com/wiki/ContributingChanges and send your patch to ``mercurial-devel`` ML.");
+        }
+
+        [Test]
+        public async Task GetAsync_ExistingCommentOnAPublicPullRequest_ReturnValidInfo()
+        {
+            var comment = await ExistingPullRequest.Comments.Comment(53789).GetAsync();
+            comment.ShouldBeFilled();
+            comment.content.raw.ShouldBe("This repo is not used for development, it's just a mirror (and I am just an infrequent contributor). Please consult http://mercurial.selenic.com/wiki/ContributingChanges and send your patch to ``mercurial-devel`` ML.");
+        }
+
+        [Test]
+        public void Get_ExistingReplyCommentOnAPublicPullRequest_ReturnValidInfo()
+        {
+            var comment = SampleRepositories.RepositoriesEndPoint
+                .PullRequestsResource("tortoisehg", "thg")
+                .PullRequestResource(46)
+                .Comments
+                .Comment(61843122)
+                .Get();
+            comment.ShouldBeFilled();
+            comment.parent.ShouldBeFilled();
+        }
+
+        [Test]
+        public async Task GetAsync_ExistingReplyCommentOnAPublicPullRequest_ReturnValidInfo()
+        {
+            var comment = await SampleRepositories.RepositoriesEndPoint
+                .PullRequestsResource("tortoisehg", "thg")
+                .PullRequestResource(46)
+                .Comments
+                .Comment(61843122)
+                .GetAsync();
+            comment.ShouldBeFilled();
+            comment.parent.ShouldBeFilled();
+        }
+
+        [Test]
+        public void Get_NotExistingCommentOnPublicPullRequest_ThrowException()
+        {
+            var exception = Assert.Throws<BitbucketV2Exception>(
+                () => ExistingPullRequest.Comments.Comment(int.MaxValue).Get());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+        }
+
+        [Test]
+        public void GetAsync_NotExistingCommentOnPublicPullRequest_ThrowException()
+        {
+            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(
+                async () => await ExistingPullRequest.Comments.Comment(int.MaxValue).GetAsync());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
     }
 }

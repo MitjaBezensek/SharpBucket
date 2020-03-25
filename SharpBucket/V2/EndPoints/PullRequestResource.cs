@@ -237,37 +237,6 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// Enumerate the comments on the specified pull request. This returns a paginated response.
-        /// </summary>
-        /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
-        [Obsolete("Prefer Comments.Enumerate()")]
-        public IEnumerable<Comment> EnumeratePullRequestComments(int? pageLen = null)
-        {
-            return Comments.Enumerate(new EnumerateParameters { PageLen = pageLen });
-        }
-
-#if CS_8
-        /// <summary>
-        /// Enumerate the comments on the specified pull request asynchronously, doing requests page by page.
-        /// </summary>
-        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        [Obsolete("Prefer Comments.EnumerateAsync()")]
-        public IAsyncEnumerable<Comment> EnumeratePullRequestCommentsAsync(CancellationToken token = default)
-            => EnumeratePullRequestCommentsAsync(null, token);
-
-        /// <summary>
-        /// Enumerate the comments on the specified pull request asynchronously, doing requests page by page.
-        /// </summary>
-        /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
-        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        [Obsolete("Prefer Comments.EnumerateAsync(EnumerateParameters)")]
-        public IAsyncEnumerable<Comment> EnumeratePullRequestCommentsAsync(int? pageLen, CancellationToken token = default)
-        {
-            return Comments.EnumerateAsync(new EnumerateParameters { PageLen = pageLen }, token);
-        }
-#endif
-
-        /// <summary>
         /// Gets an individual comment on an request. Private repositories require authorization with an account that has appropriate access.
         /// </summary>
         /// <param name="commentId">The comment identifier.</param>
@@ -277,27 +246,10 @@ namespace SharpBucket.V2.EndPoints
             return Comments.Comment(commentId).Get();
         }
 
-        /// <summary>
-        /// Gets an individual comment on an request. Private repositories require authorization with an account that has appropriate access.
-        /// </summary>
-        /// <param name="commentId">The comment identifier.</param>
-        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        [Obsolete("Prefer Comments.Comment(commentId).GetAsync()")]
-        public Task<Comment> GetPullRequestCommentAsync(int commentId, CancellationToken token = default)
-        {
-            return Comments.Comment(commentId).GetAsync(token);
-        }
-
         [Obsolete("Prefer Comments.Post(comment)")]
         public Comment PostPullRequestComment(Comment comment)
         {
             return Comments.Post(comment);
-        }
-
-        [Obsolete("Prefer Comments.PostAsync(comment)")]
-        public Task<Comment> PostPullRequestCommentAsync(Comment comment, CancellationToken token = default)
-        {
-            return Comments.PostAsync(comment, token);
         }
     }
 }
