@@ -99,12 +99,35 @@ namespace SharpBucket.V2.EndPoints
         /// Add the specified comment.
         /// </summary>
         /// <param name="raw">The raw texte of the comment.</param>
+        public Comment Post(string raw)
+        {
+            var comment = BuildNewComment(raw, null, null);
+            return Post(comment);
+        }
+
+        /// <summary>
+        /// Add the specified comment.
+        /// </summary>
+        /// <param name="raw">The raw texte of the comment.</param>
         /// <param name="parentCommentId">
         /// The id of the parent comment if this comment is a reply to an existing comment.
         /// </param>
         public Comment Post(string raw, int? parentCommentId = null)
         {
-            var comment = BuildNewComment(raw, parentCommentId);
+            var comment = BuildNewComment(raw, parentCommentId, null);
+            return Post(comment);
+        }
+
+        /// <summary>
+        /// Add the specified comment.
+        /// </summary>
+        /// <param name="raw">The raw texte of the comment.</param>
+        /// <param name="location">
+        /// The location of that comment if it's an inline comment.
+        /// </param>
+        public Comment Post(string raw, Location location)
+        {
+            var comment = BuildNewComment(raw, null, location);
             return Post(comment);
         }
 
@@ -123,7 +146,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="raw">The raw texte of the comment.</param>
         /// <param name="token">The cancellation token</param>
         public Task<Comment> PostAsync(string raw, CancellationToken token = default)
-            => PostAsync(raw, null, token);
+        {
+            var comment = BuildNewComment(raw, null, null);
+            return PostAsync(comment, token);
+        }
 
         /// <summary>
         /// Add the specified comment.
@@ -135,7 +161,21 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">The cancellation token</param>
         public Task<Comment> PostAsync(string raw, int? parentCommentId, CancellationToken token = default)
         {
-            var comment = BuildNewComment(raw, parentCommentId);
+            var comment = BuildNewComment(raw, parentCommentId, null);
+            return PostAsync(comment, token);
+        }
+
+        /// <summary>
+        /// Add the specified comment.
+        /// </summary>
+        /// <param name="raw">The raw texte of the comment.</param>
+        /// <param name="location">
+        /// The location of that comment if it's an inline comment.
+        /// </param>
+        /// <param name="token">The cancellation token</param>
+        public Task<Comment> PostAsync(string raw, Location location, CancellationToken token = default)
+        {
+            var comment = BuildNewComment(raw, null, location);
             return PostAsync(comment, token);
         }
 
@@ -148,7 +188,7 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.PostAsync(comment, _baseUrl, token);
         }
 
-        private Comment BuildNewComment(string raw, int? parentCommentId)
+        private Comment BuildNewComment(string raw, int? parentCommentId, Location location)
         {
             var comment = new Comment
             {
@@ -157,6 +197,10 @@ namespace SharpBucket.V2.EndPoints
             if (parentCommentId != null)
             {
                 comment.parent = new CommentInfo { id = parentCommentId };
+            }
+            if (location != null)
+            {
+                comment.inline = location;
             }
             return comment;
         }
