@@ -38,7 +38,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public Comment Put(Comment comment)
         {
-            return _sharpBucketV2.Put(comment, _baseUrl);
+            return _sharpBucketV2.Put(BuildPutComment(comment), _baseUrl);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">The cancellation token</param>
         public Task<Comment> PutAsync(Comment comment, CancellationToken token = default)
         {
-            return _sharpBucketV2.PutAsync(comment, _baseUrl, token);
+            return _sharpBucketV2.PutAsync(BuildPutComment(comment), _baseUrl, token);
         }
 
         /// <summary>
@@ -65,6 +65,23 @@ namespace SharpBucket.V2.EndPoints
         public Task DeleteAsync(CancellationToken token = default)
         {
             return _sharpBucketV2.DeleteAsync(_baseUrl, token);
+        }
+
+        private Comment BuildPutComment(Comment comment)
+        {
+            return new Comment
+            {
+                content = new Rendered
+                {
+                    raw = comment.content.raw
+                },
+                parent = comment.parent != null
+                    ? new CommentInfo
+                      {
+                           id = comment.parent.id
+                      }
+                    : null
+            };
         }
     }
 }
