@@ -803,10 +803,22 @@ namespace SharpBucket.V2.EndPoints
         private TagsResource _tagsResource;
 
         /// <summary>
-        /// Gets the reqource that allow to manage tags for this repository.
+        /// Gets the resource that allow to manage tags for this repository.
         /// </summary>
         public TagsResource TagsResource => this._tagsResource ??
                                                 (_tagsResource = new TagsResource(_accountName, _slug, _repositoriesEndPoint));
+
+        #endregion
+
+        #region Issues Resource
+
+        /// <summary>
+        /// Gets the resource that allow to manage issues for this repository.
+        /// </summary>
+        public IssuesResource IssuesResource()
+        {
+            return new IssuesResource(_accountName, _slug, _repositoriesEndPoint);
+        }
 
         #endregion
     }
