@@ -5,7 +5,7 @@ namespace SharpBucket.V2.Pocos
     public class PullRequest
     {
         public string description { get; set; }
-        public Links links { get; set; }
+        public PullRequestLinks links { get; set; }
         public User author { get; set; }
         public bool? close_source_branch { get; set; }
         public string title { get; set; }
