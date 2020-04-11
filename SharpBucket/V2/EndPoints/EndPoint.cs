@@ -3,15 +3,45 @@ using System.Collections.Generic;
 
 namespace SharpBucket.V2.EndPoints
 {
-    public class EndPoint
+    /// <summary>
+    /// Base class for endpoints and resources.
+    /// </summary>
+    /// <remarks>
+    /// EndPoint classes are just like Resources classes.
+    /// The only difference is that they are at the root of the bitbucket API.
+    /// </remarks>
+    public abstract class EndPoint
     {
+        /// <summary>
+        /// The requester used to create this <see cref="EndPoint"/>
+        /// </summary>
         protected readonly ISharpBucketRequesterV2 _sharpBucketV2;
+
+        /// <summary>
+        /// the base url of this end point.
+        /// It's a relative URL from the base url of the <see cref="ISharpBucketRequesterV2"/>.
+        /// It is formatted wihtout any slash at the begining, and with a trailing slash at the end.
+        /// </summary>
         protected readonly string _baseUrl;
 
-        public EndPoint(ISharpBucketRequesterV2 sharpBucketV2, string resourcePath)
+        /// <summary>
+        /// Initializes a new instance of <see cref="EndPoint"/> from scratch.
+        /// This is the constructor to use for EndPoint classes.
+        /// </summary>
+        protected EndPoint(ISharpBucketRequesterV2 sharpBucketV2, string resourcePath)
         {
             _sharpBucketV2 = sharpBucketV2;
-            _baseUrl = resourcePath;
+            _baseUrl = resourcePath.Trim('/') + "/";
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="EndPoint"/> from a parent <see cref="EndPoint"/>.
+        /// This is the constructor to use for Resources classes.
+        /// </summary>
+        protected EndPoint(EndPoint parentEndPoint, string resourcePathFromParent)
+        {
+            _sharpBucketV2 = parentEndPoint._sharpBucketV2;
+            _baseUrl = parentEndPoint._baseUrl + resourcePathFromParent.Trim('/') + "/";
         }
 
         /// <summary>
