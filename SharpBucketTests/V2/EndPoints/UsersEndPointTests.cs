@@ -12,13 +12,12 @@ namespace SharpBucketTests.V2.EndPoints
     {
         private SharpBucketV2 sharpBucket;
         private UsersEndpoint usersEndPoint;
-        private const string ACCOUNT_NAME = "mirror";
 
         [SetUp]
         public void Init()
         {
             sharpBucket = TestHelpers.SharpBucketV2;
-            usersEndPoint = sharpBucket.UsersEndPoint(ACCOUNT_NAME);
+            usersEndPoint = sharpBucket.UsersEndPoint(SampleRepositories.MERCURIAL_ACCOUNT_UUID);
         }
 
         [Test]

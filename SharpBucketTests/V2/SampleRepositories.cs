@@ -9,6 +9,7 @@ namespace SharpBucketTests.V2
     public class SampleRepositories
     {
         public const string MERCURIAL_ACCOUNT_NAME = "mirror";
+        public const string MERCURIAL_ACCOUNT_UUID = "{71b06a8f-295c-43f4-a1c0-f3a0dc6a9ff0}";
 
         public const string MERCURIAL_REPOSITORY_NAME = "mercurial";
 
