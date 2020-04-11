@@ -188,12 +188,12 @@ namespace SharpBucket.V2.EndPoints
         /// or reviewers associated with a pull request. You can also accept or decline a pull request with this resource. 
         /// Finally, you can use this resource to manage the comments on a pull request as well.
         /// More info:
-        /// https://confluence.atlassian.com/display/BITBUCKET/pullrequests+Resource
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/pullrequests
         /// </summary>
         /// <returns></returns>
         public PullRequestsResource PullRequestsResource()
         {
-            return new PullRequestsResource(_accountName, _slug, _repositoriesEndPoint);
+            return new PullRequestsResource(this);
         }
 
         #endregion

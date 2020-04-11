@@ -183,7 +183,8 @@ namespace SharpBucketTests.V2.EndPoints
         public void GetPullRequestComment_ExistingReplyCommentOnAPublicPullRequest_ReturnValidInfo()
         {
             var comment = SampleRepositories.RepositoriesEndPoint
-                .PullRequestsResource("tortoisehg", "thg")
+                .RepositoryResource("tortoisehg", "thg")
+                .PullRequestsResource()
                 .PullRequestResource(46)
                 .GetPullRequestComment(61843122);
             comment.ShouldBeFilled();
@@ -194,7 +195,8 @@ namespace SharpBucketTests.V2.EndPoints
         public async Task GetPullRequestCommentAsync_ExistingReplyCommentOnAPublicPullRequest_ReturnValidInfo()
         {
             var comment = await SampleRepositories.RepositoriesEndPoint
-                .PullRequestsResource("tortoisehg", "thg")
+                .RepositoryResource("tortoisehg", "thg")
+                .PullRequestsResource()
                 .PullRequestResource(46)
                 .GetPullRequestCommentAsync(61843122);
             comment.ShouldBeFilled();
