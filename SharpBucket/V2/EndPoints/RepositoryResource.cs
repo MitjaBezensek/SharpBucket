@@ -868,7 +868,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public IssuesResource IssuesResource()
         {
-            return new IssuesResource(_accountName, _slug, _repositoriesEndPoint);
+            return new IssuesResource(this);
         }
 
         #endregion

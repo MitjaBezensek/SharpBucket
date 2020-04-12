@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -12,19 +7,11 @@ namespace SharpBucket.V2.EndPoints
     /// <summary>
     /// A "Virtual" resource that offers easier manipulation of the issue.
     /// </summary>
-    public class IssueResource
+    public class IssueResource : EndPoint
     {
-        private readonly int _issueId;
-        private readonly string _slug;
-        private readonly string _accountName;
-        private readonly RepositoriesEndPoint _repositoriesEndPoint;
-
-        public IssueResource(string accountName, string repoSlugOrName, int pullRequestId, RepositoriesEndPoint repositoriesEndPoint)
+        internal IssueResource(IssuesResource issueResource, int issueId)
+            : base(issueResource, issueId.ToString())
         {
-            _issueId = pullRequestId;
-            _slug = repoSlugOrName.ToSlug();
-            _accountName = accountName.GuidOrValue();
-            _repositoriesEndPoint = repositoriesEndPoint;
         }
 
         /// <summary>
@@ -32,16 +19,16 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public Issue GetIssue()
         {
-            return _repositoriesEndPoint.GetIssue(_accountName, _slug, _issueId);
+            return _sharpBucketV2.Get<Issue>(_baseUrl);
         }
 
         /// <summary>
         /// Gets the <see cref="Issue"/>
         /// </summary>
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async Task<Issue> GetIssueAsync(CancellationToken token = default)
+        public Task<Issue> GetIssueAsync(CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetIssueAsync(_accountName, _slug, _issueId, token);
+            return _sharpBucketV2.GetAsync<Issue>(_baseUrl, token);
         }
     }
 }

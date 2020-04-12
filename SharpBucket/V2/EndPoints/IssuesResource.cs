@@ -1,24 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
 {
-    public class IssuesResource
+    public class IssuesResource : EndPoint
     {
-        private readonly string _slug;
-        private readonly string _accountName;
-        private readonly RepositoriesEndPoint _repositoriesEndPoint;
-
-        public IssuesResource(string accountName, string repoSlugOrName, RepositoriesEndPoint repositoriesEndPoint)
+        public IssuesResource(RepositoryResource repositoryResource)
+            : base(repositoryResource, "issues")
         {
-            _accountName = accountName.GuidOrValue();
-            _slug = repoSlugOrName.ToSlug();
-            _repositoriesEndPoint = repositoriesEndPoint;
         }
 
         /// <summary>
@@ -36,7 +26,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _repositoriesEndPoint.ListIssues(_accountName, _slug, parameters);
+            return GetPaginatedValues<Issue>(_baseUrl, parameters.Max, parameters.ToDictionary());
         }
 
         /// <summary>
@@ -53,7 +43,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _repositoriesEndPoint.EnumerateIssues(_accountName, _slug, parameters);
+            return _sharpBucketV2.EnumeratePaginatedValues<Issue>(_baseUrl, parameters.ToDictionary(), parameters.PageLen);
         }
 
         #region Issue Resource
@@ -65,7 +55,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public IssueResource IssueResource(int issueId)
         {
-            return new IssueResource(_accountName, _slug, issueId, _repositoriesEndPoint);
+            return new IssueResource(this, issueId);
         }
 
         #endregion

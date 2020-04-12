@@ -185,33 +185,5 @@ namespace SharpBucket.V2.EndPoints
         }
 
         #endregion
-
-        #region Issues Resource
-
-        internal List<Issue> ListIssues(string accountName, string slug, ListParameters parameters)
-        {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, "issues/");
-            return GetPaginatedValues<Issue>(overrideUrl, parameters.Max, parameters.ToDictionary());
-        }
-
-        internal IEnumerable<Issue> EnumerateIssues(string accountName, string slug, EnumerateParameters parameters)
-        {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, "issues/");
-            return _sharpBucketV2.EnumeratePaginatedValues<Issue>(overrideUrl, parameters.ToDictionary(), parameters.PageLen);
-        }
-
-        internal Issue GetIssue(string accountName, string slug, int issueId)
-        {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, $"issues/{issueId}/");
-            return _sharpBucketV2.Get<Issue>(overrideUrl);
-        }
-
-        internal async Task<Issue> GetIssueAsync(string accountName, string slug, int issueId, CancellationToken token)
-        {
-            var overrideUrl = GetRepositoryUrl(accountName, slug, $"issues/{issueId}/");
-            return await _sharpBucketV2.GetAsync<Issue>(overrideUrl, token);
-        }
-
-        #endregion
     }
 }
