@@ -18,7 +18,6 @@ namespace SharpBucket.V2.EndPoints
     /// </summary>
     public class RepositoryResource : EndPoint
     {
-        private readonly RepositoriesEndPoint _repositoriesEndPoint;
         private readonly string _accountName;
         private readonly string _slug;
 
@@ -29,7 +28,6 @@ namespace SharpBucket.V2.EndPoints
         {
             _slug = repoSlugOrName.ToSlug();
             _accountName = accountName.GuidOrValue();
-            _repositoriesEndPoint = repositoriesEndPoint;
         }
 
         /// <summary>
@@ -840,7 +838,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="path">An optional path to a sub directory if you want to start to browse somewhere else that at the root path.</param>
         public SrcResource SrcResource(string revision = null, string path = null)
         {
-            return new SrcResource(_repositoriesEndPoint, _accountName, _slug, revision, path);
+            return new SrcResource(this, revision, path);
         }
 
         #endregion
@@ -853,7 +851,7 @@ namespace SharpBucket.V2.EndPoints
         /// Gets the reqource that allow to manage tags for this repository.
         /// </summary>
         public TagsResource TagsResource => this._tagsResource ??
-                                                (_tagsResource = new TagsResource(_accountName, _slug, _repositoriesEndPoint));
+                                                (_tagsResource = new TagsResource(this));
 
         #endregion
     }
