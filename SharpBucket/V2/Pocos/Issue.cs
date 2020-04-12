@@ -10,11 +10,11 @@ namespace SharpBucket.V2.Pocos
 
         public IssueKind kind { get; set; }
 
-        public Repository repository { get; set; }
+        public RepositoryInfo repository { get; set; }
 
         public IssueLinks links { get; set; }
 
-        public User reporter { get; set; }
+        public UserShort reporter { get; set; }
 
         public string title { get; set; }
 
@@ -26,7 +26,7 @@ namespace SharpBucket.V2.Pocos
 
         public Rendered content { get; set; }
 
-        public User assignee { get; set; }
+        public UserShort assignee { get; set; }
 
         public IssueStatus state { get; set; }
 

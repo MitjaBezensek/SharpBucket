@@ -21,7 +21,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void GetPullRequest_ExistingPublicIssue_ReturnValidInfo()
+        public void GetIssue_ExistingPublicIssue_ReturnValidInfo()
         {
             var issue = ExistingIssue.GetIssue();
             issue.ShouldNotBeNull();

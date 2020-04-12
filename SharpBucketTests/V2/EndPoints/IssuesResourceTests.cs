@@ -3,7 +3,6 @@ using System.Net;
 using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
-using SharpBucket.V2.Pocos;
 using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
@@ -20,7 +19,7 @@ namespace SharpBucketTests.V2.EndPoints
         {
             ExistingRepository = SampleRepositories.BotTestRepository.IssuesResource();
 
-            NotExistingRepository = SampleRepositories.BotTestRepository.IssuesResource();
+            NotExistingRepository = SampleRepositories.NotExistingRepository.IssuesResource();
         }
 
         [Test]
@@ -35,10 +34,10 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void ListIssues_ExistingPublicRepositoryWithIssue_OnlyOpen_ReturnValidInfo()
         {
-            var parameters = new ListParameters { Filter = "status=open" };
+            var parameters = new ListParameters { Filter = "state=\"open\"" };
             var issues = ExistingRepository.ListIssues(parameters);
             issues.ShouldNotBeNull();
-            issues.Count.ShouldBeGreaterThan(1, "When we don't limit to open issues we can find more!");
+            issues.Count.ShouldBe(1, "Only one open issue is known on BotTestRepository");
         }
 
         [Test]
