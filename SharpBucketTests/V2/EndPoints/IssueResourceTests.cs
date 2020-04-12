@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Net;
+using NUnit.Framework;
+using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
 using Shouldly;
@@ -29,6 +31,13 @@ namespace SharpBucketTests.V2.EndPoints
             issue.reporter?.nickname.ShouldBe("penev92");
             issue.title.ShouldBe("Some other test issue");
             issue.state.ShouldBe(IssueStatus.Resolved);
+        }
+
+        [Test]
+        public void GetIssue_NotExistingIssue_ThrowBitbucketException()
+        {
+            var exception = Should.Throw<BitbucketV2Exception>(() => NotExistingIssue.GetIssue());
+            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
     }
 }
