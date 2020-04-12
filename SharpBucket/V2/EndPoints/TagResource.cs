@@ -1,5 +1,4 @@
-﻿using SharpBucket.Utility;
-using SharpBucket.V2.Pocos;
+﻿using SharpBucket.V2.Pocos;
 using System;
 using System.Collections.Generic;
 
@@ -13,22 +12,22 @@ namespace SharpBucket.V2.EndPoints
     [Obsolete("Use TagsResource instead")]
     public class TagResource
     {
-        private readonly string _accountName;
-        private readonly string _slug;
-        private readonly RepositoriesEndPoint _repositoriesEndPoint;
+        private readonly TagsResource _tagsResource;
 
         public TagResource(string accountName, string repoSlugOrName, RepositoriesEndPoint repositoriesEndPoint)
         {
-            _accountName = accountName.GuidOrValue();
-            _slug = repoSlugOrName.ToSlug();
-            _repositoriesEndPoint = repositoriesEndPoint;
+            _tagsResource = repositoriesEndPoint
+                .RepositoriesResource(accountName)
+                .RepositoryResource(repoSlugOrName)
+                .TagsResource;
         }
 
         /// <summary>
         /// Lists all Tags associated with a specific repository.
         /// </summary>
         /// <returns></returns>
-        public List<Tag> ListTags() => ListTags(new ListParameters());
+        public List<Tag> ListTags()
+            => ListTags(new ListParameters());
 
         /// <summary>
         /// Lists all Tags associated with a specific repository.
@@ -36,10 +35,6 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="parameters">Parameters for the query.</param>
         /// <returns></returns>
         public List<Tag> ListTags(ListParameters parameters)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
-            return _repositoriesEndPoint.ListTags(_accountName, _slug, parameters);
-        }
+            => _tagsResource.ListTags(parameters);
     }
 }
