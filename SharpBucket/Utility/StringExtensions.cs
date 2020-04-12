@@ -69,5 +69,12 @@ namespace SharpBucket.Utility
             if (input[input.Length - 1] == trailingChar) return input;
             return input + trailingChar;
         }
+
+        public static string CheckIsNotNullNorEmpty(this string value, string paramName)
+        {
+            if (string.IsNullOrEmpty(value))
+                throw new ArgumentNullException(paramName);
+            return value;
+        }
     }
 }

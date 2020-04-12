@@ -87,7 +87,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="teamName">The team's username or UUID.</param>
         public TeamResource TeamResource(string teamName)
         {
-            return new TeamResource(this._sharpBucketV2, teamName);
+            return new TeamResource(this, teamName);
         }
     }
 }
