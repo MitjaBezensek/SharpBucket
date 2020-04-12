@@ -12,23 +12,24 @@ namespace SharpBucket.V2.EndPoints
     /// More info:
     /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/refs/branches
     /// </summary>
-    public class BranchResource
+    public class BranchResource : EndPoint
     {
-        private readonly string _accountName;
-        private readonly string _slug;
-        private readonly RepositoriesEndPoint _repositoriesEndPoint;
-
+        [Obsolete("Prefer repositoriesEndPoint.RepositoryResource(accountName, repoSlugOrName).BranchesResource")]
         public BranchResource(string accountName, string repoSlugOrName, RepositoriesEndPoint repositoriesEndPoint)
+            :this(repositoriesEndPoint.RepositoryResource(accountName, repoSlugOrName))
         {
-            _accountName = accountName.GuidOrValue();
-            _slug = repoSlugOrName.ToSlug();
-            _repositoriesEndPoint = repositoriesEndPoint;
+        }
+
+        internal BranchResource(RepositoryResource repositoryResource)
+            : base(repositoryResource, "refs/branches/")
+        {
         }
 
         /// <summary>
         /// Lists all branches associated with a specific repository.
         /// </summary>
-        public List<Branch> ListBranches() => ListBranches(new ListParameters());
+        public List<Branch> ListBranches()
+            => ListBranches(new ListParameters());
 
         /// <summary>
         /// Lists all branches associated with a specific repository.
@@ -38,13 +39,14 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _repositoriesEndPoint.ListBranches(_accountName, _slug, parameters);
+            return GetPaginatedValues<Branch>(_baseUrl, parameters.Max, parameters.ToDictionary());
         }
 
         /// <summary>
         /// Enumerate branches associated with a specific repository.
         /// </summary>
-        public IEnumerable<Branch> EnumerateBranches() => EnumerateBranches(new EnumerateParameters());
+        public IEnumerable<Branch> EnumerateBranches()
+            => EnumerateBranches(new EnumerateParameters());
 
         /// <summary>
         /// Enumerate branches associated with a specific repository.
@@ -54,7 +56,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _repositoriesEndPoint.EnumerateBranches(_accountName, _slug, parameters);
+            return _sharpBucketV2.EnumeratePaginatedValues<Branch>(_baseUrl, parameters.ToDictionary(), parameters.PageLen);
         }
 
 #if CS_8
@@ -74,7 +76,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _repositoriesEndPoint.EnumerateBranchesAsync(_accountName, _slug, parameters, token);
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Branch>(_baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
 
@@ -84,7 +86,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="branchName">The name of the branch to delete.</param>
         public void DeleteBranch(string branchName)
         {
-            _repositoriesEndPoint.DeleteBranch(_accountName, _slug, branchName);
+            var overrideUrl = _baseUrl + branchName;
+            _sharpBucketV2.Delete(overrideUrl);
         }
 
         /// <summary>
@@ -92,9 +95,10 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="branchName">The name of the branch to delete.</param>
         /// <param name="token">The cancellation token</param>
-        public async Task DeleteBranchAsync(string branchName, CancellationToken token = default)
+        public Task DeleteBranchAsync(string branchName, CancellationToken token = default)
         {
-            await _repositoriesEndPoint.DeleteBranchAsync(_accountName, _slug, branchName, token);
+            var overrideUrl = _baseUrl + branchName;
+            return _sharpBucketV2.DeleteAsync(overrideUrl, token);
         }
     }
 }
