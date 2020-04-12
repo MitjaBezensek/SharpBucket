@@ -402,8 +402,8 @@ The organization of all that routes may slightly differ in the SharpBucket class
   - Tested: **yes**
 - /repositories/{username}/{repo_slug}/pullrequests/activity `GET`
   - Implemented by:
-    - `PullRequestsResource.GetPullRequestLog()` v0.13.0 or earlier
-    - `PullRequestsResource.GetPullRequestsActivities(int)` v0.14.0
+    - `PullRequestsResource.GetPullRequestLog()` *v0.13.0 or earlier*
+    - `PullRequestsResource.GetPullRequestsActivities(int)` *v0.14.0*
   - Tested: **yes**
 
 ### [Pull request resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D)
