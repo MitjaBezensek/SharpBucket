@@ -20,8 +20,7 @@ namespace SharpBucket.V2.EndPoints
             base(sharpBucketV2, $"users/{accountName.GuidOrValue()}/")
         {
             _repositoriesResource = new Lazy<RepositoriesAccountResource>(
-                () => new RepositoriesAccountResource(
-                    sharpBucketV2, accountName, new RepositoriesEndPoint(sharpBucketV2)));
+                () => new RepositoriesEndPoint(sharpBucketV2).RepositoriesResource(accountName));
         }
 
         /// <summary>

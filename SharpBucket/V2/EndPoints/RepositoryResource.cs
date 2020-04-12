@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,19 +16,24 @@ namespace SharpBucket.V2.EndPoints
     /// More info:
     /// https://confluence.atlassian.com/display/BITBUCKET/repository+Resource
     /// </summary>
-    public class RepositoryResource
+    public class RepositoryResource : EndPoint
     {
-        private readonly RepositoriesEndPoint _repositoriesEndPoint;
         private readonly string _accountName;
-        private readonly string _slug;
+        private readonly string _repoSlugOrName;
 
         #region Repository Resource
 
+        [Obsolete("Prefer repositoriesEndPoint.RepositoriesResource(accountName).RepositoryResource(repoSlugOrName)")]
         public RepositoryResource(string accountName, string repoSlugOrName, RepositoriesEndPoint repositoriesEndPoint)
+            : this(repositoriesEndPoint.RepositoriesResource(accountName), repoSlugOrName)
         {
-            _slug = repoSlugOrName.ToSlug();
-            _accountName = accountName.GuidOrValue();
-            _repositoriesEndPoint = repositoriesEndPoint;
+        }
+
+        internal RepositoryResource(RepositoriesAccountResource repositoriesAccountResource, string repoSlugOrName)
+            : base(repositoriesAccountResource, repoSlugOrName.ToSlug())
+        {
+            _repoSlugOrName = repoSlugOrName;
+            _accountName = repositoriesAccountResource.AccountName;
         }
 
         /// <summary>
@@ -36,7 +42,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public Repository GetRepository()
         {
-            return _repositoriesEndPoint.GetRepository(_accountName, _slug);
+            return _sharpBucketV2.Get<Repository>(_baseUrl);
         }
 
         /// <summary>
@@ -44,9 +50,9 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<Repository> GetRepositoryAsync(CancellationToken token = default)
+        public Task<Repository> GetRepositoryAsync(CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetRepositoryAsync(_accountName, _slug, token);
+            return _sharpBucketV2.GetAsync<Repository>(_baseUrl, token);
         }
 
         /// <summary>
@@ -55,7 +61,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public void DeleteRepository()
         {
-            _repositoriesEndPoint.DeleteRepository(_accountName, _slug);
+            _sharpBucketV2.Delete(_baseUrl);
         }
 
         /// <summary>
@@ -63,9 +69,9 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task DeleteRepositoryAsync(CancellationToken token = default)
+        public Task DeleteRepositoryAsync(CancellationToken token = default)
         {
-            await _repositoriesEndPoint.DeleteRepositoryAsync(_accountName, _slug, token);
+            return _sharpBucketV2.DeleteAsync(_baseUrl, token);
         }
 
         /// <summary>
@@ -75,7 +81,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns>The created repository.</returns>
         public Repository PostRepository(Repository repository)
         {
-            return _repositoriesEndPoint.PostRepository(repository, _accountName);
+            return _sharpBucketV2.Post(repository, _baseUrl);
         }
 
         /// <summary>
@@ -84,9 +90,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="repository">The repository to create.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns>The created repository.</returns>
-        public async Task<Repository> PostRepositoryAsync(Repository repository, CancellationToken token = default)
+        public Task<Repository> PostRepositoryAsync(Repository repository, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.PostRepositoryAsync(repository, _accountName, token);
+            return _sharpBucketV2.PostAsync(repository, _baseUrl, token);
         }
 
         /// <summary>
@@ -104,7 +110,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         public List<UserShort> ListWatchers(int max)
         {
-            return _repositoriesEndPoint.ListWatchers(_accountName, _slug, max);
+            return _sharpBucketV2.GetPaginatedValues<UserShort>(_baseUrl + "watchers", max);
         }
 
         /// <summary>
@@ -113,7 +119,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="pageLen">The length of a page. If not defined the default page length will be used.</param>
         public IEnumerable<UserShort> EnumerateWatchers(int? pageLen = null)
         {
-            return _repositoriesEndPoint.EnumerateWatchers(_accountName, _slug, pageLen);
+            return _sharpBucketV2.EnumeratePaginatedValues<UserShort>(_baseUrl + "watchers", null, pageLen);
         }
 
 #if CS_8
@@ -124,7 +130,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public IAsyncEnumerable<UserShort> EnumerateWatchersAsync(int? pageLen = null, CancellationToken token = default)
         {
-            return _repositoriesEndPoint.EnumerateWatchersAsync(_accountName, _slug, pageLen, token);
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(_baseUrl + "watchers", null, pageLen, token);
         }
 #endif
 
@@ -143,7 +149,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         public List<Repository> ListForks(int max)
         {
-            return _repositoriesEndPoint.ListForks(_accountName, _slug, max);
+            return GetPaginatedValues<Repository>(_baseUrl + "forks", max);
         }
 
         /// <summary>
@@ -152,7 +158,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="pageLen">The length of a page. If not defined the default page length will be used.</param>
         public IEnumerable<Repository> EnumerateForks(int? pageLen = null)
         {
-            return _repositoriesEndPoint.EnumerateForks(_accountName, _slug, pageLen);
+            return _sharpBucketV2.EnumeratePaginatedValues<Repository>(_baseUrl + "forks", pageLen: pageLen);
         }
 
 #if CS_8
@@ -164,7 +170,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public IAsyncEnumerable<Repository> EnumerateForksAsync(int? pageLen = null, CancellationToken token = default)
         {
-            return _repositoriesEndPoint.EnumerateForksAsync(_accountName, _slug, pageLen, token);
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Repository>(_baseUrl + "forks", new Dictionary<string, object>(), pageLen, token);
         }
 #endif
 
@@ -175,7 +181,7 @@ namespace SharpBucket.V2.EndPoints
         private BranchResource _branchesResource;
 
         public BranchResource BranchesResource => this._branchesResource ??
-                                                (_branchesResource = new BranchResource(_accountName, _slug, _repositoriesEndPoint));
+                                                (_branchesResource = new BranchResource(this));
 
         #endregion
 
@@ -187,12 +193,12 @@ namespace SharpBucket.V2.EndPoints
         /// or reviewers associated with a pull request. You can also accept or decline a pull request with this resource. 
         /// Finally, you can use this resource to manage the comments on a pull request as well.
         /// More info:
-        /// https://confluence.atlassian.com/display/BITBUCKET/pullrequests+Resource
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/pullrequests
         /// </summary>
         /// <returns></returns>
         public PullRequestsResource PullRequestsResource()
         {
-            return new PullRequestsResource(_accountName, _slug, _repositoriesEndPoint);
+            return new PullRequestsResource(this);
         }
 
         #endregion
@@ -215,7 +221,7 @@ namespace SharpBucket.V2.EndPoints
             ListBranchRestrictionsParameters parameters)
         {
             _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-            return _repositoriesEndPoint.ListBranchRestrictions(_accountName, _slug, parameters, parameters.Max);
+            return GetPaginatedValues<BranchRestriction>(_baseUrl + "branch-restrictions", parameters.Max, parameters.ToDictionary());
         }
 
         /// <summary>
@@ -234,10 +240,9 @@ namespace SharpBucket.V2.EndPoints
             EnumerateBranchRestrictionsParameters parameters)
         {
             _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-            return _repositoriesEndPoint.EnumerateBranchRestrictions(
-                _accountName,
-                _slug,
-                parameters,
+            return _sharpBucketV2.EnumeratePaginatedValues<BranchRestriction>(
+                _baseUrl + "branch-restrictions",
+                parameters.ToDictionary(),
                 parameters.PageLen);
         }
 
@@ -262,10 +267,9 @@ namespace SharpBucket.V2.EndPoints
             CancellationToken token = default)
         {
             _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-            return _repositoriesEndPoint.EnumerateBranchRestrictionsAsync(
-                _accountName,
-                _slug,
-                parameters,
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<BranchRestriction>(
+                _baseUrl + "branch-restrictions",
+                parameters.ToDictionary(),
                 parameters.PageLen,
                 token);
         }
@@ -278,7 +282,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public BranchRestriction PostBranchRestriction(BranchRestriction restriction)
         {
-            return _repositoriesEndPoint.PostBranchRestriction(_accountName, _slug, restriction);
+            return _sharpBucketV2.Post(restriction, _baseUrl + "branch-restrictions");
         }
 
         /// <summary>
@@ -287,9 +291,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="restriction">The branch restriction.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<BranchRestriction> PostBranchRestrictionAsync(BranchRestriction restriction, CancellationToken token = default)
+        public Task<BranchRestriction> PostBranchRestrictionAsync(BranchRestriction restriction, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.PostBranchRestrictionAsync(_accountName, _slug, restriction, token);
+            return _sharpBucketV2.PostAsync(restriction, _baseUrl + "branch-restrictions", token);
         }
 
         /// <summary>
@@ -299,7 +303,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public BranchRestriction GetBranchRestriction(int restrictionId)
         {
-            return _repositoriesEndPoint.GetBranchRestriction(_accountName, _slug, restrictionId);
+            return _sharpBucketV2.Get<BranchRestriction>(_baseUrl + $"branch-restrictions/{restrictionId}");
         }
 
         /// <summary>
@@ -308,9 +312,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="restrictionId">The restriction's identifier.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<BranchRestriction> GetBranchRestrictionAsync(int restrictionId, CancellationToken token = default)
+        public Task<BranchRestriction> GetBranchRestrictionAsync(int restrictionId, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetBranchRestrictionAsync(_accountName, _slug, restrictionId, token);
+            return _sharpBucketV2.GetAsync<BranchRestriction>(_baseUrl + $"branch-restrictions/{restrictionId}", token);
         }
 
         /// <summary>
@@ -320,7 +324,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public BranchRestriction PutBranchRestriction(BranchRestriction restriction)
         {
-            return _repositoriesEndPoint.PutBranchRestriction(_accountName, _slug, restriction);
+            return _sharpBucketV2.Put(restriction, _baseUrl + $"branch-restrictions/{restriction.id}");
         }
 
         /// <summary>
@@ -329,9 +333,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="restriction">The branch restriction.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<BranchRestriction> PutBranchRestrictionAsync(BranchRestriction restriction, CancellationToken token = default)
+        public Task<BranchRestriction> PutBranchRestrictionAsync(BranchRestriction restriction, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.PutBranchRestrictionAsync(_accountName, _slug, restriction, token);
+            return _sharpBucketV2.PutAsync(restriction, _baseUrl + $"branch-restrictions/{restriction.id}", token);
         }
 
         /// <summary>
@@ -341,7 +345,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public void DeleteBranchRestriction(int restrictionId)
         {
-            _repositoriesEndPoint.DeleteBranchRestriction(_accountName, _slug, restrictionId);
+            _sharpBucketV2.Delete(_baseUrl + $"branch-restrictions/{restrictionId}");
         }
 
         /// <summary>
@@ -350,9 +354,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="restrictionId">The restriction's identifier.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task DeleteBranchRestrictionAsync(int restrictionId, CancellationToken token = default)
+        public Task DeleteBranchRestrictionAsync(int restrictionId, CancellationToken token = default)
         {
-            await _repositoriesEndPoint.DeleteBranchRestrictionAsync(_accountName, _slug, restrictionId, token);
+            return _sharpBucketV2.DeleteAsync(_baseUrl + $"branch-restrictions/{restrictionId}", token);
         }
 
         #endregion
@@ -366,7 +370,8 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="spec">The diff spec (e.g., de3f2..78ab1).</param>
         /// <returns></returns>
-        public string GetDiff(string spec) => GetDiff(spec, new DiffParameters());
+        public string GetDiff(string spec)
+            => GetDiff(spec, new DiffParameters());
 
         /// <summary>
         /// Gets the diff for the current repository.
@@ -376,7 +381,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public string GetDiff(string spec, DiffParameters parameters)
         {
-            return _repositoriesEndPoint.GetDiff(_accountName, _slug, spec, parameters);
+            return _sharpBucketV2.Get(_baseUrl + $"diff/{spec}", parameters.ToDictionary());
         }
 
         /// More info:
@@ -387,7 +392,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="spec">The diff spec (e.g., de3f2..78ab1).</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<string> GetDiffAsync(string spec, CancellationToken token = default) => await GetDiffAsync(spec, new DiffParameters(), token);
+        public Task<string> GetDiffAsync(string spec, CancellationToken token = default)
+            => GetDiffAsync(spec, new DiffParameters(), token);
 
         /// <summary>
         /// Gets the diff for the current repository.
@@ -396,9 +402,9 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="parameters">Parameters for the diff.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<string> GetDiffAsync(string spec, DiffParameters parameters, CancellationToken token = default)
+        public Task<string> GetDiffAsync(string spec, DiffParameters parameters, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetDiffAsync(_accountName, _slug, spec, parameters, token);
+            return _sharpBucketV2.GetAsync(_baseUrl + $"diff/{spec}", parameters.ToDictionary(), token);
         }
 
         /// <summary>
@@ -408,7 +414,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public string GetPatch(string spec)
         {
-            return _repositoriesEndPoint.GetPatch(_accountName, _slug, spec);
+            return _sharpBucketV2.Get(_baseUrl + $"patch/{spec}");
         }
 
         /// <summary>
@@ -417,9 +423,18 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="spec">The patch spec.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<string> GetPatchAsync(string spec, CancellationToken token = default)
+        public Task<string> GetPatchAsync(string spec, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetPatchAsync(_accountName, _slug, spec, token);
+            return _sharpBucketV2.GetAsync(_baseUrl + $"patch/{spec}", token);
+        }
+
+        #endregion
+
+        #region Commit resource
+
+        public CommitResource CommitResource(string revision)
+        {
+            return new CommitResource(this, revision);
         }
 
         #endregion
@@ -436,9 +451,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="branchOrTag">The branch or tag to get, for example, master or default.</param>
         /// <param name="max">Values greater than 0 will set a maximum number of records to return. 0 or less returns all.</param>
         public List<Commit> ListCommits(string branchOrTag = null, int max = 0)
-        {
-            return _repositoriesEndPoint.ListCommits(_accountName, _slug, branchOrTag, new ListCommitsParameters { Max = max });
-        }
+            => ListCommits(branchOrTag, new ListCommitsParameters { Max = max });
 
         /// <summary>
         /// Gets the commit information associated with a repository.
@@ -447,9 +460,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="commitsParameters">Parameters that allow to filter the commits to return.</param>
         public List<Commit> ListCommits(ListCommitsParameters commitsParameters)
-        {
-            return _repositoriesEndPoint.ListCommits(_accountName, _slug, null, commitsParameters);
-        }
+            => ListCommits(null, commitsParameters);
 
         /// <summary>
         /// Gets the commit information associated with a repository in a specified branch.
@@ -459,7 +470,13 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="commitsParameters">Optional parameters that allow to filter the commits to return.</param>
         public List<Commit> ListCommits(string branchOrTag, ListCommitsParameters commitsParameters)
         {
-            return _repositoriesEndPoint.ListCommits(_accountName, _slug, branchOrTag, commitsParameters);
+            var overrideUrl = _baseUrl + "commits/";
+            if (!string.IsNullOrEmpty(branchOrTag))
+            {
+                overrideUrl += branchOrTag;
+            }
+
+            return GetPaginatedValues<Commit>(overrideUrl, commitsParameters.Max, commitsParameters.ToDictionary());
         }
 
         /// <summary>
@@ -469,9 +486,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="branchOrTag">The branch or tag to get, for example, master or default.</param>
         public IEnumerable<Commit> EnumerateCommits(string branchOrTag = null)
-        {
-            return _repositoriesEndPoint.EnumerateCommits(_accountName, _slug, branchOrTag, new EnumerateCommitsParameters());
-        }
+            => EnumerateCommits(branchOrTag, new EnumerateCommitsParameters());
 
         /// <summary>
         /// Enumerate the commit information associated with a repository.
@@ -480,9 +495,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="commitsParameters">Parameters that allow to filter the commits to return.</param>
         public IEnumerable<Commit> EnumerateCommits(EnumerateCommitsParameters commitsParameters)
-        {
-            return _repositoriesEndPoint.EnumerateCommits(_accountName, _slug, null, commitsParameters);
-        }
+             => EnumerateCommits(null, commitsParameters);
 
         /// <summary>
         /// Enumerate the commit information associated with a repository in a specified branch.
@@ -492,7 +505,16 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="commitsParameters">Optional parameters that allow to filter the commits to return.</param>
         public IEnumerable<Commit> EnumerateCommits(string branchOrTag, EnumerateCommitsParameters commitsParameters)
         {
-            return _repositoriesEndPoint.EnumerateCommits(_accountName, _slug, branchOrTag, commitsParameters);
+            var overrideUrl = _baseUrl + "commits/";
+            if (!string.IsNullOrEmpty(branchOrTag))
+            {
+                overrideUrl += branchOrTag;
+            }
+
+            return _sharpBucketV2.EnumeratePaginatedValues<Commit>(
+                overrideUrl,
+                commitsParameters.ToDictionary(),
+                commitsParameters.PageLen);
         }
 
 #if CS_8
@@ -503,9 +525,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// /// <param name="token">The cancellation token</param>
         public IAsyncEnumerable<Commit> EnumerateCommitsAsync(CancellationToken token = default)
-        {
-            return _repositoriesEndPoint.EnumerateCommitsAsync(_accountName, _slug, null, new EnumerateCommitsParameters(), token);
-        }
+            => EnumerateCommitsAsync(null, new EnumerateCommitsParameters(), token);
 
         /// <summary>
         /// Enumerate the commits information associated with a repository in a specified branch.
@@ -514,9 +534,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="branchOrTag">The branch or tag to get, for example, master or default.</param>
         /// <param name="token">The cancellation token</param>
         public IAsyncEnumerable<Commit> EnumerateCommitsAsync(string branchOrTag, CancellationToken token = default)
-        {
-            return _repositoriesEndPoint.EnumerateCommitsAsync(_accountName, _slug, branchOrTag, new EnumerateCommitsParameters(), token);
-        }
+            => EnumerateCommitsAsync(branchOrTag, new EnumerateCommitsParameters(), token);
 
         /// <summary>
         /// Enumerate the commit information associated with a repository.
@@ -525,9 +543,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="commitsParameters">Parameters that allow to filter the commits to return.</param>
         public IAsyncEnumerable<Commit> EnumerateCommitsAsync(EnumerateCommitsParameters commitsParameters, CancellationToken token = default)
-        {
-            return _repositoriesEndPoint.EnumerateCommitsAsync(_accountName, _slug, null, commitsParameters, token);
-        }
+            => EnumerateCommitsAsync(null, commitsParameters, token);
 
         /// <summary>
         /// Enumerate the commit information associated with a repository in a specified branch.
@@ -537,7 +553,13 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="commitsParameters">Optional parameters that allow to filter the commits to return.</param>
         public IAsyncEnumerable<Commit> EnumerateCommitsAsync(string branchOrTag, EnumerateCommitsParameters commitsParameters, CancellationToken token = default)
         {
-            return _repositoriesEndPoint.EnumerateCommitsAsync(_accountName, _slug, branchOrTag, commitsParameters, token);
+            var overrideUrl = _baseUrl + "commits/";
+            if (!string.IsNullOrEmpty(branchOrTag))
+            {
+                overrideUrl += branchOrTag;
+            }
+
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Commit>(overrideUrl, commitsParameters.ToDictionary(), commitsParameters.PageLen, token);
         }
 #endif
 
@@ -548,7 +570,8 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public Commit GetCommit(string revision)
         {
-            return _repositoriesEndPoint.GetCommit(_accountName, _slug, revision);
+            var overrideUrl = _baseUrl + $"commit/{revision}";
+            return _sharpBucketV2.Get<Commit>(overrideUrl);
         }
 
         /// <summary>
@@ -557,9 +580,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision">The SHA1 of the commit.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<Commit> GetCommitAsync(string revision, CancellationToken token = default)
+        public Task<Commit> GetCommitAsync(string revision, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetCommitAsync(_accountName, _slug, revision, token);
+            var overrideUrl = _baseUrl + $"commit/{revision}";
+            return _sharpBucketV2.GetAsync<Commit>(overrideUrl, token);
         }
 
         /// <summary>
@@ -567,9 +591,10 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="revision">The SHA1 of the commit.</param>
         /// <returns></returns>
+        [Obsolete("Prefer CommitResource(revision).CommentsResource.ListComments() or any other listing method in CommitResource(revision).CommentsResource")]
         public List<Comment> ListCommitComments(string revision)
         {
-            return _repositoriesEndPoint.ListCommitComments(_accountName, _slug, revision);
+            return CommitResource(revision).CommentsResource.EnumerateComments().Cast<Comment>().ToList();
         }
 
         /// <summary>
@@ -578,9 +603,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision">The SHA1 of the commit.</param>
         /// <param name="commentId">The comment identifier.</param>
         /// <returns></returns>
+        [Obsolete("Prefer CommitResource(revision).CommentsResource.GetComment(commentId)")]
         public Comment GetCommitComment(string revision, int commentId)
         {
-            return _repositoriesEndPoint.GetCommitComment(_accountName, _slug, revision, commentId);
+            return CommitResource(revision).CommentsResource.GetComment(commentId);
         }
 
         /// <summary>
@@ -590,9 +616,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="commentId">The comment identifier.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
+        [Obsolete("Prefer CommitResource(revision).CommentsResource.GetCommentAsync(commentId, token)")]
         public async Task<Comment> GetCommitCommentAsync(string revision, int commentId, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetCommitCommentAsync(_accountName, _slug, revision, commentId, token);
+            return await CommitResource(revision).CommentsResource.GetCommentAsync(commentId, token);
         }
 
         /// <summary>
@@ -603,7 +630,8 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public UserRole ApproveCommit(string revision)
         {
-            return _repositoriesEndPoint.ApproveCommit(_accountName, _slug, revision);
+            var overrideUrl = _baseUrl + $"commit/{revision}/approve/";
+            return _sharpBucketV2.Post<UserRole>(null, overrideUrl);
         }
 
         /// <summary>
@@ -613,9 +641,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision">The SHA1 of the commit.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<UserRole> ApproveCommitAsync(string revision, CancellationToken token = default)
+        public Task<UserRole> ApproveCommitAsync(string revision, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.ApproveCommitAsync(_accountName, _slug, revision, token);
+            var overrideUrl = _baseUrl + $"commit/{revision}/approve/";
+            return _sharpBucketV2.PostAsync<UserRole>(null, overrideUrl, token);
         }
 
         /// <summary>
@@ -625,7 +654,8 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public void DeleteCommitApproval(string revision)
         {
-            _repositoriesEndPoint.DeleteCommitApproval(_accountName, _slug, revision);
+            var overrideUrl = _baseUrl + $"commit/{revision}/approve/";
+            _sharpBucketV2.Delete(overrideUrl);
         }
 
         /// <summary>
@@ -634,9 +664,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision">The SHA1 of the commit.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task DeleteCommitApprovalAsync(string revision, CancellationToken token = default)
+        public Task DeleteCommitApprovalAsync(string revision, CancellationToken token = default)
         {
-            await _repositoriesEndPoint.DeleteCommitApprovalAsync(_accountName, _slug, revision, token);
+            var overrideUrl = _baseUrl + $"commit/{revision}/approve/";
+            return _sharpBucketV2.DeleteAsync(overrideUrl, token);
         }
 
         /// <summary>
@@ -647,7 +678,8 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public BuildInfo AddNewBuildStatus(string revision, BuildInfo buildInfo)
         {
-            return _repositoriesEndPoint.AddNewBuildStatus(_accountName, _slug, revision, buildInfo);
+            var overrideUrl = _baseUrl + $"commit/{revision}/statuses/build/";
+            return _sharpBucketV2.Post(buildInfo, overrideUrl);
         }
 
         /// <summary>
@@ -657,9 +689,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="buildInfo">The new commit status object</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<BuildInfo> AddNewBuildStatusAsync(string revision, BuildInfo buildInfo, CancellationToken token = default)
+        public Task<BuildInfo> AddNewBuildStatusAsync(string revision, BuildInfo buildInfo, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.AddNewBuildStatusAsync(_accountName, _slug, revision, buildInfo, token);
+            var overrideUrl = _baseUrl + $"commit/{revision}/statuses/build/";
+            return _sharpBucketV2.PostAsync(buildInfo, overrideUrl, token);
         }
 
         /// <summary>
@@ -670,7 +703,8 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public BuildInfo GetBuildStatusInfo(string revision, string key)
         {
-            return _repositoriesEndPoint.GetBuildStatusInfo(_accountName, _slug, revision, key);
+            var overrideUrl = _baseUrl + $"commit/{revision}/statuses/build/{key}";
+            return _sharpBucketV2.Get<BuildInfo>(overrideUrl);
         }
 
         /// <summary>
@@ -680,9 +714,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="key">The build status' unique key</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<BuildInfo> GetBuildStatusInfoAsync(string revision, string key, CancellationToken token = default)
+        public Task<BuildInfo> GetBuildStatusInfoAsync(string revision, string key, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.GetBuildStatusInfoAsync(_accountName, _slug, revision, key, token);
+            var overrideUrl = _baseUrl + $"commit/{revision}/statuses/build/{key}";
+            return _sharpBucketV2.GetAsync<BuildInfo>(overrideUrl, token);
         }
 
         /// <summary>
@@ -695,7 +730,8 @@ namespace SharpBucket.V2.EndPoints
         /// /// <remarks>This operation can also be used to change other properties of the build status: state, name, description, url, refname. The key cannot be changed.</remarks>
         public BuildInfo ChangeBuildStatusInfo(string revision, string key, BuildInfo buildInfo)
         {
-            return _repositoriesEndPoint.ChangeBuildStatusInfo(_accountName, _slug, revision, key, buildInfo);
+            var overrideUrl = _baseUrl + $"commit/{revision}/statuses/build/{key}";
+            return _sharpBucketV2.Put(buildInfo, overrideUrl);
         }
 
         /// <summary>
@@ -707,9 +743,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
         /// /// <remarks>This operation can also be used to change other properties of the build status: state, name, description, url, refname. The key cannot be changed.</remarks>
-        public async Task<BuildInfo> ChangeBuildStatusInfoAsync(string revision, string key, BuildInfo buildInfo, CancellationToken token = default)
+        public Task<BuildInfo> ChangeBuildStatusInfoAsync(string revision, string key, BuildInfo buildInfo, CancellationToken token = default)
         {
-            return await _repositoriesEndPoint.ChangeBuildStatusInfoAsync(_accountName, _slug, revision, key, buildInfo, token);
+            var overrideUrl = _baseUrl + $"commit/{revision}/statuses/build/{key}";
+            return _sharpBucketV2.PutAsync(buildInfo, overrideUrl, token);
         }
 
         #endregion
@@ -723,7 +760,8 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public void PutDefaultReviewer(string targetUsername)
         {
-            _repositoriesEndPoint.PutDefaultReviewer(_accountName, _slug, targetUsername);
+            var overrideUrl = _baseUrl + $"default-reviewers/{targetUsername}";
+            _sharpBucketV2.Put(new object(), overrideUrl);
         }
 
         /// <summary>
@@ -732,9 +770,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="targetUsername">The user to add as the default reviewer.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task PutDefaultReviewerAsync(string targetUsername, CancellationToken token = default)
+        public Task PutDefaultReviewerAsync(string targetUsername, CancellationToken token = default)
         {
-            await _repositoriesEndPoint.PutDefaultReviewerAsync(_accountName, _slug, targetUsername, token);
+            var overrideUrl = _baseUrl + $"default-reviewers/{targetUsername}";
+            return _sharpBucketV2.PutAsync(new object(), overrideUrl, token: token);
         }
 
         #endregion
@@ -743,14 +782,14 @@ namespace SharpBucket.V2.EndPoints
 
         public string GetMainBranchRevision()
         {
-            var repoPath = $"{_accountName}/{_slug}";
-            var rootSrcPath = $"{repoPath}/src/";
+            var repoPath = $"{_accountName.GuidOrValue()}/{_repoSlugOrName.ToSlug()}";
+            var rootSrcPath = $"src/";
 
             try
             {
                 // calling the src endpoint redirect to the hash of the last commit of the main branch
                 // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src#get
-                var redirectLocation = _repositoriesEndPoint.GetSrcRootRedirectLocation(rootSrcPath);
+                var redirectLocation = this.GetSrcRootRedirectLocation(rootSrcPath);
                 return redirectLocation.Segments[redirectLocation.Segments.Length - 1].TrimEnd('/');
             }
             catch (BitbucketV2Exception e) when (e.HttpStatusCode == HttpStatusCode.NotFound)
@@ -763,14 +802,14 @@ namespace SharpBucket.V2.EndPoints
 
         public async Task<string> GetMainBranchRevisionAsync(CancellationToken token = default)
         {
-            var repoPath = $"{_accountName}/{_slug}";
-            var rootSrcPath = $"{repoPath}/src/";
+            var repoPath = $"{_accountName.GuidOrValue()}/{_repoSlugOrName.ToSlug()}";
+            var rootSrcPath = $"src/";
 
             try
             {
                 // calling the src endpoint redirect to the hash of the last commit of the main branch
                 // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src#get
-                var redirectLocation = await _repositoriesEndPoint.GetSrcRootRedirectLocationAsync(rootSrcPath, token);
+                var redirectLocation = await this.GetSrcRootRedirectLocationAsync(rootSrcPath, token);
                 return redirectLocation.Segments[redirectLocation.Segments.Length - 1].TrimEnd('/');
             }
             catch (BitbucketV2Exception e) when (e.HttpStatusCode == HttpStatusCode.NotFound)
@@ -779,6 +818,18 @@ namespace SharpBucket.V2.EndPoints
                 var errorResponse = new ErrorResponse { type = "Error", error = new Error { message = $"Repository {repoPath} not found" } };
                 throw new BitbucketV2Exception(HttpStatusCode.NotFound, errorResponse);
             }
+        }
+
+        private Uri GetSrcRootRedirectLocation(string srcResourcePath)
+        {
+            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath);
+            return _sharpBucketV2.GetRedirectLocation(overrideUrl, new { format = "meta" });
+        }
+
+        private Task<Uri> GetSrcRootRedirectLocationAsync(string srcResourcePath, CancellationToken token)
+        {
+            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, srcResourcePath);
+            return _sharpBucketV2.GetRedirectLocationAsync(overrideUrl, new { format = "meta" }, token);
         }
 
         /// <summary>
@@ -793,7 +844,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="path">An optional path to a sub directory if you want to start to browse somewhere else that at the root path.</param>
         public SrcResource SrcResource(string revision = null, string path = null)
         {
-            return new SrcResource(_repositoriesEndPoint, _accountName, _slug, revision, path);
+            return new SrcResource(this, revision, path);
         }
 
         #endregion
@@ -806,7 +857,7 @@ namespace SharpBucket.V2.EndPoints
         /// Gets the resource that allow to manage tags for this repository.
         /// </summary>
         public TagsResource TagsResource => this._tagsResource ??
-                                                (_tagsResource = new TagsResource(_accountName, _slug, _repositoriesEndPoint));
+                                                (_tagsResource = new TagsResource(this));
 
         #endregion
 

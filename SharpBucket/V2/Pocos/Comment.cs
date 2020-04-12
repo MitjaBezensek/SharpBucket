@@ -10,5 +10,7 @@
         public string updated_on { get; set; }
         public int? id { get; set; }
         public bool? deleted { get; set; }
+        public Location inline { get; set; }
+        public string type { get; set; }
     }
 }

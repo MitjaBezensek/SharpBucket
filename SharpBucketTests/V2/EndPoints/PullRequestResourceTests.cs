@@ -115,6 +115,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
+        [Obsolete("Test of an obsolete method")]
         public void ListPullRequestComments_ExistingPublicPullRequest_ReturnValidInfo()
         {
             var comments = ExistingPullRequest.ListPullRequestComments();
@@ -125,6 +126,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
+        [Obsolete("Test of an obsolete method")]
         public void ListPullRequestComments_NotExistingPublicPullRequest_ThrowException()
         {
             var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.ListPullRequestComments());
@@ -132,38 +134,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void EnumeratePullRequestComments_ExistingPublicPullRequest_ReturnValidInfo()
-        {
-            var comments = ExistingPullRequest.EnumeratePullRequestComments();
-            comments.ShouldNotBeNull();
-            comments.ShouldNotBeEmpty();
-        }
-
-        [Test]
-        public void EnumeratePullRequestComments_NotExistingPublicPullRequest_ThrowExceptionWhenStartEnumerate()
-        {
-            var comments = NotExistingPullRequest.EnumeratePullRequestComments();
-            var exception = Assert.Throws<BitbucketV2Exception>(() => comments.First());
-            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
-        }
-
-        [Test]
-        public async Task EnumeratePullRequestCommentsAsync_ExistingPublicPullRequest_ReturnValidInfo()
-        {
-            var comments = ExistingPullRequest.EnumeratePullRequestCommentsAsync();
-            comments.ShouldNotBeNull();
-            (await comments.ToListAsync()).ShouldNotBeEmpty();
-        }
-
-        [Test]
-        public void EnumeratePullRequestCommentsAsync_NotExistingPublicPullRequest_ThrowExceptionWhenStartEnumerate()
-        {
-            var comments = NotExistingPullRequest.EnumeratePullRequestCommentsAsync();
-            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await comments.FirstAsync());
-            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
-        }
-
-        [Test]
+        [Obsolete("Test of an obsolete method")]
         public void GetPullRequestComment_ExistingCommentOnAPublicPullRequest_ReturnValidInfo()
         {
             var comment = ExistingPullRequest.GetPullRequestComment(53789);
@@ -172,18 +143,12 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task GetPullRequestCommentAsync_ExistingCommentOnAPublicPullRequest_ReturnValidInfo()
-        {
-            var comment = await ExistingPullRequest.GetPullRequestCommentAsync(53789);
-            comment.ShouldBeFilled();
-            comment.content.raw.ShouldBe("This repo is not used for development, it's just a mirror (and I am just an infrequent contributor). Please consult http://mercurial.selenic.com/wiki/ContributingChanges and send your patch to ``mercurial-devel`` ML.");
-        }
-
-        [Test]
+        [Obsolete("Test of an obsolete method")]
         public void GetPullRequestComment_ExistingReplyCommentOnAPublicPullRequest_ReturnValidInfo()
         {
             var comment = SampleRepositories.RepositoriesEndPoint
-                .PullRequestsResource("tortoisehg", "thg")
+                .RepositoryResource("tortoisehg", "thg")
+                .PullRequestsResource()
                 .PullRequestResource(46)
                 .GetPullRequestComment(61843122);
             comment.ShouldBeFilled();
@@ -191,27 +156,10 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task GetPullRequestCommentAsync_ExistingReplyCommentOnAPublicPullRequest_ReturnValidInfo()
-        {
-            var comment = await SampleRepositories.RepositoriesEndPoint
-                .PullRequestsResource("tortoisehg", "thg")
-                .PullRequestResource(46)
-                .GetPullRequestCommentAsync(61843122);
-            comment.ShouldBeFilled();
-            comment.parent.ShouldBeFilled();
-        }
-
-        [Test]
+        [Obsolete("Test of an obsolete method")]
         public void GetPullRequestComment_NotExistingCommentOnPublicPullRequest_ThrowException()
         {
             var exception = Assert.Throws<BitbucketV2Exception>(() => ExistingPullRequest.GetPullRequestComment(int.MaxValue));
-            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
-        }
-
-        [Test]
-        public void GetPullRequestCommentAsync_NotExistingCommentOnPublicPullRequest_ThrowException()
-        {
-            var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async() => await ExistingPullRequest.GetPullRequestCommentAsync(int.MaxValue));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 

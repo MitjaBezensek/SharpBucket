@@ -7,27 +7,25 @@ using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
 {
-    public class TeamResource
+    public class TeamResource : EndPoint
     {
-        private readonly ISharpBucketRequesterV2 _sharpBucketV2;
-
         private readonly string _teamName;
-
-        private readonly string _baseUrl;
 
         private readonly Lazy<RepositoriesAccountResource> _repositoriesResource;
 
+        [Obsolete("Prefer new TeamsEndPoint(sharpBucketV2).TeamResource(teamName) or sharpBucketV2.TeamsEndPoint().TeamResource(teamName)")]
         public TeamResource(ISharpBucketRequesterV2 sharpBucketV2, string teamName)
+            : this(new TeamsEndPoint(sharpBucketV2), teamName)
         {
-            _sharpBucketV2 = sharpBucketV2 ?? throw new ArgumentNullException(nameof(sharpBucketV2));
+        }
 
-            if (string.IsNullOrEmpty(teamName)) throw new ArgumentNullException(nameof(teamName));
-            _teamName = teamName.GuidOrValue();
-            _baseUrl = $"teams/{teamName}/";
+        internal TeamResource(TeamsEndPoint teamsEndPoint, string teamName)
+            : base(teamsEndPoint, teamName.CheckIsNotNullNorEmpty(nameof(teamName)).GuidOrValue())
+        {
+            _teamName = teamName;
 
             _repositoriesResource = new Lazy<RepositoriesAccountResource>(
-                () => new RepositoriesAccountResource(
-                    sharpBucketV2, _teamName, new RepositoriesEndPoint(sharpBucketV2)));
+                () => new RepositoriesEndPoint(_sharpBucketV2).RepositoriesResource(teamName));
         }
 
         /// <summary>
@@ -231,7 +229,7 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("Prefer go through the RepositoriesResource property.")]
         public RepositoryResource RepositoryResource(string repoSlugOrName)
         {
-            return new RepositoryResource(_teamName, repoSlugOrName, new RepositoriesEndPoint(_sharpBucketV2));
+            return RepositoriesResource.RepositoryResource(repoSlugOrName);
         }
 
         /// <summary>
@@ -324,7 +322,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="projectKey">This can either be the actual key assigned to the project or the UUID.</param>
         public ProjectResource ProjectResource(string projectKey)
         {
-            return new ProjectResource(_sharpBucketV2, _teamName, projectKey);
+            return new ProjectResource(this, projectKey);
         }
 
         /// <summary>

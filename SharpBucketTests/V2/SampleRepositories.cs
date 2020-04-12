@@ -9,6 +9,7 @@ namespace SharpBucketTests.V2
     public class SampleRepositories
     {
         public const string MERCURIAL_ACCOUNT_NAME = "mirror";
+        public const string MERCURIAL_ACCOUNT_UUID = "{71b06a8f-295c-43f4-a1c0-f3a0dc6a9ff0}";
 
         public const string MERCURIAL_REPOSITORY_NAME = "mercurial";
 
@@ -52,15 +53,20 @@ namespace SharpBucketTests.V2
             }
         }
 
+        private static RepositoryResource _botTestRepository;
+
+        public static RepositoryResource BotTestRepository => _botTestRepository
+            ??= RepositoriesEndPoint.RepositoryResource(BOT_TEST_REPOSITORY_ACCOUNT_NAME, BOT_TEST_REPOSITORY_NAME);
+
         private static RepositoryResource _mercurialRepository;
 
         public static RepositoryResource MercurialRepository => _mercurialRepository
                                                                 ??= RepositoriesEndPoint.RepositoryResource(MERCURIAL_ACCOUNT_NAME, MERCURIAL_REPOSITORY_NAME);
 
-        private static RepositoryResource _botTestRepository;
+        private static RepositoryResource _tortoisehgRepository;
 
-        public static RepositoryResource BotTestRepository => _botTestRepository
-            ??= RepositoriesEndPoint.RepositoryResource(BOT_TEST_REPOSITORY_ACCOUNT_NAME, BOT_TEST_REPOSITORY_NAME);
+        public static RepositoryResource TortoisehgRepository => _tortoisehgRepository
+                                                                ??= RepositoriesEndPoint.RepositoryResource("tortoisehg", "thg");
 
         private static RepositoryResource _notExistingRepository;
 

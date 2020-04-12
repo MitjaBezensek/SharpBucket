@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -11,23 +10,24 @@ namespace SharpBucket.V2.EndPoints
     /// More info:
     /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/refs/tags
     /// </summary>
-    public class TagsResource
+    public class TagsResource : EndPoint
     {
-        private readonly string _accountName;
-        private readonly string _slug;
-        private readonly RepositoriesEndPoint _repositoriesEndPoint;
-
+        [Obsolete("Prefer repositoriesEndPoint.RepositoriesResource(accountName).RepositoryResource(repoSlugOrName).TagsResource")]
         public TagsResource(string accountName, string repoSlugOrName, RepositoriesEndPoint repositoriesEndPoint)
+            :this (repositoriesEndPoint.RepositoriesResource(accountName).RepositoryResource(repoSlugOrName))
         {
-            _accountName = accountName.GuidOrValue();
-            _slug = repoSlugOrName.ToSlug();
-            _repositoriesEndPoint = repositoriesEndPoint;
+        }
+
+        internal TagsResource(RepositoryResource repositoryResource)
+            : base(repositoryResource, "refs/tags/")
+        {
         }
 
         /// <summary>
         /// Lists all Tags associated with a specific repository.
         /// </summary>
-        public List<Tag> ListTags() => ListTags(new ListParameters());
+        public List<Tag> ListTags()
+            => ListTags(new ListParameters());
 
         /// <summary>
         /// Lists all Tags associated with a specific repository.
@@ -37,14 +37,15 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _repositoriesEndPoint.ListTags(_accountName, _slug, parameters);
+            return GetPaginatedValues<Tag>(_baseUrl, parameters.Max, parameters.ToDictionary());
         }
 
         /// <summary>
         /// Enumerate all Tags associated with a specific repository,
         /// doing reqests page by page while enumerating.
         /// </summary>
-        public IEnumerable<Tag> EnumerateTags() => EnumerateTags(new EnumerateParameters());
+        public IEnumerable<Tag> EnumerateTags()
+            => EnumerateTags(new EnumerateParameters());
 
         /// <summary>
         /// Enumerate all Tags associated with a specific repository,
@@ -55,7 +56,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _repositoriesEndPoint.EnumerateTags(_accountName, _slug, parameters);
+            return _sharpBucketV2.EnumeratePaginatedValues<Tag>(_baseUrl, parameters.ToDictionary(), parameters.PageLen);
         }
 
 #if CS_8
@@ -77,7 +78,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _repositoriesEndPoint.EnumerateTagsAsync(_accountName, _slug, parameters, token);
+            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Tag>(_baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
     }
