@@ -131,14 +131,27 @@ The organization of all that routes may slightly differ in the SharpBucket class
   - Implemented by: `RepositoryResource.DeleteCommitApproval(string)`
   - Tested: **yes**
 - /repositories/{username}/{repo_slug}/commit/{node}/comments `GET`
-  - Implemented by: `RepositoryResource.ListCommitComments(string)`
-  - Tested: no
+  - Implemented by:
+    - `RepositoryResource.ListCommitComments(string)`
+    - `CommitResource(string).CommentsResource.ListComments()` *v0.14.0*
+  - Tested: **yes**
 - /repositories/{username}/{repo_slug}/commit/{node}/comments `POST`
-  - Implemented by: none
-  - Tested: no
+  - Implemented by:
+    - `CommitResource(string).CommentsResource.PostComment(CommitComment)` *v0.14.0*
+  - Tested: **yes**
 - /repositories/{username}/{repo_slug}/commit/{node}/comments/{comment_id} `GET`
-  - Implemented by: `RepositoryResource.GetCommitComment(string,int)`
-  - Tested: no
+  - Implemented by:
+    - `RepositoryResource.GetCommitComment(string,int)`
+    - `CommitResource(string).CommentsResource.GetComment(int)` *v0.14.0*
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/commit/{node}/comments/{comment_id} `PUT`
+  - Implemented by:
+    - `CommitResource(string).CommentsResource.PutComment(CommitComment)` *v0.14.0*
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/commit/{node}/comments/{comment_id} `DELTE`
+  - Implemented by:
+    - `CommitResource(string).CommentsResource.DeleteComment(int)` *v0.14.0*
+  - Tested: **yes**
 - /repositories/{username}/{repo_slug}/commit/{node}/statuses `GET`
   - Implemented by: none
   - Tested: no
@@ -270,10 +283,18 @@ The organization of all that routes may slightly differ in the SharpBucket class
   - Tested: no
 
 ### [Issues resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues)
-- /repositories/{username}/{repo_slug}/issues `GET` `POST`
+- /repositories/{username}/{repo_slug}/issues `GET`
+  - Implemented by:
+    - `IssuesResource.ListIssues()` *V0.14.0*
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/issues `POST`
   - Implemented by: none
   - Tested: no
-- /repositories/{username}/{repo_slug}/issues/{issue_id} `GET` `PUT` `DELETE`
+- /repositories/{username}/{repo_slug}/issues/{issue_id} `GET`
+  - Implemented by:
+    - `IssueResource.GetIssue()` *V0.14.0*
+  - Tested: **yes**
+- /repositories/{username}/{repo_slug}/issues/{issue_id} `PUT` `DELETE`
   - Implemented by: none
   - Tested: no
 - /repositories/{username}/{repo_slug}/issues/{issue_id}/attachments `GET` `POST`
@@ -402,20 +423,28 @@ The organization of all that routes may slightly differ in the SharpBucket class
   - Implemented by: `PullRequestResource.RemovePullRequestApproval()`
   - Tested: **yes**
 - /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments `GET`
-  - Implemented by: `PullRequestResource.ListPullRequestComments()`
+  - Implemented by:
+    - `PullRequestResource.ListPullRequestComments()`
+    - `PullRequestResource.CommentsResource.ListComments()` *v0.14.0*
   - Tested: **yes**
 - /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments `POST`
-  - Implemented by: `PullRequestResource.PostPullRequestComment(Comment)`
-  - Tested: no
+  - Implemented by:
+    - `PullRequestResource.PostPullRequestComment(Comment)`
+    - `PullRequestResource.CommentsResource.PostComment(PullRequestComment)` *v0.14.0*
+  - Tested: **yes**
 - /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id} `GET`
-  - Implemented by: `PullRequestResource.GetPullRequestComment(int)`
+  - Implemented by:
+    - `PullRequestResource.GetPullRequestComment(int)`
+    - `PullRequestResource.CommentsResource.GetComment(int)` *v0.14.0*
   - Tested: **yes**
 - /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id} `PUT`
-  - Implemented by: none
-  - Tested: no
+  - Implemented by:
+    - `PullRequestResource.CommentsResource.PutComment(PullRequestComment)` *v0.14.0*
+  - Tested: **yes**
 - /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id} `DELETE`
-  - Implemented by: none
-  - Tested: no
+  - Implemented by:
+    - `PullRequestResource.CommentsResource.DeleteComment(int)` *v0.14.0*
+  - Tested: **yes**
 - /repositories/{username}/{repo_slug}/pullrequests/{pull_request_id}/commits `GET`
   - Implemented by: `PullRequestResource.ListPullRequestCommits()`
   - Tested: **yes**
