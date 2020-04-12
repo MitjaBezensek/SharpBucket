@@ -82,7 +82,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="accountName"The account whose repositories you wish to get.></param>
         public RepositoriesAccountResource RepositoriesResource(string accountName)
         {
-            return new RepositoriesAccountResource(_sharpBucketV2, accountName, this);
+            return new RepositoriesAccountResource(this, accountName);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public RepositoryResource RepositoryResource(string accountName, string repoSlugOrName)
         {
-            return new RepositoryResource(accountName, repoSlugOrName, this);
+            return RepositoriesResource(accountName).RepositoryResource(repoSlugOrName);
         }
 
         #endregion

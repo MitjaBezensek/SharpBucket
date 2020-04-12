@@ -10,20 +10,25 @@ namespace SharpBucket.V2.EndPoints
     /// Class that implement the access to the repositories of a specified account.
     /// See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D
     /// </summary>
-    public class RepositoriesAccountResource
+    public class RepositoriesAccountResource : EndPoint
     {
-        private readonly ISharpBucketRequesterV2 _sharpBucketV2;
-        private readonly string _accountName;
-        private readonly string _baseUrl;
-        private readonly RepositoriesEndPoint _repositoriesEndPoint;
+        /// <summary>
+        /// Gets the acconut name used to build this instance (without any url encoding transformation).
+        /// </summary>
+        public string AccountName { get; }
 
+        [Obsolete("Prefer repositoriesEndPoint.RepositoriesResource(accountName)")]
         public RepositoriesAccountResource(
             ISharpBucketRequesterV2 sharpBucketV2, string accountName, RepositoriesEndPoint repositoriesEndPoint)
+            : this(repositoriesEndPoint, accountName)
         {
-            _sharpBucketV2 = sharpBucketV2;
-            _accountName = accountName.GuidOrValue();
-            _baseUrl = $"repositories/{_accountName}/";
-            _repositoriesEndPoint = repositoriesEndPoint;
+        }
+
+        internal RepositoriesAccountResource(
+            RepositoriesEndPoint repositoriesEndPoint, string accountName)
+            : base(repositoriesEndPoint, accountName.GuidOrValue())
+        {
+            this.AccountName = accountName;
         }
 
         /// <summary>
@@ -114,7 +119,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
         public RepositoryResource RepositoryResource(string repoSlugOrName)
         {
-            return new RepositoryResource(_accountName, repoSlugOrName, _repositoriesEndPoint);
+            return new RepositoryResource(this, repoSlugOrName);
         }
     }
 }

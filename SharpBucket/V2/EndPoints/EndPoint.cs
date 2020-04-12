@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 
@@ -30,7 +31,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         protected EndPoint(ISharpBucketRequesterV2 sharpBucketV2, string resourcePath)
         {
-            _sharpBucketV2 = sharpBucketV2;
+            _sharpBucketV2 = sharpBucketV2 ?? throw new ArgumentNullException(nameof(sharpBucketV2));
             _baseUrl = resourcePath.Trim('/') + "/";
         }
 

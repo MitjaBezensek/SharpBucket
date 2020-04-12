@@ -26,8 +26,7 @@ namespace SharpBucket.V2.EndPoints
             _baseUrl = $"teams/{teamName}/";
 
             _repositoriesResource = new Lazy<RepositoriesAccountResource>(
-                () => new RepositoriesAccountResource(
-                    sharpBucketV2, _teamName, new RepositoriesEndPoint(sharpBucketV2)));
+                () => new RepositoriesEndPoint(sharpBucketV2).RepositoriesResource(_teamName));
         }
 
         /// <summary>
@@ -231,7 +230,7 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("Prefer go through the RepositoriesResource property.")]
         public RepositoryResource RepositoryResource(string repoSlugOrName)
         {
-            return new RepositoryResource(_teamName, repoSlugOrName, new RepositoriesEndPoint(_sharpBucketV2));
+            return RepositoriesResource.RepositoryResource(repoSlugOrName);
         }
 
         /// <summary>

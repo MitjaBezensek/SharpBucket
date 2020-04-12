@@ -19,15 +19,21 @@ namespace SharpBucket.V2.EndPoints
     public class RepositoryResource : EndPoint
     {
         private readonly string _accountName;
-        private readonly string _slug;
+        private readonly string _repoSlugOrName;
 
         #region Repository Resource
 
+        [Obsolete("Prefer repositoriesEndPoint.RepositoriesResource(accountName).RepositoryResource(repoSlugOrName)")]
         public RepositoryResource(string accountName, string repoSlugOrName, RepositoriesEndPoint repositoriesEndPoint)
-            : base(repositoriesEndPoint, $"{accountName.GuidOrValue()}/{repoSlugOrName.ToSlug()}/")
+            : this(repositoriesEndPoint.RepositoriesResource(accountName), repoSlugOrName)
         {
-            _slug = repoSlugOrName.ToSlug();
-            _accountName = accountName.GuidOrValue();
+        }
+
+        internal RepositoryResource(RepositoriesAccountResource repositoriesAccountResource, string repoSlugOrName)
+            : base(repositoriesAccountResource, repoSlugOrName.ToSlug())
+        {
+            _repoSlugOrName = repoSlugOrName;
+            _accountName = repositoriesAccountResource.AccountName;
         }
 
         /// <summary>
@@ -776,7 +782,7 @@ namespace SharpBucket.V2.EndPoints
 
         public string GetMainBranchRevision()
         {
-            var repoPath = $"{_accountName}/{_slug}";
+            var repoPath = $"{_accountName.GuidOrValue()}/{_repoSlugOrName.ToSlug()}";
             var rootSrcPath = $"src/";
 
             try
@@ -796,7 +802,7 @@ namespace SharpBucket.V2.EndPoints
 
         public async Task<string> GetMainBranchRevisionAsync(CancellationToken token = default)
         {
-            var repoPath = $"{_accountName}/{_slug}";
+            var repoPath = $"{_accountName.GuidOrValue()}/{_repoSlugOrName.ToSlug()}";
             var rootSrcPath = $"src/";
 
             try
