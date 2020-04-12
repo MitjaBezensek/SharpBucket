@@ -16,7 +16,30 @@ namespace SharpBucketTests.V2.Pocos
             comment.id.ShouldNotBeNull();
             comment.deleted.ShouldNotBeNull();
             ////comment.parent is null if it's not a reply to a previous comment
+            ////comment.inline is null if it's not an inline comment
 
+            return comment;
+        }
+
+        public static Comment ShouldBeAGlobalComment(this Comment comment)
+        {
+            comment.parent.ShouldBeNull();
+            comment.inline.ShouldBeNull();
+
+            return comment;
+        }
+
+        public static Comment ShouldBeAnInlineComment(this Comment comment)
+        {
+            comment.parent.ShouldBeNull();
+            comment.inline.ShouldBeFilled();
+
+            return comment;
+        }
+
+        public static Comment ShouldBeAReplyComment(this Comment comment)
+        {
+            comment.parent.ShouldBeFilled();
             return comment;
         }
     }

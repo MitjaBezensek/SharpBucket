@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -14,18 +14,26 @@ namespace SharpBucket.V2.EndPoints
     /// </summary>
     public class PullRequestResource : EndPoint
     {
+        private readonly Lazy<PullRequestCommentsResource> _commentsResource;
+
         [Obsolete("Prefer PullRequestResource(PullRequestsResource pullRequestsResource, int pullRequestId)")]
         public PullRequestResource(string accountName, string repoSlugOrName, int pullRequestId, RepositoriesEndPoint repositoriesEndPoint)
-            : base(
-                  repositoriesEndPoint,
-                  $"{accountName.GuidOrValue()}/{repoSlugOrName.ToSlug()}/pullrequests/{pullRequestId}")
+            : this(
+                  repositoriesEndPoint.RepositoryResource(accountName, repoSlugOrName).PullRequestsResource(),
+                  pullRequestId)
         {
         }
 
         public PullRequestResource(PullRequestsResource pullRequestsResource, int pullRequestId)
             : base(pullRequestsResource, pullRequestId.ToString())
         {
+            _commentsResource = new Lazy<PullRequestCommentsResource>(() => new PullRequestCommentsResource(this));
         }
+
+        /// <summary>
+        /// Gets the <see cref="CommentResource"/> relative to this pull request.
+        /// </summary>
+        public PullRequestCommentsResource CommentsResource => _commentsResource.Value;
 
         /// <summary>
         /// Gets the <see cref="PullRequest"/>
@@ -236,74 +244,27 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// List of comments on the specified pull request. 
         /// </summary>
-        /// <returns></returns>
+        [Obsolete("Prefer CommentsResource.ListComments()")]
         public List<Comment> ListPullRequestComments()
         {
-            var overrideUrl = _baseUrl + "comments";
-            return GetPaginatedValues<Comment>(overrideUrl);
+            return CommentsResource.EnumerateComments().Cast<Comment>().ToList();
         }
-
-        /// <summary>
-        /// Enumerate the comments on the specified pull request. This returns a paginated response.
-        /// </summary>
-        /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
-        public IEnumerable<Comment> EnumeratePullRequestComments(int? pageLen = null)
-        {
-            var overrideUrl = _baseUrl + "comments";
-            return _sharpBucketV2.EnumeratePaginatedValues<Comment>(overrideUrl, null, pageLen);
-        }
-
-#if CS_8
-        /// <summary>
-        /// Enumerate the comments on the specified pull request asynchronously, doing requests page by page.
-        /// </summary>
-        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public IAsyncEnumerable<Comment> EnumeratePullRequestCommentsAsync(CancellationToken token = default)
-            => EnumeratePullRequestCommentsAsync(null, token);
-
-        /// <summary>
-        /// Enumerate the comments on the specified pull request asynchronously, doing requests page by page.
-        /// </summary>
-        /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
-        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public IAsyncEnumerable<Comment> EnumeratePullRequestCommentsAsync(int? pageLen, CancellationToken token = default)
-        {
-            var overrideUrl = _baseUrl + "comments";
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Comment>(overrideUrl, null, pageLen, token);
-        }
-#endif
 
         /// <summary>
         /// Gets an individual comment on an request. Private repositories require authorization with an account that has appropriate access.
         /// </summary>
         /// <param name="commentId">The comment identifier.</param>
+        [Obsolete("Prefer CommentsResource.GetComment(commentId)")]
         public Comment GetPullRequestComment(int commentId)
         {
-            var overrideUrl = _baseUrl + $"comments/{commentId}";
-            return _sharpBucketV2.Get<Comment>(overrideUrl);
+            return CommentsResource.GetComment(commentId);
         }
 
-        /// <summary>
-        /// Gets an individual comment on an request. Private repositories require authorization with an account that has appropriate access.
-        /// </summary>
-        /// <param name="commentId">The comment identifier.</param>
-        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async Task<Comment> GetPullRequestCommentAsync(int commentId, CancellationToken token = default)
-        {
-            var overrideUrl = _baseUrl + $"comments/{commentId}";
-            return await _sharpBucketV2.GetAsync<Comment>(overrideUrl, token);
-        }
-
+        [Obsolete("Prefer CommentsResource.PostComment(comment)")]
         public Comment PostPullRequestComment(Comment comment)
         {
             var overrideUrl = _baseUrl + "comments";
             return _sharpBucketV2.Post(comment, overrideUrl);
-        }
-
-        public async Task<Comment> PostPullRequestCommentAsync(Comment comment, CancellationToken token = default)
-        {
-            var overrideUrl = _baseUrl + "comments";
-            return await _sharpBucketV2.PostAsync(comment, overrideUrl, token);
         }
     }
 }

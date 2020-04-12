@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -425,6 +426,15 @@ namespace SharpBucket.V2.EndPoints
 
         #endregion
 
+        #region Commit resource
+
+        public CommitResource CommitResource(string revision)
+        {
+            return new CommitResource(this, revision);
+        }
+
+        #endregion
+
         #region Commits resource
 
         /// More info:
@@ -577,10 +587,10 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="revision">The SHA1 of the commit.</param>
         /// <returns></returns>
+        [Obsolete("Prefer CommitResource(revision).CommentsResource.ListComments() or any other listing method in CommitResource(revision).CommentsResource")]
         public List<Comment> ListCommitComments(string revision)
         {
-            var overrideUrl = _baseUrl + $"commits/{revision}/comments/";
-            return GetPaginatedValues<Comment>(overrideUrl);
+            return CommitResource(revision).CommentsResource.EnumerateComments().Cast<Comment>().ToList();
         }
 
         /// <summary>
@@ -589,10 +599,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision">The SHA1 of the commit.</param>
         /// <param name="commentId">The comment identifier.</param>
         /// <returns></returns>
+        [Obsolete("Prefer CommitResource(revision).CommentsResource.GetComment(commentId)")]
         public Comment GetCommitComment(string revision, int commentId)
         {
-            var overrideUrl = _baseUrl + $"commits/{revision}/comments/{revision}/{commentId}/";
-            return _sharpBucketV2.Get<Comment>(overrideUrl);
+            return CommitResource(revision).CommentsResource.GetComment(commentId);
         }
 
         /// <summary>
@@ -602,10 +612,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="commentId">The comment identifier.</param>
         /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public Task<Comment> GetCommitCommentAsync(string revision, int commentId, CancellationToken token = default)
+        [Obsolete("Prefer CommitResource(revision).CommentsResource.GetCommentAsync(commentId, token)")]
+        public async Task<Comment> GetCommitCommentAsync(string revision, int commentId, CancellationToken token = default)
         {
-            var overrideUrl = _baseUrl + $"commits/{revision}/comments/{revision}/{commentId}/";
-            return _sharpBucketV2.GetAsync<Comment>(overrideUrl, token);
+            return await CommitResource(revision).CommentsResource.GetCommentAsync(commentId, token);
         }
 
         /// <summary>

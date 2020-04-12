@@ -54,6 +54,11 @@ namespace SharpBucketTests.V2
         public static RepositoryResource MercurialRepository => _mercurialRepository
                                                                 ??= RepositoriesEndPoint.RepositoryResource(MERCURIAL_ACCOUNT_NAME, MERCURIAL_REPOSITORY_NAME);
 
+        private static RepositoryResource _tortoisehgRepository;
+
+        public static RepositoryResource TortoisehgRepository => _tortoisehgRepository
+                                                                ??= RepositoriesEndPoint.RepositoryResource("tortoisehg", "thg");
+
         private static RepositoryResource _notExistingRepository;
 
         public static RepositoryResource NotExistingRepository => _notExistingRepository
