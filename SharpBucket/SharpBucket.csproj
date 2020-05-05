@@ -3,11 +3,11 @@
 
   <PropertyGroup>
     <TargetFrameworks>net452;netstandard2.0;netstandard2.1</TargetFrameworks>
-    <Version>0.13.0</Version>
+    <Version>0.14.0</Version>
     <Authors>Mitja Bezenšek</Authors>
     <Company>Mitja Bezenšek</Company>
     <Product>SharpBucket</Product>
-    <Copyright>Copyright 2014-2019</Copyright>
+    <Copyright>Copyright 2014-2020</Copyright>
     <PackageProjectUrl>https://github.com/MitjaBezensek/SharpBucket</PackageProjectUrl>
     <PackageIconUrl>http://bezensek.com/favicon.png</PackageIconUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
