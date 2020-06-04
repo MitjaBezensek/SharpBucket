@@ -477,7 +477,7 @@ The organization of all that routes may slightly differ in the SharpBucket class
   - Implemented by: `BranchResource.ListBranches()`
   - Tested: **yes**
 - /repositories/{username}/{repo_slug}/refs/branches `POST`
-  - Implemented by: none
+  - Implemented by: `BranchResource.PostBranch(Branch)`
   - Tested: no
 - /repositories/{username}/{repo_slug}/refs/branches/{name} `GET`
   - Implemented by: none

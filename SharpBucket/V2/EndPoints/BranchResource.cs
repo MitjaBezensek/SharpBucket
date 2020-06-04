@@ -43,6 +43,16 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
+        /// Creates a new branch in the specified repository.
+        /// </summary>
+        /// <param name="branch">The branch to create.</param>
+        /// <returns>The created branch.</returns>
+        public Branch PostBranch(Branch branch)
+        {
+            return _sharpBucketV2.Post(branch, _baseUrl);
+        }
+
+        /// <summary>
         /// Enumerate branches associated with a specific repository.
         /// </summary>
         public IEnumerable<Branch> EnumerateBranches()
