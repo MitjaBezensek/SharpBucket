@@ -10,5 +10,6 @@ namespace SharpBucket.V2.Pocos
         public List<NamedLink> links { get; set; }
         public string pattern { get; set; }
         public List<User> users { get; set; }
+        public int? value { get; set; }
     }
 }
