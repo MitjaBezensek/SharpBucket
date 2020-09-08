@@ -9,7 +9,7 @@ namespace SharpBucketTests.V2.EndPoints
     [TestFixture]
     public class RepositoriesAccountResourceTests
     {
-        private RepositoriesAccountResource _mercurialRepositoriesResource;
+        private RepositoriesAccountResource _publicAccountRepositoriesResource;
         private RepositoriesAccountResource _testAccountRepositoriesResource;
 
         [OneTimeSetUp]
@@ -17,18 +17,18 @@ namespace SharpBucketTests.V2.EndPoints
         {
             var repositoriesEndPoint = SampleRepositories.RepositoriesEndPoint;
 
-            _mercurialRepositoriesResource = repositoriesEndPoint
-                .RepositoriesResource(SampleRepositories.MERCURIAL_ACCOUNT_NAME);
+            _publicAccountRepositoriesResource = repositoriesEndPoint
+                .RepositoriesResource(SampleRepositories.MIRROR_ACCOUNT_NAME);
             _testAccountRepositoriesResource = repositoriesEndPoint
                 .RepositoriesResource(TestHelpers.AccountName);
         }
 
         [Test]
-        public void ListRepositories_WithNoMaxSet_ReturnsAtLeast10Repositories()
+        public void ListRepositories_WithNoMaxSetOnAPublicAccountWithLotOfRepositories_ReturnsAtLeast10Repositories()
         {
-            var repositories = _mercurialRepositoriesResource.ListRepositories();
+            var repositories = _publicAccountRepositoriesResource.ListRepositories();
 
-            repositories.ShouldNotBe(null);
+            repositories.ShouldNotBeNull();
             repositories.Count.ShouldBeGreaterThan(10);
         }
 
@@ -44,14 +44,10 @@ namespace SharpBucketTests.V2.EndPoints
                 Max = 1,
             };
 
-            var repositories = _mercurialRepositoriesResource.ListRepositories(parameters);
-
-            repositories.ShouldNotBe(null);
+            var repositories = _publicAccountRepositoriesResource.ListRepositories(parameters);
             repositories.ShouldBeEmpty();
 
             repositories = _testAccountRepositoriesResource.ListRepositories(parameters);
-
-            repositories.ShouldNotBe(null);
             repositories.ShouldNotBeEmpty();
         }
 
@@ -66,14 +62,10 @@ namespace SharpBucketTests.V2.EndPoints
                 Role = SharpBucket.V2.Pocos.Role.Owner
             };
 
-            var repositories = _mercurialRepositoriesResource.EnumerateRepositories(parameters);
-
-            repositories.ShouldNotBe(null);
+            var repositories = _publicAccountRepositoriesResource.EnumerateRepositories(parameters);
             repositories.ShouldBeEmpty();
 
             repositories = _testAccountRepositoriesResource.EnumerateRepositories(parameters);
-
-            repositories.ShouldNotBe(null);
             repositories.ShouldNotBeEmpty();
         }
 
@@ -88,14 +80,12 @@ namespace SharpBucketTests.V2.EndPoints
                 Role = SharpBucket.V2.Pocos.Role.Owner
             };
 
-            var repositories = _mercurialRepositoriesResource.EnumerateRepositoriesAsync(parameters);
-
-            repositories.ShouldNotBe(null);
+            var repositories = _publicAccountRepositoriesResource.EnumerateRepositoriesAsync(parameters);
+            repositories.ShouldNotBeNull();
             (await repositories.AnyAsync()).ShouldBeFalse();
 
             repositories = _testAccountRepositoriesResource.EnumerateRepositoriesAsync(parameters);
-
-            repositories.ShouldNotBe(null);
+            repositories.ShouldNotBeNull();
             (await repositories.AnyAsync()).ShouldBeTrue();
         }
     }

@@ -18,7 +18,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void ListBranches_NotEmptyRepository_ReturnAtLeastMainBranch()
         {
-            var branches = SampleRepositories.MercurialRepository.BranchesResource.ListBranches();
+            var branches = SampleRepositories.GitMirrorRepository.BranchesResource.ListBranches();
             branches.ShouldNotBeEmpty("There is at least the main branch on a non empty repository");
         }
 
@@ -32,7 +32,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void EnumerateBranches_NotEmptyRepository_ReturnAtLeastMainBranch()
         {
-            var branches = SampleRepositories.MercurialRepository.BranchesResource.EnumerateBranches();
+            var branches = SampleRepositories.GitMirrorRepository.BranchesResource.EnumerateBranches();
             branches.ShouldNotBeEmpty("There is at least the main branch on a non empty repository");
         }
 
@@ -47,7 +47,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public async Task EnumerateBranchesAsync_NotEmptyRepository_ReturnAtLeastMainBranch()
         {
-            var branches = await SampleRepositories.MercurialRepository.BranchesResource.EnumerateBranchesAsync()
+            var branches = await SampleRepositories.GitMirrorRepository.BranchesResource.EnumerateBranchesAsync()
                 .ToListAsync();
             branches.ShouldNotBeEmpty("There is at least the main branch on a non empty repository");
         }

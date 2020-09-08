@@ -18,7 +18,6 @@ namespace SharpBucketTests.V2.EndPoints
             var publicRepositories = repositoriesEndPoint.ListPublicRepositories(30);
 
             publicRepositories.Count.ShouldBe(30);
-            publicRepositories[5].full_name.ShouldBe("vetler/fhtmlmps");
         }
 
         [Test]
@@ -78,7 +77,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void ListPublicRepositories_Top3WithAnOldfterFilter_ReturnsAKnownList()
+        public void ListPublicRepositories_Top3WithAfterFilter_ReturnsAKnownList()
         {
             // Ensure that at least that test repository is created
             SampleRepositories.EmptyTestRepository.ShouldNotBeNull();
@@ -91,13 +90,15 @@ namespace SharpBucketTests.V2.EndPoints
 
             var publicRepositories = repositoriesEndPoint.ListPublicRepositories(parameters);
 
-            publicRepositories.ShouldNotBeEmpty();
-            publicRepositories.Select(r => r.full_name)
-                .ShouldBe(new[] { "china/kuaihuo", "jxck/zudosite", "trijezdci/macrocollection" });
+            publicRepositories.ShouldNotBeNull();
+            publicRepositories.Count.ShouldBe(3);
+            DateTime.Parse(publicRepositories[0].created_on).ShouldBeGreaterThanOrEqualTo(parameters.After.Value);
+            DateTime.Parse(publicRepositories[1].created_on).ShouldBeGreaterThanOrEqualTo(parameters.After.Value);
+            DateTime.Parse(publicRepositories[2].created_on).ShouldBeGreaterThanOrEqualTo(parameters.After.Value);
         }
 
         [Test]
-        public void EnumeratePublicRepositories_Top3WithAnOldfterFilter_ReturnsAKnownList()
+        public void EnumeratePublicRepositories_Top3WithAfterFilter_ReturnsAKnownList()
         {
             // Ensure that at least that test repository is created
             SampleRepositories.EmptyTestRepository.ShouldNotBeNull();
@@ -112,13 +113,15 @@ namespace SharpBucketTests.V2.EndPoints
                 .Take(3)
                 .ToList();
 
-            publicRepositories.ShouldNotBeEmpty();
-            publicRepositories.Select(r => r.full_name)
-                .ShouldBe(new[] { "china/kuaihuo", "jxck/zudosite", "trijezdci/macrocollection" });
+            publicRepositories.ShouldNotBeNull();
+            publicRepositories.Count.ShouldBe(3);
+            DateTime.Parse(publicRepositories[0].created_on).ShouldBeGreaterThanOrEqualTo(parameters.After.Value);
+            DateTime.Parse(publicRepositories[1].created_on).ShouldBeGreaterThanOrEqualTo(parameters.After.Value);
+            DateTime.Parse(publicRepositories[2].created_on).ShouldBeGreaterThanOrEqualTo(parameters.After.Value);
         }
 
         [Test]
-        public async Task EnumeratePublicRepositoriesAsync_Top3WithAnOldfterFilter_ReturnsAKnownList()
+        public async Task EnumeratePublicRepositoriesAsync_Top3WithAfterFilter_ReturnsAKnownList()
         {
             // Ensure that at least that test repository is created
             SampleRepositories.EmptyTestRepository.ShouldNotBeNull();
@@ -133,9 +136,11 @@ namespace SharpBucketTests.V2.EndPoints
                 .Take(3)
                 .ToListAsync();
 
-            publicRepositories.ShouldNotBeEmpty();
-            publicRepositories.Select(r => r.full_name)
-                .ShouldBe(new[] { "china/kuaihuo", "jxck/zudosite", "trijezdci/macrocollection" });
+            publicRepositories.ShouldNotBeNull();
+            publicRepositories.Count.ShouldBe(3);
+            DateTime.Parse(publicRepositories[0].created_on).ShouldBeGreaterThanOrEqualTo(parameters.After.Value);
+            DateTime.Parse(publicRepositories[1].created_on).ShouldBeGreaterThanOrEqualTo(parameters.After.Value);
+            DateTime.Parse(publicRepositories[2].created_on).ShouldBeGreaterThanOrEqualTo(parameters.After.Value);
         }
     }
 }

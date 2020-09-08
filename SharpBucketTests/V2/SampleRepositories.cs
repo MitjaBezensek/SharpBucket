@@ -8,10 +8,10 @@ namespace SharpBucketTests.V2
     [SetUpFixture]
     public class SampleRepositories
     {
-        public const string MERCURIAL_ACCOUNT_NAME = "mirror";
-        public const string MERCURIAL_ACCOUNT_UUID = "{71b06a8f-295c-43f4-a1c0-f3a0dc6a9ff0}";
+        public const string MIRROR_ACCOUNT_NAME = "mirror";
+        public const string MIRROR_ACCOUNT_UUID = "{71b06a8f-295c-43f4-a1c0-f3a0dc6a9ff0}";
 
-        public const string MERCURIAL_REPOSITORY_NAME = "mercurial";
+        public const string GIT_MIRROR_REPOSITORY_NAME = "git";
 
         public const string BOT_TEST_REPOSITORY_ACCOUNT_NAME = "penev92";
 
@@ -58,15 +58,10 @@ namespace SharpBucketTests.V2
         public static RepositoryResource BotTestRepository => _botTestRepository
             ??= RepositoriesEndPoint.RepositoryResource(BOT_TEST_REPOSITORY_ACCOUNT_NAME, BOT_TEST_REPOSITORY_NAME);
 
-        private static RepositoryResource _mercurialRepository;
+        private static RepositoryResource _gitRepository;
 
-        public static RepositoryResource MercurialRepository => _mercurialRepository
-                                                                ??= RepositoriesEndPoint.RepositoryResource(MERCURIAL_ACCOUNT_NAME, MERCURIAL_REPOSITORY_NAME);
-
-        private static RepositoryResource _tortoisehgRepository;
-
-        public static RepositoryResource TortoisehgRepository => _tortoisehgRepository
-                                                                ??= RepositoriesEndPoint.RepositoryResource("tortoisehg", "thg");
+        public static RepositoryResource GitMirrorRepository => _gitRepository
+                                                                ??= RepositoriesEndPoint.RepositoryResource(MIRROR_ACCOUNT_NAME, GIT_MIRROR_REPOSITORY_NAME);
 
         private static RepositoryResource _notExistingRepository;
 

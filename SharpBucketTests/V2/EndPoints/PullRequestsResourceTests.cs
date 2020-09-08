@@ -14,38 +14,46 @@ namespace SharpBucketTests.V2.EndPoints
     {
         private PullRequestsResource ExistingRepository { get; set; }
 
+        private int OpenedPullRequestId { get; set; }
+
+        private int DeclinedPullRequestId { get; set; }
+
         private PullRequestsResource NotExistingRepository { get; set; }
 
         [OneTimeSetUp]
         protected void Init()
         {
-            // There is right now one open pull request on that repository.
-            // Since it's a mirror it won't be accepted, but let's hope that nobody will come to decline it.
-            // Otherwise we will have to perform our tests on another repository (a private one that we can master).
-            ExistingRepository = SampleRepositories.MercurialRepository.PullRequestsResource();
+
+            ExistingRepository = SampleRepositories.TestRepository.RepositoryResource.PullRequestsResource();
+
+            // Getting those sample PRs ensure that there is at least 2 PRs with a known status on the test repo.
+            // and a minimal set of pull request activities.
+            OpenedPullRequestId = SampleOpenedPullRequest.Get.PullRequest.id.Value;
+            DeclinedPullRequestId = SampleDeclinedPullRequest.Get.PullRequest.id.Value;
 
             NotExistingRepository = SampleRepositories.NotExistingRepository.PullRequestsResource();
         }
 
         [Test]
-        public void ListPullRequests_ExistingPublicRepositoryWithPullRequest_ReturnValidInfo()
+        public void ListPullRequests_ExistingRepositoryWithPullRequest_ReturnValidInfo()
         {
             var pullRequests = ExistingRepository.ListPullRequests();
 
-            pullRequests.ShouldNotBeNull();
-            pullRequests.Count().ShouldBe(1, "Only one opened pull request is known on Mercurial repository");
+            pullRequests.Any(p => p.id == OpenedPullRequestId).ShouldBe(true);
+            pullRequests.Any(p => p.id == DeclinedPullRequestId).ShouldBe(false);
         }
 
         [Test]
-        public void ListPullRequests_ExistingPublicRepositoryWithPullRequest_AllStates_ReturnValidInfo()
+        public void ListPullRequests_ExistingRepositoryWithPullRequest_AllStates_ReturnValidInfo()
         {
             var parameters = new ListPullRequestsParameters
             {
                 States = new[] { PullRequestState.Open, PullRequestState.Merged, PullRequestState.Declined, PullRequestState.Superseded }
             };
             var pullRequests = ExistingRepository.ListPullRequests(parameters);
-            pullRequests.ShouldNotBeNull();
-            pullRequests.Count().ShouldBeGreaterThan(1, "When we don't limit to open pull request we can found more!");
+
+            pullRequests.Any(p => p.id == OpenedPullRequestId).ShouldBe(true);
+            pullRequests.Any(p => p.id == DeclinedPullRequestId).ShouldBe(true);
         }
 
         [Test]
@@ -56,23 +64,25 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void EnumeratePullRequests_ExistingPublicRepositoryWithPullRequest_ReturnValidInfo()
+        public void EnumeratePullRequests_ExistingRepositoryWithPullRequest_ReturnValidInfo()
         {
-            var pullRequests = ExistingRepository.EnumeratePullRequests();
-            pullRequests.ShouldNotBeNull();
-            pullRequests.Count().ShouldBe(1, "Only one opened pull request is known on Mercurial repository");
+            var pullRequests = ExistingRepository.EnumeratePullRequests().ToList();
+
+            pullRequests.Any(p => p.id == OpenedPullRequestId).ShouldBe(true);
+            pullRequests.Any(p => p.id == DeclinedPullRequestId).ShouldBe(false);
         }
 
         [Test]
-        public void EnumeratePullRequests_ExistingPublicRepositoryWithPullRequest_AllStates_ReturnValidInfo()
+        public void EnumeratePullRequests_ExistingRepositoryWithPullRequest_AllStates_ReturnValidInfo()
         {
             var parameters = new EnumeratePullRequestsParameters
             {
                 States = new[] { PullRequestState.Open, PullRequestState.Merged, PullRequestState.Declined, PullRequestState.Superseded }
             };
-            var pullRequests = ExistingRepository.EnumeratePullRequests(parameters);
-            pullRequests.ShouldNotBeNull();
-            pullRequests.Count().ShouldBeGreaterThan(1, "When we don't limit to open pull request we can found more!");
+            var pullRequests = ExistingRepository.EnumeratePullRequests(parameters).ToList();
+
+            pullRequests.Any(p => p.id == OpenedPullRequestId).ShouldBe(true);
+            pullRequests.Any(p => p.id == DeclinedPullRequestId).ShouldBe(true);
         }
 
         [Test]
@@ -84,25 +94,25 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task EnumeratePullRequestsAsync_ExistingPublicRepositoryWithPullRequest_ReturnValidInfo()
+        public async Task EnumeratePullRequestsAsync_ExistingRepositoryWithPullRequest_ReturnValidInfo()
         {
-            var pullRequests = ExistingRepository.EnumeratePullRequestsAsync();
-            pullRequests.ShouldNotBeNull();
-            (await pullRequests.ToListAsync()).Count
-                .ShouldBe(1, "Only one opened pull request is known on Mercurial repository");
+            var pullRequests = await ExistingRepository.EnumeratePullRequestsAsync().ToListAsync();
+
+            pullRequests.Any(p => p.id == OpenedPullRequestId).ShouldBe(true);
+            pullRequests.Any(p => p.id == DeclinedPullRequestId).ShouldBe(false);
         }
 
         [Test]
-        public async Task EnumeratePullRequestsAsync_ExistingPublicRepositoryWithPullRequest_AllStates_ReturnValidInfo()
+        public async Task EnumeratePullRequestsAsync_ExistingRepositoryWithPullRequest_AllStates_ReturnValidInfo()
         {
             var parameters = new EnumeratePullRequestsParameters
             {
                 States = new[] { PullRequestState.Open, PullRequestState.Merged, PullRequestState.Declined, PullRequestState.Superseded }
             };
-            var pullRequests = ExistingRepository.EnumeratePullRequestsAsync(parameters);
-            pullRequests.ShouldNotBeNull();
-            (await pullRequests.ToListAsync()).Count
-                .ShouldBeGreaterThan(1, "When we don't limit to open pull request we can found more!");
+            var pullRequests = await ExistingRepository.EnumeratePullRequestsAsync(parameters).ToListAsync();
+
+            pullRequests.Any(p => p.id == OpenedPullRequestId).ShouldBe(true);
+            pullRequests.Any(p => p.id == DeclinedPullRequestId).ShouldBe(true);
         }
 
         [Test]
@@ -114,7 +124,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void GetPullRequestsActivities_ExistingPublicRepositoryWithPullRequest_ReturnValidInfo()
+        public void GetPullRequestsActivities_ExistingRepositoryWithPullRequest_ReturnValidInfo()
         {
             var pullRequestActivities = ExistingRepository.GetPullRequestsActivities();
             pullRequestActivities.ShouldNotBeNull();
@@ -122,7 +132,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void GetPullRequestsActivities_ExistingPublicRepositoryWithPullRequest_WithMaxLimit_ReturnValidInfo()
+        public void GetPullRequestsActivities_ExistingRepositoryWithPullRequest_WithMaxLimit_ReturnValidInfo()
         {
             var pullRequestActivities = ExistingRepository.GetPullRequestsActivities(3);
             pullRequestActivities.ShouldNotBeNull();
@@ -137,7 +147,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void EnumeratePullRequestsActivities_ExistingPublicRepositoryWithPullRequest_ReturnValidInfo()
+        public void EnumeratePullRequestsActivities_ExistingRepositoryWithPullRequest_ReturnValidInfo()
         {
             var pullRequestActivities = ExistingRepository.EnumeratePullRequestsActivities();
             pullRequestActivities.ShouldNotBeNull();
@@ -153,7 +163,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task EnumeratePullRequestsActivitiesAsync_ExistingPublicRepositoryWithPullRequest_ReturnValidInfo()
+        public async Task EnumeratePullRequestsActivitiesAsync_ExistingRepositoryWithPullRequest_ReturnValidInfo()
         {
             var pullRequestActivities = ExistingRepository.EnumeratePullRequestsActivitiesAsync();
             pullRequestActivities.ShouldNotBeNull();

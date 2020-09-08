@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -14,76 +15,73 @@ namespace SharpBucketTests.V2.EndPoints
     [TestFixture]
     internal class PullRequestResourceTests
     {
-        private PullRequestResource ExistingPullRequest { get; set; }
+        private PullRequestResource ExistingPullRequest => SampleOpenedPullRequest.Get.PullRequestResource;
 
         private PullRequestResource NotExistingPullRequest { get; set; }
 
         [OneTimeSetUp]
         protected void Init()
         {
-            // pull request number 2 on MercurialRepository is public and declined
-            // so we could expect that it will be always accessible and won't change
-            // which is what we need to have reproducible tests
-            ExistingPullRequest = SampleRepositories.MercurialRepository.PullRequestsResource().PullRequestResource(2);
+            var pullRequestsResource = SampleRepositories.TestRepository.RepositoryResource.PullRequestsResource();
 
             // there is no change that a pull request with the max value of int32 exist one day
-            NotExistingPullRequest = SampleRepositories.MercurialRepository.PullRequestsResource().PullRequestResource(int.MaxValue);
+            NotExistingPullRequest = pullRequestsResource.PullRequestResource(int.MaxValue);
         }
 
         [Test]
-        public void GetPullRequest_ExistingPublicPullRequest_ReturnValidInfo()
+        public void GetPullRequest_ExistingPullRequest_ReturnValidInfo()
         {
-            var pullRequest = ExistingPullRequest.GetPullRequest();
+            var pullRequest = SampleDeclinedPullRequest.Get.PullRequestResource.GetPullRequest();
             pullRequest.ShouldNotBeNull();
-            pullRequest.id.ShouldBe(2);
-            pullRequest.author?.nickname.ShouldBe("goodtune");
-            pullRequest.title.ShouldBe("Selective read/write or read-only repos with hg-ssh");
+            pullRequest.id.ShouldNotBeNull();
+            pullRequest.author.ShouldNotBeNull();
+            pullRequest.title.ShouldNotBeNullOrEmpty();
             pullRequest.state.ShouldBe("DECLINED");
         }
 
         [Test]
-        public async Task GetPullRequestAsync_ExistingPublicPullRequest_ReturnValidInfo()
+        public async Task GetPullRequestAsync_ExistingPullRequest_ReturnValidInfo()
         {
-            var pullRequest = await ExistingPullRequest.GetPullRequestAsync();
+            var pullRequest = await SampleDeclinedPullRequest.Get.PullRequestResource.GetPullRequestAsync();
             pullRequest.ShouldNotBeNull();
-            pullRequest.id.ShouldBe(2);
-            pullRequest.author?.nickname.ShouldBe("goodtune");
-            pullRequest.title.ShouldBe("Selective read/write or read-only repos with hg-ssh");
+            pullRequest.id.ShouldNotBeNull();
+            pullRequest.author.ShouldNotBeNull();
+            pullRequest.title.ShouldNotBeNullOrEmpty();
             pullRequest.state.ShouldBe("DECLINED");
         }
 
         [Test]
-        public void GetPullRequest_NotExistingPublicPullRequest_ThrowException()
+        public void GetPullRequest_NotExistingPullRequest_ThrowException()
         {
             var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.GetPullRequest());
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]
-        public void GetPullRequestAsync_NotExistingPublicPullRequest_ThrowException()
+        public void GetPullRequestAsync_NotExistingPullRequest_ThrowException()
         {
             var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await NotExistingPullRequest.GetPullRequestAsync());
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]
-        public void ListPullRequestActivities_ExistingPublicPullRequest_ReturnValidInfo()
+        public void ListPullRequestActivities_ExistingPullRequest_ReturnValidInfo()
         {
-            var activities = ExistingPullRequest.ListPullRequestActivities();
+            var activities = SampleDeclinedPullRequest.Get.PullRequestResource.ListPullRequestActivities();
             activities.ShouldNotBeNull();
-            activities.Count.ShouldBe(4);
+            activities.Count.ShouldBeGreaterThanOrEqualTo(1);
             activities[0].update.state.ShouldBe("DECLINED");
         }
 
         [Test]
-        public void ListPullRequestActivities_NotExistingPublicPullRequest_ThrowException()
+        public void ListPullRequestActivities_NotExistingPullRequest_ThrowException()
         {
             var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.ListPullRequestActivities());
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]
-        public void EnumeratePullRequestActivities_ExistingPublicPullRequest_ReturnValidInfo()
+        public void EnumeratePullRequestActivities_ExistingPullRequest_ReturnValidInfo()
         {
             var activities = ExistingPullRequest.EnumeratePullRequestActivities();
             activities.ShouldNotBeNull();
@@ -91,7 +89,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void EnumeratePullRequestActivities_NotExistingPublicPullRequest_ThrowExceptionWhenStartEnumerate()
+        public void EnumeratePullRequestActivities_NotExistingPullRequest_ThrowExceptionWhenStartEnumerate()
         {
             var activities = NotExistingPullRequest.EnumeratePullRequestActivities();
             var exception = Assert.Throws<BitbucketV2Exception>(() => activities.First());
@@ -99,7 +97,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task EnumeratePullRequestActivitiesAsync_ExistingPublicPullRequest_ReturnValidInfo()
+        public async Task EnumeratePullRequestActivitiesAsync_ExistingPullRequest_ReturnValidInfo()
         {
             var activities = ExistingPullRequest.EnumeratePullRequestActivitiesAsync();
             activities.ShouldNotBeNull();
@@ -107,7 +105,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void EnumeratePullRequestActivitiesAsync_NotExistingPublicPullRequest_ThrowExceptionWhenStartEnumerate()
+        public void EnumeratePullRequestActivitiesAsync_NotExistingPullRequest_ThrowExceptionWhenStartEnumerate()
         {
             var activities = NotExistingPullRequest.EnumeratePullRequestActivitiesAsync();
             var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await activities.FirstAsync());
@@ -116,18 +114,18 @@ namespace SharpBucketTests.V2.EndPoints
 
         [Test]
         [Obsolete("Test of an obsolete method")]
-        public void ListPullRequestComments_ExistingPublicPullRequest_ReturnValidInfo()
+        public void ListPullRequestComments_ExistingPullRequest_ReturnValidInfo()
         {
-            var comments = ExistingPullRequest.ListPullRequestComments();
+            var comments = SampleOpenedPullRequest.Get.PullRequestResource.ListPullRequestComments();
             comments.ShouldNotBeNull();
-            comments.Count.ShouldBe(2);
+            comments.Count.ShouldBeGreaterThanOrEqualTo(1);
             comments[0].ShouldBeFilled();
-            comments[0].content.raw.ShouldBe("This repo is not used for development, it's just a mirror (and I am just an infrequent contributor). Please consult http://mercurial.selenic.com/wiki/ContributingChanges and send your patch to ``mercurial-devel`` ML.");
+            comments[0].content.raw.ShouldBe("This PR is just for testing purposes.");
         }
 
         [Test]
         [Obsolete("Test of an obsolete method")]
-        public void ListPullRequestComments_NotExistingPublicPullRequest_ThrowException()
+        public void ListPullRequestComments_NotExistingPullRequest_ThrowException()
         {
             var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.ListPullRequestComments());
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -135,52 +133,53 @@ namespace SharpBucketTests.V2.EndPoints
 
         [Test]
         [Obsolete("Test of an obsolete method")]
-        public void GetPullRequestComment_ExistingCommentOnAPublicPullRequest_ReturnValidInfo()
+        public void GetPullRequestComment_ExistingCommentOnAPullRequest_ReturnValidInfo()
         {
-            var comment = ExistingPullRequest.GetPullRequestComment(53789);
+            var commentId = SampleOpenedPullRequest.Get.GlobalComment.id;
+            Debug.Assert(commentId != null, "commentId != null");
+            var comment = SampleOpenedPullRequest.Get.PullRequestResource.GetPullRequestComment(commentId.Value);
             comment.ShouldBeFilled();
-            comment.content.raw.ShouldBe("This repo is not used for development, it's just a mirror (and I am just an infrequent contributor). Please consult http://mercurial.selenic.com/wiki/ContributingChanges and send your patch to ``mercurial-devel`` ML.");
+            comment.content.raw.ShouldBe("This PR is just for testing purposes.");
         }
 
         [Test]
         [Obsolete("Test of an obsolete method")]
-        public void GetPullRequestComment_ExistingReplyCommentOnAPublicPullRequest_ReturnValidInfo()
+        public void GetPullRequestComment_ExistingReplyCommentOnAPullRequest_ReturnValidInfo()
         {
-            var comment = SampleRepositories.RepositoriesEndPoint
-                .RepositoryResource("tortoisehg", "thg")
-                .PullRequestsResource()
-                .PullRequestResource(46)
-                .GetPullRequestComment(61843122);
+            var commentId = SampleOpenedPullRequest.Get.ResponseComment.id;
+            Debug.Assert(commentId != null, "commentId != null");
+            var comment = SampleOpenedPullRequest.Get.PullRequestResource.GetPullRequestComment(commentId.Value);
             comment.ShouldBeFilled();
             comment.parent.ShouldBeFilled();
         }
 
         [Test]
         [Obsolete("Test of an obsolete method")]
-        public void GetPullRequestComment_NotExistingCommentOnPublicPullRequest_ThrowException()
+        public void GetPullRequestComment_NotExistingCommentOnPullRequest_ThrowException()
         {
             var exception = Assert.Throws<BitbucketV2Exception>(() => ExistingPullRequest.GetPullRequestComment(int.MaxValue));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]
-        public void ListPullRequestCommits_ExistingPublicPullRequest_ReturnValidInfo()
+        public void ListPullRequestCommits_ExistingPullRequest_ReturnValidInfo()
         {
-            var commits = ExistingPullRequest.ListPullRequestCommits();
+            var pullRequestResource = SampleDeclinedPullRequest.Get.PullRequestResource;
+            var commits = pullRequestResource.ListPullRequestCommits();
             commits.ShouldNotBeNull();
-            commits.Count.ShouldBe(2);
-            commits[0].message.ShouldBe("Update the docstring");
+            commits.Count.ShouldBeGreaterThanOrEqualTo(1);
+            commits[0].message.ShouldStartWith("bad work that will be declined");
         }
 
         [Test]
-        public void ListPullRequestCommits_NotExistingPublicPullRequest_ThrowException()
+        public void ListPullRequestCommits_NotExistingPullRequest_ThrowException()
         {
             var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.ListPullRequestCommits());
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]
-        public void EnumeratePullRequestCommits_ExistingPublicPullRequest_ReturnValidInfo()
+        public void EnumeratePullRequestCommits_ExistingPullRequest_ReturnValidInfo()
         {
             var commits = ExistingPullRequest.EnumeratePullRequestCommits();
             commits.ShouldNotBeNull();
@@ -188,7 +187,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void EnumeratePullRequestCommits_NotExistingPublicPullRequest_ThrowExceptionWhenStartToEnumerate()
+        public void EnumeratePullRequestCommits_NotExistingPullRequest_ThrowExceptionWhenStartToEnumerate()
         {
             var commits = NotExistingPullRequest.EnumeratePullRequestCommits();
             var exception = Assert.Throws<BitbucketV2Exception>(() => commits.First());
@@ -196,7 +195,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task EnumeratePullRequestCommitsAsync_ExistingPublicPullRequest_ReturnValidInfo()
+        public async Task EnumeratePullRequestCommitsAsync_ExistingPullRequest_ReturnValidInfo()
         {
             var commits = ExistingPullRequest.EnumeratePullRequestCommitsAsync();
             commits.ShouldNotBeNull();
@@ -204,7 +203,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void EnumeratePullRequestCommitsAsync_NotExistingPublicPullRequest_ThrowExceptionWhenStartToEnumerate()
+        public void EnumeratePullRequestCommitsAsync_NotExistingPullRequest_ThrowExceptionWhenStartToEnumerate()
         {
             var commits = NotExistingPullRequest.EnumeratePullRequestCommitsAsync();
             var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await commits.FirstAsync());
@@ -212,30 +211,30 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void GetDiffForPullRequest_ExistingPublicPullRequest_ReturnValidInfo()
+        public void GetDiffForPullRequest_ExistingPullRequest_ReturnValidInfo()
         {
             var diff = ExistingPullRequest.GetDiffForPullRequest();
             diff.ShouldNotBeNull();
-            diff.ShouldBe("diff -r 0fbcabe523bc -r 4f9cfa6003cb contrib/hg-ssh\n--- a/contrib/hg-ssh\n+++ b/contrib/hg-ssh\n@@ -25,8 +25,8 @@\n You can use pattern matching of your normal shell, e.g.:\n command=\"cd repos && hg-ssh user/thomas/* projects/{mercurial,foo}\"\n \n-You can also add a --read-only flag to allow read-only access to a key, e.g.:\n-command=\"hg-ssh --read-only repos/*\"\n+You can also add a --read-only flag to allow read-only access to a repo, e.g.:\n+command=\"hg-ssh repo1 --read-only=repo2 repo3\"\n \"\"\"\n \n # enable importing on demand to reduce startup time\n@@ -34,21 +34,16 @@\n \n from mercurial import dispatch\n \n-import sys, os, shlex\n+import sys, optparse, os, shlex\n \n def main():\n+    parser = optparse.OptionParser()\n+    parser.add_option('--read-only', action='append', default=[])\n+    options, args = parser.parse_args()\n     cwd = os.getcwd()\n-    readonly = False\n-    args = sys.argv[1:]\n-    while len(args):\n-        if args[0] == '--read-only':\n-            readonly = True\n-            args.pop(0)\n-        else:\n-            break\n     allowed_paths = [os.path.normpath(os.path.join(cwd,\n                                                    os.path.expanduser(path)))\n-                     for path in args]\n+                     for path in args + options.read_only]\n     orig_cmd = os.getenv('SSH_ORIGINAL_COMMAND', '?')\n     try:\n         cmdargv = shlex.split(orig_cmd)\n@@ -61,7 +56,7 @@\n         repo = os.path.normpath(os.path.join(cwd, os.path.expanduser(path)))\n         if repo in allowed_paths:\n             cmd = ['-R', repo, 'serve', '--stdio']\n-            if readonly:\n+            if path in options.read_only:\n                 cmd += [\n                     '--config',\n                     'hooks.prechangegroup.hg-ssh=python:__main__.rejectpush',\n");
+            diff.ShouldStartWith("diff ");
         }
 
         [Test]
-        public async Task GetDiffForPullRequestAsync_ExistingPublicPullRequest_ReturnValidInfo()
+        public async Task GetDiffForPullRequestAsync_ExistingPullRequest_ReturnValidInfo()
         {
             var diff = await ExistingPullRequest.GetDiffForPullRequestAsync();
             diff.ShouldNotBeNull();
-            diff.ShouldBe("diff -r 0fbcabe523bc -r 4f9cfa6003cb contrib/hg-ssh\n--- a/contrib/hg-ssh\n+++ b/contrib/hg-ssh\n@@ -25,8 +25,8 @@\n You can use pattern matching of your normal shell, e.g.:\n command=\"cd repos && hg-ssh user/thomas/* projects/{mercurial,foo}\"\n \n-You can also add a --read-only flag to allow read-only access to a key, e.g.:\n-command=\"hg-ssh --read-only repos/*\"\n+You can also add a --read-only flag to allow read-only access to a repo, e.g.:\n+command=\"hg-ssh repo1 --read-only=repo2 repo3\"\n \"\"\"\n \n # enable importing on demand to reduce startup time\n@@ -34,21 +34,16 @@\n \n from mercurial import dispatch\n \n-import sys, os, shlex\n+import sys, optparse, os, shlex\n \n def main():\n+    parser = optparse.OptionParser()\n+    parser.add_option('--read-only', action='append', default=[])\n+    options, args = parser.parse_args()\n     cwd = os.getcwd()\n-    readonly = False\n-    args = sys.argv[1:]\n-    while len(args):\n-        if args[0] == '--read-only':\n-            readonly = True\n-            args.pop(0)\n-        else:\n-            break\n     allowed_paths = [os.path.normpath(os.path.join(cwd,\n                                                    os.path.expanduser(path)))\n-                     for path in args]\n+                     for path in args + options.read_only]\n     orig_cmd = os.getenv('SSH_ORIGINAL_COMMAND', '?')\n     try:\n         cmdargv = shlex.split(orig_cmd)\n@@ -61,7 +56,7 @@\n         repo = os.path.normpath(os.path.join(cwd, os.path.expanduser(path)))\n         if repo in allowed_paths:\n             cmd = ['-R', repo, 'serve', '--stdio']\n-            if readonly:\n+            if path in options.read_only:\n                 cmd += [\n                     '--config',\n                     'hooks.prechangegroup.hg-ssh=python:__main__.rejectpush',\n");
+            diff.ShouldStartWith("diff ");
         }
 
         [Test]
-        public void GetDiffForPullRequest_NotExistingPublicPullRequest_ThrowException()
+        public void GetDiffForPullRequest_NotExistingPullRequest_ThrowException()
         {
             var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.GetDiffForPullRequest());
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]
-        public void GetDiffForPullRequestAsync_NotExistingPublicPullRequest_ThrowException()
+        public void GetDiffForPullRequestAsync_NotExistingPullRequest_ThrowException()
         {
             var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await NotExistingPullRequest.GetDiffForPullRequestAsync());
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -274,17 +273,10 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void ApprovePullRequestAndRemovePullRequestApproval_CreateAPullRequestThenChangeMyApproval_ActivityShouldFollowThatChanges()
+        public void ApprovePullRequestAndRemovePullRequestApproval_OnAnOpenedPullRequest_ActivityShouldFollowThatChanges()
         {
-            // create the pull request
-            var pullRequestsResource = SampleRepositories.TestRepository.RepositoryResource.PullRequestsResource();
-            var pullRequestToApprove = new PullRequest
-            {
-                title = "a good work to approve",
-                source = new Source { branch = new Branch { name = "branchToAccept" } }
-            };
-            var pullRequest = pullRequestsResource.PostPullRequest(pullRequestToApprove);
-            var pullRequestResource = pullRequestsResource.PullRequestResource(pullRequest.id.GetValueOrDefault());
+            // get the pull request
+            var pullRequestResource = SampleOpenedPullRequest.Get.PullRequestResource;
 
             // approve the pull request
             var approvalResult = pullRequestResource.ApprovePullRequest();
@@ -310,21 +302,14 @@ namespace SharpBucketTests.V2.EndPoints
             // validate pull request activities after having remove the approval
             var activitiesAfterRemoveApproval = pullRequestResource.ListPullRequestActivities();
             activitiesAfterRemoveApproval.Count.ShouldBe(activities.Count - 1, "Approval activity is removed, and removal is not traced.");
-            activitiesAfterRemoveApproval.ShouldAllBe(activity => activity.update != null, "should all be update activities");
+            activitiesAfterRemoveApproval.ShouldAllBe(activity => activity.approval == null, "should all be non approval activities");
         }
 
         [Test]
-        public async Task ApprovePullRequestAsyncAndRemovePullRequestApprovalAsync_CreateAPullRequestAsyncThenChangeMyApprovalAsync_ActivityShouldFollowThatChanges()
+        public async Task ApprovePullRequestAsyncAndRemovePullRequestApprovalAsync_OnAnOpenedPullRequest_ActivityShouldFollowThatChanges()
         {
-            // create the pull request
-            var pullRequestsResource = SampleRepositories.TestRepository.RepositoryResource.PullRequestsResource();
-            var pullRequestToApprove = new PullRequest
-            {
-                title = "a good work to approve",
-                source = new Source { branch = new Branch { name = "branchToAccept" } }
-            };
-            var pullRequest = await pullRequestsResource.PostPullRequestAsync(pullRequestToApprove);
-            var pullRequestResource = pullRequestsResource.PullRequestResource(pullRequest.id.GetValueOrDefault());
+            // get the pull request
+            var pullRequestResource = SampleOpenedPullRequest.Get.PullRequestResource;
 
             // approve the pull request
             var approvalResult = await pullRequestResource.ApprovePullRequestAsync();
@@ -350,7 +335,7 @@ namespace SharpBucketTests.V2.EndPoints
             // validate pull request activities after having remove the approval
             var activitiesAfterRemoveApproval = pullRequestResource.ListPullRequestActivities();
             activitiesAfterRemoveApproval.Count.ShouldBe(activities.Count - 1, "Approval activity is removed, and removal is not traced.");
-            activitiesAfterRemoveApproval.ShouldAllBe(activity => activity.update != null, "should all be update activities");
+            activitiesAfterRemoveApproval.ShouldAllBe(activity => activity.approval == null, "should all be non approval activities");
         }
     }
 }

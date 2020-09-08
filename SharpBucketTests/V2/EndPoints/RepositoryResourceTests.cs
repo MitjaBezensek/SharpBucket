@@ -16,35 +16,35 @@ namespace SharpBucketTests.V2.EndPoints
     internal class RepositoryResourceTests
     {
         [Test]
-        public void GetRepository_FromMercurialRepo_CorrectlyFetchesTheRepoInfo()
+        public void GetRepository_FromAPublicRepository_CorrectlyFetchesTheRepoInfo()
         {
-            var repositoryResource = SampleRepositories.MercurialRepository;
+            var repositoryResource = SampleRepositories.GitMirrorRepository;
             repositoryResource.ShouldNotBe(null);
             var testRepository = repositoryResource.GetRepository();
 
             testRepository.ShouldBeFilled();
-            testRepository.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
+            testRepository.name.ShouldBe(SampleRepositories.GIT_MIRROR_REPOSITORY_NAME);
             testRepository.website.ShouldNotBeNullOrEmpty(); // this repository is an example of one where website is filled
         }
 
         [Test]
-        public async Task GetRepositoryAsync_FromMercurialRepo_CorrectlyFetchesTheRepoInfo()
+        public async Task GetRepositoryAsync_FromAPublicRepository_CorrectlyFetchesTheRepoInfo()
         {
-            var repositoryResource = SampleRepositories.MercurialRepository;
+            var repositoryResource = SampleRepositories.GitMirrorRepository;
             repositoryResource.ShouldNotBe(null);
             var testRepository = await repositoryResource.GetRepositoryAsync();
 
             testRepository.ShouldBeFilled();
-            testRepository.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
+            testRepository.name.ShouldBe(SampleRepositories.GIT_MIRROR_REPOSITORY_NAME);
             testRepository.website.ShouldNotBeNullOrEmpty(); // this repository is an example of one where website is filled
         }
 
         [Test]
-        public void ListWatchers_FromMercurialRepo_ShouldReturnMoreThan10UniqueWatchers()
+        public void ListWatchers_FromAPublicRepository_ShouldReturnUniqueWatchers()
         {
-            var repositoryResource = SampleRepositories.MercurialRepository;
+            var repositoryResource = SampleRepositories.GitMirrorRepository;
             var watchers = repositoryResource.ListWatchers();
-            watchers.Count.ShouldBeGreaterThan(10);
+            watchers.Count.ShouldBeGreaterThan(1);
 
             var uniqueNames = new HashSet<string>();
             foreach (var watcher in watchers)
@@ -55,9 +55,9 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void EnumerateWatchers_FromMercurialRepo_ShouldReturnMoreThan10UniqueWatchers()
+        public void EnumerateWatchers_FromAPublicRepository_ShouldReturnUniqueWatchers()
         {
-            var repositoryResource = SampleRepositories.MercurialRepository;
+            var repositoryResource = SampleRepositories.GitMirrorRepository;
             var watchers = repositoryResource.EnumerateWatchers();
 
             var uniqueNames = new HashSet<string>();
@@ -66,13 +66,13 @@ namespace SharpBucketTests.V2.EndPoints
                 watcher.ShouldBeFilled();
                 uniqueNames.Add(watcher.uuid).ShouldBe(true, $"value ${watcher.uuid} is not unique");
             }
-            uniqueNames.Count.ShouldBeGreaterThan(10);
+            uniqueNames.Count.ShouldBeGreaterThan(1);
         }
 
         [Test]
-        public async Task EnumerateWatchersAsync_FromMercurialRepo_ShouldReturnMoreThan10UniqueWatchers()
+        public async Task EnumerateWatchersAsync_FromAPublicRepository_ShouldReturnUniqueWatchers()
         {
-            var repositoryResource = SampleRepositories.MercurialRepository;
+            var repositoryResource = SampleRepositories.GitMirrorRepository;
             var watchers = repositoryResource.EnumerateWatchersAsync();
 
             var uniqueNames = new HashSet<string>();
@@ -81,33 +81,33 @@ namespace SharpBucketTests.V2.EndPoints
                 watcher.ShouldBeFilled();
                 uniqueNames.Add(watcher.uuid).ShouldBe(true, $"value ${watcher.uuid} is not unique");
             }
-            uniqueNames.Count.ShouldBeGreaterThan(10);
+            uniqueNames.Count.ShouldBeGreaterThan(1);
         }
 
         [Test]
-        public void ListForks_FromMercurialRepo_ShouldReturnMoreThan10UniqueForks()
+        public void ListForks_FromAPublicRepository_ShouldReturnUniqueForks()
         {
-            var repositoryResource = SampleRepositories.MercurialRepository;
+            var repositoryResource = SampleRepositories.GitMirrorRepository;
             var forks = repositoryResource.ListForks();
-            forks.Count.ShouldBeGreaterThan(10);
+            forks.Count.ShouldBeGreaterThan(1);
 
             var uniqueNames = new HashSet<string>();
             foreach (var fork in forks)
             {
                 fork.ShouldBeFilled();
 
-                // since they are forks of mercurial, their parent should be mercurial
+                // since they are forks, their parent should be forked repository
                 fork.parent.ShouldBeFilled();
-                fork.parent.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
+                fork.parent.name.ShouldBe(SampleRepositories.GIT_MIRROR_REPOSITORY_NAME);
 
                 uniqueNames.Add(fork.full_name).ShouldBe(true, $"value ${fork.full_name} is not unique");
             }
         }
 
         [Test]
-        public void EnumerateForks_FromMercurialRepo_ShouldReturnMoreThan10UniqueForks()
+        public void EnumerateForks_FromAPublicRepository_ShouldReturnUniqueForks()
         {
-            var repositoryResource = SampleRepositories.MercurialRepository;
+            var repositoryResource = SampleRepositories.GitMirrorRepository;
             var forks = repositoryResource.EnumerateForks();
 
             var uniqueNames = new HashSet<string>();
@@ -115,19 +115,19 @@ namespace SharpBucketTests.V2.EndPoints
             {
                 fork.ShouldBeFilled();
 
-                // since they are forks of mercurial, their parent should be mercurial
+                // since they are forks, their parent should be forked repository
                 fork.parent.ShouldBeFilled();
-                fork.parent.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
+                fork.parent.name.ShouldBe(SampleRepositories.GIT_MIRROR_REPOSITORY_NAME);
 
                 uniqueNames.Add(fork.full_name).ShouldBe(true, $"value ${fork.full_name} is not unique");
             }
-            uniqueNames.Count.ShouldBeGreaterThan(10);
+            uniqueNames.Count.ShouldBeGreaterThan(1);
         }
 
         [Test]
-        public async Task EnumerateForksAsync_FromMercurialRepo_ShouldReturnMoreThan10UniqueForks()
+        public async Task EnumerateForksAsync_FromAPublicRepository_ShouldReturnUniqueForks()
         {
-            var repositoryResource = SampleRepositories.MercurialRepository;
+            var repositoryResource = SampleRepositories.GitMirrorRepository;
             var forks = repositoryResource.EnumerateForksAsync();
 
             var uniqueNames = new HashSet<string>();
@@ -135,21 +135,21 @@ namespace SharpBucketTests.V2.EndPoints
             {
                 fork.ShouldBeFilled();
 
-                // since they are forks of mercurial, their parent should be mercurial
+                // since they are forks, their parent should be forked repository
                 fork.parent.ShouldBeFilled();
-                fork.parent.name.ShouldBe(SampleRepositories.MERCURIAL_REPOSITORY_NAME);
+                fork.parent.name.ShouldBe(SampleRepositories.GIT_MIRROR_REPOSITORY_NAME);
 
                 uniqueNames.Add(fork.full_name).ShouldBe(true, $"value ${fork.full_name} is not unique");
             }
-            uniqueNames.Count.ShouldBeGreaterThan(10);
+            uniqueNames.Count.ShouldBeGreaterThan(1);
         }
 
         [TestCase(3)]
         [TestCase(103)]
         [Test]
-        public void ListCommits_FromMercurialRepoWithSpecifiedMax_ShouldReturnSpecifiedNumberOfCommits(int max)
+        public void ListCommits_FromAPublicRepositoryWithSpecifiedMax_ShouldReturnSpecifiedNumberOfCommits(int max)
         {
-            var repositoryResource = SampleRepositories.MercurialRepository;
+            var repositoryResource = SampleRepositories.GitMirrorRepository;
             repositoryResource.ShouldNotBe(null);
             var commits = repositoryResource.ListCommits(max: max);
             commits.Count.ShouldBe(max);
@@ -296,18 +296,19 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void GetCommit_AKnownHashOnMercurialRepository_ShouldReturnCorrectData()
+        public void GetCommit_AKnownHashOnARepository_ShouldReturnCorrectData()
         {
-            var repositoryResource = SampleRepositories.MercurialRepository;
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+            var commitHash = SampleRepositories.TestRepository.RepositoryInfo.MainBranchLastCommit;
 
-            var commit = repositoryResource.GetCommit("abae1eb695c077fa21b6ef0b7056f36d63cf0302");
+            var commit = repositoryResource.GetCommit(commitHash);
 
             commit.ShouldNotBeNull();
-            commit.hash.ShouldBe("abae1eb695c077fa21b6ef0b7056f36d63cf0302");
+            commit.hash.ShouldBe(commitHash);
             commit.date.ShouldNotBeNullOrWhiteSpace();
             commit.message.ShouldNotBeNullOrWhiteSpace();
             commit.author.raw.ShouldNotBeNullOrWhiteSpace();
-            commit.author.user.ShouldBeFilled();
+            commit.author.user.ShouldBeNull(); // the author is not a user known by bitbucket here
             commit.links.ShouldNotBeNull();
             commit.parents[0].ShouldBeFilled();
             commit.repository.uuid.ShouldNotBeNullOrWhiteSpace();
@@ -318,18 +319,19 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task GetCommitAsync_AKnownHashOnMercurialRepository_ShouldReturnCorrectData()
+        public async Task GetCommitAsync_AKnownHashOnARepository_ShouldReturnCorrectData()
         {
-            var repositoryResource = SampleRepositories.MercurialRepository;
+            var repositoryResource = SampleRepositories.TestRepository.RepositoryResource;
+            var commitHash = SampleRepositories.TestRepository.RepositoryInfo.MainBranchLastCommit;
 
-            var commit = await repositoryResource.GetCommitAsync("abae1eb695c077fa21b6ef0b7056f36d63cf0302");
+            var commit = await repositoryResource.GetCommitAsync(commitHash);
 
             commit.ShouldNotBeNull();
-            commit.hash.ShouldBe("abae1eb695c077fa21b6ef0b7056f36d63cf0302");
+            commit.hash.ShouldBe(commitHash);
             commit.date.ShouldNotBeNullOrWhiteSpace();
             commit.message.ShouldNotBeNullOrWhiteSpace();
             commit.author.raw.ShouldNotBeNullOrWhiteSpace();
-            commit.author.user.ShouldBeFilled();
+            commit.author.user.ShouldBeNull(); // the author is not a user known by bitbucket here
             commit.links.ShouldNotBeNull();
             commit.parents[0].ShouldBeFilled();
             commit.repository.uuid.ShouldNotBeNullOrWhiteSpace();
@@ -401,7 +403,7 @@ namespace SharpBucketTests.V2.EndPoints
         public void PostRepository_InATeamWhereIHaveNoRights_ThrowAnException()
         {
             var repositoryName = Guid.NewGuid().ToString("N");
-            var repositoryResource = SampleRepositories.RepositoriesEndPoint.RepositoryResource(SampleRepositories.MERCURIAL_ACCOUNT_NAME, repositoryName);
+            var repositoryResource = SampleRepositories.RepositoriesEndPoint.RepositoryResource(SampleRepositories.MIRROR_ACCOUNT_NAME, repositoryName);
             var repository = new Repository
             {
                 name = repositoryName
@@ -416,7 +418,7 @@ namespace SharpBucketTests.V2.EndPoints
         public void PostRepositoryAsync_InATeamWhereIHaveNoRights_ThrowAnException()
         {
             var repositoryName = Guid.NewGuid().ToString("N");
-            var repositoryResource = SampleRepositories.RepositoriesEndPoint.RepositoryResource(SampleRepositories.MERCURIAL_ACCOUNT_NAME, repositoryName);
+            var repositoryResource = SampleRepositories.RepositoriesEndPoint.RepositoryResource(SampleRepositories.MIRROR_ACCOUNT_NAME, repositoryName);
             var repository = new Repository
             {
                 name = repositoryName

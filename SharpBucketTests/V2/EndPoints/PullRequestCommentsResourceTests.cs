@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -14,49 +16,51 @@ namespace SharpBucketTests.V2.EndPoints
     public class PullRequestCommentsResourceTests
         : CommentsResourceTests<PullRequestCommentsResource, PullRequestComment>
     {
-        private PullRequestResource ExistingPullRequest { get; set; }
+        private PullRequestResource ExistingPullRequestWithComments => SampleOpenedPullRequest.Get.PullRequestResource;
+
+        private int PullRequestGlobalCommentId => SampleOpenedPullRequest.Get.GlobalComment.id
+                                                  ?? throw new InvalidOperationException("that id is not expected to be null!");
+
+        private int PullRequestResponseCommentId => SampleOpenedPullRequest.Get.ResponseComment.id
+                                                    ?? throw new InvalidOperationException("that id is not expected to be null!");
 
         private PullRequestResource NotExistingPullRequest { get; set; }
 
         [OneTimeSetUp]
         protected void Init()
         {
-            // pull request number 2 on MercurialRepository is public and declined
-            // so we could expect that it will be always accessible and won't change
-            // which is what we need to have reproducible tests
-            ExistingPullRequest = SampleRepositories.MercurialRepository.PullRequestsResource().PullRequestResource(2);
-
             // there is no change that a pull request with the max value of int32 exist one day
-            NotExistingPullRequest = SampleRepositories.MercurialRepository.PullRequestsResource().PullRequestResource(int.MaxValue);
+            NotExistingPullRequest = SampleRepositories.TestRepository.RepositoryResource
+                .PullRequestsResource().PullRequestResource(int.MaxValue);
         }
 
         [Test]
-        public void List_ExistingPublicPullRequest_ReturnValidInfo()
+        public void List_ExistingPullRequest_ReturnValidInfo()
         {
-            var comments = ExistingPullRequest.CommentsResource.ListComments();
+            var comments = ExistingPullRequestWithComments.CommentsResource.ListComments();
             comments.ShouldNotBeNull();
             comments.Count.ShouldBe(2);
             comments[0].ShouldBeFilled();
-            comments[0].content.raw.ShouldBe("This repo is not used for development, it's just a mirror (and I am just an infrequent contributor). Please consult http://mercurial.selenic.com/wiki/ContributingChanges and send your patch to ``mercurial-devel`` ML.");
+            comments[0].content.raw.ShouldBe("This PR is just for testing purposes.");
         }
 
         [Test]
-        public void List_NotExistingPublicPullRequest_ThrowException()
+        public void List_NotExistingPullRequest_ThrowException()
         {
             var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.CommentsResource.ListComments());
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]
-        public void Enumerate_ExistingPublicPullRequest_ReturnValidInfo()
+        public void Enumerate_ExistingPullRequest_ReturnValidInfo()
         {
-            var comments = ExistingPullRequest.CommentsResource.EnumerateComments();
+            var comments = ExistingPullRequestWithComments.CommentsResource.EnumerateComments();
             comments.ShouldNotBeNull();
             comments.ShouldNotBeEmpty();
         }
 
         [Test]
-        public void Enumerate_NotExistingPublicPullRequest_ThrowExceptionWhenStartEnumerate()
+        public void Enumerate_NotExistingPullRequest_ThrowExceptionWhenStartEnumerate()
         {
             var comments = NotExistingPullRequest.CommentsResource.EnumerateComments();
             var exception = Assert.Throws<BitbucketV2Exception>(() => comments.First());
@@ -64,15 +68,15 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task EnumerateAsync_ExistingPublicPullRequest_ReturnValidInfo()
+        public async Task EnumerateAsync_ExistingPullRequest_ReturnValidInfo()
         {
-            var comments = ExistingPullRequest.CommentsResource.EnumerateCommentsAsync();
+            var comments = ExistingPullRequestWithComments.CommentsResource.EnumerateCommentsAsync();
             comments.ShouldNotBeNull();
             (await comments.ToListAsync()).ShouldNotBeEmpty();
         }
 
         [Test]
-        public void EnumerateAsync_NotExistingPublicPullRequest_ThrowExceptionWhenStartEnumerate()
+        public void EnumerateAsync_NotExistingPullRequest_ThrowExceptionWhenStartEnumerate()
         {
             var comments = NotExistingPullRequest.CommentsResource.EnumerateCommentsAsync();
             var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await comments.FirstAsync());
@@ -89,6 +93,7 @@ namespace SharpBucketTests.V2.EndPoints
                 source = new Source { branch = new Branch { name = "branchToDecline" } }
             };
             pullRequest = pullRequestsResource.PostPullRequest(pullRequest);
+            Debug.Assert(pullRequest.id != null, "pullRequest.id != null");
             var pullRequestResource = pullRequestsResource.PullRequestResource(pullRequest.id.Value);
             var pullRequestComments = pullRequestResource.CommentsResource;
 
@@ -99,58 +104,50 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void Get_ExistingCommentOnAPublicPullRequest_ReturnValidInfo()
+        public void Get_ExistingCommentOnAPullRequest_ReturnValidInfo()
         {
-            var comment = ExistingPullRequest.CommentsResource.GetComment(53789);
+            var comment = ExistingPullRequestWithComments.CommentsResource.GetComment(PullRequestGlobalCommentId);
             comment.ShouldBeFilled();
-            comment.content.raw.ShouldBe("This repo is not used for development, it's just a mirror (and I am just an infrequent contributor). Please consult http://mercurial.selenic.com/wiki/ContributingChanges and send your patch to ``mercurial-devel`` ML.");
+            comment.content.raw.ShouldBe("This PR is just for testing purposes.");
         }
 
         [Test]
-        public async Task GetAsync_ExistingCommentOnAPublicPullRequest_ReturnValidInfo()
+        public async Task GetAsync_ExistingCommentOnAPullRequest_ReturnValidInfo()
         {
-            var comment = await ExistingPullRequest.CommentsResource.GetCommentAsync(53789);
+            var comment = await ExistingPullRequestWithComments.CommentsResource.GetCommentAsync(PullRequestGlobalCommentId);
             comment.ShouldBeFilled();
-            comment.content.raw.ShouldBe("This repo is not used for development, it's just a mirror (and I am just an infrequent contributor). Please consult http://mercurial.selenic.com/wiki/ContributingChanges and send your patch to ``mercurial-devel`` ML.");
+            comment.content.raw.ShouldBe("This PR is just for testing purposes.");
         }
 
         [Test]
-        public void Get_ExistingReplyCommentOnAPublicPullRequest_ReturnValidInfo()
+        public void Get_ExistingReplyCommentOnAPullRequest_ReturnValidInfo()
         {
-            var comment = SampleRepositories.TortoisehgRepository
-                .PullRequestsResource()
-                .PullRequestResource(46)
-                .CommentsResource
-                .GetComment(61843122);
+            var comment = ExistingPullRequestWithComments.CommentsResource.GetComment(PullRequestResponseCommentId);
             comment.ShouldBeFilled();
             comment.parent.ShouldBeFilled();
         }
 
         [Test]
-        public async Task GetAsync_ExistingReplyCommentOnAPublicPullRequest_ReturnValidInfo()
+        public async Task GetAsync_ExistingReplyCommentOnAPullRequest_ReturnValidInfo()
         {
-            var comment = await SampleRepositories.TortoisehgRepository
-                .PullRequestsResource()
-                .PullRequestResource(46)
-                .CommentsResource
-                .GetCommentAsync(61843122);
+            var comment = await ExistingPullRequestWithComments.CommentsResource.GetCommentAsync(PullRequestResponseCommentId);
             comment.ShouldBeFilled();
             comment.parent.ShouldBeFilled();
         }
 
         [Test]
-        public void Get_NotExistingCommentOnPublicPullRequest_ThrowException()
+        public void Get_NotExistingCommentOnPullRequest_ThrowException()
         {
             var exception = Assert.Throws<BitbucketV2Exception>(
-                () => ExistingPullRequest.CommentsResource.GetComment(int.MaxValue));
+                () => ExistingPullRequestWithComments.CommentsResource.GetComment(int.MaxValue));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
         [Test]
-        public void GetAsync_NotExistingCommentOnPublicPullRequest_ThrowException()
+        public void GetAsync_NotExistingCommentOnPullRequest_ThrowException()
         {
             var exception = Assert.ThrowsAsync<BitbucketV2Exception>(
-                async () => await ExistingPullRequest.CommentsResource.GetCommentAsync(int.MaxValue));
+                async () => await ExistingPullRequestWithComments.CommentsResource.GetCommentAsync(int.MaxValue));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
     }

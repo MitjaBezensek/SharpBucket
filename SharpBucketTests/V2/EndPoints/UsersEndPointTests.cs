@@ -17,7 +17,7 @@ namespace SharpBucketTests.V2.EndPoints
         public void Init()
         {
             sharpBucket = TestHelpers.SharpBucketV2;
-            usersEndPoint = sharpBucket.UsersEndPoint(SampleRepositories.MERCURIAL_ACCOUNT_UUID);
+            usersEndPoint = sharpBucket.UsersEndPoint(SampleRepositories.MIRROR_ACCOUNT_UUID);
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace SharpBucketTests.V2.EndPoints
             usersEndPoint.ShouldNotBe(null);
 
             var exception = Assert.Throws<BitbucketV2Exception>(() => usersEndPoint.ListFollowers(15));
-            exception.Message.ShouldContain("This endpoint was previously deprecated and is now inactive.");
+            exception.Message.ShouldContain("Resource not found");
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace SharpBucketTests.V2.EndPoints
             usersEndPoint.ShouldNotBe(null);
 
             var exception = Assert.Throws<BitbucketV2Exception>(() => usersEndPoint.ListFollowing());
-            exception.Message.ShouldContain("This endpoint was previously deprecated and is now inactive.");
+            exception.Message.ShouldContain("Resource not found");
         }
 
         [Test]
@@ -91,8 +91,8 @@ namespace SharpBucketTests.V2.EndPoints
             usersEndPoint.ShouldNotBe(null);
             var repositories = usersEndPoint.ListRepositories();
             repositories.Count.ShouldBeGreaterThan(10);
-            repositories = usersEndPoint.ListRepositories(max: 25);
-            repositories.Count.ShouldBe(25);
+            repositories = usersEndPoint.ListRepositories(max: 5);
+            repositories.Count.ShouldBe(5);
         }
     }
 }
