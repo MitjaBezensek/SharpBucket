@@ -203,6 +203,20 @@ namespace SharpBucket.V2.EndPoints
 
         #endregion
 
+        #region Branch Model Resource
+
+        /// More info:
+        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/branching-model
+        /// <summary>
+        /// Returns the branching model as applied to the repository. This view is read-only.
+        /// </summary>
+        public BranchingModel GetBranchingModel()
+        {
+            return _sharpBucketV2.Get<BranchingModel>(_baseUrl + $"branching-model");
+        }
+
+        #endregion
+
         #region Branch Restrictions Resource
 
         /// More info:
