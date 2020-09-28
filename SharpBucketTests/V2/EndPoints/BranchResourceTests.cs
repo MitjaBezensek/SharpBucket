@@ -2,6 +2,8 @@
 using NUnit.Framework;
 using Shouldly;
 using System.Linq;
+using SharpBucket.V2.Pocos;
+using SharpBucketTests.V2.Pocos;
 
 namespace SharpBucketTests.V2.EndPoints
 {
@@ -53,7 +55,55 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void DeleteBranch_ExistingBranch_BrancCouldNotBeListedAnymore()
+        public void PostBranch_NewBranch_BranchIsCreated()
+        {
+            var branchResource = SampleRepositories.TestRepository.RepositoryResource.BranchesResource;
+            var initialBranches = branchResource.ListBranches();
+            var newBranch = new Branch
+            {
+                name = "newPostedBranch",
+                target = new Commit
+                {
+                    hash = SampleRepositories.TestRepository.RepositoryInfo.FirstCommit
+                }
+            };
+            
+            var createdBranch = branchResource.PostBranch(newBranch);
+
+            createdBranch.ShouldBeFilled();
+            createdBranch.name.ShouldBe(newBranch.name);
+            createdBranch.target.hash.ShouldBe(newBranch.target.hash);
+
+            var currentBranches = branchResource.ListBranches();
+            currentBranches.Count.ShouldBe(initialBranches.Count + 1);
+        }
+
+        [Test]
+        public void PostBranchAsync_NewBranch_BranchIsCreated()
+        {
+            var branchResource = SampleRepositories.TestRepository.RepositoryResource.BranchesResource;
+            var initialBranches = branchResource.ListBranches();
+            var newBranch = new Branch
+            {
+                name = "newPostedBranchAsync",
+                target = new Commit
+                {
+                    hash = SampleRepositories.TestRepository.RepositoryInfo.FirstCommit
+                }
+            };
+
+            var createdBranch = branchResource.PostBranch(newBranch);
+
+            createdBranch.ShouldBeFilled();
+            createdBranch.name.ShouldBe(newBranch.name);
+            createdBranch.target.hash.ShouldBe(newBranch.target.hash);
+
+            var currentBranches = branchResource.ListBranches();
+            currentBranches.Count.ShouldBe(initialBranches.Count + 1);
+        }
+
+        [Test]
+        public void DeleteBranch_ExistingBranch_BranchCouldNotBeListedAnymore()
         {
             var branchResource = SampleRepositories.TestRepository.RepositoryResource.BranchesResource;
             var initialBranches = branchResource.ListBranches();
@@ -65,7 +115,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public async Task DeleteBranchAsync_ExistingBranch_BrancCouldNotBeListedAnymore()
+        public async Task DeleteBranchAsync_ExistingBranch_BranchCouldNotBeListedAnymore()
         {
             var branchResource = SampleRepositories.TestRepository.RepositoryResource.BranchesResource;
             var initialBranches = branchResource.ListBranches();

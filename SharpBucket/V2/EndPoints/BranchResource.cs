@@ -1,5 +1,4 @@
-﻿using SharpBucket.Utility;
-using SharpBucket.V2.Pocos;
+﻿using SharpBucket.V2.Pocos;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -43,16 +42,6 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// Creates a new branch in the specified repository.
-        /// </summary>
-        /// <param name="branch">The branch to create.</param>
-        /// <returns>The created branch.</returns>
-        public Branch PostBranch(Branch branch)
-        {
-            return _sharpBucketV2.Post(branch, _baseUrl);
-        }
-
-        /// <summary>
         /// Enumerate branches associated with a specific repository.
         /// </summary>
         public IEnumerable<Branch> EnumerateBranches()
@@ -89,6 +78,27 @@ namespace SharpBucket.V2.EndPoints
             return _sharpBucketV2.EnumeratePaginatedValuesAsync<Branch>(_baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
+
+        /// <summary>
+        /// Creates a new branch in the specified repository.
+        /// </summary>
+        /// <param name="branch">The branch to create.</param>
+        /// <returns>The created branch.</returns>
+        public Branch PostBranch(Branch branch)
+        {
+            return _sharpBucketV2.Post(branch, _baseUrl);
+        }
+
+        /// <summary>
+        /// Creates a new branch in the specified repository.
+        /// </summary>
+        /// <param name="branch">The branch to create.</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns>The created branch.</returns>
+        public Task<Branch> PostBranchAsync(Branch branch, CancellationToken token = default)
+        {
+            return _sharpBucketV2.PostAsync(branch, _baseUrl, token);
+        }
 
         /// <summary>
         /// Removes a branch.
