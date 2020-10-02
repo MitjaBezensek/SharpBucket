@@ -15,7 +15,7 @@ See the [SharpBucketCli Project](https://github.com/MitjaBezensek/SharpBucket/bl
 
 Here's just a brief demo:
 
-First lets set your entry point to the API
+First let's set your entry point to the API:
 ```CSharp
 // your main entry to the Bitbucket API, this one is for V2
 var sharpBucket = new SharpBucketV2();
@@ -23,18 +23,19 @@ var sharpBucket = new SharpBucketV2();
 sharpBucket.OAuth2ClientCredentials(consumerKey, consumerSecretKey);
 ```
 
-There are various end points you can use. Lets take a look at Users end point:
+There are various end points you can use. Let's look at the users end point:
 ```CSharp
-// getting the User end point (accountName can be the name of a user or a team)
+// getting the users end point (accountName can be the name of a user or a team)
 var userEndPoint = sharpBucket.UsersEndPoint("accountName");
 // querying the Bitbucket API for various info
 var userProfile = userEndPoint.GetProfile();
+var user = userEndPoint.GetUser();
 var followers = user.ListFollowers();
 var follows = user.ListFollowing();
 var userRepos = user.ListRepositories();
 ```
 
-Sub end points are named *Resource* but are pretty similar. Lets look at the repository resource:
+Sub end points are named *Resource* but are very similar to root end points. Let's look at the repository resource:
 ```CSharp
 // getting the repositories end point
 var repositoriesEndPoint = sharpBucket.RepositoriesEndPoint();
@@ -44,7 +45,7 @@ var repositoryResource = repositoriesEndPoint.RepositoryResource("accountName", 
 var commits = repositoryResource.ListCommits();
 ```
 
-Sending information is just as easy.
+Sending information is just as easy:
 ```CSharp
 var newRepository = new Repository
                     {
@@ -55,8 +56,7 @@ var newRepository = new Repository
 var newRepositoryResult = repositoryResource.PostRepository(newRepository);
 ```
 
-Pagination is handled internally and we always return an aggregation of all pages by default.  
-However you can provide few parameters to manage that behavior
+Pagination is handled internally, and we always return an aggregation of all pages by default. However you can provide few parameters to manage that behavior
 ```CSharp
 // you can give us a maximum number of results to fetch on all list method
 var followers = user.ListRepositories(50);
@@ -82,15 +82,15 @@ SharpBucket uses a strict naming convention:
 - methods starting with Delete will delete the item
 
 ## Authentication
-There are three ways you can authenticate with SharpBucket
+There are three ways you can authenticate with SharpBucket:
 - via Oauth 2, which is preferred
 - via Oauth 1.0a
-- via Bitbucket's username and password
+- via Bitbucket username and password
 
 Here is how you can use them:
 ### Basic authentication
 ```CSharp
-// authenticate with username and password
+// authenticate with Bitbucket username and password
 sharpBucket.BasicAuthentication(email, password);
 ```
 
@@ -102,7 +102,9 @@ With OAuth you can choose between [2 legged and 3 legged authentication](http://
 // authenticate with OAuth keys
 sharpBucket.OAuth1TwoLeggedAuthentication(consumerKey, consumerSecretKey);
 ```
-**The three legged** one requires an additional step for getting the pin / verifier from the Bitbucket. If you do not supply a callback url (or use "oob") you will get a Bitbucket's url that will promt your user to allow access for your application and supply you with the pin / verifier. Here is a simple example of how you could manually copy paste the pin from the browser:
+**The three legged** requires an additional step to retrieve the pin / verifier from Bitbucket. If you do not supply a callback url (or use “oob”) you will be provided with a Bitbucket url that you can use to prompt your user to allow access to your application and retrieve a pin / verifier.
+
+Here is a simple example of how you could use the pin / verifier retrieved from the browser:
 ```CSharp
 var authenticator = sharpBucket.OAuth1ThreeLeggedAuthentication(consumerKey, consumerSecretKey, "oob");
 var uri = authenticator.StartAuthentication();
@@ -111,16 +113,15 @@ var pin = Console.ReadLine();
 // we can now do the final step by using the pin to get our access tokens
 authenticator.AuthenticateWithPin(pin);
 ```
-If you had a server waiting from Bitbucket's response, you would simply use your server's url as the callback and then wait for Bitbucket to send you the pin to that address.
+If you have a server able to receive Bitbucket's response, you would simply use your server's url as the callback and then wait for Bitbucket to send you the pin to that address.
 
-If you already have the tokens (those returned by AuthenticateWithPin method) you can simply skip the authentication process:
+If you already have tokens (those returned by AuthenticateWithPin method) you can simply skip the authentication process:
 ```CSharp
 var authenticator = sharpBucket.OAuth1ThreeLeggedAuthentication(consumerKey, consumerSecretKey, oauthToken, oauthTokenSecret);
 ```
 
 ### OAuth2 authentication
-OAuth 2.0 offer a large choice of scenarios ([bitbucket OAuth 2.0](https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication))  
-But they are not yet all implemented.
+OAuth 2.0 offers a large choice of scenarios ([bitbucket OAuth 2.0](https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication)) but they are not yet all implemented.
 
 **Client credentials Grant** is similar to OAuth1 two legged authentication:
 ```CSharp
@@ -129,20 +130,19 @@ sharpBucket.OAuth2ClientCredentials(consumerKey, consumerSecretKey);
 ```
 
 ## How much of the API is covered?
-While a complete coverage of the API is preferred SharpBucket currently does not support everything yet. But the main functionality is [covered](https://github.com/MitjaBezensek/SharpBucket/blob/master/Coverage.md) and the rest should also get covered sooner or later.
+SharpBucket does not yet supply complete coverage of the API. However, the main functionality is [covered](https://github.com/MitjaBezensek/SharpBucket/blob/master/Coverage.md) and the remainder of the API should become covered sooner or later.
 
 ## Contributing
 Contributions are always welcome! [Here is some short information](https://github.com/MitjaBezensek/SharpBucket/blob/master/Contribution.md) about how and where to get started.
 
 ## Continuous Integration from AppVeyor
-The project is using [AppVeyor's](http://www.appveyor.com/) Continuous Integration
-Service that is free for open source projects. It is enabled for Pull Requests as well as the main branch.
+The project is using [AppVeyor's](http://www.appveyor.com/) Continuous Integration Service which is free for open source projects. It is enabled for Pull Requests as well as the main branch.
 
 ## Licensing, Dependencies and Influence
 SharpBucket is licensed under [MIT license](https://github.com/MitjaBezensek/SharpBucket/blob/master/LICENSE). 
 
-### Dependencies:
-- **RestSharp** for HTTP requests and responses. RestSHarp is [licensed under Apache 2.0 license](https://github.com/restsharp/RestSharp/blob/master/LICENSE.txt) terms.
+### Dependencies
+- **RestSharp** for HTTP requests and responses. RestSharp is [licensed under Apache 2.0 license](https://github.com/restsharp/RestSharp/blob/master/LICENSE.txt) terms.
 
 ### Influence
 SharpBucket was influenced by ServiceStack's [Stripe api wrapper](https://github.com/ServiceStack/Stripe). The first versions of SharpBucket used ServiceStack's library, but has since moved to RestSharp.

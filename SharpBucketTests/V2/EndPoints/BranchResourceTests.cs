@@ -21,21 +21,21 @@ namespace SharpBucketTests.V2.EndPoints
         public void ListBranches_NotEmptyRepository_ReturnAtLeastMainBranch()
         {
             var branches = SampleRepositories.GitMirrorRepository.BranchesResource.ListBranches();
-            branches.ShouldNotBeEmpty("There is at least the main branch on a non empty repository");
+            branches.ShouldNotBeEmpty("There is at least the main branch on a non-empty repository");
         }
 
         [Test]
         public void EnumerateBranches_EmptyRepository_ReturnEmpty()
         {
             var branches = SampleRepositories.EmptyTestRepository.BranchesResource.EnumerateBranches();
-            branches.ShouldBeEmpty("There is no branch on an empty repository. At least one commit is mandatory to have a branch.");
+            branches.ShouldBeEmpty("There is no branch in an empty repository. At least one commit is mandatory to have a branch.");
         }
 
         [Test]
         public void EnumerateBranches_NotEmptyRepository_ReturnAtLeastMainBranch()
         {
             var branches = SampleRepositories.GitMirrorRepository.BranchesResource.EnumerateBranches();
-            branches.ShouldNotBeEmpty("There is at least the main branch on a non empty repository");
+            branches.ShouldNotBeEmpty("There is at least the main branch on a non-empty repository");
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace SharpBucketTests.V2.EndPoints
         {
             var branches = await SampleRepositories.GitMirrorRepository.BranchesResource.EnumerateBranchesAsync()
                 .ToListAsync();
-            branches.ShouldNotBeEmpty("There is at least the main branch on a non empty repository");
+            branches.ShouldNotBeEmpty("There is at least the main branch on a non-empty repository");
         }
 
         [Test]

@@ -4,7 +4,7 @@ using SharpBucket.V2.EndPoints;
 namespace SharpBucket.V2
 {
     /// <summary>
-    /// A client for the V2 of the BitBucket API.
+    /// A client for the V2 of the Bitbucket API.
     /// You can read more about the V2 of the API here:
     /// https://confluence.atlassian.com/display/BITBUCKET/Version+2
     /// </summary>

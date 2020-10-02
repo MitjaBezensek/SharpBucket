@@ -3,7 +3,7 @@
 namespace SharpBucket.Authentication
 {
     /// <summary>
-    /// Class that represent an OAuth1 token with its secret
+    /// Class that represent an OAuth1 token with its secret.
     /// </summary>
     public class OAuth1Token
     {

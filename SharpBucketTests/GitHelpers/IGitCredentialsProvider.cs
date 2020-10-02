@@ -3,7 +3,7 @@
 namespace SharpBucketTests.GitHelpers
 {
     /// <summary>
-    /// Interface that match the <see cref="LibGit2Sharp.Handlers.CredentialsHandler"/>
+    /// Interface that matches the <see cref="LibGit2Sharp.Handlers.CredentialsHandler"/>.
     /// </summary>
     internal interface IGitCredentialsProvider
     {

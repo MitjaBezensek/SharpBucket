@@ -7,7 +7,7 @@ using LibGit2Sharp;
 namespace SharpBucketTests.GitHelpers
 {
     /// <summary>
-    /// Class that allow to build from scratch a test repository to perform unit tests against it.
+    /// Class to build a test repository from scratch to perform unit tests against it.
     /// </summary>
     internal class TestRepositoryBuilder : IDisposable
     {
@@ -19,11 +19,11 @@ namespace SharpBucketTests.GitHelpers
         {
             GitCredentialsProvider = gitCredentialsProvider ?? throw new ArgumentNullException(nameof(gitCredentialsProvider));
 
-            // Create repo working dir
+            // Create repo working directory
             WorkingDirectory = Path.Combine(Path.GetTempPath(), "SharpBucketTestRepositories", Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(WorkingDirectory);
 
-            // Clone the bitbucket repository
+            // Clone the Bitbucket repository
             try
             {
                 var cloneOptions = new CloneOptions
@@ -61,7 +61,7 @@ namespace SharpBucketTests.GitHelpers
                 // put a tag on that first commit
                 repository.ApplyTag("FirstCommitTag", testSignature, "tag message");
 
-                // now that first commit is done, push the head so it fully initiate the master branch
+                // now that first commit is done, push the head to fully initialize the master branch
                 // and Bitbucket will assume that it's our main branch since it's the first one that we push
                 repository.Network.Push(repository.Head, pushOptions);
 

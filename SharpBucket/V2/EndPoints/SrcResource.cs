@@ -75,7 +75,7 @@ namespace SharpBucket.V2.EndPoints
         /// <remarks>
         /// Since it can be difficult to guess which field is filled or not in a <see cref="TreeEntry"/>,
         /// we suggest you to use <see cref="ListSrcEntries"/> method instead of that one,
-        /// except if you really want to retrieve the raw model as returned by BitBucket.
+        /// except if you really want to retrieve the raw model as returned by Bitbucket.
         /// </remarks>
         /// </summary>
         /// <param name="subDirPath">The path to a sub directory, or null to list the root directory of this resource.</param>
@@ -105,7 +105,7 @@ namespace SharpBucket.V2.EndPoints
         /// <remarks>
         /// Since it can be difficult to guess which field is filled or not in a <see cref="TreeEntry"/>,
         /// we suggest you to use <see cref="EnumerateSrcEntries"/> method instead of that one,
-        /// except if you really want to retrieve the raw model as returned by BitBucket.
+        /// except if you really want to retrieve the raw model as returned by Bitbucket.
         /// </remarks>
         /// </summary>
         /// <param name="subDirPath">The path to a sub directory, or null to list the root directory of this resource.</param>
@@ -135,7 +135,7 @@ namespace SharpBucket.V2.EndPoints
         /// <remarks>
         /// Since it can be difficult to guess which field is filled or not in a <see cref="TreeEntry"/>,
         /// we suggest you to use <see cref="EnumerateSrcEntriesAsync"/> method instead of that one,
-        /// except if you really want to retrieve the raw model as returned by BitBucket.
+        /// except if you really want to retrieve the raw model as returned by Bitbucket.
         /// </remarks>
         /// </summary>
         /// <param name="subDirPath">The path to a sub directory, or null to list the root directory of this resource.</param>
@@ -173,7 +173,7 @@ namespace SharpBucket.V2.EndPoints
         /// <remarks>
         /// Since it can be difficult to guess which field is filled or not in a <see cref="TreeEntry"/>,
         /// we suggest you to use <see cref="GetSrcEntry"/> method instead of that one,
-        /// except if you really want to retrieve the raw model as returned by BitBucket.
+        /// except if you really want to retrieve the raw model as returned by Bitbucket.
         /// </remarks>
         /// </summary>
         /// <param name="subPath">The path to the file or directory, or null to retrieve the metadata of the root of this resource.</param>
@@ -188,7 +188,7 @@ namespace SharpBucket.V2.EndPoints
         /// <remarks>
         /// Since it can be difficult to guess which field is filled or not in a <see cref="TreeEntry"/>,
         /// we suggest you to use <see cref="GetSrcEntry"/> method instead of that one,
-        /// except if you really want to retrieve the raw model as returned by BitBucket.
+        /// except if you really want to retrieve the raw model as returned by Bitbucket.
         /// </remarks>
         /// </summary>
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -202,7 +202,7 @@ namespace SharpBucket.V2.EndPoints
         /// <remarks>
         /// Since it can be difficult to guess which field is filled or not in a <see cref="TreeEntry"/>,
         /// we suggest you to use <see cref="GetSrcEntry"/> method instead of that one,
-        /// except if you really want to retrieve the raw model as returned by BitBucket.
+        /// except if you really want to retrieve the raw model as returned by Bitbucket.
         /// </remarks>
         /// </summary>
         /// <param name="subPath">The path to the file or directory, or null to retrieve the metadata of the root of this resource.</param>

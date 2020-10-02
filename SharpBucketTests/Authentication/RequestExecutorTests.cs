@@ -29,7 +29,7 @@ namespace SharpBucketTests.Authentication
                     {
                         {"bad_search_query", "string"},
                     }),
-                "Using a bad query should produce a BitBucketException, since it's Bitbucket that detect the error and say it to us.'");
+                "Using a bad query should produce a BitbucketException, since it's Bitbucket that detected the error and reported it to us.'");
             exception.Message.ShouldBe("{\"type\": \"error\", \"error\": {\"message\": \"You must provide a search query\"}}");
         }
 
@@ -49,7 +49,7 @@ namespace SharpBucketTests.Authentication
                             {
                                 {"search_query", "string"},
                             }),
-                "Using a bad POCO should produce an Exception, but not a BitbucketException since it's not an issue detected by BitBucket, but an issue in our code.");
+                "Using a bad POCO should produce an Exception, but not a BitbucketException since it's not an issue detected by Bitbucket, but an issue in our code.");
             exception.Message.ShouldBe("No parameterless constructor defined for type 'SharpBucket.V2.Pocos.SearchContentMatch[]'.");
         }
 

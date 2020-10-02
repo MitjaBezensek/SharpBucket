@@ -3,28 +3,28 @@
 namespace SharpBucket
 {
     /// <summary>
-    /// Interface that expose all the methods available on the <see cref="SharpBucket"/> class.
+    /// Interface that exposes all the methods available on the <see cref="SharpBucket"/> class.
     /// This interface should be used for mocking <see cref="SharpBucket"/>.
     /// </summary>
     /// <remarks>
     /// Since this interface may change in the future (typically to declare new authentication methods),
-    /// We recommend to not create wrappers in our code and limit usages to mocking senarios.
-    /// If you want to create wrappers or similar things, it's prefered to just do it over the
-    /// <see cref="ISharpBucketRequester"/> interface/ which is expected to be more stable in future developments.
+    /// we recommend to not create wrappers in our code and limit usages to mocking scenarios.
+    /// If you want to create wrappers or similar things, it's preferred to just do it over the
+    /// <see cref="ISharpBucketRequester"/> interface which is expected to be more stable in future developments.
     /// </remarks>
     public interface ISharpBucket : ISharpBucketRequester
     {
         /// <summary>
-        /// Do not use authentication with the BitBucket API. Only public data can be retrieved.
+        /// Do not use authentication with the Bitbucket API. Only public data can be retrieved.
         /// </summary>
         void NoAuthentication();
 
         /// <summary>   
-        /// Use basic authentication with the BitBucket API. OAuth authentication is preferred over
+        /// Use basic authentication with the Bitbucket API. OAuth authentication is preferred over
         /// basic authentication, due to security reasons.
         /// </summary>
-        /// <param name="username">Your BitBucket user name.</param>
-        /// <param name="password">Your BitBucket password.</param>
+        /// <param name="username">Your Bitbucket user name.</param>
+        /// <param name="password">Your Bitbucket password.</param>
         void BasicAuthentication(string username, string password);
 
         /// <summary>
@@ -34,8 +34,8 @@ namespace SharpBucket
         /// More info:
         /// https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket
         /// </summary>
-        /// <param name="consumerKey">Your consumer API key obtained from the BitBucket web page.</param>
-        /// <param name="consumerSecretKey">Your consumer secret API key also obtained from the BitBucket web page.</param>
+        /// <param name="consumerKey">Your consumer API key obtained from the Bitbucket web page.</param>
+        /// <param name="consumerSecretKey">Your consumer secret API key also obtained from the Bitbucket web page.</param>
         void OAuth2LeggedAuthentication(string consumerKey, string consumerSecretKey);
 
         /// <summary>
@@ -45,8 +45,8 @@ namespace SharpBucket
         /// More info:
         /// https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket
         /// </summary>
-        /// <param name="consumerKey">Your consumer API key obtained from the BitBucket web page.</param>
-        /// <param name="consumerSecretKey">Your consumer secret API key also obtained from the BitBucket web page.</param>
+        /// <param name="consumerKey">Your consumer API key obtained from the Bitbucket web page.</param>
+        /// <param name="consumerSecretKey">Your consumer secret API key also obtained from the Bitbucket web page.</param>
         void OAuth1TwoLeggedAuthentication(string consumerKey, string consumerSecretKey);
 
         /// <summary>
@@ -55,9 +55,9 @@ namespace SharpBucket
         /// More info:
         /// https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket
         /// </summary>
-        /// <param name="consumerKey">Your consumer API key obtained from the BitBucket web page.</param>
-        /// <param name="consumerSecretKey">Your consumer secret API key also obtained from the BitBucket web page.</param>
-        /// <param name="callback">Callback URL to which BitBucket will send the pin.</param>
+        /// <param name="consumerKey">Your consumer API key obtained from the Bitbucket web page.</param>
+        /// <param name="consumerSecretKey">Your consumer secret API key also obtained from the Bitbucket web page.</param>
+        /// <param name="callback">Callback URL to which Bitbucket will send the pin.</param>
         /// <returns></returns>
         OAuth1ThreeLeggedAuthentication OAuth1ThreeLeggedAuthentication(
             string consumerKey,
@@ -69,8 +69,8 @@ namespace SharpBucket
         /// and OAuthSecretToken. This method can be used so you do not have to go through the whole 3 legged
         /// process every time. You can save the tokens you receive the first time and reuse them in another session.
         /// </summary>
-        /// <param name="consumerKey">Your consumer API key obtained from the BitBucket web page.</param>
-        /// <param name="consumerSecretKey">Your consumer secret API key also obtained from the BitBucket web page.</param>
+        /// <param name="consumerKey">Your consumer API key obtained from the Bitbucket web page.</param>
+        /// <param name="consumerSecretKey">Your consumer secret API key also obtained from the Bitbucket web page.</param>
         /// <param name="oauthToken">Your OAuth token that was obtained on a previous session.</param>
         /// <param name="oauthTokenSecret">Your OAuth secret token that was obtained on a previous session.</param>
         /// <returns></returns>

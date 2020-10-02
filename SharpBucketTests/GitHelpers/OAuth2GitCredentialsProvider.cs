@@ -4,8 +4,8 @@ using SharpBucket.Authentication;
 namespace SharpBucketTests.GitHelpers
 {
     /// <summary>
-    /// Class that allow to perform git authentication on Bitbucket with OAuth2
-    /// Specification is defined at the bottom of that page: https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html
+    /// Class that allow to perform git authentication on Bitbucket with OAuth2.
+    /// Specification is defined here: https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html
     /// For more details see: https://community.atlassian.com/t5/Bitbucket-questions/hot-to-git-clone-with-oauth-how-to-create-token-for-this-kind-of/qaq-p/686446
     /// </summary>
     internal class OAuth2GitCredentialsProvider : IGitCredentialsProvider
@@ -23,7 +23,7 @@ namespace SharpBucketTests.GitHelpers
         {
             if (OAuth2TokenCredentials == null)
             {
-                // TODO the token should be kept somewhere to implement refresh token scenario one day
+                // TODO the token should be kept somewhere to implement refresh token scenario one day.
                 var token = TokenProvider.GetClientCredentialsToken();
                 OAuth2TokenCredentials = new UsernamePasswordCredentials
                 {

@@ -36,9 +36,9 @@ namespace SharpBucketTests.V2.EndPoints
 
             // Obsolete properties. Their values are expected to become null or day or another
 #pragma warning disable 618
-            profile.username.ShouldBeNull(nameof(profile.username) + " is no more available due to GDPR concerns");
-            profile.website.ShouldBeNull(nameof(profile.website) + " is no more available due to GDPR concerns");
-            profile.location.ShouldBeNull(nameof(profile.location) + " is no more available due to GDPR concerns");
+            profile.username.ShouldBeNull(nameof(profile.username) + " is no longer available due to GDPR concerns");
+            profile.website.ShouldBeNull(nameof(profile.website) + " is no longer available due to GDPR concerns");
+            profile.location.ShouldBeNull(nameof(profile.location) + " is no longer available due to GDPR concerns");
 #pragma warning restore 618
         }
 
@@ -58,9 +58,9 @@ namespace SharpBucketTests.V2.EndPoints
 
             // Obsolete properties. Their values are expected to become null or day or another
 #pragma warning disable 618
-            profile.username.ShouldBeNull(nameof(profile.username) + " is no more available due to GDPR concerns");
-            profile.website.ShouldBeNull(nameof(profile.website) + " is no more available due to GDPR concerns");
-            profile.location.ShouldBeNull(nameof(profile.location) + " is no more available due to GDPR concerns");
+            profile.username.ShouldBeNull(nameof(profile.username) + " is no longer available due to GDPR concerns");
+            profile.website.ShouldBeNull(nameof(profile.website) + " is no longer available due to GDPR concerns");
+            profile.location.ShouldBeNull(nameof(profile.location) + " is no longer available due to GDPR concerns");
 #pragma warning restore 618
         }
 
