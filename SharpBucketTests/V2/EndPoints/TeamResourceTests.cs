@@ -128,7 +128,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void ListProjects_AfterHavingCreateOneProjectInTeam_ShouldReturnAtLestTheCreatedProject()
         {
-            var projectKey = "Test_" + Guid.NewGuid().ToString("N"); // must start by a letter
+            var projectKey = "Test_" + Guid.NewGuid().ToString("N"); // must start with a letter
             var project = new Project
             {
                 key = projectKey,
@@ -146,7 +146,7 @@ namespace SharpBucketTests.V2.EndPoints
                 projects.Select(p => p.ShouldBeFilled())
                     .Any(r => r.name == project.name).ShouldBe(true);
 
-                // also quickly check other sync methods here to avoid to create and delete to much projects
+                // also quickly check other sync methods here to avoid creating and deleting to many projects
                 projects = UserFirstTeamResource.ListProjects(new ListParameters { Filter = "name ~ \"nomatchexpected\"" });
                 projects.ShouldBeEmpty();
 
@@ -162,7 +162,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public async Task EnumerateProjectsAsync_AfterHavingCreateOneProjectInTeam_ShouldReturnAtLestTheCreatedProject()
         {
-            var projectKey = "Test_" + Guid.NewGuid().ToString("N"); // must start by a letter
+            var projectKey = "Test_" + Guid.NewGuid().ToString("N"); // must start with a letter
             var project = new Project
             {
                 key = projectKey,
@@ -211,7 +211,7 @@ namespace SharpBucketTests.V2.EndPoints
             sharpBucketRequesterV2Mock.Verify(
                 sendMethod,
                 Times.Never(),
-                "Building the enumerable should not produce any request");
+                "Building the enumerable should not produce any requests");
 
             var i = 0;
             foreach (var _ in searchResults)

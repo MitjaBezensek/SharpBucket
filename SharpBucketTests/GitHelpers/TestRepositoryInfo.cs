@@ -1,7 +1,7 @@
 ﻿namespace SharpBucketTests.GitHelpers
 {
     /// <summary>
-    /// Class that provide known info relative to the test repository build with <see cref="TestRepositoryBuilder"/>
+    /// Class that provides known info relative to the test repository built with <see cref="TestRepositoryBuilder"/>.
     /// </summary>
     public class TestRepositoryInfo
     {

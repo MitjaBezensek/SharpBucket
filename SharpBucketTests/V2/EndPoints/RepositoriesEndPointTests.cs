@@ -23,7 +23,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void ListPublicRepositories_WithOwnerRoleFilter_ReturnsOnlyPublicTestRepositories()
         {
-            // Ensure that at least that test repository is created
+            // Ensure the test repository is created
             SampleRepositories.EmptyTestRepository.ShouldNotBeNull();
             var repositoriesEndPoint = SampleRepositories.RepositoriesEndPoint;
             var parameters = new ListPublicRepositoriesParameters
@@ -41,7 +41,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void EnumeratePublicRepositories_WithOwnerRoleFilter_ReturnsOnlyPublicTestRepositories()
         {
-            // Ensure that at least that test repository is created
+            // Ensure the test repository is created
             SampleRepositories.EmptyTestRepository.ShouldNotBeNull();
             var repositoriesEndPoint = SampleRepositories.RepositoriesEndPoint;
             var parameters = new EnumeratePublicRepositoriesParameters
@@ -60,7 +60,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public async Task EnumeratePublicRepositoriesAsync_WithOwnerRoleFilter_ReturnsOnlyPublicTestRepositories()
         {
-            // Ensure that at least that test repository is created
+            // Ensure the test repository is created
             SampleRepositories.EmptyTestRepository.ShouldNotBeNull();
             var repositoriesEndPoint = SampleRepositories.RepositoriesEndPoint;
             var parameters = new EnumeratePublicRepositoriesParameters
@@ -79,7 +79,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void ListPublicRepositories_Top3WithAfterFilter_ReturnsAKnownList()
         {
-            // Ensure that at least that test repository is created
+            // Ensure the test repository is created
             SampleRepositories.EmptyTestRepository.ShouldNotBeNull();
             var repositoriesEndPoint = SampleRepositories.RepositoriesEndPoint;
             var parameters = new ListPublicRepositoriesParameters
@@ -100,7 +100,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void EnumeratePublicRepositories_Top3WithAfterFilter_ReturnsAKnownList()
         {
-            // Ensure that at least that test repository is created
+            // Ensure the test repository is created
             SampleRepositories.EmptyTestRepository.ShouldNotBeNull();
             var repositoriesEndPoint = SampleRepositories.RepositoriesEndPoint;
             var parameters = new EnumeratePublicRepositoriesParameters
@@ -123,7 +123,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public async Task EnumeratePublicRepositoriesAsync_Top3WithAfterFilter_ReturnsAKnownList()
         {
-            // Ensure that at least that test repository is created
+            // Ensure the test repository is created
             SampleRepositories.EmptyTestRepository.ShouldNotBeNull();
             var repositoriesEndPoint = SampleRepositories.RepositoriesEndPoint;
             var parameters = new EnumeratePublicRepositoriesParameters

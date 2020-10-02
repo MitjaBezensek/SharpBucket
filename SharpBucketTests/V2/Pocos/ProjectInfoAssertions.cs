@@ -36,7 +36,7 @@ namespace SharpBucketTests.V2.Pocos
         }
 
 
-        // Method created only to go around a bitbucket issue reported here:
+        // Method created only as a workaround for the Bitbucket issue reported here:
         // https://getsupport.atlassian.com/servicedesk/customer/portal/11/BBS-131627?error=login_required&error_description=Login+required&state=29f02f9e-f858-44c9-bc3a-9468e8db6322
         public static ProjectInfo ShouldBeEquivalentExceptAvatarTimeStampTo(this ProjectInfo projectInfo, ProjectInfo expectedProjectInfo)
         {

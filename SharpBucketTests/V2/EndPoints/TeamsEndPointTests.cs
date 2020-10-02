@@ -62,7 +62,7 @@ namespace SharpBucketTests.V2.EndPoints
         }
 
         [Test]
-        public void EnumerateUserTeams_WithOwnerRoleFromLoggedUser_ShouldThrowBitBucketException()
+        public void EnumerateUserTeams_WithOwnerRoleFromLoggedUser_ShouldThrowBitbucketException()
         {
             teamsEndPoint.ShouldNotBe(null);
             var parameters = new EnumerateTeamsParameters { Role = SharpBucket.V2.Pocos.Role.Owner };

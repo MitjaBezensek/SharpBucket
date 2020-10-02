@@ -24,7 +24,7 @@ namespace SharpBucketTests.V2.EndPoints
         {
             var pullRequestsResource = SampleRepositories.TestRepository.RepositoryResource.PullRequestsResource();
 
-            // there is no change that a pull request with the max value of int32 exist one day
+            // there is no change that a pull request with the max value of int32 exists one day
             NotExistingPullRequest = pullRequestsResource.PullRequestResource(int.MaxValue);
         }
 
@@ -335,7 +335,7 @@ namespace SharpBucketTests.V2.EndPoints
             // validate pull request activities after having remove the approval
             var activitiesAfterRemoveApproval = pullRequestResource.ListPullRequestActivities();
             activitiesAfterRemoveApproval.Count.ShouldBe(activities.Count - 1, "Approval activity is removed, and removal is not traced.");
-            activitiesAfterRemoveApproval.ShouldAllBe(activity => activity.approval == null, "should all be non approval activities");
+            activitiesAfterRemoveApproval.ShouldAllBe(activity => activity.approval == null, "should all be non-approved activities");
         }
     }
 }

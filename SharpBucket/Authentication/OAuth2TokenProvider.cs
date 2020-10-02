@@ -6,8 +6,8 @@ using RestSharp.Authenticators;
 namespace SharpBucket.Authentication
 {
     /// <summary>
-    /// Class that act like a client of the /site/oauth2/access_token route
-    /// https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication#oauth-2
+    /// Class that acts like a client of the /site/oauth2/access_token route.
+    /// More Info: https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication#oauth-2
     /// </summary>
     public class OAuth2TokenProvider
     {
@@ -36,9 +36,9 @@ namespace SharpBucket.Authentication
         }
 
         /// <summary>
-        /// Authorization Code Grant (4.1)
+        /// Authorization Code Grant (4.1).
         /// </summary>
-        /// <param name="code">The code retrieved from the Authorize callback</param>
+        /// <param name="code">The code retrieved from the Authorize callback.</param>
         /// <returns>
         /// An OAuth2 Token that allow to be authenticated as the user that give you that code,
         /// and with the scopes that correspond to your consumer key and secret.
@@ -49,10 +49,10 @@ namespace SharpBucket.Authentication
         }
 
         /// <summary>
-        /// Resource Owner Password Credentials Grant (4.3)
+        /// Resource Owner Password Credentials Grant (4.3).
         /// </summary>
-        /// <param name="username">The username (email) of a user</param>
-        /// <param name="password">The password of that user</param>
+        /// <param name="username">The username (email) of a user.</param>
+        /// <param name="password">The password of that user.</param>
         /// <returns>
         /// An OAuth2 Token that allow to be authenticated as the user that give you its credentials,
         /// and with the scopes that correspond to your consumer key and secret.
@@ -63,7 +63,7 @@ namespace SharpBucket.Authentication
         }
 
         /// <summary>
-        /// Client Credentials Grant (4.4)
+        /// Client Credentials Grant (4.4).
         /// </summary>
         /// <returns>
         /// An OAuth2 Token that allow to be authenticated as the user that correspond to your consumer key and secret.
@@ -74,7 +74,7 @@ namespace SharpBucket.Authentication
         }
 
         /// <summary>
-        /// Ask to refresh a token
+        /// Ask to refresh a token.
         /// </summary>
         /// <param name="token">The token to refresh</param>
         /// <returns>A refreshed OAuth2 Token equivalent to the given one.</returns>

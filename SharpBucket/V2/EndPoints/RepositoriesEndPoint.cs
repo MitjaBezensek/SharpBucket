@@ -58,7 +58,7 @@ namespace SharpBucket.V2.EndPoints
 
 #if CS_8
         /// <summary>
-        /// Enumerate all public repositories on BitBucket, doing requests page by page.
+        /// Enumerate all public repositories on Bitbucket, doing requests page by page.
         /// </summary>m>
         /// <param name="parameters">Parameters for the queries.</param>
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>

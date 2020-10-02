@@ -17,9 +17,9 @@ namespace SharpBucket.Authentication
         private readonly JsonDeserializer jsonDeserializer = new JsonDeserializer();
 
         /// <summary>
-        /// Configure a <see cref="IRestClient"/> instance to be compatible with the style of requests done by the <see cref="RequestExecutor"/>
+        /// Configure a <see cref="IRestClient"/> instance to be compatible with the style of requests done by the <see cref="RequestExecutor"/>.
         /// </summary>
-        /// <param name="client">The client to configure</param>
+        /// <param name="client">The client to configure.</param>
         public virtual void ConfigureRestClient(IRestClient client)
         {
             //Fixed bug that prevents RestClient for adding custom headers to the request
@@ -136,7 +136,7 @@ namespace SharpBucket.Authentication
             if ((int)response.StatusCode >= 400)
             {
                 // There is an issue which is described in the HTTP response.
-                // Build an throw a BitBucketException, since the message should be provided by BitBucket.
+                // Build an throw a BitbucketException, since the message should be provided by Bitbucket.
                 throw BuildBitbucketException(response);
             }
         }
