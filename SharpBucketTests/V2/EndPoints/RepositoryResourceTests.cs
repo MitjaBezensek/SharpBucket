@@ -411,7 +411,7 @@ namespace SharpBucketTests.V2.EndPoints
 
             var exception = Assert.Throws<BitbucketV2Exception>(() => repositoryResource.PostRepository(repository));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.Forbidden);
-            exception.ErrorResponse.error.message.ShouldBe("You cannot administer personal accounts of other users.");
+            exception.ErrorResponse.error.message.ShouldBe("You do not have access to view this workspace.");
         }
 
         [Test]
@@ -426,7 +426,7 @@ namespace SharpBucketTests.V2.EndPoints
 
             var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await repositoryResource.PostRepositoryAsync(repository));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.Forbidden);
-            exception.ErrorResponse.error.message.ShouldBe("You cannot administer personal accounts of other users.");
+            exception.ErrorResponse.error.message.ShouldBe("You do not have access to view this workspace.");
         }
 
         [Test]
