@@ -56,10 +56,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
         [Obsolete("From WorkspaceResource use MembersResource.ListMembers(int) instead")]
-        public List<UserShort> ListMembers(int max = 0)
+        public List<UserInfo> ListMembers(int max = 0)
         {
             var overrideUrl = BaseUrl + "/members";
-            return SharpBucketV2.GetPaginatedValues<UserShort>(overrideUrl, max);
+            return SharpBucketV2.GetPaginatedValues<UserInfo>(overrideUrl, max);
         }
 
         /// <summary>
@@ -70,10 +70,10 @@ namespace SharpBucket.V2.EndPoints
         /// The length of a page. If not defined the default page length will be used
         /// </param>
         [Obsolete("From WorkspaceResource use MembersResource.EnumerateMembers(int) instead")]
-        public IEnumerable<UserShort> EnumerateMembers(int? pageLen = null)
+        public IEnumerable<UserInfo> EnumerateMembers(int? pageLen = null)
         {
             var overrideUrl = BaseUrl + "/members";
-            return SharpBucketV2.EnumeratePaginatedValues<UserShort>(overrideUrl, pageLen: pageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<UserInfo>(overrideUrl, pageLen: pageLen);
         }
 
 #if CS_8
@@ -85,7 +85,7 @@ namespace SharpBucket.V2.EndPoints
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
         [Obsolete("From WorkspaceResource use MembersResource.EnumerateMembersAsync(CancellationToken) instead")]
-        public IAsyncEnumerable<UserShort> EnumerateMembersAsync(CancellationToken token = default)
+        public IAsyncEnumerable<UserInfo> EnumerateMembersAsync(CancellationToken token = default)
             => EnumerateMembersAsync(null, token);
 
         /// <summary>
@@ -99,10 +99,10 @@ namespace SharpBucket.V2.EndPoints
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
         [Obsolete("From WorkspaceResource use MembersResource.EnumerateMembersAsync(int?, CancellationToken) instead")]
-        public IAsyncEnumerable<UserShort> EnumerateMembersAsync(int? pageLen, CancellationToken token = default)
+        public IAsyncEnumerable<UserInfo> EnumerateMembersAsync(int? pageLen, CancellationToken token = default)
         {
             var overrideUrl = BaseUrl + "/members";
-            return SharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, null, pageLen, token);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<UserInfo>(overrideUrl, null, pageLen, token);
         }
 #endif
 
@@ -112,10 +112,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
         [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
-        public List<UserShort> ListFollowers(int max = 0)
+        public List<UserInfo> ListFollowers(int max = 0)
         {
             var overrideUrl = BaseUrl + "/followers";
-            return SharpBucketV2.GetPaginatedValues<UserShort>(overrideUrl, max);
+            return SharpBucketV2.GetPaginatedValues<UserInfo>(overrideUrl, max);
         }
 
         /// <summary>
@@ -126,10 +126,10 @@ namespace SharpBucket.V2.EndPoints
         /// The length of a page. If not defined the default page length will be used
         /// </param>
         [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
-        public IEnumerable<UserShort> EnumerateFollowers(int? pageLen = null)
+        public IEnumerable<UserInfo> EnumerateFollowers(int? pageLen = null)
         {
             var overrideUrl = BaseUrl + "/followers";
-            return SharpBucketV2.EnumeratePaginatedValues<UserShort>(overrideUrl, pageLen: pageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<UserInfo>(overrideUrl, pageLen: pageLen);
         }
 
 #if CS_8
@@ -141,7 +141,7 @@ namespace SharpBucket.V2.EndPoints
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
         [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
-        public IAsyncEnumerable<UserShort> EnumerateFollowersAsync(CancellationToken token = default)
+        public IAsyncEnumerable<UserInfo> EnumerateFollowersAsync(CancellationToken token = default)
             => EnumerateFollowersAsync(null, token);
 
         /// <summary>
@@ -155,10 +155,10 @@ namespace SharpBucket.V2.EndPoints
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
         [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
-        public IAsyncEnumerable<UserShort> EnumerateFollowersAsync(int? pageLen, CancellationToken token = default)
+        public IAsyncEnumerable<UserInfo> EnumerateFollowersAsync(int? pageLen, CancellationToken token = default)
         {
             var overrideUrl = BaseUrl + "/followers";
-            return SharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, null, pageLen, token);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<UserInfo>(overrideUrl, null, pageLen, token);
         }
 #endif
 
@@ -168,10 +168,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
         [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
-        public List<UserShort> ListFollowing(int max = 0)
+        public List<UserInfo> ListFollowing(int max = 0)
         {
             var overrideUrl = BaseUrl + "/following";
-            return SharpBucketV2.GetPaginatedValues<UserShort>(overrideUrl, max);
+            return SharpBucketV2.GetPaginatedValues<UserInfo>(overrideUrl, max);
         }
 
         /// <summary>
@@ -182,10 +182,10 @@ namespace SharpBucket.V2.EndPoints
         /// The length of a page. If not defined the default page length will be used
         /// </param>
         [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
-        public IEnumerable<UserShort> EnumerateFollowing(int? pageLen = null)
+        public IEnumerable<UserInfo> EnumerateFollowing(int? pageLen = null)
         {
             var overrideUrl = BaseUrl + "/following";
-            return SharpBucketV2.EnumeratePaginatedValues<UserShort>(overrideUrl, pageLen: pageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<UserInfo>(overrideUrl, pageLen: pageLen);
         }
 
 #if CS_8
@@ -197,7 +197,7 @@ namespace SharpBucket.V2.EndPoints
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
         [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
-        public IAsyncEnumerable<UserShort> EnumerateFollowingAsync(CancellationToken token = default)
+        public IAsyncEnumerable<UserInfo> EnumerateFollowingAsync(CancellationToken token = default)
             => EnumerateFollowingAsync(null, token);
 
         /// <summary>
@@ -211,10 +211,10 @@ namespace SharpBucket.V2.EndPoints
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
         [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
-        public IAsyncEnumerable<UserShort> EnumerateFollowingAsync(int? pageLen, CancellationToken token = default)
+        public IAsyncEnumerable<UserInfo> EnumerateFollowingAsync(int? pageLen, CancellationToken token = default)
         {
             var overrideUrl = BaseUrl + "/following";
-            return SharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, null, pageLen, token);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<UserInfo>(overrideUrl, null, pageLen, token);
         }
 #endif
 

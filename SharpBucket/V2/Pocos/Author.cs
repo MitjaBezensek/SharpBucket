@@ -3,6 +3,6 @@
     public class Author
     {
         public string raw { get; set; }
-        public UserShort user { get; set; }
+        public UserInfo user { get; set; }
     }
 }

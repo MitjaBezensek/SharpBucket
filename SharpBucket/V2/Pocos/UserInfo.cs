@@ -2,6 +2,9 @@
 {
     public class UserInfo
     {
+        /// <summary>
+        /// Could be user or team.
+        /// </summary>
         public string type { get; set; }
 
         public string uuid { get; set; }

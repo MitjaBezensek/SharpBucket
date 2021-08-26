@@ -99,7 +99,7 @@ namespace SharpBucket.V2.EndPoints
         /// List accounts watching a repository. 
         /// </summary>
         /// <returns></returns>
-        public List<UserShort> ListWatchers()
+        public List<UserInfo> ListWatchers()
         {
             return ListWatchers(0);
         }
@@ -108,18 +108,18 @@ namespace SharpBucket.V2.EndPoints
         /// List accounts watching a repository.
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
-        public List<UserShort> ListWatchers(int max)
+        public List<UserInfo> ListWatchers(int max)
         {
-            return SharpBucketV2.GetPaginatedValues<UserShort>(BaseUrl + "/watchers", max);
+            return SharpBucketV2.GetPaginatedValues<UserInfo>(BaseUrl + "/watchers", max);
         }
 
         /// <summary>
         /// Enumerate accounts watching a repository.
         /// </summary>
         /// <param name="pageLen">The length of a page. If not defined the default page length will be used.</param>
-        public IEnumerable<UserShort> EnumerateWatchers(int? pageLen = null)
+        public IEnumerable<UserInfo> EnumerateWatchers(int? pageLen = null)
         {
-            return SharpBucketV2.EnumeratePaginatedValues<UserShort>(BaseUrl + "/watchers", null, pageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<UserInfo>(BaseUrl + "/watchers", null, pageLen);
         }
 
 #if CS_8
@@ -128,9 +128,9 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="pageLen">The length of a page. If not defined the default page length will be used.</param>
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public IAsyncEnumerable<UserShort> EnumerateWatchersAsync(int? pageLen = null, CancellationToken token = default)
+        public IAsyncEnumerable<UserInfo> EnumerateWatchersAsync(int? pageLen = null, CancellationToken token = default)
         {
-            return SharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(BaseUrl + "/watchers", null, pageLen, token);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<UserInfo>(BaseUrl + "/watchers", null, pageLen, token);
         }
 #endif
 
