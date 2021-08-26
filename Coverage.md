@@ -700,3 +700,55 @@ The organization of all that routes may slightly differ in the SharpBucket class
 - /users/{username}/ssh-keys/ `GET` `PUT` `DELETE`
   - Implemented by: none
   - Tested: no
+
+## [Workspaces endpoint](https://developer.atlassian.com/bitbucket/api/2/reference/resource/workspaces)
+- /workspaces `GET`
+  - Implemented by: `WorkspacesEndpoint.ListWorkspaces()` *V0.15.0*
+  - Tested: **yes**
+
+### [Workspace Resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/workspaces/%7Bworkspace%7D)
+- /workspaces/{workspace} `GET`
+  - Implemented by: none
+  - Tested: no
+- /workspaces/{workspace}/hooks `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /workspaces/{workspace}/hooks/{uid} `DELETE` `GET` `PUT`
+  - Implemented by: none
+  - Tested: no
+- /workspaces/{workspace}/members `GET`
+  - Implemented by: none
+  - Tested: no
+- /workspaces/{workspace}/members/{member} `GET`
+  - Implemented by: none
+  - Tested: no
+- /workspaces/{workspace}/permissions `GET`
+  - Implemented by: none
+  - Tested: no
+- /workspaces/{workspace}/permissions/repositories `GET`
+  - Implemented by: none
+  - Tested: no
+- /workspaces/{workspace}/permissions/repositories/{repo_slug} `GET`
+  - Implemented by: none
+  - Tested: no
+- /workspaces/{workspace}/pipelines-config/identity/oidc/.well-known/openid-configuration `GET`
+  - Implemented by: none
+  - Tested: no
+- /workspaces/{workspace}/pipelines-config/identity/oidc/keys.json `GET`
+  - Implemented by: none
+  - Tested: no
+- /workspaces/{workspace}/pipelines-config/variables `POST` `GET`
+  - Implemented by: none
+  - Tested: no
+- /workspaces/{workspace}/pipelines-config/variables/{variable_uuid} `PUT` `GET` `DELETE`
+  - Implemented by: none
+  - Tested: no
+- /workspaces/{workspace}/projects `GET` `POST`
+  - Implemented by: none
+  - Tested: no
+- /workspaces/{workspace}/projects/{project_key} `DELETE` `GET` `PUT`
+  - Implemented by: none
+  - Tested: no
+- /workspaces/{workspace}/search/code `GET`
+  - Implemented by: none
+  - Tested: no

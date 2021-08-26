@@ -59,5 +59,13 @@ namespace SharpBucket.V2
         {
             return new UserEndpoint(this);
         }
+
+        /// <summary>
+        /// Get the Workspaces endpoint.
+        /// </summary>
+        public WorkspacesEndPoint WorkspacesEndPoint()
+        {
+            return new WorkspacesEndPoint(this);
+        }
     }
 }
