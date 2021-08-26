@@ -10,6 +10,7 @@ namespace SharpBucket.V2.EndPoints
     /// More info:
     /// https://confluence.atlassian.com/display/BITBUCKET/teams+Endpoint
     /// </summary>
+    [Obsolete("This endpoint has been deprecated and will stop functioning soon. You should use the workspaces endpoint instead.")]
     public class TeamsEndPoint : EndPoint
     {
         public TeamsEndPoint(ISharpBucketRequesterV2 sharpBucketV2)

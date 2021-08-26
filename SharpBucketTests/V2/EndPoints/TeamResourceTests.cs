@@ -14,6 +14,7 @@ using Shouldly;
 namespace SharpBucketTests.V2.EndPoints
 {
     [TestFixture]
+    [Obsolete("Tests of an obsolete class")]
     class TeamResourceTests
     {
         private TeamResource AtlassianTeamResource { get; set; }

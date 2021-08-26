@@ -21,7 +21,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// the base url of this end point.
         /// It's a relative URL from the base url of the <see cref="ISharpBucketRequesterV2"/>.
-        /// It is formatted wihtout any slash at the begining, and with a trailing slash at the end.
+        /// It is formatted without any slash at the beginning, and with a trailing slash at the end.
         /// </summary>
         protected readonly string _baseUrl;
 

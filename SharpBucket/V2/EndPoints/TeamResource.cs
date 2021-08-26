@@ -7,6 +7,7 @@ using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
 {
+    [Obsolete("This endpoint has been deprecated and will stop functioning soon. You should use the WorkspaceResource instead.")]
     public class TeamResource : EndPoint
     {
         private readonly string _teamName;

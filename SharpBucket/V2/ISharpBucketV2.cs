@@ -1,4 +1,5 @@
-﻿using SharpBucket.V2.EndPoints;
+﻿using System;
+using SharpBucket.V2.EndPoints;
 
 namespace SharpBucket.V2
 {
@@ -18,6 +19,7 @@ namespace SharpBucket.V2
         /// Get the Teams end pPoint.
         ///  Give access to the data relative to the teams.
         /// </summary>
+        [Obsolete("This endpoint has been deprecated and will stop functioning soon. You should use the workspaces endpoint instead.")]
         TeamsEndPoint TeamsEndPoint();
 
         /// <summary>

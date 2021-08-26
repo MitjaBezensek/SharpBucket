@@ -23,16 +23,17 @@ namespace SharpBucket.V2
         }
 
         /// <summary>
-        /// Get the Teams end pPoint.
+        /// Get the Teams endpoint.
         ///  Give access to the data relative to the teams.
         /// </summary>
+        [Obsolete("This endpoint has been deprecated and will stop functioning soon. You should use the workspaces endpoint instead.")]
         public TeamsEndPoint TeamsEndPoint()
         {
             return new TeamsEndPoint(this);
         }
 
         /// <summary>
-        /// Get the Repositories end point.
+        /// Get the Repositories endpoint.
         /// Give access to the data relative to the public repositories and private repositories of the logged in user.
         /// </summary>
         public RepositoriesEndPoint RepositoriesEndPoint()
@@ -41,7 +42,7 @@ namespace SharpBucket.V2
         }
 
         /// <summary>
-        /// Get the Users end point.
+        /// Get the Users endpoint.
         /// Give access to the data relative to a specified user.
         /// </summary>
         /// <param name="accountName">The account for which you wish to get the end point.</param>
@@ -51,7 +52,7 @@ namespace SharpBucket.V2
         }
 
         /// <summary>
-        /// Get the User end point.
+        /// Get the User endpoint.
         /// Give access to the data relative to the currently logged in user.
         /// </summary>
         public UserEndpoint UserEndPoint()
