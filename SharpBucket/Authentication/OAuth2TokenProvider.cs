@@ -110,12 +110,7 @@ namespace SharpBucket.Authentication
 
         private static Parameter Parameter(string name, string value)
         {
-            return new Parameter
-            {
-                Name = name,
-                Value = value,
-                Type = ParameterType.GetOrPost
-            };
+            return new Parameter(name, value, ParameterType.GetOrPost);
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using RestSharp;
-using RestSharp.Deserializers;
+using RestSharp.Serialization.Json;
 
 namespace SharpBucket.Authentication
 {
