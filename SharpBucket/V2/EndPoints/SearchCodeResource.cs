@@ -27,7 +27,7 @@ namespace SharpBucket.V2.EndPoints
             {
                 { "search_query", searchQuery },
             };
-            return _sharpBucketV2.GetPaginatedValues<SearchCodeSearchResult>(_baseUrl.TrimEnd('/'), max, requestParameters);
+            return SharpBucketV2.GetPaginatedValues<SearchCodeSearchResult>(BaseUrl, max, requestParameters);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace SharpBucket.V2.EndPoints
             {
                 { "search_query", searchQuery },
             };
-            return _sharpBucketV2.EnumeratePaginatedValues<SearchCodeSearchResult>(_baseUrl.TrimEnd('/'), requestParameters, pageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<SearchCodeSearchResult>(BaseUrl, requestParameters, pageLen);
         }
 
 #if CS_8
@@ -78,8 +78,8 @@ namespace SharpBucket.V2.EndPoints
             {
                 { "search_query", searchQuery },
             };
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<SearchCodeSearchResult>(
-                _baseUrl.TrimEnd('/'), requestParameters, pageLen, token);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<SearchCodeSearchResult>(
+                BaseUrl, requestParameters, pageLen, token);
         }
 #endif
     }

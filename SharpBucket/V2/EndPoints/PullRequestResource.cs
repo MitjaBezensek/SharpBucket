@@ -40,7 +40,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public PullRequest GetPullRequest()
         {
-            return _sharpBucketV2.Get<PullRequest>(_baseUrl);
+            return SharpBucketV2.Get<PullRequest>(BaseUrl);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public Task<PullRequest> GetPullRequestAsync(CancellationToken token = default)
         {
-            return _sharpBucketV2.GetAsync<PullRequest>(_baseUrl, token);
+            return SharpBucketV2.GetAsync<PullRequest>(BaseUrl, token);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public List<Commit> ListPullRequestCommits()
         {
-            var overrideUrl = _baseUrl + "commits";
+            var overrideUrl = BaseUrl + "/commits";
             return GetPaginatedValues<Commit>(overrideUrl);
         }
 
@@ -68,8 +68,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
         public IEnumerable<Commit> EnumeratePullRequestCommits(int? pageLen = null)
         {
-            var overrideUrl = _baseUrl + "commits";
-            return _sharpBucketV2.EnumeratePaginatedValues<Commit>(overrideUrl, null, pageLen);
+            var overrideUrl = BaseUrl + "/commits";
+            return SharpBucketV2.EnumeratePaginatedValues<Commit>(overrideUrl, null, pageLen);
         }
 
 #if CS_8
@@ -87,8 +87,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public IAsyncEnumerable<Commit> EnumeratePullRequestCommitsAsync(int? pageLen, CancellationToken token = default)
         {
-            var overrideUrl = _baseUrl + "commits";
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Commit>(overrideUrl, null, pageLen, token);
+            var overrideUrl = BaseUrl + "/commits";
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<Commit>(overrideUrl, null, pageLen, token);
         }
 #endif
 
@@ -99,8 +99,8 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public PullRequestInfo ApprovePullRequest()
         {
-            var overrideUrl = _baseUrl + "approve";
-            return _sharpBucketV2.Post<PullRequestInfo>(null, overrideUrl);
+            var overrideUrl = BaseUrl + "/approve";
+            return SharpBucketV2.Post<PullRequestInfo>(null, overrideUrl);
         }
 
         /// <summary>
@@ -110,8 +110,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public Task<PullRequestInfo> ApprovePullRequestAsync(CancellationToken token = default)
         {
-            var overrideUrl = _baseUrl + "approve";
-            return _sharpBucketV2.PostAsync<PullRequestInfo>(null, overrideUrl, token);
+            var overrideUrl = BaseUrl + "/approve";
+            return SharpBucketV2.PostAsync<PullRequestInfo>(null, overrideUrl, token);
         }
 
         /// <summary>
@@ -119,8 +119,8 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public void RemovePullRequestApproval()
         {
-            var overrideUrl = _baseUrl + "approve";
-            _sharpBucketV2.Delete(overrideUrl);
+            var overrideUrl = BaseUrl + "/approve";
+            SharpBucketV2.Delete(overrideUrl);
         }
 
         /// <summary>
@@ -129,8 +129,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public Task RemovePullRequestApprovalAsync(CancellationToken token = default)
         {
-            var overrideUrl = _baseUrl + "approve";
-            return _sharpBucketV2.DeleteAsync(overrideUrl, token);
+            var overrideUrl = BaseUrl + "/approve";
+            return SharpBucketV2.DeleteAsync(overrideUrl, token);
         }
 
         /// <summary>
@@ -140,8 +140,8 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public string GetDiffForPullRequest()
         {
-            var overrideUrl = _baseUrl + "diff";
-            return _sharpBucketV2.Get(overrideUrl);
+            var overrideUrl = BaseUrl + "/diff";
+            return SharpBucketV2.Get(overrideUrl);
         }
 
         /// <summary>
@@ -151,14 +151,14 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public Task<string> GetDiffForPullRequestAsync(CancellationToken token = default)
         {
-            var overrideUrl = _baseUrl + "diff";
-            return _sharpBucketV2.GetAsync(overrideUrl, token);
+            var overrideUrl = BaseUrl + "/diff";
+            return SharpBucketV2.GetAsync(overrideUrl, token);
         }
 
         /// <summary>
         /// Gets a log of the activity for a specific pull request.
         /// </summary>
-        [Obsolete("Use ListPullRequestActivities instead which is the exact same method but with a name that respect the global namming rules of the project.")]
+        [Obsolete("Use ListPullRequestActivities instead which is the exact same method but with a name that respect the global naming rules of the project.")]
         public List<Activity> GetPullRequestActivity()
             => ListPullRequestActivities();
 
@@ -167,7 +167,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public List<Activity> ListPullRequestActivities()
         {
-            var overrideUrl = _baseUrl + "activity";
+            var overrideUrl = BaseUrl + "/activity";
             return GetPaginatedValues<Activity>(overrideUrl);
         }
 
@@ -177,8 +177,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
         public IEnumerable<Activity> EnumeratePullRequestActivities(int? pageLen = null)
         {
-            var overrideUrl = _baseUrl + "activity";
-            return _sharpBucketV2.EnumeratePaginatedValues<Activity>(overrideUrl, null, pageLen);
+            var overrideUrl = BaseUrl + "/activity";
+            return SharpBucketV2.EnumeratePaginatedValues<Activity>(overrideUrl, null, pageLen);
         }
 
 #if CS_8
@@ -196,8 +196,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public IAsyncEnumerable<Activity> EnumeratePullRequestActivitiesAsync(int? pageLen, CancellationToken token = default)
         {
-            var overrideUrl = _baseUrl + "activity";
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Activity>(overrideUrl, null, pageLen, token);
+            var overrideUrl = BaseUrl + "/activity";
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<Activity>(overrideUrl, null, pageLen, token);
         }
 #endif
 
@@ -207,8 +207,8 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public Merge AcceptAndMergePullRequest()
         {
-            var overrideUrl = _baseUrl + "merge";
-            return _sharpBucketV2.Post<Merge>(null, overrideUrl);
+            var overrideUrl = BaseUrl + "/merge";
+            return SharpBucketV2.Post<Merge>(null, overrideUrl);
         }
 
         /// <summary>
@@ -217,8 +217,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public Task<Merge> AcceptAndMergePullRequestAsync(CancellationToken token = default)
         {
-            var overrideUrl = _baseUrl + "merge";
-            return _sharpBucketV2.PostAsync<Merge>(null, overrideUrl, token);
+            var overrideUrl = BaseUrl + "/merge";
+            return SharpBucketV2.PostAsync<Merge>(null, overrideUrl, token);
         }
 
         /// <summary>
@@ -227,8 +227,8 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public PullRequest DeclinePullRequest()
         {
-            var overrideUrl = _baseUrl + "decline";
-            return _sharpBucketV2.Post<PullRequest>(null, overrideUrl);
+            var overrideUrl = BaseUrl + "/decline";
+            return SharpBucketV2.Post<PullRequest>(null, overrideUrl);
         }
 
         /// <summary>
@@ -237,8 +237,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public async Task<PullRequest> DeclinePullRequestAsync(CancellationToken token = default)
         {
-            var overrideUrl = _baseUrl + "decline";
-            return await _sharpBucketV2.PostAsync<PullRequest>(null, overrideUrl, token);
+            var overrideUrl = BaseUrl + "/decline";
+            return await SharpBucketV2.PostAsync<PullRequest>(null, overrideUrl, token);
         }
 
         /// <summary>
@@ -263,8 +263,8 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("Prefer CommentsResource.PostComment(comment)")]
         public Comment PostPullRequestComment(Comment comment)
         {
-            var overrideUrl = _baseUrl + "comments";
-            return _sharpBucketV2.Post(comment, overrideUrl);
+            var overrideUrl = BaseUrl + "/comments";
+            return SharpBucketV2.Post(comment, overrideUrl);
         }
     }
 }

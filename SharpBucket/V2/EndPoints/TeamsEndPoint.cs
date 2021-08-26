@@ -15,7 +15,7 @@ namespace SharpBucket.V2.EndPoints
     {
         [Obsolete("Use WorkspacesEndPoint(ISharpBucketRequesterV2) instead.")]
         public TeamsEndPoint(ISharpBucketRequesterV2 sharpBucketV2)
-            : base(sharpBucketV2, "teams/")
+            : base(sharpBucketV2, "teams")
         {
         }
 
@@ -26,7 +26,7 @@ namespace SharpBucket.V2.EndPoints
         public List<Team> GetUserTeams(int max = 0)
         {
             var parameters = new Dictionary<string, object> { { "role", "member" } };
-            return GetPaginatedValues<Team>(_baseUrl, max, parameters);
+            return GetPaginatedValues<Team>(BaseUrl, max, parameters);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace SharpBucket.V2.EndPoints
         public List<Team> GetUserTeamsWithContributorRole(int max = 0)
         {
             var parameters = new Dictionary<string, object> { { "role", "contributor" } };
-            return GetPaginatedValues<Team>(_baseUrl, max, parameters);
+            return GetPaginatedValues<Team>(BaseUrl, max, parameters);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace SharpBucket.V2.EndPoints
         public List<Team> GetUserTeamsWithAdminRole(int max = 0)
         {
             var parameters = new Dictionary<string, object> { { "role", "admin" } };
-            return GetPaginatedValues<Team>(_baseUrl, max, parameters);
+            return GetPaginatedValues<Team>(BaseUrl, max, parameters);
         }
 
         /// <summary>
@@ -64,8 +64,8 @@ namespace SharpBucket.V2.EndPoints
         public IEnumerable<Team> EnumerateUserTeams(EnumerateTeamsParameters parameters)
         {
             _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-            return _sharpBucketV2.EnumeratePaginatedValues<Team>(
-                _baseUrl, parameters.ToDictionary(), parameters.PageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<Team>(
+                BaseUrl, parameters.ToDictionary(), parameters.PageLen);
         }
 
 #if CS_8
@@ -85,8 +85,8 @@ namespace SharpBucket.V2.EndPoints
             EnumerateTeamsParameters parameters, CancellationToken token = default)
         {
             _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Team>(
-                _baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<Team>(
+                BaseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
 

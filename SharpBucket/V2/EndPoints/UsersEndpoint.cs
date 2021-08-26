@@ -17,7 +17,7 @@ namespace SharpBucket.V2.EndPoints
         private readonly Lazy<RepositoriesAccountResource> _repositoriesResource;
 
         public UsersEndpoint(string accountName, ISharpBucketRequesterV2 sharpBucketV2) :
-            base(sharpBucketV2, $"users/{accountName.GuidOrValue()}/")
+            base(sharpBucketV2, $"users/{accountName.GuidOrValue()}")
         {
             _repositoriesResource = new Lazy<RepositoriesAccountResource>(
                 () => new RepositoriesEndPoint(sharpBucketV2).RepositoriesResource(accountName));
@@ -39,7 +39,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public User GetProfile()
         {
-            return _sharpBucketV2.Get<User>(_baseUrl);
+            return SharpBucketV2.Get<User>(BaseUrl);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public async Task<User> GetProfileAsync(CancellationToken token = default)
         {
-            return await _sharpBucketV2.GetAsync<User>(_baseUrl, token);
+            return await SharpBucketV2.GetAsync<User>(BaseUrl, token);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("The end point as been removed. See https://developer.atlassian.com/cloud/bitbucket/bitbucket-api-changes-gdpr/ for more details.")]
         public List<User> ListFollowers(int max = 0)
         {
-            var overrideUrl = _baseUrl + "followers/";
+            var overrideUrl = BaseUrl + "/followers";
             return GetPaginatedValues<User>(overrideUrl, max);
         }
 
@@ -72,7 +72,7 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("The end point as been removed. See https://developer.atlassian.com/cloud/bitbucket/bitbucket-api-changes-gdpr/ for more details.")]
         public List<User> ListFollowing(int max = 0)
         {
-            var overrideUrl = _baseUrl + "following/";
+            var overrideUrl = BaseUrl + "/following";
             return GetPaginatedValues<User>(overrideUrl, max);
         }
 

@@ -46,7 +46,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return GetPaginatedValues<PullRequest>(_baseUrl, parameters.Max, parameters.ToDictionary());
+            return GetPaginatedValues<PullRequest>(BaseUrl, parameters.Max, parameters.ToDictionary());
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return GetPaginatedValues<PullRequest>(_baseUrl, parameters.Max, parameters.ToDictionary());
+            return GetPaginatedValues<PullRequest>(BaseUrl, parameters.Max, parameters.ToDictionary());
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _sharpBucketV2.EnumeratePaginatedValues<PullRequest>(_baseUrl, parameters.ToDictionary(), parameters.PageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<PullRequest>(BaseUrl, parameters.ToDictionary(), parameters.PageLen);
         }
 
 #if CS_8
@@ -94,7 +94,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<PullRequest>(_baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<PullRequest>(BaseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
 
@@ -106,7 +106,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public PullRequest PostPullRequest(PullRequest pullRequest)
         {
-            return _sharpBucketV2.Post(pullRequest, _baseUrl);
+            return SharpBucketV2.Post(pullRequest, BaseUrl);
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public Task<PullRequest> PostPullRequestAsync(PullRequest pullRequest, CancellationToken token = default)
         {
-            return _sharpBucketV2.PostAsync(pullRequest, _baseUrl, token);
+            return SharpBucketV2.PostAsync(pullRequest, BaseUrl, token);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public PullRequest PutPullRequest(PullRequest pullRequest)
         {
-            return _sharpBucketV2.Put(pullRequest, _baseUrl);
+            return SharpBucketV2.Put(pullRequest, BaseUrl);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public Task<PullRequest> PutPullRequestAsync(PullRequest pullRequest, CancellationToken token = default)
         {
-            return _sharpBucketV2.PutAsync(pullRequest, _baseUrl, token);
+            return SharpBucketV2.PutAsync(pullRequest, BaseUrl, token);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         public List<Activity> GetPullRequestsActivities(int max = 0)
         {
-            var overrideUrl = _baseUrl + "activity";
+            var overrideUrl = BaseUrl + "/activity";
             return GetPaginatedValues<Activity>(overrideUrl, max);
         }
 
@@ -169,8 +169,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="pageLen">The size of a page. If not defined the default page length will be used.</param>
         public IEnumerable<Activity> EnumeratePullRequestsActivities(int? pageLen = null)
         {
-            var overrideUrl = _baseUrl + "activity";
-            return _sharpBucketV2.EnumeratePaginatedValues<Activity>(overrideUrl, null, pageLen);
+            var overrideUrl = BaseUrl + "/activity";
+            return SharpBucketV2.EnumeratePaginatedValues<Activity>(overrideUrl, null, pageLen);
         }
 
 #if CS_8
@@ -188,8 +188,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public IAsyncEnumerable<Activity> EnumeratePullRequestsActivitiesAsync(int? pageLen, CancellationToken token = default)
         {
-            var overrideUrl = _baseUrl + "activity";
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Activity>(overrideUrl, null, pageLen, token);
+            var overrideUrl = BaseUrl + "/activity";
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<Activity>(overrideUrl, null, pageLen, token);
         }
 #endif
 

@@ -17,7 +17,7 @@ namespace SharpBucket.V2.EndPoints
         where TComment : Comment, new()
     {
         protected CommentsResource(EndPoint parentResource)
-            : base(parentResource, "comments/")
+            : base(parentResource, "comments")
         {
         }
 
@@ -35,8 +35,8 @@ namespace SharpBucket.V2.EndPoints
         {
             _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
 
-            return _sharpBucketV2.GetPaginatedValues<TComment>(
-                _baseUrl, parameters.Max, parameters.ToDictionary());
+            return SharpBucketV2.GetPaginatedValues<TComment>(
+                BaseUrl, parameters.Max, parameters.ToDictionary());
         }
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace SharpBucket.V2.EndPoints
         {
             _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
 
-            return _sharpBucketV2.EnumeratePaginatedValues<TComment>(
-                _baseUrl, parameters.ToDictionary(), parameters.PageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<TComment>(
+                BaseUrl, parameters.ToDictionary(), parameters.PageLen);
         }
 
 #if CS_8
@@ -83,8 +83,8 @@ namespace SharpBucket.V2.EndPoints
         {
             _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
 
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<TComment>(
-                _baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<TComment>(
+                BaseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
 
@@ -130,7 +130,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="raw">The comment to add.</param>
         public TComment PostComment(TComment comment)
         {
-            return _sharpBucketV2.Post(comment, _baseUrl);
+            return SharpBucketV2.Post(comment, BaseUrl);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="raw">The comment to add.</param>
         public Task<TComment> PostCommentAsync(TComment comment, CancellationToken token = default)
         {
-            return _sharpBucketV2.PostAsync(comment, _baseUrl, token);
+            return SharpBucketV2.PostAsync(comment, BaseUrl, token);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="commentId">The id of the comment to get.</param>
         public TComment GetComment(int commentId)
         {
-            return _sharpBucketV2.Get<TComment>(_baseUrl + commentId);
+            return SharpBucketV2.Get<TComment>(BaseUrl + "/" + commentId);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">The cancellation token</param>
         public Task<TComment> GetCommentAsync(int commentId, CancellationToken token = default)
         {
-            return _sharpBucketV2.GetAsync<TComment>(_baseUrl + commentId, token);
+            return SharpBucketV2.GetAsync<TComment>(BaseUrl + "/" + commentId, token);
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="comment">The comment object to update.</param>
         public TComment PutComment(TComment comment)
         {
-            return _sharpBucketV2.Put(BuildPutComment(comment), _baseUrl + comment.id);
+            return SharpBucketV2.Put(BuildPutComment(comment), BaseUrl + "/" + comment.id);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">The cancellation token</param>
         public Task<TComment> PutCommentAsync(TComment comment, CancellationToken token = default)
         {
-            return _sharpBucketV2.PutAsync(BuildPutComment(comment), _baseUrl + comment.id, token);
+            return SharpBucketV2.PutAsync(BuildPutComment(comment), BaseUrl + "/" + comment.id, token);
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="commentId">The id of the comment to delete.</param>
         public void DeleteComment(int commentId)
         {
-            _sharpBucketV2.Delete(_baseUrl + commentId);
+            SharpBucketV2.Delete(BaseUrl + "/" + commentId);
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">The cancellation token</param>
         public Task DeleteCommentAsync(int commentId, CancellationToken token = default)
         {
-            return _sharpBucketV2.DeleteAsync(_baseUrl + commentId, token);
+            return SharpBucketV2.DeleteAsync(BaseUrl + "/" + commentId, token);
         }
 
         private TComment BuildNewComment(string raw, int? parentCommentId, Location location)

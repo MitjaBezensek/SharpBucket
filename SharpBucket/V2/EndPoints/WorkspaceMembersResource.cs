@@ -7,7 +7,7 @@ namespace SharpBucket.V2.EndPoints
     public class WorkspaceMembersResource : EndPoint
     {
         internal WorkspaceMembersResource(WorkspaceResource workspaceResource)
-            : base(workspaceResource, "members/")
+            : base(workspaceResource, "members")
         {
         }
 
@@ -17,7 +17,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         public List<WorkspaceMembership> ListMembers(int max = 0)
         {
-            return _sharpBucketV2.GetPaginatedValues<WorkspaceMembership>(_baseUrl, max);
+            return SharpBucketV2.GetPaginatedValues<WorkspaceMembership>(BaseUrl, max);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace SharpBucket.V2.EndPoints
         /// </param>
         public IEnumerable<WorkspaceMembership> EnumerateMembers(int? pageLen = null)
         {
-            return _sharpBucketV2.EnumeratePaginatedValues<WorkspaceMembership>(_baseUrl, pageLen: pageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<WorkspaceMembership>(BaseUrl, pageLen: pageLen);
         }
 
 #if CS_8
@@ -55,7 +55,7 @@ namespace SharpBucket.V2.EndPoints
         /// </param>
         public IAsyncEnumerable<WorkspaceMembership> EnumerateMembersAsync(int? pageLen, CancellationToken token = default)
         {
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<WorkspaceMembership>(_baseUrl, null, pageLen, token);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<WorkspaceMembership>(BaseUrl, null, pageLen, token);
         }
 #endif
     }

@@ -16,7 +16,7 @@ namespace SharpBucket.V2.EndPoints
             : base(teamsEndPoint, teamName.CheckIsNotNullNorEmpty(nameof(teamName)).GuidOrValue())
         {
             _repositoriesResource = new Lazy<RepositoriesAccountResource>(
-                () => new RepositoriesEndPoint(_sharpBucketV2).RepositoriesResource(teamName));
+                () => new RepositoriesEndPoint(SharpBucketV2).RepositoriesResource(teamName));
         }
 
         /// <summary>
@@ -58,8 +58,8 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("From WorkspaceResource use MembersResource.ListMembers(int) instead")]
         public List<UserShort> ListMembers(int max = 0)
         {
-            var overrideUrl = _baseUrl + "members/";
-            return _sharpBucketV2.GetPaginatedValues<UserShort>(overrideUrl, max);
+            var overrideUrl = BaseUrl + "/members";
+            return SharpBucketV2.GetPaginatedValues<UserShort>(overrideUrl, max);
         }
 
         /// <summary>
@@ -72,8 +72,8 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("From WorkspaceResource use MembersResource.EnumerateMembers(int) instead")]
         public IEnumerable<UserShort> EnumerateMembers(int? pageLen = null)
         {
-            var overrideUrl = _baseUrl + "members/";
-            return _sharpBucketV2.EnumeratePaginatedValues<UserShort>(overrideUrl, pageLen: pageLen);
+            var overrideUrl = BaseUrl + "/members";
+            return SharpBucketV2.EnumeratePaginatedValues<UserShort>(overrideUrl, pageLen: pageLen);
         }
 
 #if CS_8
@@ -101,8 +101,8 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("From WorkspaceResource use MembersResource.EnumerateMembersAsync(int?, CancellationToken) instead")]
         public IAsyncEnumerable<UserShort> EnumerateMembersAsync(int? pageLen, CancellationToken token = default)
         {
-            var overrideUrl = _baseUrl + "members/";
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, null, pageLen, token);
+            var overrideUrl = BaseUrl + "/members";
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, null, pageLen, token);
         }
 #endif
 
@@ -114,8 +114,8 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
         public List<UserShort> ListFollowers(int max = 0)
         {
-            var overrideUrl = _baseUrl + "followers/";
-            return _sharpBucketV2.GetPaginatedValues<UserShort>(overrideUrl, max);
+            var overrideUrl = BaseUrl + "/followers";
+            return SharpBucketV2.GetPaginatedValues<UserShort>(overrideUrl, max);
         }
 
         /// <summary>
@@ -128,8 +128,8 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
         public IEnumerable<UserShort> EnumerateFollowers(int? pageLen = null)
         {
-            var overrideUrl = _baseUrl + "followers/";
-            return _sharpBucketV2.EnumeratePaginatedValues<UserShort>(overrideUrl, pageLen: pageLen);
+            var overrideUrl = BaseUrl + "/followers";
+            return SharpBucketV2.EnumeratePaginatedValues<UserShort>(overrideUrl, pageLen: pageLen);
         }
 
 #if CS_8
@@ -157,8 +157,8 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
         public IAsyncEnumerable<UserShort> EnumerateFollowersAsync(int? pageLen, CancellationToken token = default)
         {
-            var overrideUrl = _baseUrl + "followers/";
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, null, pageLen, token);
+            var overrideUrl = BaseUrl + "/followers";
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, null, pageLen, token);
         }
 #endif
 
@@ -170,8 +170,8 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
         public List<UserShort> ListFollowing(int max = 0)
         {
-            var overrideUrl = _baseUrl + "following/";
-            return _sharpBucketV2.GetPaginatedValues<UserShort>(overrideUrl, max);
+            var overrideUrl = BaseUrl + "/following";
+            return SharpBucketV2.GetPaginatedValues<UserShort>(overrideUrl, max);
         }
 
         /// <summary>
@@ -184,8 +184,8 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
         public IEnumerable<UserShort> EnumerateFollowing(int? pageLen = null)
         {
-            var overrideUrl = _baseUrl + "following/";
-            return _sharpBucketV2.EnumeratePaginatedValues<UserShort>(overrideUrl, pageLen: pageLen);
+            var overrideUrl = BaseUrl + "/following";
+            return SharpBucketV2.EnumeratePaginatedValues<UserShort>(overrideUrl, pageLen: pageLen);
         }
 
 #if CS_8
@@ -213,8 +213,8 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
         public IAsyncEnumerable<UserShort> EnumerateFollowingAsync(int? pageLen, CancellationToken token = default)
         {
-            var overrideUrl = _baseUrl + "following/";
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, null, pageLen, token);
+            var overrideUrl = BaseUrl + "/following";
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<UserShort>(overrideUrl, null, pageLen, token);
         }
 #endif
 
@@ -324,12 +324,12 @@ namespace SharpBucket.V2.EndPoints
             string searchQuery,
             int? pageLen = null)
         {
-            var overrideUrl = $"{_baseUrl}search/code";
+            var overrideUrl = $"{BaseUrl}/search/code";
             var requestParameters = new Dictionary<string, object>
             {
                 { "search_query", searchQuery }
             };
-            return _sharpBucketV2.EnumeratePaginatedValues<SearchCodeSearchResult>(overrideUrl, requestParameters, pageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<SearchCodeSearchResult>(overrideUrl, requestParameters, pageLen);
         }
     }
 }

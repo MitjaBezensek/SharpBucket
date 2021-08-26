@@ -12,7 +12,7 @@ namespace SharpBucket.V2.EndPoints
     public class ProjectsResource : EndPoint
     {
         internal ProjectsResource(WorkspaceResource workspaceResource)
-            : base(workspaceResource, "projects/")
+            : base(workspaceResource, "projects")
         {
         }
 
@@ -30,7 +30,7 @@ namespace SharpBucket.V2.EndPoints
         public List<Project> ListProjects(ListParameters parameters)
         {
             _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-            return _sharpBucketV2.GetPaginatedValues<Project>(_baseUrl, parameters.Max, parameters.ToDictionary());
+            return SharpBucketV2.GetPaginatedValues<Project>(BaseUrl, parameters.Max, parameters.ToDictionary());
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace SharpBucket.V2.EndPoints
         public IEnumerable<Project> EnumerateProjects(EnumerateParameters parameters)
         {
             _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-            return _sharpBucketV2.EnumeratePaginatedValues<Project>(_baseUrl, parameters.ToDictionary(), parameters.PageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<Project>(BaseUrl, parameters.ToDictionary(), parameters.PageLen);
         }
 
 #if CS_8
@@ -67,7 +67,7 @@ namespace SharpBucket.V2.EndPoints
         public IAsyncEnumerable<Project> EnumerateProjectsAsync(EnumerateParameters parameters, CancellationToken token = default)
         {
             _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Project>(_baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<Project>(BaseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
 
@@ -78,7 +78,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns>A new project instance that fully represent the newly created project.</returns>
         public Project PostProject(Project project)
         {
-            return _sharpBucketV2.Post(project, _baseUrl);
+            return SharpBucketV2.Post(project, BaseUrl);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns>A new project instance that fully represent the newly created project.</returns>
         public async Task<Project> PostProjectAsync(Project project, CancellationToken token = default)
         {
-            return await _sharpBucketV2.PostAsync(project, _baseUrl, token);
+            return await SharpBucketV2.PostAsync(project, BaseUrl, token);
         }
 
         /// <summary>

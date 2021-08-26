@@ -19,7 +19,7 @@ namespace SharpBucket.V2.EndPoints
         }
 
         internal TagsResource(RepositoryResource repositoryResource)
-            : base(repositoryResource, "refs/tags/")
+            : base(repositoryResource, "refs/tags")
         {
         }
 
@@ -37,32 +37,32 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return GetPaginatedValues<Tag>(_baseUrl, parameters.Max, parameters.ToDictionary());
+            return GetPaginatedValues<Tag>(BaseUrl, parameters.Max, parameters.ToDictionary());
         }
 
         /// <summary>
         /// Enumerate all Tags associated with a specific repository,
-        /// doing reqests page by page while enumerating.
+        /// doing requests page by page while enumerating.
         /// </summary>
         public IEnumerable<Tag> EnumerateTags()
             => EnumerateTags(new EnumerateParameters());
 
         /// <summary>
         /// Enumerate all Tags associated with a specific repository,
-        /// doing reqests page by page while enumerating.
+        /// doing requests page by page while enumerating.
         /// </summary>
         /// <param name="parameters">Parameters for the query.</param>
         public IEnumerable<Tag> EnumerateTags(EnumerateParameters parameters)
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _sharpBucketV2.EnumeratePaginatedValues<Tag>(_baseUrl, parameters.ToDictionary(), parameters.PageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<Tag>(BaseUrl, parameters.ToDictionary(), parameters.PageLen);
         }
 
 #if CS_8
         /// <summary>
         /// Enumerate all Tags associated with a specific repository,
-        /// doing reqests page by page while enumerating.
+        /// doing requests page by page while enumerating.
         /// </summary>
         /// <param name="token">The cancellation token</param>
         public IAsyncEnumerable<Tag> EnumerateTagsAsync(CancellationToken token = default)
@@ -70,7 +70,7 @@ namespace SharpBucket.V2.EndPoints
 
         /// <summary>
         /// Enumerate all Tags associated with a specific repository,
-        /// doing reqests page by page while enumerating.
+        /// doing requests page by page while enumerating.
         /// </summary>
         /// <param name="parameters">Parameters for the query.</param>
         /// <param name="token">The cancellation token</param>
@@ -78,7 +78,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Tag>(_baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<Tag>(BaseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
     }

@@ -12,17 +12,11 @@ namespace SharpBucket.V2.EndPoints
     public class ProjectResource : EndPoint
     {
         private string ProjectKey { get; }
-        private string ProjectUrl { get; }
 
         internal ProjectResource(ProjectsResource projectsResource, string projectKey)
-            : base(projectsResource, $"{projectKey.CheckIsNotNullNorEmpty(nameof(projectKey)).GuidOrValue()}/")
+            : base(projectsResource, projectKey.CheckIsNotNullNorEmpty(nameof(projectKey)).GuidOrValue())
         {
             this.ProjectKey = projectKey.GuidOrValue();
-
-            // Doing request with that trailing slash cause issues on that resource
-            // Maybe it's a good example that should made us change the pattern used for the _baseUrl in EndPoint
-            // for one that ensure that there is no trailing slash.
-            this.ProjectUrl = _baseUrl.TrimEnd('/');
         }
 
         /// <summary>
@@ -30,7 +24,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public Project GetProject()
         {
-            return _sharpBucketV2.Get<Project>(ProjectUrl);
+            return SharpBucketV2.Get<Project>(BaseUrl);
         }
 
         /// <summary>
@@ -39,7 +33,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">The cancellation token</param>
         public Task<Project> GetProjectAsync(CancellationToken token = default)
         {
-            return _sharpBucketV2.GetAsync<Project>(ProjectUrl, token);
+            return SharpBucketV2.GetAsync<Project>(BaseUrl, token);
         }
 
         /// <summary>
@@ -49,7 +43,7 @@ namespace SharpBucket.V2.EndPoints
         public Project PutProject(Project project)
         {
             var updateableFields = CreatePutProjectInstance(project);
-            return _sharpBucketV2.Put(updateableFields, ProjectUrl);
+            return SharpBucketV2.Put(updateableFields, BaseUrl);
         }
 
         /// <summary>
@@ -60,7 +54,7 @@ namespace SharpBucket.V2.EndPoints
         public Task<Project> PutProjectAsync(Project project, CancellationToken token = default)
         {
             var updateableFields = CreatePutProjectInstance(project);
-            return _sharpBucketV2.PutAsync(updateableFields, ProjectUrl, token);
+            return SharpBucketV2.PutAsync(updateableFields, BaseUrl, token);
         }
 
         private Project CreatePutProjectInstance(Project project)
@@ -89,7 +83,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public void DeleteProject()
         {
-            _sharpBucketV2.Delete(ProjectUrl);
+            SharpBucketV2.Delete(BaseUrl);
         }
 
         /// <summary>
@@ -98,7 +92,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">The cancellation token</param>
         public Task DeleteProjectAsync(CancellationToken token = default)
         {
-            return _sharpBucketV2.DeleteAsync(ProjectUrl, token);
+            return SharpBucketV2.DeleteAsync(BaseUrl, token);
         }
     }
 }

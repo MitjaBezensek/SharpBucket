@@ -13,7 +13,7 @@ namespace SharpBucket.V2.EndPoints
     public class WorkspacesEndPoint : EndPoint
     {
         public WorkspacesEndPoint(ISharpBucketRequesterV2 sharpBucketV2)
-            : base(sharpBucketV2, "workspaces/")
+            : base(sharpBucketV2, "workspaces")
         {
         }
 
@@ -32,7 +32,7 @@ namespace SharpBucket.V2.EndPoints
         public List<Workspace> ListWorkspaces(ListWorkspacesParameters parameters)
         {
             _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-            return GetPaginatedValues<Workspace>(_baseUrl, parameters.Max, parameters.ToDictionary());
+            return GetPaginatedValues<Workspace>(BaseUrl, parameters.Max, parameters.ToDictionary());
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace SharpBucket.V2.EndPoints
         public IEnumerable<Workspace> EnumerateWorkspaces(EnumerateWorkspacesParameters parameters)
         {
             _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-            return _sharpBucketV2.EnumeratePaginatedValues<Workspace>(
-                _baseUrl, parameters.ToDictionary(), parameters.PageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<Workspace>(
+                BaseUrl, parameters.ToDictionary(), parameters.PageLen);
         }
 
 #if CS_8
@@ -69,8 +69,8 @@ namespace SharpBucket.V2.EndPoints
             EnumerateWorkspacesParameters parameters, CancellationToken token = default)
         {
             _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Workspace>(
-                _baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<Workspace>(
+                BaseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
 

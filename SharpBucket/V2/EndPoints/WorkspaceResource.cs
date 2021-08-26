@@ -16,7 +16,7 @@ namespace SharpBucket.V2.EndPoints
             => new ProjectsResource(this);
 
         public RepositoriesAccountResource RepositoriesResource
-            => new RepositoriesEndPoint(_sharpBucketV2).RepositoriesResource(this.WorkspaceSlugOrUuid);
+            => new RepositoriesEndPoint(SharpBucketV2).RepositoriesResource(this.WorkspaceSlugOrUuid);
 
         public SearchCodeResource SearchCodeResource
             => new SearchCodeResource(this);
@@ -34,7 +34,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public Workspace GetWorkspace()
         {
-            return this._sharpBucketV2.Get<Workspace>(this._baseUrl);
+            return this.SharpBucketV2.Get<Workspace>(this.BaseUrl);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public async Task<Workspace> GetWorkspaceAsync(CancellationToken token = default)
         {
-            return await this._sharpBucketV2.GetAsync<Workspace>(this._baseUrl, token);
+            return await this.SharpBucketV2.GetAsync<Workspace>(this.BaseUrl, token);
         }
     }
 }
