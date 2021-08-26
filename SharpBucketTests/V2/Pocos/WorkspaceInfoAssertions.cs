@@ -3,9 +3,9 @@ using Shouldly;
 
 namespace SharpBucketTests.V2.Pocos
 {
-    public static class WorkspaceAssertions
+    public static class WorkspaceInfoAssertions
     {
-        public static Workspace ShouldBeFilled(this Workspace workspace)
+        public static WorkspaceInfo ShouldBeFilled(this WorkspaceInfo workspace)
         {
             workspace.ShouldNotBeNull();
             workspace.type.ShouldBe("workspace");
@@ -13,12 +13,11 @@ namespace SharpBucketTests.V2.Pocos
             workspace.name.ShouldNotBeNullOrEmpty();
             workspace.slug.ShouldNotBeNullOrEmpty();
             workspace.links.ShouldBeFilled();
-            workspace.created_on.ShouldNotBe(default);
 
             return workspace;
         }
 
-        public static Workspace ShouldBeEquivalentTo(this Workspace workspace, Workspace expectedWorkspace)
+        public static WorkspaceInfo ShouldBeEquivalentTo(this WorkspaceInfo workspace, WorkspaceInfo expectedWorkspace)
         {
             if (expectedWorkspace == null)
             {
@@ -31,7 +30,6 @@ namespace SharpBucketTests.V2.Pocos
                 workspace.name.ShouldBe(expectedWorkspace.name);
                 workspace.slug.ShouldBe(expectedWorkspace.slug);
                 workspace.links.ShouldBeEquivalentTo(expectedWorkspace.links);
-                workspace.created_on.ShouldBe(expectedWorkspace.created_on);
             }
 
             return workspace;

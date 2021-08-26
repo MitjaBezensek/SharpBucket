@@ -20,5 +20,27 @@ namespace SharpBucketTests.V2.Pocos
 
             return links;
         }
+
+        public static WorkspaceLinks ShouldBeEquivalentTo(this WorkspaceLinks links, WorkspaceLinks expectedLinks)
+        {
+            if (expectedLinks == null)
+            {
+                links.ShouldBeNull();
+            }
+            else
+            {
+                links.avatar.ShouldBeEquivalentTo(expectedLinks.avatar);
+                links.hooks.ShouldBeEquivalentTo(expectedLinks.hooks);
+                links.html.ShouldBeEquivalentTo(expectedLinks.html);
+                links.members.ShouldBeEquivalentTo(expectedLinks.members);
+                links.owners.ShouldBeEquivalentTo(expectedLinks.owners);
+                links.projects.ShouldBeEquivalentTo(expectedLinks.projects);
+                links.repositories.ShouldBeEquivalentTo(expectedLinks.repositories);
+                links.self.ShouldBeEquivalentTo(expectedLinks.self);
+                links.snippets.ShouldBeEquivalentTo(expectedLinks.snippets);
+            }
+
+            return links;
+        }
     }
 }

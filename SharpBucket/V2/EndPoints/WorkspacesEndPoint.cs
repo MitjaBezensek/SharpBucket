@@ -73,5 +73,14 @@ namespace SharpBucket.V2.EndPoints
                 _baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
+
+        /// <summary>
+        /// Gets a <see cref="WorkspaceResource"/> for a specified workspace.
+        /// </summary>
+        /// <param name="workspaceSlugOrName">The slug or UUID of the workspace.</param>
+        public WorkspaceResource WorkspaceResource(string workspaceSlugOrName)
+        {
+            return new WorkspaceResource(this, workspaceSlugOrName);
+        }
     }
 }

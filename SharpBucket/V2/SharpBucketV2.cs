@@ -26,7 +26,7 @@ namespace SharpBucket.V2
         /// Get the Teams endpoint.
         ///  Give access to the data relative to the teams.
         /// </summary>
-        [Obsolete("This endpoint has been deprecated and will stop functioning soon. You should use the workspaces endpoint instead.")]
+        [Obsolete("This endpoint has been deprecated and will stop functioning soon. You should use WorkspacesEndPoint() instead.")]
         public TeamsEndPoint TeamsEndPoint()
         {
             return new TeamsEndPoint(this);

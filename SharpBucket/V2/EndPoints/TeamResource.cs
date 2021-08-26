@@ -10,21 +10,11 @@ namespace SharpBucket.V2.EndPoints
     [Obsolete("This endpoint has been deprecated and will stop functioning soon. You should use the WorkspaceResource instead.")]
     public class TeamResource : EndPoint
     {
-        private readonly string _teamName;
-
         private readonly Lazy<RepositoriesAccountResource> _repositoriesResource;
-
-        [Obsolete("Prefer new TeamsEndPoint(sharpBucketV2).TeamResource(teamName) or sharpBucketV2.TeamsEndPoint().TeamResource(teamName)")]
-        public TeamResource(ISharpBucketRequesterV2 sharpBucketV2, string teamName)
-            : this(new TeamsEndPoint(sharpBucketV2), teamName)
-        {
-        }
 
         internal TeamResource(TeamsEndPoint teamsEndPoint, string teamName)
             : base(teamsEndPoint, teamName.CheckIsNotNullNorEmpty(nameof(teamName)).GuidOrValue())
         {
-            _teamName = teamName;
-
             _repositoriesResource = new Lazy<RepositoriesAccountResource>(
                 () => new RepositoriesEndPoint(_sharpBucketV2).RepositoriesResource(teamName));
         }
@@ -36,15 +26,17 @@ namespace SharpBucket.V2.EndPoints
         /// The /teams/{username}/repositories request redirect to the /repositories/{username} request
         /// It's why providing here a shortcut to the /repositories/{username} resource is valid and equivalent.
         /// </remarks>
+        [Obsolete("From WorkspaceResource use RepositoriesResource instead")]
         public RepositoriesAccountResource RepositoriesResource => _repositoriesResource.Value;
 
         /// <summary>
         /// Gets the public information associated with a team. 
         /// If the team's profile is private, the caller must be authenticated and authorized to view this information. 
         /// </summary>
+        [Obsolete("From WorkspaceResource use GetWorkspace() instead")]
         public Team GetProfile()
         {
-            return _sharpBucketV2.Get<Team>(_baseUrl);
+            throw new NotSupportedException("This has been removed");
         }
 
         /// <summary>
@@ -52,9 +44,10 @@ namespace SharpBucket.V2.EndPoints
         /// If the team's profile is private, the caller must be authenticated and authorized to view this information. 
         /// </summary>
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async Task<Team> GetProfileAsync(CancellationToken token = default)
+        [Obsolete("From WorkspaceResource use GetWorkspaceAsync(CancellationToken) instead")]
+        public Task<Team> GetProfileAsync(CancellationToken token = default)
         {
-            return await _sharpBucketV2.GetAsync<Team>(_baseUrl, token);
+            throw new NotSupportedException("This has been removed");
         }
 
         /// <summary>
@@ -62,6 +55,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
+        [Obsolete("From WorkspaceResource use MembersResource.ListMembers(int) instead")]
         public List<UserShort> ListMembers(int max = 0)
         {
             var overrideUrl = _baseUrl + "members/";
@@ -75,6 +69,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="pageLen">
         /// The length of a page. If not defined the default page length will be used
         /// </param>
+        [Obsolete("From WorkspaceResource use MembersResource.EnumerateMembers(int) instead")]
         public IEnumerable<UserShort> EnumerateMembers(int? pageLen = null)
         {
             var overrideUrl = _baseUrl + "members/";
@@ -89,6 +84,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
+        [Obsolete("From WorkspaceResource use MembersResource.EnumerateMembersAsync(CancellationToken) instead")]
         public IAsyncEnumerable<UserShort> EnumerateMembersAsync(CancellationToken token = default)
             => EnumerateMembersAsync(null, token);
 
@@ -102,6 +98,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
+        [Obsolete("From WorkspaceResource use MembersResource.EnumerateMembersAsync(int?, CancellationToken) instead")]
         public IAsyncEnumerable<UserShort> EnumerateMembersAsync(int? pageLen, CancellationToken token = default)
         {
             var overrideUrl = _baseUrl + "members/";
@@ -114,6 +111,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
+        [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
         public List<UserShort> ListFollowers(int max = 0)
         {
             var overrideUrl = _baseUrl + "followers/";
@@ -127,6 +125,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="pageLen">
         /// The length of a page. If not defined the default page length will be used
         /// </param>
+        [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
         public IEnumerable<UserShort> EnumerateFollowers(int? pageLen = null)
         {
             var overrideUrl = _baseUrl + "followers/";
@@ -141,6 +140,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
+        [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
         public IAsyncEnumerable<UserShort> EnumerateFollowersAsync(CancellationToken token = default)
             => EnumerateFollowersAsync(null, token);
 
@@ -154,6 +154,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
+        [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
         public IAsyncEnumerable<UserShort> EnumerateFollowersAsync(int? pageLen, CancellationToken token = default)
         {
             var overrideUrl = _baseUrl + "followers/";
@@ -166,6 +167,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
         /// <returns></returns>
+        [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
         public List<UserShort> ListFollowing(int max = 0)
         {
             var overrideUrl = _baseUrl + "following/";
@@ -179,6 +181,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="pageLen">
         /// The length of a page. If not defined the default page length will be used
         /// </param>
+        [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
         public IEnumerable<UserShort> EnumerateFollowing(int? pageLen = null)
         {
             var overrideUrl = _baseUrl + "following/";
@@ -193,6 +196,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
+        [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
         public IAsyncEnumerable<UserShort> EnumerateFollowingAsync(CancellationToken token = default)
             => EnumerateFollowingAsync(null, token);
 
@@ -206,6 +210,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
+        [Obsolete("This endpoint has been deprecated and will stop functioning on August 23rd, 2021. There is no replacement endpoint.")]
         public IAsyncEnumerable<UserShort> EnumerateFollowingAsync(int? pageLen, CancellationToken token = default)
         {
             var overrideUrl = _baseUrl + "following/";
@@ -214,38 +219,18 @@ namespace SharpBucket.V2.EndPoints
 #endif
 
         /// <summary>
-        /// List of repositories associated to the team.
-        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
-        /// </summary>
-        /// <param name="parameters">Parameters for the query.</param>
-        [Obsolete("Prefer go through the RepositoriesResource property.")]
-        public List<Repository> ListRepositories(ListParameters parameters)
-            => new RepositoriesEndPoint(_sharpBucketV2).ListRepositories(_teamName, parameters ?? new ListParameters());
-
-
-        /// <summary>
-        /// Gets a <see cref="RepositoryResource"/> for a specified repository name, owned by the team represented by this resource.
-        /// </summary>
-        /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
-        [Obsolete("Prefer go through the RepositoriesResource property.")]
-        public RepositoryResource RepositoryResource(string repoSlugOrName)
-        {
-            return RepositoriesResource.RepositoryResource(repoSlugOrName);
-        }
-
-        /// <summary>
         /// Gets a list of projects that belong to the team.
         /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/#get
         /// </summary>
         /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
+        [Obsolete("From WorkspaceResource use ProjectsResource.ListProjects() instead")]
         public List<Project> ListProjects(int max = 0)
             => ListProjects(new ListParameters { Max = max });
 
+        [Obsolete("From WorkspaceResource use ProjectsResource.ListProjects(ListParameters) instead")]
         public List<Project> ListProjects(ListParameters parameters)
         {
-            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-            var overrideUrl = _baseUrl + "projects/";
-            return _sharpBucketV2.GetPaginatedValues<Project>(overrideUrl, parameters.Max, parameters.ToDictionary());
+            throw new NotSupportedException("This has been removed");
         }
 
         /// <summary>
@@ -253,6 +238,7 @@ namespace SharpBucket.V2.EndPoints
         /// doing requests page by page while enumerating.
         /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/#get
         /// </summary>
+        [Obsolete("From WorkspaceResource use ProjectsResource.EnumerateProjects() instead")]
         public IEnumerable<Project> EnumerateProjects()
             => EnumerateProjects(new EnumerateParameters());
 
@@ -262,11 +248,10 @@ namespace SharpBucket.V2.EndPoints
         /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/#get
         /// </summary>
         /// <param name="parameters">Parameters for the query.</param>
+        [Obsolete("From WorkspaceResource use ProjectsResource.EnumerateProjects(EnumerateParameters) instead")]
         public IEnumerable<Project> EnumerateProjects(EnumerateParameters parameters)
         {
-            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-            var overrideUrl = _baseUrl + "projects/";
-            return _sharpBucketV2.EnumeratePaginatedValues<Project>(overrideUrl, parameters.ToDictionary(), parameters.PageLen);
+            throw new NotSupportedException("This has been removed");
         }
 
 #if CS_8
@@ -275,6 +260,7 @@ namespace SharpBucket.V2.EndPoints
         /// doing requests page by page while enumerating.
         /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/#get
         /// </summary>
+        [Obsolete("From WorkspaceResource use ProjectsResource.EnumerateProjectsAsync(CancellationToken) instead")]
         public IAsyncEnumerable<Project> EnumerateProjectsAsync(CancellationToken token = default)
             => EnumerateProjectsAsync(new EnumerateParameters(), token);
 
@@ -284,11 +270,10 @@ namespace SharpBucket.V2.EndPoints
         /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/#get
         /// </summary>
         /// <param name="parameters">Parameters for the query.</param>
+        [Obsolete("From WorkspaceResource use ProjectsResource.EnumerateProjectsAsync(EnumerateParameters, CancellationToken) instead")]
         public IAsyncEnumerable<Project> EnumerateProjectsAsync(EnumerateParameters parameters, CancellationToken token = default)
         {
-            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-            var overrideUrl = _baseUrl + "projects/";
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Project>(overrideUrl, parameters.ToDictionary(), parameters.PageLen, token);
+            throw new NotSupportedException("This has been removed");
         }
 #endif
 
@@ -298,10 +283,10 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="project"></param>
         /// <returns>A new project instance that fully represent the newly created project.</returns>
+        [Obsolete("From WorkspaceResource use ProjectsResource.PostProject(Project) instead")]
         public Project PostProject(Project project)
         {
-            var overrideUrl = _baseUrl + "projects/";
-            return _sharpBucketV2.Post(project, overrideUrl);
+            throw new NotSupportedException("This has been removed");
         }
 
         /// <summary>
@@ -311,19 +296,20 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="project"></param>
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>A new project instance that fully represent the newly created project.</returns>
-        public async Task<Project> PostProjectAsync(Project project, CancellationToken token = default)
+        [Obsolete("From WorkspaceResource use ProjectsResource.PostProjectAsync(Project, CancellationToken) instead")]
+        public Task<Project> PostProjectAsync(Project project, CancellationToken token = default)
         {
-            var overrideUrl = _baseUrl + "projects/";
-            return await _sharpBucketV2.PostAsync(project, overrideUrl, token);
+            throw new NotSupportedException("This has been removed");
         }
 
         /// <summary>
         /// Gets a <see cref="ProjectResource"/> for a specified project key.
         /// </summary>
         /// <param name="projectKey">This can either be the actual key assigned to the project or the UUID.</param>
+        [Obsolete("From WorkspaceResource use ProjectsResource.ProjectResource(string) instead")]
         public ProjectResource ProjectResource(string projectKey)
         {
-            return new ProjectResource(this, projectKey);
+            throw new NotSupportedException("This has been removed");
         }
 
         /// <summary>
@@ -333,6 +319,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="searchQuery">The string that is passed as search query.</param>
         /// <param name="pageLen">The length of a page. If not defined the default page length will be used.</param>
         /// <returns>A lazy enumerable that will request results pages by pages while enumerating the results.</returns>
+        [Obsolete("From WorkspaceResource use ProjectsResource.SearchCodeResource.EnumerateSearchResults(string, int?) instead")]
         public IEnumerable<SearchCodeSearchResult> EnumerateSearchCodeSearchResults(
             string searchQuery,
             int? pageLen = null)
