@@ -11,6 +11,6 @@ namespace SharpBucket.V2.Pocos
         public Dictionary<string, string[]> fields { get; set; }
         public string detail { get; set; }
         public string id { get; set; }
-        public Dictionary<string, string> data { get; set; }
+        public Dictionary<string, object> data { get; set; }
     }
 }
