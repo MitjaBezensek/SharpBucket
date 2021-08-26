@@ -3,15 +3,12 @@ using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
 {
-    /// <summary>
-    /// An object that can be passed on methods that enumerate repositories.
-    /// </summary>
-    public class EnumerateRepositoriesParameters : EnumerateParameters
+    public class EnumerateWorkspacesParameters : EnumerateParameters
     {
         /// <summary>
-        /// Filters the result based on the authenticated user's role on each repository.
+        /// Filters the workspaces based on the authenticated user's role on each workspace.
         /// </summary>
-        public Role? Role { get; set; }
+        public WorkspaceRole? Role { get; set; }
 
         internal override IDictionary<string, object> ToDictionary()
         {

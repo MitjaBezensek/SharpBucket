@@ -27,5 +27,18 @@ namespace SharpBucket.V2.EndPoints
 
             return result;
         }
+
+        protected static IDictionary<string, object> AddParameterToDictionary(IDictionary<string, object> dictionary, string key, object value)
+        {
+            if (value == null) return dictionary;
+
+            if (dictionary is null)
+            {
+                dictionary = new Dictionary<string, object>();
+            }
+            dictionary.Add(key, value);
+
+            return dictionary;
+        }
     }
 }

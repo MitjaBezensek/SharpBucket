@@ -14,6 +14,7 @@ using Shouldly;
 namespace SharpBucketTests.V2.EndPoints
 {
     [TestFixture]
+    [Obsolete("Tests of an obsolete class")]
     class TeamResourceTests
     {
         private TeamResource AtlassianTeamResource { get; set; }
@@ -30,20 +31,6 @@ namespace SharpBucketTests.V2.EndPoints
 
             var team = teamsEndPoint.GetUserTeamsWithAdminRole()[0];
             this.UserFirstTeamResource = teamsEndPoint.TeamResource(team.username);
-        }
-
-        [Test]
-        public void GetProfile_FromTeamAtlassian_ReturnsAtlassianProfile()
-        {
-            var profile = this.AtlassianTeamResource.GetProfile();
-            profile.display_name.ShouldBe("Atlassian");
-        }
-
-        [Test]
-        public async Task GetProfileAsync_FromTeamAtlassian_ReturnsAtlassianProfile()
-        {
-            var profile = await this.AtlassianTeamResource.GetProfileAsync();
-            profile.display_name.ShouldBe("Atlassian");
         }
 
         [Test]
@@ -122,67 +109,6 @@ namespace SharpBucketTests.V2.EndPoints
             finally
             {
                 teamRepoResource.DeleteRepository();
-            }
-        }
-
-        [Test]
-        public void ListProjects_AfterHavingCreateOneProjectInTeam_ShouldReturnAtLestTheCreatedProject()
-        {
-            var projectKey = "Test_" + Guid.NewGuid().ToString("N"); // must start by a letter
-            var project = new Project
-            {
-                key = projectKey,
-                name = "Name of " + projectKey,
-                is_private = true,
-                description = "project created by the unit test ListProjects_AfterHavingAddAProject_ShouldReturnAtLestTheCreatedProject"
-            };
-            project = UserFirstTeamResource.PostProject(project);
-
-            try
-            {
-                var projects = UserFirstTeamResource.ListProjects();
-                projects.ShouldNotBeEmpty();
-                projects.Any(r => r.name == project.name).ShouldBe(true);
-                projects.Select(p => p.ShouldBeFilled())
-                    .Any(r => r.name == project.name).ShouldBe(true);
-
-                // also quickly check other sync methods here to avoid to create and delete to much projects
-                projects = UserFirstTeamResource.ListProjects(new ListParameters { Filter = "name ~ \"nomatchexpected\"" });
-                projects.ShouldBeEmpty();
-
-                projects = UserFirstTeamResource.EnumerateProjects().ToList();
-                projects.ShouldNotBeEmpty();
-            }
-            finally
-            {
-                UserFirstTeamResource.ProjectResource(project.key).DeleteProject();
-            }
-        }
-
-        [Test]
-        public async Task EnumerateProjectsAsync_AfterHavingCreateOneProjectInTeam_ShouldReturnAtLestTheCreatedProject()
-        {
-            var projectKey = "Test_" + Guid.NewGuid().ToString("N"); // must start by a letter
-            var project = new Project
-            {
-                key = projectKey,
-                name = "Name of " + projectKey,
-                is_private = true,
-                description = "project created by the unit test ListProjects_AfterHavingAddAProject_ShouldReturnAtLestTheCreatedProject"
-            };
-            project = await UserFirstTeamResource.PostProjectAsync(project);
-
-            try
-            {
-                var projects = await UserFirstTeamResource.EnumerateProjectsAsync().ToListAsync();
-                projects.ShouldNotBeEmpty();
-                projects.Any(r => r.name == project.name).ShouldBe(true);
-                projects.Select(p => p.ShouldBeFilled())
-                    .Any(r => r.name == project.name).ShouldBe(true);
-            }
-            finally
-            {
-                await UserFirstTeamResource.ProjectResource(project.key).DeleteProjectAsync();
             }
         }
 

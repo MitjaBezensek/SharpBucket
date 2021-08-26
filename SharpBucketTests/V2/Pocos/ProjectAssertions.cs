@@ -1,5 +1,4 @@
-﻿using System;
-using SharpBucket.V2.Pocos;
+﻿using SharpBucket.V2.Pocos;
 using Shouldly;
 
 namespace SharpBucketTests.V2.Pocos
@@ -9,10 +8,12 @@ namespace SharpBucketTests.V2.Pocos
         public static Project ShouldBeFilled(this Project project)
         {
             (project as ProjectInfo).ShouldBeFilled();
-            project.created_on.ShouldNotBeNullOrEmpty();
-            project.updated_on.ShouldNotBeNullOrEmpty();
+            project.has_publicly_visible_repos.ShouldNotBeNull();
+            project.created_on.ShouldNotBeNull();
+            project.updated_on.ShouldNotBeNull();
             project.description.ShouldNotBeNull();
             project.owner.ShouldBeFilled();
+            project.workspace.ShouldBeFilled();
 
             return project;
         }
@@ -30,6 +31,7 @@ namespace SharpBucketTests.V2.Pocos
                 project.updated_on.ShouldBe(expectedProject.updated_on);
                 project.description.ShouldBe(expectedProject.description);
                 project.owner.ShouldBeEquivalentTo(expectedProject.owner);
+                project.workspace.ShouldBeEquivalentTo(expectedProject.workspace);
             }
 
             return project;
@@ -45,9 +47,10 @@ namespace SharpBucketTests.V2.Pocos
             {
                 (project as ProjectInfo).ShouldBeEquivalentExceptAvatarTimeStampTo(expectedProject);
                 project.created_on.ShouldBe(expectedProject.created_on);
-                DateTime.Parse(project.updated_on).ShouldBeGreaterThan(DateTime.Parse(expectedProject.updated_on));
+                project.updated_on.GetValueOrDefault().ShouldBeGreaterThan(expectedProject.updated_on.GetValueOrDefault());
                 project.description.ShouldBe(expectedProject.description);
                 project.owner.ShouldBeEquivalentTo(expectedProject.owner);
+                project.workspace.ShouldBeEquivalentTo(expectedProject.workspace);
             }
 
             return project;

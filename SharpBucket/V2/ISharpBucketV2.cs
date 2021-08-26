@@ -1,4 +1,5 @@
-﻿using SharpBucket.V2.EndPoints;
+﻿using System;
+using SharpBucket.V2.EndPoints;
 
 namespace SharpBucket.V2
 {
@@ -8,8 +9,8 @@ namespace SharpBucket.V2
     /// </summary>
     /// <remarks>
     /// Since this interface may change in the future (typically to declare new endpoints),
-    /// We recommend to not create wrappers in our code and limit usages to mocking senarios.
-    /// If you want to create wrappers or similar things, it's prefered to just do it over the
+    /// We recommend to not create wrappers in our code and limit usages to mocking scenarios.
+    /// If you want to create wrappers or similar things, it's preferred to just do it over the
     /// <see cref="ISharpBucketRequesterV2"/> interface which is expected to be more stable in future developments.
     /// </remarks>
     public interface ISharpBucketV2 : ISharpBucket, ISharpBucketRequesterV2
@@ -18,6 +19,7 @@ namespace SharpBucket.V2
         /// Get the Teams end pPoint.
         ///  Give access to the data relative to the teams.
         /// </summary>
+        [Obsolete("This endpoint has been deprecated and will stop functioning soon. You should use the workspaces endpoint instead.")]
         TeamsEndPoint TeamsEndPoint();
 
         /// <summary>
@@ -38,5 +40,10 @@ namespace SharpBucket.V2
         /// Give access to the data relative to the currently logged in user.
         /// </summary>
         UserEndpoint UserEndPoint();
+
+        /// <summary>
+        /// Get the Workspaces endpoint.
+        /// </summary>
+        WorkspacesEndPoint WorkspacesEndPoint();
     }
 }

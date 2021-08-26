@@ -17,7 +17,7 @@ namespace SharpBucket.V2.EndPoints
         #region Repositories End Point
 
         public RepositoriesEndPoint(ISharpBucketRequesterV2 sharpBucketV2)
-            : base(sharpBucketV2, "repositories/")
+            : base(sharpBucketV2, "repositories")
         {
         }
 
@@ -28,7 +28,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public List<Repository> ListPublicRepositories(int max = 0)
         {
-            return GetPaginatedValues<Repository>(_baseUrl, max);
+            return GetPaginatedValues<Repository>(BaseUrl, max);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace SharpBucket.V2.EndPoints
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
 
-            return GetPaginatedValues<Repository>(_baseUrl, parameters.Max, parameters.ToDictionary());
+            return GetPaginatedValues<Repository>(BaseUrl, parameters.Max, parameters.ToDictionary());
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace SharpBucket.V2.EndPoints
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
 
-            return _sharpBucketV2.EnumeratePaginatedValues<Repository>(_baseUrl, parameters.ToDictionary(), parameters.PageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<Repository>(BaseUrl, parameters.ToDictionary(), parameters.PageLen);
         }
 
 #if CS_8
@@ -67,7 +67,7 @@ namespace SharpBucket.V2.EndPoints
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
 
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Repository>(_baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<Repository>(BaseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
 
@@ -110,7 +110,7 @@ namespace SharpBucket.V2.EndPoints
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
 
-            var overrideUrl = $"{_baseUrl}{accountName.GuidOrValue()}/";
+            var overrideUrl = $"{BaseUrl}{accountName.GuidOrValue()}/";
             return GetPaginatedValues<Repository>(overrideUrl, parameters.Max, parameters.ToDictionary());
         }
 

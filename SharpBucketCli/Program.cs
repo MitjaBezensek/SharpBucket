@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using SharpBucket.V2;
+using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucketCli
@@ -43,9 +43,9 @@ namespace SharpBucketCli
         private User Me { get; set; }
 
         /// <summary>
-        /// The account On which I am currently working on.
+        /// The workspace On which I am currently working on.
         /// </summary>
-        private User Account { get; set; }
+        private Workspace Workspace { get; set; }
 
         private Program()
         {
@@ -58,7 +58,7 @@ namespace SharpBucketCli
             this.UseEnvironmentCredentials();
             while (true)
             {
-                Console.Write($"{this.Me?.nickname}:{this.Account?.display_name}> ");
+                Console.Write($"{this.Me?.nickname}:{this.Workspace?.slug}> ");
                 var command = Console.ReadLine() ?? string.Empty;
                 var args = command.Split(' ');
                 var verb = args[0];
@@ -70,6 +70,7 @@ namespace SharpBucketCli
                     {
                         case "help": Help(); break;
                         case "clean": Clean(); break;
+                        case "list": List(options); break;
                         case "switch": Switch(options); break;
                         case "exit": return;
                         default: Console.WriteLine("unrecognized command. Type help to get help about existing commands"); break;
@@ -90,7 +91,10 @@ namespace SharpBucketCli
             if (!string.IsNullOrEmpty(consumerKey) && !string.IsNullOrEmpty(consumerKeySecret))
             {
                 this.SharpBucket.OAuth2ClientCredentials(consumerKey, consumerKeySecret);
-                Account = Me = this.SharpBucket.UserEndPoint().GetUser();
+                this.Me = this.SharpBucket.UserEndPoint().GetUser();
+                this.Workspace = this.SharpBucket.WorkspacesEndPoint()
+                                     .EnumerateWorkspaces(new EnumerateWorkspacesParameters {PageLen = 1})
+                                     .First();
                 Console.WriteLine($"You have been automatically logged as {Me.display_name}");
             }
         }
@@ -98,11 +102,13 @@ namespace SharpBucketCli
         private static void Help()
         {
             Console.WriteLine("Available commands are:");
-            Console.WriteLine("  clean     : Delete all the repositories owned by the current account.");
+            Console.WriteLine("  clean     : Delete all the repositories in the current workspace.");
             Console.WriteLine("              Useful to clean up a test account overwhelmed by repositories not");
             Console.WriteLine("              correctly clean up by the unit tests.");
             Console.WriteLine();
-            Console.WriteLine("  switch   : Switch to another account. This could be a user or a team.");
+            Console.WriteLine("  list     : List workspaces or repositories in the current workspace.");
+            Console.WriteLine();
+            Console.WriteLine("  switch   : Switch to another workspace.");
             Console.WriteLine();
             Console.WriteLine("  exit     : Exit the interactive mode.");
             Console.WriteLine();
@@ -117,13 +123,13 @@ namespace SharpBucketCli
                 return;
             }
 
-            var repositoriesEndPoint = this.SharpBucket.RepositoriesEndPoint();
-            var repositories = repositoriesEndPoint.RepositoriesResource(this.Account.uuid).ListRepositories();
+            var repositoriesResource = this.SharpBucket.RepositoriesEndPoint().RepositoriesResource(this.Workspace.slug);
+            var repositories = repositoriesResource.ListRepositories();
             foreach (var repository in repositories)
             {
-                var repositoryResource = repositoriesEndPoint.RepositoryResource(this.Account.uuid, repository.slug);
+                var repositoryResource = repositoriesResource.RepositoryResource(repository.slug);
                 repositoryResource.DeleteRepository();
-                Console.WriteLine($"Repository {this.Account.nickname ?? this.Account.display_name}/{repository.slug} has been deleted");
+                Console.WriteLine($"Repository {this.Workspace.slug}/{repository.slug} has been deleted");
             }
         }
 
@@ -137,8 +143,8 @@ namespace SharpBucketCli
 
             switch (args[0])
             {
-                case "--account":
-                    SwitchAccount(args[1]);
+                case "--workspace":
+                    SwitchWorkspace(args[1]);
                     break;
                 default:
                     Console.Error.WriteLine("Invalid command arguments");
@@ -146,17 +152,55 @@ namespace SharpBucketCli
             }
         }
 
-        private void SwitchAccount(string accountName)
+        private void SwitchWorkspace(string workspaceSlugOrUuid)
         {
-            try
+            this.Workspace = SharpBucket.WorkspacesEndPoint().WorkspaceResource(workspaceSlugOrUuid).GetWorkspace();
+        }
+
+        private void List(string[] args)
+        {
+            if (args.Length != 1)
             {
-                this.Account = SharpBucket.UsersEndPoint(accountName).GetProfile();
+                Console.Error.WriteLine("Invalid command arguments");
+                return;
             }
-            catch (BitbucketV2Exception e)
-                when(e.HttpStatusCode == HttpStatusCode.NotFound)
+
+            switch (args[0])
             {
-                // The given accountName do not seem to be a simple user, so try as a team
-                this.Account = SharpBucket.TeamsEndPoint().TeamResource(accountName).GetProfile();
+                case "--repositories":
+                    ListRepositories();
+                    break;
+                case "--workspaces":
+                    ListWorkspaces();
+                    break;
+                default:
+                    Console.Error.WriteLine("Invalid command arguments");
+                    break;
+            }
+        }
+
+        private void ListRepositories()
+        {
+            var repositoriesResource = this.SharpBucket.RepositoriesEndPoint().RepositoriesResource(this.Workspace.slug);
+            var repositories = repositoriesResource.EnumerateRepositories();
+            foreach (var repository in repositories)
+            {
+                Console.WriteLine(repository.slug);
+                Console.WriteLine("  name: " + repository.name);
+                Console.WriteLine("  uuid: " + repository.uuid);
+                Console.WriteLine("  is_private: " + repository.is_private);
+            }
+        }
+
+        private void ListWorkspaces()
+        {
+            var workspaces = SharpBucket.WorkspacesEndPoint().EnumerateWorkspaces();
+            foreach (var workspace in workspaces)
+            {
+                Console.WriteLine(workspace.slug);
+                Console.WriteLine("  name: " + workspace.name);
+                Console.WriteLine("  uuid: " + workspace.uuid);
+                Console.WriteLine("  is_private: " + workspace.is_private);
             }
         }
     }
