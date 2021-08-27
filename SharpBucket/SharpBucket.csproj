@@ -3,7 +3,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net452;netstandard2.0;netstandard2.1</TargetFrameworks>
-    <Version>0.14.0</Version>
+    <Version>0.15.0</Version>
     <Authors>Mitja Bezenšek</Authors>
     <Company>Mitja Bezenšek</Company>
     <Product>SharpBucket</Product>
