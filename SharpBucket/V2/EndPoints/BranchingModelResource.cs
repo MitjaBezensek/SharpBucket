@@ -7,7 +7,7 @@ namespace SharpBucket.V2.EndPoints
     /// <summary>
     /// Manage the branching model for a repository.
     /// More info:
-    /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/refs/tags
+    /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/branching-model
     /// </summary>
     public class BranchingModelResource : EndPoint
     {
