@@ -21,7 +21,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <remarks>
         /// If revision is null a non async request will occurs.
-        /// if you want a fullly async experience, you should do yourseulf an explicit call to <see cref="RepositoryResource.GetMainBranchRevisionAsync(CancellationToken)"/>
+        /// if you want a fully async experience, you should do yourself an explicit call to <see cref="RepositoryResource.GetMainBranchRevisionAsync(CancellationToken)"/>
         /// and then provide the result in the <paramref name="revision"/> parameter.
         /// </remarks>
         /// <param name="repositoriesEndPoint">The base end point extended by this resource.</param>
@@ -40,14 +40,14 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <remarks>
         /// If revision is null a non async request will occurs.
-        /// if you want a fullly async experience, you should do yourseulf an explicit call to <see cref="RepositoryResource.GetMainBranchRevisionAsync(CancellationToken)"/>
+        /// if you want a fully async experience, you should do yourself an explicit call to <see cref="RepositoryResource.GetMainBranchRevisionAsync(CancellationToken)"/>
         /// and then provide the result in the <paramref name="revision"/> parameter.
         /// </remarks>
-        /// <param name="RepositoryResource">The parent resource extended by this resource.</param>
+        /// <param name="repositoryResource">The parent resource extended by this resource.</param>
         /// <param name="revision">The name of the revision to browse. This may be a commit hash, a branch name, a tag name, or null to target the last commit of the main branch.</param>
         /// <param name="path">An optional path to a sub directory if you want to start to browse somewhere else that at the root path.</param>
         internal SrcResource(RepositoryResource repositoryResource, string revision = null, string path = null)
-            : base(repositoryResource, "src/")
+            : base(repositoryResource, "src")
         {
             // full build of the SrcPath value is delayed so that when revision is null errors are send
             // only when caller really try to do a request and not when building the resource object
@@ -82,7 +82,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="listParameters">Parameters for the query.</param>
         public List<TreeEntry> ListTreeEntries(string subDirPath = null, ListParameters listParameters = null)
         {
-            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, SrcPath.Value, subDirPath);
+            var overrideUrl = UrlHelper.ConcatPathSegments(BaseUrl, SrcPath.Value, subDirPath);
             return listParameters == null
                 ? GetPaginatedValues<TreeEntry>(overrideUrl)
                 : GetPaginatedValues<TreeEntry>(overrideUrl, listParameters.Max, listParameters.ToDictionary());
@@ -112,8 +112,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="parameters">Parameters for the query.</param>
         public IEnumerable<TreeEntry> EnumerateTreeEntries(string subDirPath = null, EnumerateParameters parameters = null)
         {
-            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, SrcPath.Value, subDirPath);
-            return _sharpBucketV2.EnumeratePaginatedValues<TreeEntry>(
+            var overrideUrl = UrlHelper.ConcatPathSegments(BaseUrl, SrcPath.Value, subDirPath);
+            return SharpBucketV2.EnumeratePaginatedValues<TreeEntry>(
                 overrideUrl, parameters?.ToDictionary(), parameters?.PageLen);
         }
 
@@ -144,8 +144,8 @@ namespace SharpBucket.V2.EndPoints
         public IAsyncEnumerable<TreeEntry> EnumerateTreeEntriesAsync(
             string subDirPath = null, EnumerateParameters parameters = null, CancellationToken token = default)
         {
-            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, SrcPath.Value, subDirPath);
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<TreeEntry>(
+            var overrideUrl = UrlHelper.ConcatPathSegments(BaseUrl, SrcPath.Value, subDirPath);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<TreeEntry>(
                 overrideUrl, parameters?.ToDictionary(), parameters?.PageLen, token);
         }
 
@@ -179,8 +179,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="subPath">The path to the file or directory, or null to retrieve the metadata of the root of this resource.</param>
         public TreeEntry GetTreeEntry(string subPath = null)
         {
-            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, SrcPath.Value, subPath);
-            return _sharpBucketV2.Get<TreeEntry>(overrideUrl, new { format = "meta" });
+            var overrideUrl = UrlHelper.ConcatPathSegments(BaseUrl, SrcPath.Value, subPath);
+            return SharpBucketV2.Get<TreeEntry>(overrideUrl, new { format = "meta" });
         }
 
         /// <summary>
@@ -209,8 +209,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public Task<TreeEntry> GetTreeEntryAsync(string subPath, CancellationToken token = default)
         {
-            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, SrcPath.Value, subPath);
-            return _sharpBucketV2.GetAsync<TreeEntry>(overrideUrl, new { format = "meta" }, token);
+            var overrideUrl = UrlHelper.ConcatPathSegments(BaseUrl, SrcPath.Value, subPath);
+            return SharpBucketV2.GetAsync<TreeEntry>(overrideUrl, new { format = "meta" }, token);
         }
 
         /// <summary>
@@ -291,8 +291,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="filePath">The path to a file relative to the root of this resource.</param>
         public string GetFileContent(string filePath)
         {
-            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, SrcPath.Value, filePath);
-            return _sharpBucketV2.Get(overrideUrl);
+            var overrideUrl = UrlHelper.ConcatPathSegments(BaseUrl, SrcPath.Value, filePath);
+            return SharpBucketV2.Get(overrideUrl);
         }
 
         /// <summary>
@@ -302,8 +302,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public Task<string> GetFileContentAsync(string filePath, CancellationToken token = default)
         {
-            var overrideUrl = UrlHelper.ConcatPathSegments(_baseUrl, SrcPath.Value, filePath);
-            return _sharpBucketV2.GetAsync(overrideUrl, token);
+            var overrideUrl = UrlHelper.ConcatPathSegments(BaseUrl, SrcPath.Value, filePath);
+            return SharpBucketV2.GetAsync(overrideUrl, token);
         }
     }
 }

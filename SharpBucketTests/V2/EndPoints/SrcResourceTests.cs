@@ -701,7 +701,7 @@ namespace SharpBucketTests.V2.EndPoints
 
             var exception = Assert.Throws<BitbucketV2Exception>(() => masterSrcResource.GetFileContent("AnyFile.txt"));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
-            exception.Message.ShouldBe("Repository foo/bar not found");
+            exception.Message.ShouldBe("The requested repository either does not exist or you do not have access. If you believe this repository exists and you have access, make sure you're authenticated.");
         }
 
         [Test]
@@ -712,7 +712,7 @@ namespace SharpBucketTests.V2.EndPoints
 
             var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await masterSrcResource.GetFileContentAsync("AnyFile.txt"));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
-            exception.Message.ShouldBe("Repository foo/bar not found");
+            exception.Message.ShouldBe("The requested repository either does not exist or you do not have access. If you believe this repository exists and you have access, make sure you're authenticated.");
         }
 
         [Test]

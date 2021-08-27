@@ -7,70 +7,54 @@ using SharpBucket.V2.Pocos;
 namespace SharpBucket.V2.EndPoints
 {
     /// <summary>
-    /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/%7Bproject_key%7D
+    /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/workspaces/%7Bworkspace%7D/projects/%7Bproject_key%7D
     /// </summary>
     public class ProjectResource : EndPoint
     {
         private string ProjectKey { get; }
-        private string ProjectUrl { get; }
 
-        [Obsolete("Prefer new TeamsEndPoint(sharpBucketV2).TeamResource(teamName).ProjectResource(projectKey) or sharpBucketV2.TeamsEndPoint().TeamResource(teamName).ProjectResource(projectKey)")]
-        public ProjectResource(ISharpBucketRequesterV2 sharpBucketV2, string teamName, string projectKey)
-            : this(new TeamsEndPoint(sharpBucketV2).TeamResource(teamName), projectKey)
-        {
-        }
-
-        internal ProjectResource(TeamResource teamResource, string projectKey)
-            : base(teamResource, $"projects/{projectKey.CheckIsNotNullNorEmpty(nameof(projectKey)).GuidOrValue()}/")
+        internal ProjectResource(ProjectsResource projectsResource, string projectKey)
+            : base(projectsResource, projectKey.CheckIsNotNullNorEmpty(nameof(projectKey)).GuidOrValue())
         {
             this.ProjectKey = projectKey.GuidOrValue();
-
-            // Doing request with that trailif slash cause issues on that resource
-            // Maybe it's a good example that should made us change the pattenr used for the _baseUrl in EndPoint
-            // for one that ensure that there is no trailing slash.
-            this.ProjectUrl = _baseUrl.TrimEnd('/');
         }
 
         /// <summary>
         /// Get the full project object located at this resource location
-        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/%7Bproject_key%7D#get
         /// </summary>
         public Project GetProject()
         {
-            return _sharpBucketV2.Get<Project>(ProjectUrl);
+            return SharpBucketV2.Get<Project>(BaseUrl);
         }
 
         /// <summary>
         /// Get the full project object located at this resource location
-        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/%7Bproject_key%7D#get
         /// </summary>
         /// <param name="token">The cancellation token</param>
         public Task<Project> GetProjectAsync(CancellationToken token = default)
         {
-            return _sharpBucketV2.GetAsync<Project>(ProjectUrl, token);
+            return SharpBucketV2.GetAsync<Project>(BaseUrl, token);
         }
 
         /// <summary>
         /// Create or update a project at this resource location.
-        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/%7Bproject_key%7D
         /// </summary>
         /// <param name="project">The project object to create or update</param>
         public Project PutProject(Project project)
         {
             var updateableFields = CreatePutProjectInstance(project);
-            return _sharpBucketV2.Put(updateableFields, ProjectUrl);
+            return SharpBucketV2.Put(updateableFields, BaseUrl);
         }
 
         /// <summary>
         /// Create or update a project at this resource location.
-        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/%7Bproject_key%7D
         /// </summary>
         /// <param name="project">The project object to create or update</param>
         /// <param name="token">The cancellation token</param>
         public Task<Project> PutProjectAsync(Project project, CancellationToken token = default)
         {
             var updateableFields = CreatePutProjectInstance(project);
-            return _sharpBucketV2.PutAsync(updateableFields, ProjectUrl, token);
+            return SharpBucketV2.PutAsync(updateableFields, BaseUrl, token);
         }
 
         private Project CreatePutProjectInstance(Project project)
@@ -96,21 +80,19 @@ namespace SharpBucket.V2.EndPoints
 
         /// <summary>
         /// Delete the project located at this resource location.
-        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/%7Bproject_key%7D#delete
         /// </summary>
         public void DeleteProject()
         {
-            _sharpBucketV2.Delete(ProjectUrl);
+            SharpBucketV2.Delete(BaseUrl);
         }
 
         /// <summary>
         /// Delete the project located at this resource location.
-        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/%7Bproject_key%7D#delete
         /// </summary>
         /// <param name="token">The cancellation token</param>
         public Task DeleteProjectAsync(CancellationToken token = default)
         {
-            return _sharpBucketV2.DeleteAsync(ProjectUrl, token);
+            return SharpBucketV2.DeleteAsync(BaseUrl, token);
         }
     }
 }

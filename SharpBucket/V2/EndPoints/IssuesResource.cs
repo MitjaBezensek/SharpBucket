@@ -27,7 +27,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return GetPaginatedValues<Issue>(_baseUrl, parameters.Max, parameters.ToDictionary());
+            return GetPaginatedValues<Issue>(BaseUrl, parameters.Max, parameters.ToDictionary());
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _sharpBucketV2.EnumeratePaginatedValues<Issue>(_baseUrl, parameters.ToDictionary(), parameters.PageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<Issue>(BaseUrl, parameters.ToDictionary(), parameters.PageLen);
         }
 
 #if CS_8
@@ -64,7 +64,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Issue>(_baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<Issue>(BaseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
 

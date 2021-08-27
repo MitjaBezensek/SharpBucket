@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using SharpBucket.V2;
@@ -8,6 +9,7 @@ using Shouldly;
 namespace SharpBucketTests.V2.EndPoints
 {
     [TestFixture]
+    [Obsolete("Tests of an obsolete class")]
     class TeamsEndPointTests
     {
         private SharpBucketV2 sharpBucket;

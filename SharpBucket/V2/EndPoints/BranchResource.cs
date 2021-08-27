@@ -1,5 +1,4 @@
-﻿using SharpBucket.Utility;
-using SharpBucket.V2.Pocos;
+﻿using SharpBucket.V2.Pocos;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -21,7 +20,7 @@ namespace SharpBucket.V2.EndPoints
         }
 
         internal BranchResource(RepositoryResource repositoryResource)
-            : base(repositoryResource, "refs/branches/")
+            : base(repositoryResource, "refs/branches")
         {
         }
 
@@ -39,7 +38,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return GetPaginatedValues<Branch>(_baseUrl, parameters.Max, parameters.ToDictionary());
+            return GetPaginatedValues<Branch>(BaseUrl, parameters.Max, parameters.ToDictionary());
         }
 
         /// <summary>
@@ -56,7 +55,7 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _sharpBucketV2.EnumeratePaginatedValues<Branch>(_baseUrl, parameters.ToDictionary(), parameters.PageLen);
+            return SharpBucketV2.EnumeratePaginatedValues<Branch>(BaseUrl, parameters.ToDictionary(), parameters.PageLen);
         }
 
 #if CS_8
@@ -76,9 +75,30 @@ namespace SharpBucket.V2.EndPoints
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
-            return _sharpBucketV2.EnumeratePaginatedValuesAsync<Branch>(_baseUrl, parameters.ToDictionary(), parameters.PageLen, token);
+            return SharpBucketV2.EnumeratePaginatedValuesAsync<Branch>(BaseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
+
+        /// <summary>
+        /// Creates a new branch in the specified repository.
+        /// </summary>
+        /// <param name="branch">The branch to create.</param>
+        /// <returns>The created branch.</returns>
+        public Branch PostBranch(Branch branch)
+        {
+            return SharpBucketV2.Post(branch, BaseUrl);
+        }
+
+        /// <summary>
+        /// Creates a new branch in the specified repository.
+        /// </summary>
+        /// <param name="branch">The branch to create.</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns>The created branch.</returns>
+        public Task<Branch> PostBranchAsync(Branch branch, CancellationToken token = default)
+        {
+            return SharpBucketV2.PostAsync(branch, BaseUrl, token);
+        }
 
         /// <summary>
         /// Removes a branch.
@@ -86,8 +106,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="branchName">The name of the branch to delete.</param>
         public void DeleteBranch(string branchName)
         {
-            var overrideUrl = _baseUrl + branchName;
-            _sharpBucketV2.Delete(overrideUrl);
+            var overrideUrl = BaseUrl + "/" + branchName;
+            SharpBucketV2.Delete(overrideUrl);
         }
 
         /// <summary>
@@ -97,8 +117,8 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">The cancellation token</param>
         public Task DeleteBranchAsync(string branchName, CancellationToken token = default)
         {
-            var overrideUrl = _baseUrl + branchName;
-            return _sharpBucketV2.DeleteAsync(overrideUrl, token);
+            var overrideUrl = BaseUrl + "/" + branchName;
+            return SharpBucketV2.DeleteAsync(overrideUrl, token);
         }
     }
 }

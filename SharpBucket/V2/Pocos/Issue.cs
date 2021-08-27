@@ -14,7 +14,7 @@ namespace SharpBucket.V2.Pocos
 
         public IssueLinks links { get; set; }
 
-        public UserShort reporter { get; set; }
+        public UserInfo reporter { get; set; }
 
         public string title { get; set; }
 
@@ -26,7 +26,7 @@ namespace SharpBucket.V2.Pocos
 
         public Rendered content { get; set; }
 
-        public UserShort assignee { get; set; }
+        public UserInfo assignee { get; set; }
 
         public IssueStatus state { get; set; }
 

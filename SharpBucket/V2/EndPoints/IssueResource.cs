@@ -19,7 +19,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public Issue GetIssue()
         {
-            return _sharpBucketV2.Get<Issue>(_baseUrl);
+            return SharpBucketV2.Get<Issue>(BaseUrl);
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public Task<Issue> GetIssueAsync(CancellationToken token = default)
         {
-            return _sharpBucketV2.GetAsync<Issue>(_baseUrl, token);
+            return SharpBucketV2.GetAsync<Issue>(BaseUrl, token);
         }
     }
 }

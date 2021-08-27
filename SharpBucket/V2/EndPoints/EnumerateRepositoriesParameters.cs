@@ -16,7 +16,7 @@ namespace SharpBucket.V2.EndPoints
         internal override IDictionary<string, object> ToDictionary()
         {
             var dictionary = base.ToDictionary();
-            dictionary = ListRepositoriesParameters.AddRole(dictionary, this.Role);
+            dictionary = AddParameterToDictionary(dictionary, "role", this.Role?.ToString().ToLowerInvariant());
             return dictionary;
         }
     }
