@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace SharpBucket.V2.Pocos
 {
-
     /// <summary>
     /// Settings to manage the Branching model for a repository.
     /// More info:
@@ -20,5 +15,4 @@ namespace SharpBucket.V2.Pocos
         public string type { get; set; }
         public BranchingModelLinks links { get; set; }
     }
-
 }

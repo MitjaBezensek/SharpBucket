@@ -4,5 +4,4 @@
     {
         public Link self { get; set; }
     }
-
 }

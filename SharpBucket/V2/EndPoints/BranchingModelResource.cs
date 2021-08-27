@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpBucket.V2.Pocos;
+﻿using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
 {
-
     /// <summary>
     /// Manage the branching model for a repository.
     /// More info:
@@ -16,7 +10,7 @@ namespace SharpBucket.V2.EndPoints
     public class BranchingModelResource : EndPoint
     {
         internal BranchingModelResource(RepositoryResource repositoryResource)
-         : base(repositoryResource, "branching-model/")
+         : base(repositoryResource, "branching-model")
         {
         }
 
@@ -27,7 +21,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public BranchingModel GetBranchingModel()
         {
-            return _sharpBucketV2.Get<BranchingModel>(_baseUrl);
+            return SharpBucketV2.Get<BranchingModel>(BaseUrl);
         }
 
         /// <summary>
@@ -37,7 +31,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public BranchingModelSettings GetSettings()
         {
-            return _sharpBucketV2.Get<BranchingModelSettings>(_baseUrl + "settings");
+            return SharpBucketV2.Get<BranchingModelSettings>(BaseUrl + "/settings");
         }
 
         /// <summary>
@@ -47,7 +41,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public BranchingModelSettings PutSettings(BranchingModelSettings branchingModelSettings)
         {
-            return _sharpBucketV2.Put<BranchingModelSettings>(branchingModelSettings, _baseUrl + "settings");
+            return SharpBucketV2.Put(branchingModelSettings, BaseUrl + "/settings");
         }
 
     }

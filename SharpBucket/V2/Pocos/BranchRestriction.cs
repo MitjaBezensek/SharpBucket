@@ -13,6 +13,5 @@ namespace SharpBucket.V2.Pocos
         public int? value { get; set; }
         public string branch_type { get; set; }
         public string branch_match_kind { get; set; }
-
     }
 }

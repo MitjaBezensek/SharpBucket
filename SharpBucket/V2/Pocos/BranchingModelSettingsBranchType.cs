@@ -6,5 +6,4 @@
         public string prefix { get; set; }
         public bool enabled { get; set; }
     }
-
 }
