@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using SharpBucket.V2.EndPoints;
@@ -12,7 +11,6 @@ namespace SharpBucketTests.V2.EndPoints
     [TestFixture]
     public class ProjectResourceTests
     {
-        private Workspace UserWorkspace { get; set; }
         private ProjectsResource UserWorkspaceProjectsResource { get; set; }
 
         [OneTimeSetUp]
@@ -21,11 +19,8 @@ namespace SharpBucketTests.V2.EndPoints
             var sharpBucket = TestHelpers.SharpBucketV2;
             var workspacesEndPoint = sharpBucket.WorkspacesEndPoint();
 
-            this.UserWorkspace = workspacesEndPoint
-                                .EnumerateWorkspaces(new EnumerateWorkspacesParameters { PageLen = 1 })
-                                .First();
             this.UserWorkspaceProjectsResource = workspacesEndPoint
-                                                .WorkspaceResource(UserWorkspace.slug)
+                                                .WorkspaceResource(TestHelpers.AccountName)
                                                 .ProjectsResource;
         }
 
@@ -50,7 +45,7 @@ namespace SharpBucketTests.V2.EndPoints
                 createdProject.name.ShouldBe(newProject.name);
                 createdProject.description.ShouldBe(newProject.description);
                 createdProject.is_private.ShouldBe(newProject.is_private);
-                createdProject.workspace.slug.ShouldBe(UserWorkspace.slug);
+                createdProject.workspace.slug.ShouldBe(TestHelpers.AccountName);
 
                 // get
                 var getProject = projectResource.GetProject();
@@ -89,7 +84,7 @@ namespace SharpBucketTests.V2.EndPoints
                 createdProject.name.ShouldBe(newProject.name);
                 createdProject.description.ShouldBe(newProject.description);
                 createdProject.is_private.ShouldBe(newProject.is_private);
-                createdProject.workspace.slug.ShouldBe(UserWorkspace.slug);
+                createdProject.workspace.slug.ShouldBe(TestHelpers.AccountName);
 
                 // get
                 var getProject = await projectResource.GetProjectAsync();

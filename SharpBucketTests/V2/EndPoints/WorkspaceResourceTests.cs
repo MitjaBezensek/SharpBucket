@@ -4,15 +4,14 @@ using NUnit.Framework;
 using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
 using SharpBucketTests.V2.Pocos;
-using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
 {
     [TestFixture]
     class WorkspaceResourceTests
     {
-        private Workspace UserWorkspace { get; set; }
-        private WorkspaceResource UserWorkspaceResource { get; set; }
+        private Workspace FirstWorkspace { get; set; }
+        private WorkspaceResource FirstWorkspaceResource { get; set; }
 
         [OneTimeSetUp]
         public void Init()
@@ -20,26 +19,26 @@ namespace SharpBucketTests.V2.EndPoints
             var sharpBucket = TestHelpers.SharpBucketV2;
             var workspacesEndPoint = sharpBucket.WorkspacesEndPoint();
 
-            this.UserWorkspace = workspacesEndPoint
+            this.FirstWorkspace = workspacesEndPoint
                                 .EnumerateWorkspaces(new EnumerateWorkspacesParameters { PageLen = 1 })
                                 .First();
-            this.UserWorkspaceResource = workspacesEndPoint.WorkspaceResource(this.UserWorkspace.slug);
+            this.FirstWorkspaceResource = workspacesEndPoint.WorkspaceResource(this.FirstWorkspace.slug);
         }
 
         [Test]
-        public void GetWorkspace_ForUserWorkspace_ReturnsUserWorkspace()
+        public void GetWorkspace_FromFirstWorkspaceResource_ReturnsFirstWorkspace()
         {
-            var workspace = this.UserWorkspaceResource.GetWorkspace();
+            var workspace = this.FirstWorkspaceResource.GetWorkspace();
             workspace.ShouldBeFilled();
-            workspace.ShouldBeEquivalentTo(this.UserWorkspace);
+            workspace.ShouldBeEquivalentTo(this.FirstWorkspace);
         }
 
         [Test]
-        public async Task GetWorkspaceAsync_ForUserWorkspace_ReturnsUserWorkspace()
+        public async Task GetWorkspaceAsync_FromFirstWorkspaceResource_ReturnsFirstWorkspace()
         {
-            var workspace = await this.UserWorkspaceResource.GetWorkspaceAsync();
+            var workspace = await this.FirstWorkspaceResource.GetWorkspaceAsync();
             workspace.ShouldBeFilled();
-            workspace.ShouldBeEquivalentTo(this.UserWorkspace);
+            workspace.ShouldBeEquivalentTo(this.FirstWorkspace);
         }
     }
 }

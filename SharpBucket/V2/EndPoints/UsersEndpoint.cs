@@ -53,30 +53,6 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// List all the accounts following the user.  
-        /// </summary>
-        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
-        /// <returns></returns>
-        [Obsolete("The end point as been removed. See https://developer.atlassian.com/cloud/bitbucket/bitbucket-api-changes-gdpr/ for more details.")]
-        public List<User> ListFollowers(int max = 0)
-        {
-            var overrideUrl = BaseUrl + "/followers";
-            return GetPaginatedValues<User>(overrideUrl, max);
-        }
-
-        /// <summary>
-        /// List all the accounts the user is following. 
-        /// </summary>
-        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
-        /// <returns></returns>
-        [Obsolete("The end point as been removed. See https://developer.atlassian.com/cloud/bitbucket/bitbucket-api-changes-gdpr/ for more details.")]
-        public List<User> ListFollowing(int max = 0)
-        {
-            var overrideUrl = BaseUrl + "/following";
-            return GetPaginatedValues<User>(overrideUrl, max);
-        }
-
-        /// <summary>
         /// List all of the user's repositories. 
         /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
         /// </summary>

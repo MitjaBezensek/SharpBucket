@@ -120,6 +120,17 @@ The organization of all that routes may slightly differ in the SharpBucket class
   - Implemented by: `RepositoryResource.DeleteBranchRestriction(int)`
   - Tested: no
 
+### [Branching model resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/branching-model)
+- /repositories/{workspace}/{repo_slug}/branching-model `GET`
+  - Implemented by: `BranchingModelResource.GetBranchingModel()`
+  - Tested: **yes**
+- /repositories/{workspace}/{repo_slug}/branching-model/settings `GET`
+  - Implemented by: `BranchingModelResource.GetSettings()`
+  - Tested: **yes**
+- /repositories/{workspace}/{repo_slug}/branching-model/settings `PUT`
+  - Implemented by: `BranchingModelResource.PutSettings(BranchingModelSettings)`
+  - Tested: **yes**
+
 ### [Commit resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/commit)
 - /repositories/{workspace}/{repo_slug}/commit/{node} `GET`
   - Implemented by: `RepositoryResource.GetCommit(string)`
