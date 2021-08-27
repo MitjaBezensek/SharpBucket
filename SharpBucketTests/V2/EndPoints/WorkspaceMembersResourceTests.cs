@@ -14,15 +14,10 @@ namespace SharpBucketTests.V2.EndPoints
         [OneTimeSetUp]
         public void Init()
         {
-            var sharpBucket = TestHelpers.SharpBucketV2;
-            var workspacesEndPoint = sharpBucket.WorkspacesEndPoint();
-
-            var userWorkspace = workspacesEndPoint
-                                .EnumerateWorkspaces(new EnumerateWorkspacesParameters { PageLen = 1 })
-                                .First();
-            this.UserWorkspaceMembersResource = workspacesEndPoint
-                                                .WorkspaceResource(userWorkspace.slug)
-                                                .MembersResource;
+            this.UserWorkspaceMembersResource = TestHelpers.SharpBucketV2
+                                                           .WorkspacesEndPoint()
+                                                           .WorkspaceResource(TestHelpers.AccountName)
+                                                           .MembersResource;
         }
 
         [Test]
