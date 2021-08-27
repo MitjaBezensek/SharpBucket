@@ -203,6 +203,17 @@ namespace SharpBucket.V2.EndPoints
 
         #endregion
 
+        #region Branch Model Resource
+
+        private BranchingModelResource _branchingModelResource;
+        /// <summary>
+        /// Gets the resource to manage the branching model for this repository.
+        /// </summary>
+        public BranchingModelResource BranchingModelResource => this._branchingModelResource ??
+                                                (_branchingModelResource = new BranchingModelResource(this));
+
+        #endregion
+
         #region Branch Restrictions Resource
 
         /// More info:
