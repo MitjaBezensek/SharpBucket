@@ -31,7 +31,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public void ListProjects_AfterHavingCreateOneProjectInWorkspace_ShouldReturnAtLestTheCreatedProject()
         {
-            var projectKey = "Test_" + Guid.NewGuid().ToString("N"); // must start by a letter
+            var projectKey = "Test_" + Guid.NewGuid().ToString("N"); // must start by with letter
             var project = new Project
             {
                 key = projectKey,
@@ -49,7 +49,7 @@ namespace SharpBucketTests.V2.EndPoints
                 projects.Select(p => p.ShouldBeFilled())
                     .Any(r => r.name == project.name).ShouldBe(true);
 
-                // also quickly check other sync methods here to avoid to create and delete to much projects
+                // also quickly check other sync methods here to avoid creating and deleting to many projects
                 projects = UserWorkspaceProjectsResource.ListProjects(new ListParameters { Filter = "name ~ \"nomatchexpected\"" });
                 projects.ShouldBeEmpty();
 
@@ -65,7 +65,7 @@ namespace SharpBucketTests.V2.EndPoints
         [Test]
         public async Task EnumerateProjectsAsync_AfterHavingCreateOneProjectInTeam_ShouldReturnAtLestTheCreatedProject()
         {
-            var projectKey = "Test_" + Guid.NewGuid().ToString("N"); // must start by a letter
+            var projectKey = "Test_" + Guid.NewGuid().ToString("N"); // must start by with letter
             var project = new Project
             {
                 key = projectKey,

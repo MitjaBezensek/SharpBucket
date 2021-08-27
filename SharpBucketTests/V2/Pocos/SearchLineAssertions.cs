@@ -13,8 +13,8 @@ namespace SharpBucketTests.V2.Pocos
             searchLines.Count.ShouldBePositive();
 
             // Check only the first one to speed up the tests.
-            // And also one line that have segments if the first one do not have some.
-            // There is no reason tha other lines would not be filled.
+            // And also one line that has segments if the first one do not have some.
+            // There is no reason the other lines would not be filled.
             searchLines[0].ShouldBeFilled();
             if (searchLines[0].segments.Count == 0)
             {

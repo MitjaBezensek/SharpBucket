@@ -11,7 +11,7 @@ using RestSharp.Authenticators;
 namespace SharpBucket.Authentication
 {
     /// <summary>
-    /// This class helps you authenticated with the BitBucket REST API via the 3 legged OAuth authentication.
+    /// This class helps you authenticate with the Bitbucket REST API via the 3 legged OAuth authentication.
     /// </summary>
     [Obsolete("Use OAuth1ThreeLeggedAuthentication instead")]
     public sealed class OAuthentication3Legged : OauthAuthentication
@@ -131,7 +131,7 @@ namespace SharpBucket.Authentication
         }
 
         /// <summary>
-        /// The method is used to obtain the credentials that let you access resources on BitBucket.
+        /// The method is used to obtain the credentials that let you access resources on Bitbucket.
         /// More info:
         /// https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket#OAuthonBitbucket-Step4.RequestanAccessToken
         /// </summary>

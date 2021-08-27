@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace SharpBucket
 {
     /// <summary>
-    /// Interface that expose the methods that an end point could use to perform calls to the BitBucket API.
+    /// Interface that exposes the methods that an end point could use to perform calls to the Bitbucket API.
     /// </summary>
     public interface ISharpBucketRequester
     {

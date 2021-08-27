@@ -24,7 +24,7 @@ namespace SharpBucketTests.V2.EndPoints
 
             testRepository.ShouldBeFilled();
             testRepository.name.ShouldBe(SampleRepositories.GIT_MIRROR_REPOSITORY_NAME);
-            testRepository.website.ShouldNotBeNullOrEmpty(); // this repository is an example of one where website is filled
+            testRepository.website.ShouldNotBeNullOrEmpty(); // this repository is an example of one where the website is filled
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace SharpBucketTests.V2.EndPoints
 
             testRepository.ShouldBeFilled();
             testRepository.name.ShouldBe(SampleRepositories.GIT_MIRROR_REPOSITORY_NAME);
-            testRepository.website.ShouldNotBeNullOrEmpty(); // this repository is an example of one where website is filled
+            testRepository.website.ShouldNotBeNullOrEmpty(); // this repository is an example of one where the website is filled
         }
 
         [Test]
@@ -96,7 +96,7 @@ namespace SharpBucketTests.V2.EndPoints
             {
                 fork.ShouldBeFilled();
 
-                // since they are forks, their parent should be forked repository
+                // since they are forks, their parent should be the forked repository
                 fork.parent.ShouldBeFilled();
                 fork.parent.name.ShouldBe(SampleRepositories.GIT_MIRROR_REPOSITORY_NAME);
 
@@ -115,7 +115,7 @@ namespace SharpBucketTests.V2.EndPoints
             {
                 fork.ShouldBeFilled();
 
-                // since they are forks, their parent should be forked repository
+                // since they are forks, their parent should be the forked repository
                 fork.parent.ShouldBeFilled();
                 fork.parent.name.ShouldBe(SampleRepositories.GIT_MIRROR_REPOSITORY_NAME);
 
@@ -135,7 +135,7 @@ namespace SharpBucketTests.V2.EndPoints
             {
                 fork.ShouldBeFilled();
 
-                // since they are forks, their parent should be forked repository
+                // since they are forks, their parent should be the forked repository
                 fork.parent.ShouldBeFilled();
                 fork.parent.name.ShouldBe(SampleRepositories.GIT_MIRROR_REPOSITORY_NAME);
 
@@ -308,7 +308,7 @@ namespace SharpBucketTests.V2.EndPoints
             commit.date.ShouldNotBeNullOrWhiteSpace();
             commit.message.ShouldNotBeNullOrWhiteSpace();
             commit.author.raw.ShouldNotBeNullOrWhiteSpace();
-            commit.author.user.ShouldBeNull(); // the author is not a user known by bitbucket here
+            commit.author.user.ShouldBeNull(); // the author is not a user known by Bitbucket here
             commit.links.ShouldNotBeNull();
             commit.parents[0].ShouldBeFilled();
             commit.repository.uuid.ShouldNotBeNullOrWhiteSpace();
@@ -331,7 +331,7 @@ namespace SharpBucketTests.V2.EndPoints
             commit.date.ShouldNotBeNullOrWhiteSpace();
             commit.message.ShouldNotBeNullOrWhiteSpace();
             commit.author.raw.ShouldNotBeNullOrWhiteSpace();
-            commit.author.user.ShouldBeNull(); // the author is not a user known by bitbucket here
+            commit.author.user.ShouldBeNull(); // the author is not a user known by Bitbucket here
             commit.links.ShouldNotBeNull();
             commit.parents[0].ShouldBeFilled();
             commit.repository.uuid.ShouldNotBeNullOrWhiteSpace();

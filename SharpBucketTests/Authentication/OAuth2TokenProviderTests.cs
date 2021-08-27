@@ -42,7 +42,7 @@ namespace SharpBucketTests.Authentication
         }
 
         [Test]
-        [Ignore("Excluded from automatic runs. We recommend to provide your real password in clear only the time needed to do a manual run of this test.")]
+        [Ignore("Excluded from automatic runs. We recommend providing your real password in the clear only when needed to do a manual run of this test.")]
         public void GetResourceOwnerPasswordCredentialsToken_OAuthConsumerIsNotNecessaryTheSameThanTheOneForWhichWeGetTheCredentials_GetAValidToken()
         {
             var oauth2TokenProvider = new OAuth2TokenProvider(TestHelpers.OAuthConsumerKey, TestHelpers.OAuthConsumerSecretKey);
@@ -82,15 +82,15 @@ namespace SharpBucketTests.Authentication
 
             refreshedToken.ShouldNotBeNull();
             refreshedToken.AccessToken.ShouldNotBe(token.AccessToken, "AccessToken should have been changed");
-            refreshedToken.RefreshToken.ShouldBe(token.RefreshToken, "RefreshToken should note have been changed");
-            refreshedToken.TokenType.ShouldBe(token.TokenType, "TokenType should note have been changed");
+            refreshedToken.RefreshToken.ShouldBe(token.RefreshToken, "RefreshToken should not have been changed");
+            refreshedToken.TokenType.ShouldBe(token.TokenType, "TokenType should not have been changed");
 
-            // the scopes order is not maintain by that operation, so we should parse and order them to compare the two lists
+            // The order of scopes is not maintained, so we should parse and order them to compare the two lists.
             var originalScopes = token.Scopes.Split(' ').ToList();
             originalScopes.Sort();
             var refreshedScopes = refreshedToken.Scopes.Split(' ').ToList();
             refreshedScopes.Sort();
-            refreshedScopes.ShouldBe(originalScopes, "Scopes should note have been changed");
+            refreshedScopes.ShouldBe(originalScopes, "Scopes should not have been changed");
         }
     }
 }

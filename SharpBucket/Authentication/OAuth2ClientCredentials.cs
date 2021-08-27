@@ -5,7 +5,7 @@ using RestSharp.Authenticators;
 namespace SharpBucket.Authentication
 {
     /// <summary>
-    /// This class helps you authenticate with the BitBucket REST API via the OAuth2 client credentials authentication, including support of 
+    /// This class helps you authenticate with the Bitbucket REST API via the OAuth2 client credentials authentication.
     /// </summary>
     public sealed class OAuth2ClientCredentials : Authenticate
     {

@@ -85,7 +85,7 @@ namespace SharpBucketTests.V2
         }
 
         // small class to return a RepositoryResource with its build arguments
-        // its probably something that should be change in the API but lets keep that for another pull request
+        // it's probably something that should be change in the API but let's keep that for another pull request
         private class RepositoryResourceWithArgs
         {
             public RepositoryResource RepositoryResource { get; set; }

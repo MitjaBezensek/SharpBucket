@@ -49,7 +49,7 @@ namespace SharpBucketTests.V2.EndPoints
             sharpBucketRequesterV2Mock.Verify(
                 sendMethod,
                 Times.Never(),
-                "Building the enumerable should not produce any request");
+                "Building the enumerable should not produce any requests");
 
             var i = 0;
             foreach (var _ in searchResults)

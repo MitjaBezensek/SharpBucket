@@ -7,9 +7,9 @@ using SharpBucket.V2.Pocos;
 namespace SharpBucketCli
 {
     /// <summary>
-    /// This program is both a sample and a tools that may help SharpBucket developers to maintain their test account.
-    /// In particular when developing on SharpBucket you may quickly generate a lot of repositories not clean up because
-    /// you have break some unit tests execution during a debug session, or have write new unit tests that leak, and so on.
+    /// This program is both a sample and a tool to help SharpBucket developers to maintain their test account.
+    /// When developing on SharpBucket you may quickly generate a lot of repositories which are not cleaned up because
+    /// due to broken unit test execution during a debug session, or writing new unit tests that leak, and so on.
     /// And deleting a lot of repositories with the web interface is ungrateful... 
     /// </summary>
     public class Program
@@ -73,7 +73,7 @@ namespace SharpBucketCli
                         case "list": List(options); break;
                         case "switch": Switch(options); break;
                         case "exit": return;
-                        default: Console.WriteLine("unrecognized command. Type help to get help about existing commands"); break;
+                        default: Console.WriteLine("Unrecognized command. Type help to get help about existing commands"); break;
                     }
                 }
                 catch (Exception e)
@@ -104,7 +104,7 @@ namespace SharpBucketCli
             Console.WriteLine("Available commands are:");
             Console.WriteLine("  clean     : Delete all the repositories in the current workspace.");
             Console.WriteLine("              Useful to clean up a test account overwhelmed by repositories not");
-            Console.WriteLine("              correctly clean up by the unit tests.");
+            Console.WriteLine("              correctly cleaned up by the unit tests.");
             Console.WriteLine();
             Console.WriteLine("  list     : List workspaces or repositories in the current workspace.");
             Console.WriteLine();
