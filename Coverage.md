@@ -221,16 +221,16 @@ The organization of all that routes may slightly differ in the SharpBucket class
 
 ##### [Deployments Config Environments Variables Resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/deployments_config/environments/%7Benvironment_uuid%7D/variables)
 - repositories/{workspace}/{repo_slug}/deployments_config/environments/{environment_uuid}/variables `GET`
-  - Implemented by: none
+  - Implemented: yes
   - Tested: no
 - repositories/{workspace}/{repo_slug}/deployments_config/environments/{environment_uuid}/variables `POST`
-  - Implemented by: none
+  - Implemented: yes
   - Tested: no
 - repositories/{workspace}/{repo_slug}/deployments_config/environments/{environment_uuid}/variables/{variable_uuid} `PUT`
-  - Implemented by: none
+  - Implemented: yes
   - Tested: no
 - repositories/{workspace}/{repo_slug}/deployments_config/environments/{environment_uuid}/variables/{variable_uuid} `DELETE`
-  - Implemented by: none
+  - Implemented: yes
   - Tested: no
 
 ### [Diff resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/diff)
@@ -261,16 +261,16 @@ The organization of all that routes may slightly differ in the SharpBucket class
 
 ### [Environments resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/environments)
 - /repositories/{workspace}/{repo_slug}/environments/ `GET`
-  - Implemented by: none
+  - Implemented: yes
   - Tested: no
 - /repositories/{workspace}/{repo_slug}/environments/ `POST`
-  - Implemented by: none
+  - Implemented: yes
   - Tested: no
 - /repositories/{workspace}/{repo_slug}/environments/{environment_uuid} `GET`
-  - Implemented by: none
+  - Implemented: yes
   - Tested: no
 - /repositories/{workspace}/{repo_slug}/environments/{environment_uuid} `DELETE`
-  - Implemented by: none
+  - Implemented: yes
   - Tested: no
 - /repositories/{workspace}/{repo_slug}/environments/{environment_uuid}/changes/ `POST`
   - Implemented by: none
