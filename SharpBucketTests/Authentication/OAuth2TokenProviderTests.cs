@@ -42,7 +42,7 @@ namespace SharpBucketTests.Authentication
         }
 
         [Test]
-        [Ignore("Excluded from automatic runs. We recommend providing your real password in the clear only when needed to do a manual run of this test.")]
+        [Ignore("Excluded from automatic runs. We recommend providing your real password in clear only when needed to do a manual run of this test.")]
         public void GetResourceOwnerPasswordCredentialsToken_OAuthConsumerIsNotNecessaryTheSameThanTheOneForWhichWeGetTheCredentials_GetAValidToken()
         {
             var oauth2TokenProvider = new OAuth2TokenProvider(TestHelpers.OAuthConsumerKey, TestHelpers.OAuthConsumerSecretKey);
