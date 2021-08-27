@@ -36,17 +36,6 @@ namespace SharpBucket
         /// </summary>
         /// <param name="consumerKey">Your consumer API key obtained from the Bitbucket web page.</param>
         /// <param name="consumerSecretKey">Your consumer secret API key also obtained from the Bitbucket web page.</param>
-        void OAuth2LeggedAuthentication(string consumerKey, string consumerSecretKey);
-
-        /// <summary>
-        /// Use 2 legged OAuth 1.0a authentication. This is similar to basic authentication, since
-        /// it requires the same number of steps. It is still safer to use than basic authentication, 
-        /// since you can revoke the API keys.
-        /// More info:
-        /// https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket
-        /// </summary>
-        /// <param name="consumerKey">Your consumer API key obtained from the Bitbucket web page.</param>
-        /// <param name="consumerSecretKey">Your consumer secret API key also obtained from the Bitbucket web page.</param>
         void OAuth1TwoLeggedAuthentication(string consumerKey, string consumerSecretKey);
 
         /// <summary>
