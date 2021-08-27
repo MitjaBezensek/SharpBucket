@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using RestSharp;
-using RestSharp.Deserializers;
+using RestSharp.Serialization.Json;
 
 namespace SharpBucket.Authentication
 {
@@ -25,7 +25,7 @@ namespace SharpBucket.Authentication
             //Fixed bug that prevents RestClient for adding custom headers to the request
             //https://stackoverflow.com/questions/22229393/why-is-restsharp-addheaderaccept-application-json-to-a-list-of-item
             client.ClearHandlers();
-            client.AddHandler("application/json", new JsonDeserializer());
+            client.AddHandler("application/json", () => new JsonDeserializer());
 
             client.FollowRedirects = false;
         }
@@ -118,7 +118,7 @@ namespace SharpBucket.Authentication
             CancellationToken token)
         {
             var request = BuildRestRequest(url, method, body, requestParameters);
-            var result = await client.ExecuteTaskAsync(request, token);
+            var result = await client.ExecuteAsync(request, token);
             ThrowExceptionIfResponseIsInvalid(result);
 
             return result;
@@ -191,11 +191,11 @@ namespace SharpBucket.Authentication
 
         private static async Task<IRestResponse>ExecuteRequestWithManualFollowRedirectAsync(IRestRequest request, IRestClient client, CancellationToken token)
         {
-            var result = await client.ExecuteTaskAsync(request, token);
+            var result = await client.ExecuteAsync(request, token);
             if (result.StatusCode == HttpStatusCode.Redirect)
             {
                 request = BuildRedirectedRestRequest(request, client, result);
-                result = await client.ExecuteTaskAsync(request, token);
+                result = await client.ExecuteAsync(request, token);
             }
 
             return result;

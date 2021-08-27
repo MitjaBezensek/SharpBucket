@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using RestSharp;
 using RestSharp.Authenticators;
@@ -83,7 +84,7 @@ namespace SharpBucket.Authentication
             return GetToken("refresh_token", Parameter("refresh_token", token.RefreshToken));
         }
 
-        private OAuth2Token GetToken(string grantType, params Parameter[] parameters)
+        private OAuth2Token GetToken(string grantType, params KeyValuePair<string, object>[] parameters)
         {
             var tempClient = new RestClient(TokenUrl)
             {
@@ -96,8 +97,7 @@ namespace SharpBucket.Authentication
             request.AddParameter("grant_type", grantType);
             foreach (var parameter in parameters)
             {
-                parameter.Type = ParameterType.GetOrPost;
-                request.AddParameter(parameter);
+                request.AddParameter(parameter.Key, parameter.Value, ParameterType.GetOrPost);
             }
             var response = tempClient.Execute<OAuth2Token>(request);
             if (response.StatusCode != HttpStatusCode.OK)
@@ -108,14 +108,9 @@ namespace SharpBucket.Authentication
             return response.Data;
         }
 
-        private static Parameter Parameter(string name, string value)
+        private static KeyValuePair<string, object> Parameter(string name, object value)
         {
-            return new Parameter
-            {
-                Name = name,
-                Value = value,
-                Type = ParameterType.GetOrPost
-            };
+            return new KeyValuePair<string, object>(name, value);
         }
     }
 }
