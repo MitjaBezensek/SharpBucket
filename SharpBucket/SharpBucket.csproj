@@ -7,9 +7,10 @@
     <Authors>Mitja Bezenšek</Authors>
     <Company>Mitja Bezenšek</Company>
     <Product>SharpBucket</Product>
-    <Copyright>Copyright 2014-2020</Copyright>
+    <Copyright>Copyright 2014-2021</Copyright>
     <PackageProjectUrl>https://github.com/MitjaBezensek/SharpBucket</PackageProjectUrl>
     <PackageIconUrl>http://bezensek.com/favicon.png</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Description>A .Net wrapper for the Bitbucket REST API.</Description>
     <PackageDescription>SharpBucket is a .Net wrapper (written in c#) for the Bitbucket's REST API. With it you can have all the data of your repositories / issues at your fingertips.</PackageDescription>
@@ -22,7 +23,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\LICENSE" Link="LICENSE" Pack="true" PackagePath="" />
+    <Content Include="..\Assets\icon.png" Link="icon.png" Pack="true" PackagePath="" />
+    <Content Include="..\LICENSE" Link="LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>
