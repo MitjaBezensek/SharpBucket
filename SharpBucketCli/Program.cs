@@ -85,8 +85,8 @@ namespace SharpBucketCli
 
         private void UseEnvironmentCredentials()
         {
-            var consumerKey = Environment.GetEnvironmentVariable("SB_CONSUMER_KEY");
-            var consumerKeySecret = Environment.GetEnvironmentVariable("SB_CONSUMER_SECRET_KEY");
+            var consumerKey = System.Environment.GetEnvironmentVariable("SB_CONSUMER_KEY");
+            var consumerKeySecret = System.Environment.GetEnvironmentVariable("SB_CONSUMER_SECRET_KEY");
 
             if (!string.IsNullOrEmpty(consumerKey) && !string.IsNullOrEmpty(consumerKeySecret))
             {
