@@ -789,6 +789,24 @@ namespace SharpBucket.V2.EndPoints
 
         #endregion
 
+        #region Deployments Config resource
+
+        private DeploymentsConfigResource _deploymentsConfigResource;
+
+        public DeploymentsConfigResource DeploymentsConfigResource => this._deploymentsConfigResource ??
+                                                (_deploymentsConfigResource = new DeploymentsConfigResource(this));
+
+        #endregion
+
+        #region Environments resource
+
+        private EnvironmentsResource _environmentsResourceResource;
+
+        public EnvironmentsResource EnvironmentsResource => this._environmentsResourceResource ??
+                                                (_environmentsResourceResource = new EnvironmentsResource(this));
+
+        #endregion
+
         #region Src resource
 
         public string GetMainBranchRevision()
