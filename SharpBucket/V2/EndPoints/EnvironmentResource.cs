@@ -13,9 +13,9 @@ namespace SharpBucket.V2.EndPoints
         {
         }
 
-        public Environment GetEnvironment()
+        public DeploymentEnvironment GetEnvironment()
         {
-            return SharpBucketV2.Get<Environment>(BaseUrl);
+            return SharpBucketV2.Get<DeploymentEnvironment>(BaseUrl);
         }
 
         public void DeleteEnvironment()

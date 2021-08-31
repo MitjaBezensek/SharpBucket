@@ -20,23 +20,35 @@ namespace SharpBucket.V2
             try
             {
                 var errorResponse = SimpleJson.DeserializeObject<ErrorResponse>(response.Content);
-                return errorResponse;
+                if (errorResponse?.error is null)
+                {
+                    var errorResponse2 = SimpleJson.DeserializeObject<ErrorResponse2>(response.Content);
+                    errorResponse = errorResponse2.ToErrorResponse();
+                }
+
+                if (!(errorResponse?.error is null))
+                {
+                    return errorResponse;
+                }
+                
             }
             catch (Exception)
             {
-                return new ErrorResponse
+                // ignored
+            }
+
+            return new ErrorResponse
+            {
+                type = "Undefined",
+                error = new Error
                 {
-                    type = "Undefined",
-                    error = new Error
-                    {
-                        message = !string.IsNullOrWhiteSpace(response.Content)
-                            ? response.Content
-                            : !string.IsNullOrWhiteSpace(response.StatusDescription)
+                    message = !string.IsNullOrWhiteSpace(response.Content)
+                        ? response.Content
+                        : !string.IsNullOrWhiteSpace(response.StatusDescription)
                             ? response.StatusDescription
                             : response.StatusCode.ToString()
-                    }
-                };
-            }
+                }
+            };
         }
 
         protected override void AddBody(IRestRequest request, object body)
