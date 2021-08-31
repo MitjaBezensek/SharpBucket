@@ -7,9 +7,4 @@
         public EnvironmentType environment_type { get; set; }
         public string slug { get; set; }
     }
-
-    public class EnvironmentType
-    {
-        public string name { get; set; }
-    }
 }

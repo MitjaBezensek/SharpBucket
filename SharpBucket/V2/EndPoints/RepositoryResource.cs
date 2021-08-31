@@ -800,10 +800,10 @@ namespace SharpBucket.V2.EndPoints
 
         #region Environments resource
 
-        private EnvironmentsResource _environmentsResourceResource;
+        private EnvironmentsResource _environmentsResource;
 
-        public EnvironmentsResource EnvironmentsResource => this._environmentsResourceResource ??
-                                                (_environmentsResourceResource = new EnvironmentsResource(this));
+        public EnvironmentsResource EnvironmentsResource => this._environmentsResource ??
+                                                (_environmentsResource = new EnvironmentsResource(this));
 
         #endregion
 
