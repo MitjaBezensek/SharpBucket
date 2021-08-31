@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using SharpBucket.V2;
 using SharpBucket.V2.Pocos;
 using SharpBucketTests.V2.Pocos;
@@ -75,6 +76,36 @@ namespace SharpBucketTests.V2.EndPoints
             environments.ShouldNotBeNull();
             environments.Count.ShouldBe(11);
             environments[0].ShouldBeFilled();
+
+            // delete is broken (it do renames not real deletions) which make cleaning useless.
+            // So we just try to use different repos to avoid tests to collide and let drop of the
+            // repos do the cleaning
+        }
+
+        [Test]
+        public async Task PostAndListEnvironmentAsync_OneEnvironments_AsyncWorks()
+        {
+            var environmentsResource = SampleRepositories.EmptyTestRepository.EnvironmentsResource;
+
+            // post one environment
+            var environment = await environmentsResource.PostEnvironmentAsync(
+                new DeploymentEnvironment
+                {
+                    name = "PostEnvironmentAsync",
+                    environment_type = DeploymentEnvironmentType.Test,
+                });
+            environment.ShouldBeFilled();
+
+            // check that listing correctly retrieve that environment
+            var environments = await environmentsResource.ListEnvironmentsAsync();
+
+            environments.ShouldNotBeNull();
+            environments.Count.ShouldBe(1);
+            environments[0].ShouldBeEquivalentTo(environment);
+
+            // delete is broken (it do renames not real deletions) which make cleaning useless.
+            // So we just try to use different repos to avoid tests to collide and let drop of the
+            // repos do the cleaning
         }
     }
 }

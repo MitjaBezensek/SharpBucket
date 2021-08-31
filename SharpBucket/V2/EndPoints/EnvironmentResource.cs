@@ -1,4 +1,6 @@
-﻿using SharpBucket.Utility;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -18,9 +20,19 @@ namespace SharpBucket.V2.EndPoints
             return SharpBucketV2.Get<DeploymentEnvironment>(BaseUrl);
         }
 
+        public Task<DeploymentEnvironment> GetEnvironmentAsync(CancellationToken token = default)
+        {
+            return SharpBucketV2.GetAsync<DeploymentEnvironment>(BaseUrl, token);
+        }
+
         public void DeleteEnvironment()
         {
             SharpBucketV2.Delete(BaseUrl);
+        }
+
+        public Task DeleteEnvironmentAsync(CancellationToken token = default)
+        {
+            return SharpBucketV2.DeleteAsync(BaseUrl, token);
         }
     }
 }
