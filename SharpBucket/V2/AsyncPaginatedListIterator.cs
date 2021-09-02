@@ -30,11 +30,7 @@ namespace SharpBucket.V2
 
             overrideUrl = overrideUrl.Replace(SharpBucketV2.BITBUCKET_URL, "");
 
-            if (requestParameters == null)
-            {
-                requestParameters = new Dictionary<string, object>();
-            }
-
+            requestParameters ??= new Dictionary<string, object>();
             requestParameters["pagelen"] = pageLen;
 
             while (true)
@@ -62,10 +58,11 @@ namespace SharpBucket.V2
         /// Returns an enumeration of paginated values. The pages are requested lazily while iterating on the values.
         /// </summary>
         /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="sharpBucketRequester"></param>
+        /// <param name="sharpBucketRequesterV2"></param>
         /// <param name="overrideUrl">The override URL.</param>
         /// <param name="requestParameters"></param>
         /// <param name="pageLen">The size of a page.</param>
+        /// <param name="token"></param>
         /// <returns>A lazy enumerable over the values.</returns>
         /// <exception cref="BitbucketV2Exception">Thrown when the server fails to respond.</exception>
         public static async IAsyncEnumerable<TValue> EnumeratePaginatedValuesAsync<TValue>(

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -72,6 +73,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Enumerate all the teams that the authenticated user is associated with.
         /// </summary>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         [Obsolete("Use WorkspacesEndPoint.EnumerateWorkspacesAsync() instead.")]
         public IAsyncEnumerable<Team> EnumerateUserTeamsAsync(CancellationToken token = default)
             => EnumerateUserTeamsAsync(new EnumerateTeamsParameters(), token);
@@ -80,6 +82,7 @@ namespace SharpBucket.V2.EndPoints
         /// Enumerate all the teams that the authenticated user is associated with.
         /// </summary>
         /// <param name="parameters">Parameters for the query.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         [Obsolete("Use WorkspacesEndPoint.EnumerateWorkspacesAsync(EnumerateWorkspacesParameters) instead.")]
         public IAsyncEnumerable<Team> EnumerateUserTeamsAsync(
             EnumerateTeamsParameters parameters, CancellationToken token = default)

@@ -23,8 +23,8 @@ namespace SharpBucket.V2.EndPoints
         /// </list>
         /// </summary>
         /// <remarks>
-        /// owner role is not a supported value to filter the Teams resource, and is knwon
-        /// to raise a bibucket exception.
+        /// owner role is not a supported value to filter the Teams resource, and is known
+        /// to raise a BitBucket exception.
         /// </remarks>
         [DefaultValue(Role.Member)]
         public Role Role { get; set; } = Role.Member;

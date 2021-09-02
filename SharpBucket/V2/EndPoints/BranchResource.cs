@@ -36,8 +36,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="parameters">Parameters for the query.</param>
         public List<Branch> ListBranches(ListParameters parameters)
         {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
             return GetPaginatedValues<Branch>(BaseUrl, parameters.Max, parameters.ToDictionary());
         }
 
@@ -53,8 +52,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="parameters">Parameters for the queries.</param>
         public IEnumerable<Branch> EnumerateBranches(EnumerateParameters parameters)
         {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
             return SharpBucketV2.EnumeratePaginatedValues<Branch>(BaseUrl, parameters.ToDictionary(), parameters.PageLen);
         }
 
@@ -73,8 +71,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public IAsyncEnumerable<Branch> EnumerateBranchesAsync(EnumerateParameters parameters, CancellationToken token = default)
         {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
             return SharpBucketV2.EnumeratePaginatedValuesAsync<Branch>(BaseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif

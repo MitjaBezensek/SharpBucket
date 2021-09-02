@@ -64,8 +64,12 @@ namespace SharpBucket.Authentication
             {
                 throw new Exception($"Response is not a redirect. (Response status code: {response.StatusCode})");
             }
-            var redirectUrl = response.Headers.Where(header => header.Name == "Location").Select(header => header.Value).First().ToString();
-            return new Uri(redirectUrl);
+            var redirectUrl = response.Headers
+                                      .Where(header => header.Name == "Location")
+                                      .Select(header => header.Value)
+                                      .FirstOrDefault()
+                                      ?.ToString();
+            return new Uri(redirectUrl ?? throw new Exception("Redirect response do not contains a redirect location"));
         }
     }
 }

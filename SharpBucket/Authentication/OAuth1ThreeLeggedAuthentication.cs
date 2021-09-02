@@ -27,19 +27,19 @@ namespace SharpBucket.Authentication
         {
             get
             {
-                if (base.Client == null)
+                return base.Client ??= BuildRestClient();
+
+                IRestClient BuildRestClient()
                 {
-                    if (AccessToken == null)
+                    if (AccessToken is null)
                     {
                         throw new InvalidOperationException("StartAuthentication and AuthenticateWithPin must be called before being able to do any request with this authentication mode");
                     }
-                    base.Client = new RestClient(BaseUrl)
+                    return new RestClient(BaseUrl)
                     {
                         Authenticator = OAuth1Authenticator.ForProtectedResource(ConsumerKey, ConsumerSecret, AccessToken.Token, AccessToken.Secret)
                     };
                 }
-
-                return base.Client;
             }
             set => base.Client = value;
         }
@@ -124,7 +124,7 @@ namespace SharpBucket.Authentication
         /// and that you may use in another session to skip a part of the 3 legged process if you keep it somewhere.</returns>
         public OAuth1Token AuthenticateWithPin(string pin)
         {
-            if (RequestToken == null) throw new InvalidOperationException("StartAuthentication must be called before");
+            _ = RequestToken ?? throw new InvalidOperationException("StartAuthentication must be called before");
 
             var restClient = new RestClient(BaseUrl)
             {

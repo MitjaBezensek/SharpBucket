@@ -14,6 +14,5 @@
         {
             return new DeploymentsConfigEnvironmentResource(this, environmentUuid);
         }
-
     }
 }

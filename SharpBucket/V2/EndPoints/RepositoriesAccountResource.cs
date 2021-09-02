@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+
 using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
@@ -13,7 +14,7 @@ namespace SharpBucket.V2.EndPoints
     public class RepositoriesAccountResource : EndPoint
     {
         /// <summary>
-        /// Gets the acconut name used to build this instance (without any url encoding transformation).
+        /// Gets the account name used to build this instance (without any url encoding transformation).
         /// </summary>
         public string AccountName { get; }
 

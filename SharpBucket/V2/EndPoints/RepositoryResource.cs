@@ -180,8 +180,8 @@ namespace SharpBucket.V2.EndPoints
 
         private BranchResource _branchesResource;
 
-        public BranchResource BranchesResource => this._branchesResource ??
-                                                (_branchesResource = new BranchResource(this));
+        public BranchResource BranchesResource
+            => this._branchesResource ??= new BranchResource(this);
 
         #endregion
 
@@ -206,11 +206,12 @@ namespace SharpBucket.V2.EndPoints
         #region Branch Model Resource
 
         private BranchingModelResource _branchingModelResource;
+
         /// <summary>
         /// Gets the resource to manage the branching model for this repository.
         /// </summary>
-        public BranchingModelResource BranchingModelResource => this._branchingModelResource ??
-                                                (_branchingModelResource = new BranchingModelResource(this));
+        public BranchingModelResource BranchingModelResource
+            => this._branchingModelResource ??= new BranchingModelResource(this);
 
         #endregion
 
@@ -553,6 +554,7 @@ namespace SharpBucket.V2.EndPoints
         /// The newest commit is first.
         /// </summary>
         /// <param name="commitsParameters">Parameters that allow to filter the commits to return.</param>
+        /// <param name="token">The cancellation token</param>
         public IAsyncEnumerable<Commit> EnumerateCommitsAsync(EnumerateCommitsParameters commitsParameters, CancellationToken token = default)
             => EnumerateCommitsAsync(null, commitsParameters, token);
 
@@ -562,6 +564,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <param name="branchOrTag">The branch or tag to get, for example, master or default.</param>
         /// <param name="commitsParameters">Optional parameters that allow to filter the commits to return.</param>
+        /// <param name="token">The cancellation token</param>
         public IAsyncEnumerable<Commit> EnumerateCommitsAsync(string branchOrTag, EnumerateCommitsParameters commitsParameters, CancellationToken token = default)
         {
             var overrideUrl = BaseUrl + "/commits";
@@ -724,7 +727,6 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision">The SHA1 of the commit</param>
         /// <param name="key">The build status' unique key</param>
         /// <param name="token">The cancellation token</param>
-        /// <returns></returns>
         public Task<BuildInfo> GetBuildStatusInfoAsync(string revision, string key, CancellationToken token = default)
         {
             var overrideUrl = BaseUrl + $"/commit/{revision}/statuses/build/{key}";
@@ -737,8 +739,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="revision">The SHA1 of the commit</param>
         /// <param name="key">The build status' unique key</param>
         /// <param name="buildInfo">The new commit status object</param>
-        /// <returns></returns>
-        /// /// <remarks>This operation can also be used to change other properties of the build status: state, name, description, url, refname. The key cannot be changed.</remarks>
+        /// <remarks>
+        /// This operation can also be used to change other properties of the build status: state, name, description, url, refname.
+        /// The key cannot be changed.
+        /// </remarks>
         public BuildInfo ChangeBuildStatusInfo(string revision, string key, BuildInfo buildInfo)
         {
             var overrideUrl = BaseUrl + $"/commit/{revision}/statuses/build/{key}";
@@ -752,8 +756,10 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="key">The build status' unique key</param>
         /// <param name="buildInfo">The new commit status object</param>
         /// <param name="token">The cancellation token</param>
-        /// <returns></returns>
-        /// /// <remarks>This operation can also be used to change other properties of the build status: state, name, description, url, refname. The key cannot be changed.</remarks>
+        /// <remarks>
+        /// This operation can also be used to change other properties of the build status: state, name, description, url, refname.
+        /// The key cannot be changed.
+        /// </remarks>
         public Task<BuildInfo> ChangeBuildStatusInfoAsync(string revision, string key, BuildInfo buildInfo, CancellationToken token = default)
         {
             var overrideUrl = BaseUrl + $"/commit/{revision}/statuses/build/{key}";
@@ -793,8 +799,8 @@ namespace SharpBucket.V2.EndPoints
 
         private DeploymentsConfigResource _deploymentsConfigResource;
 
-        public DeploymentsConfigResource DeploymentsConfigResource => this._deploymentsConfigResource ??
-                                                (_deploymentsConfigResource = new DeploymentsConfigResource(this));
+        public DeploymentsConfigResource DeploymentsConfigResource
+            => this._deploymentsConfigResource ??= new DeploymentsConfigResource(this);
 
         #endregion
 
@@ -802,8 +808,8 @@ namespace SharpBucket.V2.EndPoints
 
         private EnvironmentsResource _environmentsResource;
 
-        public EnvironmentsResource EnvironmentsResource => this._environmentsResource ??
-                                                (_environmentsResource = new EnvironmentsResource(this));
+        public EnvironmentsResource EnvironmentsResource
+            => this._environmentsResource ??= new EnvironmentsResource(this);
 
         #endregion
 
@@ -866,7 +872,7 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         /// <remarks>
         /// If revision is null a non async request will occurs.
-        /// if you want a fullly async experience, you should do yourseulf an explicit call to <see cref="GetMainBranchRevisionAsync(CancellationToken)"/>
+        /// if you want a fully async experience, you should do yourself an explicit call to <see cref="GetMainBranchRevisionAsync(CancellationToken)"/>
         /// and then provide the result in the <paramref name="revision"/> parameter.
         /// </remarks>
         /// <param name="revision">The name of the revision to browse. This may be a commit hash, a branch name, a tag name, or null to target the last commit of the main branch.</param>
@@ -885,8 +891,8 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Gets the resource that allow to manage tags for this repository.
         /// </summary>
-        public TagsResource TagsResource => this._tagsResource ??
-                                                (_tagsResource = new TagsResource(this));
+        public TagsResource TagsResource
+            => this._tagsResource ??= new TagsResource(this);
 
         #endregion
 

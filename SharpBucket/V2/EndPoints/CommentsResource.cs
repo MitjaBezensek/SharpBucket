@@ -91,7 +91,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Add the specified comment.
         /// </summary>
-        /// <param name="raw">The raw texte of the comment.</param>
+        /// <param name="raw">The raw text of the comment.</param>
         public TComment PostComment(string raw)
         {
             var comment = BuildNewComment(raw, null, null);
@@ -101,11 +101,11 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Add the specified comment.
         /// </summary>
-        /// <param name="raw">The raw texte of the comment.</param>
+        /// <param name="raw">The raw text of the comment.</param>
         /// <param name="parentCommentId">
         /// The id of the parent comment if this comment is a reply to an existing comment.
         /// </param>
-        public TComment PostComment(string raw, int? parentCommentId = null)
+        public TComment PostComment(string raw, int? parentCommentId)
         {
             var comment = BuildNewComment(raw, parentCommentId, null);
             return PostComment(comment);
@@ -114,7 +114,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Add the specified comment.
         /// </summary>
-        /// <param name="raw">The raw texte of the comment.</param>
+        /// <param name="raw">The raw text of the comment.</param>
         /// <param name="location">
         /// The location of that comment if it's an inline comment.
         /// </param>
@@ -127,7 +127,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Add the specified comment.
         /// </summary>
-        /// <param name="raw">The comment to add.</param>
+        /// <param name="comment">The comment to add.</param>
         public TComment PostComment(TComment comment)
         {
             return SharpBucketV2.Post(comment, BaseUrl);
@@ -136,7 +136,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Add the specified comment.
         /// </summary>
-        /// <param name="raw">The raw texte of the comment.</param>
+        /// <param name="raw">The raw text of the comment.</param>
         /// <param name="token">The cancellation token</param>
         public Task<TComment> PostCommentAsync(string raw, CancellationToken token = default)
         {
@@ -147,7 +147,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Add the specified comment.
         /// </summary>
-        /// <param name="raw">The raw texte of the comment.</param>
+        /// <param name="raw">The raw text of the comment.</param>
         /// <param name="parentCommentId">
         /// The id of the parent comment if this comment is a reply to an existing comment.
         /// </param>
@@ -161,7 +161,7 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Add the specified comment.
         /// </summary>
-        /// <param name="raw">The raw texte of the comment.</param>
+        /// <param name="raw">The raw text of the comment.</param>
         /// <param name="location">
         /// The location of that comment if it's an inline comment.
         /// </param>
@@ -175,7 +175,8 @@ namespace SharpBucket.V2.EndPoints
         /// <summary>
         /// Add the specified comment.
         /// </summary>
-        /// <param name="raw">The comment to add.</param>
+        /// <param name="comment">The comment to add.</param>
+        /// <param name="token">The cancellation token</param>
         public Task<TComment> PostCommentAsync(TComment comment, CancellationToken token = default)
         {
             return SharpBucketV2.PostAsync(comment, BaseUrl, token);

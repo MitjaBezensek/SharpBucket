@@ -64,6 +64,7 @@ namespace SharpBucket.V2.EndPoints
         /// doing requests page by page while enumerating.
         /// </summary>
         /// <param name="parameters">Parameters for the query.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public IAsyncEnumerable<Project> EnumerateProjectsAsync(EnumerateParameters parameters, CancellationToken token = default)
         {
             _ = parameters ?? throw new ArgumentNullException(nameof(parameters));

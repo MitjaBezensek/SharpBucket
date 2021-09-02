@@ -22,14 +22,10 @@ namespace SharpBucket.V2.EndPoints
 
         internal static IDictionary<string, object> AddAfter(IDictionary<string, object> dictionary, DateTime? after)
         {
-            if (after != null)
-            {
-                if (dictionary == null)
-                {
-                    dictionary = new Dictionary<string, object>();
-                }
-                dictionary.Add("after", after.Value.ToString("o"));
-            }
+            if (after is null) return dictionary;
+
+            dictionary ??= new Dictionary<string, object>();
+            dictionary.Add("after", after.Value.ToString("o"));
 
             return dictionary;
         }

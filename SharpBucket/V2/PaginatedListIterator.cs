@@ -22,11 +22,7 @@ namespace SharpBucket.V2
 
             relativeUrl = relativeUrl.Replace(SharpBucketV2.BITBUCKET_URL, "");
 
-            if (requestParameters == null)
-            {
-                requestParameters = new Dictionary<string, object>();
-            }
-
+            requestParameters ??= new Dictionary<string, object>();
             requestParameters["pagelen"] = pageLen;
 
             while (true)
@@ -60,7 +56,7 @@ namespace SharpBucket.V2
         /// Returns a list of paginated values.
         /// </summary>
         /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="sharpBucketRequester"></param>
+        /// <param name="sharpBucketRequesterV2"></param>
         /// <param name="relativeUrl">The relative URL to the paginated resource to call.</param>
         /// <param name="max">Set to 0 for unlimited size.</param>
         /// <param name="requestParameters"></param>
@@ -99,7 +95,7 @@ namespace SharpBucket.V2
         /// Returns an enumeration of paginated values. The pages are requested lazily while iterating on the values.
         /// </summary>
         /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="sharpBucketRequester"></param>
+        /// <param name="sharpBucketRequesterV2"></param>
         /// <param name="relativeUrl">The relative URL to the paginated resource to call.</param>
         /// <param name="requestParameters"></param>
         /// <param name="pageLen">The size of a page.</param>

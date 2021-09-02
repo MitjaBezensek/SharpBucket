@@ -15,7 +15,7 @@ namespace SharpBucket.V2.EndPoints
 
         private EnvironmentVariablesResource _environmentVariablesResource;
 
-        public EnvironmentVariablesResource VariablesResource => this._environmentVariablesResource ??
-                                                (_environmentVariablesResource = new EnvironmentVariablesResource(this));
+        public EnvironmentVariablesResource VariablesResource
+            => this._environmentVariablesResource ??= new EnvironmentVariablesResource(this);
     }
 }

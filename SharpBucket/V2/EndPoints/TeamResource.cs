@@ -260,6 +260,7 @@ namespace SharpBucket.V2.EndPoints
         /// doing requests page by page while enumerating.
         /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/#get
         /// </summary>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         [Obsolete("From WorkspaceResource use ProjectsResource.EnumerateProjectsAsync(CancellationToken) instead")]
         public IAsyncEnumerable<Project> EnumerateProjectsAsync(CancellationToken token = default)
             => EnumerateProjectsAsync(new EnumerateParameters(), token);
@@ -270,6 +271,7 @@ namespace SharpBucket.V2.EndPoints
         /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/projects/#get
         /// </summary>
         /// <param name="parameters">Parameters for the query.</param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         [Obsolete("From WorkspaceResource use ProjectsResource.EnumerateProjectsAsync(EnumerateParameters, CancellationToken) instead")]
         public IAsyncEnumerable<Project> EnumerateProjectsAsync(EnumerateParameters parameters, CancellationToken token = default)
         {

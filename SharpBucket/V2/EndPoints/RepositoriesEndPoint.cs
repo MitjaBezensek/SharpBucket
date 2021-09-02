@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+
 using SharpBucket.Utility;
+
 using Repository = SharpBucket.V2.Pocos.Repository;
 
 namespace SharpBucket.V2.EndPoints
@@ -38,8 +40,7 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public List<Repository> ListPublicRepositories(ListPublicRepositoriesParameters parameters)
         {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
 
             return GetPaginatedValues<Repository>(BaseUrl, parameters.Max, parameters.ToDictionary());
         }
@@ -50,8 +51,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="parameters">Parameters for the queries.</param>
         public IEnumerable<Repository> EnumeratePublicRepositories(EnumeratePublicRepositoriesParameters parameters)
         {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
 
             return SharpBucketV2.EnumeratePaginatedValues<Repository>(BaseUrl, parameters.ToDictionary(), parameters.PageLen);
         }
@@ -64,8 +64,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public IAsyncEnumerable<Repository> EnumeratePublicRepositoriesAsync(EnumeratePublicRepositoriesParameters parameters, CancellationToken token = default)
         {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
 
             return SharpBucketV2.EnumeratePaginatedValuesAsync<Repository>(BaseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
@@ -79,7 +78,7 @@ namespace SharpBucket.V2.EndPoints
         /// Gets the <see cref="RepositoriesAccountResource"/> that will allow to list the repositories of a specified
         /// account.
         /// </summary>
-        /// <param name="accountName"The account whose repositories you wish to get.></param>
+        /// <param name="accountName">The account whose repositories you wish to get.></param>
         public RepositoriesAccountResource RepositoriesResource(string accountName)
         {
             return new RepositoriesAccountResource(this, accountName);
@@ -107,8 +106,7 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("Prefer go through the RepositoriesAccountResource(accountName) method, and use a method using a ListRepositoriesParameters.")]
         public List<Repository> ListRepositories(string accountName, ListParameters parameters)
         {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
 
             var overrideUrl = $"{BaseUrl}{accountName.GuidOrValue()}/";
             return GetPaginatedValues<Repository>(overrideUrl, parameters.Max, parameters.ToDictionary());

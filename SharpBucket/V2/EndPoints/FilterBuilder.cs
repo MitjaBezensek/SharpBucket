@@ -16,7 +16,7 @@ namespace SharpBucket.V2.EndPoints
             if (input?.Contains("'") == true)
             {
                 input = input.Replace("\"", "\\\"");
-                var singleQuoteRegex = new Regex(@"''|'");
+                var singleQuoteRegex = new Regex("''|'");
                 return singleQuoteRegex.Replace(input, m => m.Length == 2 ? "'" : "\"");
             }
             else

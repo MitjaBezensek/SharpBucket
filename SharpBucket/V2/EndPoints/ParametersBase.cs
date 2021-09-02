@@ -21,7 +21,7 @@ namespace SharpBucket.V2.EndPoints
 
             foreach (var kvp in kvps.Where(p => p.HasValue))
             {
-                result = result ?? new Dictionary<string, object>();
+                result ??= new Dictionary<string, object>();
                 result.Add(kvp.Value);                
             }
 
@@ -30,12 +30,9 @@ namespace SharpBucket.V2.EndPoints
 
         protected static IDictionary<string, object> AddParameterToDictionary(IDictionary<string, object> dictionary, string key, object value)
         {
-            if (value == null) return dictionary;
+            if (value is null) return dictionary;
 
-            if (dictionary is null)
-            {
-                dictionary = new Dictionary<string, object>();
-            }
+            dictionary ??= new Dictionary<string, object>();
             dictionary.Add(key, value);
 
             return dictionary;

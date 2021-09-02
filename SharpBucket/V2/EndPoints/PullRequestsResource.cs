@@ -44,8 +44,7 @@ namespace SharpBucket.V2.EndPoints
         [Obsolete("Prefer the ListPullRequests(ListPullRequestsParameters) overload.")]
         public List<PullRequest> ListPullRequests(ListParameters parameters)
         {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
             return GetPaginatedValues<PullRequest>(BaseUrl, parameters.Max, parameters.ToDictionary());
         }
 
@@ -55,8 +54,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="parameters">Parameters for the query.</param>
         public List<PullRequest> ListPullRequests(ListPullRequestsParameters parameters)
         {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
             return GetPaginatedValues<PullRequest>(BaseUrl, parameters.Max, parameters.ToDictionary());
         }
 
@@ -72,8 +70,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="parameters">Parameters for the queries.</param>
         public IEnumerable<PullRequest> EnumeratePullRequests(EnumeratePullRequestsParameters parameters)
         {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
             return SharpBucketV2.EnumeratePaginatedValues<PullRequest>(BaseUrl, parameters.ToDictionary(), parameters.PageLen);
         }
 
@@ -92,8 +89,7 @@ namespace SharpBucket.V2.EndPoints
         /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public IAsyncEnumerable<PullRequest> EnumeratePullRequestsAsync(EnumeratePullRequestsParameters parameters, CancellationToken token = default)
         {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
+            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
             return SharpBucketV2.EnumeratePaginatedValuesAsync<PullRequest>(BaseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif

@@ -28,10 +28,7 @@ namespace SharpBucket.V2.EndPoints
                 && states.Count > 0
                 && (states.Count > 1 || states.First() != PullRequestState.Open))
             {
-                if (dictionary == null)
-                {
-                    dictionary = new Dictionary<string, object>();
-                }
+                dictionary ??= new Dictionary<string, object>();
                 dictionary.Add("state", states.Select(s => s.ToString().ToUpperInvariant()).ToList());
             }
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SharpBucket.V2.Pocos
+﻿namespace SharpBucket.V2.Pocos
 {
     public class User
     {

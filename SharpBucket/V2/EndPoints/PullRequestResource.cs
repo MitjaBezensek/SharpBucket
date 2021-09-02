@@ -31,7 +31,7 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// Gets the <see cref="CommentResource"/> relative to this pull request.
+        /// Gets the <see cref="PullRequestCommentsResource"/> relative to this pull request.
         /// </summary>
         public PullRequestCommentsResource CommentsResource => _commentsResource.Value;
 
