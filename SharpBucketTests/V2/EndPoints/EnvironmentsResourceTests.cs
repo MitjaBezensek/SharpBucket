@@ -56,12 +56,16 @@ namespace SharpBucketTests.V2.EndPoints
             // post eleven environments to go over the default pagination of 10 items
             for (var i = 0; i < 11; i++)
             {
-                var environment = environmentsResource.PostEnvironment(
-                    new DeploymentEnvironment
-                    {
-                        name = $"testEnv{i}",
-                        environment_type = DeploymentEnvironmentType.Test,
-                    });
+                // use some retry policy here since posting quickly multiple environment seems not stable.
+                var environment = Retry
+                                  .Func(() => environmentsResource.PostEnvironment(
+                                      new DeploymentEnvironment
+                                      {
+                                          name = $"testEnv{i}",
+                                          environment_type = DeploymentEnvironmentType.Test,
+                                      }))
+                                  .On<BitbucketV2Exception>(e => e.HttpStatusCode == HttpStatusCode.BadRequest)
+                                  .Times(2);
 
                 if (i == 0)
                 {
@@ -69,7 +73,7 @@ namespace SharpBucketTests.V2.EndPoints
                 }
             }
 
-            // check that listing correctly retrieve all items evn after default page
+            // check that listing correctly retrieve all items even after default page
             var environments = environmentsResource.ListEnvironments();
 
             environments.ShouldNotBeNull();
