@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.Pocos;
 using SharpBucketTests.V2.Pocos;
@@ -8,8 +9,6 @@ using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
 {
-    using NUnit.Framework;
-
     [TestFixture]
     public class EnvironmentsResourceTests
     {

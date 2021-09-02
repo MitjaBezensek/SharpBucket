@@ -8,6 +8,7 @@ namespace SharpBucket.V2.Pocos
     /// <typeparam name="T"></typeparam>
     public class IteratorBasedPage<T>
     {
+        public int? page { get; set; }
         public int? pagelen { get; set; }
         public string next { get; set; }
         public List<T> values { get; set; }

@@ -13,9 +13,14 @@ namespace SharpBucket.V2.EndPoints
         {
         }
 
-        public List<EnvironmentVariable> ListVariables()
+        public List<EnvironmentVariable> ListVariables(int max = 0)
         {
-            return GetPaginatedValues<EnvironmentVariable>(BaseUrl);
+            return SharpBucketV2.GetPaginatedValues<EnvironmentVariable>(BaseUrl, max);
+        }
+
+        public IEnumerable<EnvironmentVariable> EnumerateVariables(int? pageLen = null)
+        {
+            return SharpBucketV2.EnumeratePaginatedValues<EnvironmentVariable>(BaseUrl, pageLen: pageLen);
         }
 
         public EnvironmentVariable PostVariable(EnvironmentVariable variable)

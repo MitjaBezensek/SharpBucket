@@ -39,7 +39,13 @@ namespace SharpBucket.V2
 
                 yield return response.values;
 
-                if (string.IsNullOrWhiteSpace(response.next))
+                // stop iteration if there is no more next
+                // or if we have a size and we detect we are on the last page
+                // note that on some routes an issue in bitbucket cause next to be proposed while we are already on the last page.
+                if (string.IsNullOrWhiteSpace(response.next)
+                    || (response.size != null
+                        && response.page != null
+                        && response.size.Value < (ulong)pageLen * (ulong)response.page.Value))
                 {
                     break;
                 }
