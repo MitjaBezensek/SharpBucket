@@ -17,6 +17,8 @@
     <PackageDescription>SharpBucket is a .Net wrapper (written in c#) for the Bitbucket's REST API. With it you can have all the data of your repositories / issues at your fingertips.</PackageDescription>
     <PackageTags>Bitbucket REST API C#</PackageTags>
     <PackageReleaseNotes>https://github.com/MitjaBezensek/SharpBucket/releases/tag/$(Version)</PackageReleaseNotes>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
