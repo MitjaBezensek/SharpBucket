@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
@@ -10,6 +11,7 @@ using Shouldly;
 namespace SharpBucketTests.V2.EndPoints
 {
     [TestFixture]
+    [Ignore("Long and unstable due since bitbucket takes time to update the listing. Do only manual run of them when needed.")]
     public class EnvironmentVariablesResourceTests
     {
         /// <summary>
@@ -119,6 +121,47 @@ namespace SharpBucketTests.V2.EndPoints
                     variablesResource.VariableResource(variable.uuid).DeleteVariable();
                 }
                 Thread.Sleep(createdVariables.Count * CREATE_VAR_WAIT_DURATION);
+            }
+        }
+
+        [Test]
+        public async Task PostEnvironmentVariablesAsync_ValidParameters_Works()
+        {
+            var variablesResource = this.EnvironmentResource.VariablesResource;
+
+            // post one variable
+            var variable = await variablesResource.PostVariableAsync(
+                new EnvironmentVariable
+                {
+                    key = "foo",
+                    value = "bar",
+                });
+            var variableResource = variablesResource.VariableResource(variable.uuid);
+
+            try
+            {
+                variable.ShouldBeFilled();
+                variable.key.ShouldBe("foo");
+                variable.value.ShouldBe("bar");
+                variable.secured.ShouldBe(false);
+
+                // test update
+                variable.value = "barBar";
+                var updatedVariable = await variableResource.PutVariableAsync(variable);
+                updatedVariable.value.ShouldBe("barBar");
+
+                // check it's updated
+                Thread.Sleep(CREATE_VAR_WAIT_DURATION);
+                var variables = await variablesResource.EnumerateVariablesAsync().ToListAsync();
+                variables.ShouldNotBeNull();
+                variables.Count.ShouldBe(1);
+                variables[0].ShouldBeEquivalentTo(updatedVariable);
+            }
+            finally
+            {
+                // delete the variable in a finally block to avoid to let bad data behind us.
+                await variableResource.DeleteVariableAsync();
+                Thread.Sleep(CREATE_VAR_WAIT_DURATION);
             }
         }
     }

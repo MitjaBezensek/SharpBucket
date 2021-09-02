@@ -1,4 +1,6 @@
-﻿using SharpBucket.Utility;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -18,9 +20,19 @@ namespace SharpBucket.V2.EndPoints
             SharpBucketV2.Delete(BaseUrl);
         }
 
+        public Task DeleteVariableAsync(CancellationToken token = default)
+        {
+            return SharpBucketV2.DeleteAsync(BaseUrl, token);
+        }
+
         public EnvironmentVariable PutVariable(EnvironmentVariable variable)
         {
             return SharpBucketV2.Put(variable, BaseUrl);
+        }
+
+        public Task<EnvironmentVariable> PutVariableAsync(EnvironmentVariable variable, CancellationToken token = default)
+        {
+            return SharpBucketV2.PutAsync(variable, BaseUrl, token);
         }
     }
 }
