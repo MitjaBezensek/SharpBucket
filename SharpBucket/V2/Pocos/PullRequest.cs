@@ -19,7 +19,7 @@ namespace SharpBucket.V2.Pocos
         public DateTime updated_on { get; set; }
         public object merge_commit { get; set; }
         public int? id { get; set; }
-        public List<User> Reviewers { get; set; }
-        public List<UserRole> Participants { get; set; }
+        public List<User> reviewers { get; set; }
+        public List<UserRole> participants { get; set; }
     }
 }
