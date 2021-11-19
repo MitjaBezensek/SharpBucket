@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>SharpBucketCli</RootNamespace>
     <AssemblyName>SharpBucketCli</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
