@@ -7,7 +7,7 @@ namespace SharpBucketTests.V2.Pocos
     public static class BranchTypeAssertions
     {
         public static TBranchTypes ShouldBeFilled<TBranchTypes>(this TBranchTypes branchTypes)
-            where TBranchTypes : IEnumerable<BranchType>
+            where TBranchTypes : class, IEnumerable<BranchType>
         {
             branchTypes.ShouldNotBeNull();
             foreach (var branchType in branchTypes)

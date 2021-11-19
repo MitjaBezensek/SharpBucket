@@ -7,7 +7,7 @@ namespace SharpBucketTests.V2.Pocos
     public static class BranchingModelSettingsBranchTypeAssertions
     {
         public static TBranchTypes ShouldBeFilled<TBranchTypes>(this TBranchTypes branchTypes)
-            where TBranchTypes : IEnumerable<BranchingModelSettingsBranchType>
+            where TBranchTypes : class, IEnumerable<BranchingModelSettingsBranchType>
         {
             branchTypes.ShouldNotBeNull();
             foreach (var branchType in branchTypes)

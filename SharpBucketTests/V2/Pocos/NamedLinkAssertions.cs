@@ -16,7 +16,7 @@ namespace SharpBucketTests.V2.Pocos
         }
 
         public static TEnumerableOfNamedLink ShouldAllBeFilled<TEnumerableOfNamedLink>(this TEnumerableOfNamedLink links)
-            where TEnumerableOfNamedLink : IEnumerable<NamedLink>
+            where TEnumerableOfNamedLink : class, IEnumerable<NamedLink>
         {
             links.ShouldNotBeNull();
 
