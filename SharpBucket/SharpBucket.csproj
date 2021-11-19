@@ -4,7 +4,7 @@
   <PropertyGroup>
     <TargetFrameworks>net452;netstandard2.0;netstandard2.1</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
-    <Version>0.16.0</Version>
+    <Version>0.16.1</Version>
     <Authors>Mitja Bezenšek, Mickaël Nivet</Authors>
     <Company>Mitja Bezenšek</Company>
     <Product>SharpBucket</Product>
