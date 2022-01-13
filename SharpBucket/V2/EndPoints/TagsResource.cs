@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 using SharpBucket.V2.Pocos;
 
@@ -82,5 +83,64 @@ namespace SharpBucket.V2.EndPoints
             return SharpBucketV2.EnumeratePaginatedValuesAsync<Tag>(BaseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
+
+        /// <summary>
+        /// Create a new tag.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns>A new tag instance that fully represent the newly created tag.</returns>
+        public Tag PostTag(Tag tag)
+        {
+            return SharpBucketV2.Post(tag, BaseUrl);
+        }
+
+        /// <summary>
+        /// Create a new tag.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="token">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>A new tag instance that fully represent the newly created tag.</returns>
+        public async Task<Tag> PostTagAsync(Tag tag, CancellationToken token = default)
+        {
+            return await SharpBucketV2.PostAsync(tag, BaseUrl, token);
+        }
+
+        /// <summary>
+        /// Get a tag.
+        /// </summary>
+        /// <param name="name">The name of the tag</param>
+        public Tag GetTag(string name)
+        {
+            return SharpBucketV2.Get<Tag>(BaseUrl + "/" + name);
+        }
+
+        /// <summary>
+        /// Get a tag.
+        /// </summary>
+        /// <param name="name">The name of the tag</param>
+        /// <param name="token">The cancellation token</param>
+        public Task<Tag> GetTagAsync(string name, CancellationToken token = default)
+        {
+            return SharpBucketV2.GetAsync<Tag>(BaseUrl + "/" + name, token);
+        }
+
+        /// <summary>
+        /// Delete a tag.
+        /// </summary>
+        /// <param name="name">The name of the tag</param>
+        public void DeleteTag(string name)
+        {
+            SharpBucketV2.Delete(BaseUrl + "/" + name);
+        }
+
+        /// <summary>
+        /// Delete a tag.
+        /// </summary>
+        /// <param name="name">The name of the tag</param>
+        /// <param name="token">The cancellation token</param>
+        public Task DeleteTagAsync(string name, CancellationToken token = default)
+        {
+            return SharpBucketV2.DeleteAsync(BaseUrl + "/" + name, token);
+        }
     }
 }

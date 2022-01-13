@@ -513,7 +513,7 @@ The organization of all that routes may slightly differ in the SharpBucket class
   - Tested: **yes**
 - /repositories/{workspace}/{repo_slug}/refs/branches `POST`
   - Implemented by: `BranchResource.PostBranch(Branch)`
-  - Tested: no
+  - Tested: **yes**
 - /repositories/{workspace}/{repo_slug}/refs/branches/{name} `GET`
   - Implemented by: none
   - Tested: no
@@ -521,16 +521,19 @@ The organization of all that routes may slightly differ in the SharpBucket class
   - Implemented by: `BranchResource.DeleteBranch(string)`
   - Tested: **yes**
 
-### [Tag resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/refs/tags/%7Bname%7D)
+### [Tags resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/refs/tags/%7Bname%7D)
 - /repositories/{workspace}/{repo_slug}/refs/tags `GET`
-  - Implemented by: `TagResource.ListTags()`
-  - Tested: no
+  - Implemented by: `TagsResource.ListTags()` *V0.14.0*
+  - Tested: **yes**
 - /repositories/{workspace}/{repo_slug}/refs/tags `POST`
-  - Implemented by: none
-  - Tested: no
-- /repositories/{workspace}/{repo_slug}/refs/tags/{name} `GET` `DELETE`
-  - Implemented by: none
-  - Tested: no
+  - Implemented by: `TagsResource.PostTag()` *V0.17.0*
+  - Tested: **yes**
+- /repositories/{workspace}/{repo_slug}/refs/tags/{name} `GET`
+  - Implemented by: `TagsResource.GetTag(string)` *V0.17.0*
+  - Tested: **yes**
+- /repositories/{workspace}/{repo_slug}/refs/tags/{name} `DELETE`
+  - Implemented by: `TagsResource.DeleteTag(string)` *V0.17.0*
+  - Tested: **yes**
 
 ### [Src resource](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/src)
 - /repositories/{workspace}/{repo_slug}/src `POST`
