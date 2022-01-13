@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -7,7 +6,6 @@ using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
 using SharpBucket.V2.Pocos;
-using SharpBucketTests.V2.Pocos;
 using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
@@ -109,55 +107,6 @@ namespace SharpBucketTests.V2.EndPoints
         {
             var activities = NotExistingPullRequest.EnumeratePullRequestActivitiesAsync();
             var exception = Assert.ThrowsAsync<BitbucketV2Exception>(async () => await activities.FirstAsync());
-            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
-        }
-
-        [Test]
-        [Obsolete("Test of an obsolete method")]
-        public void ListPullRequestComments_ExistingPullRequest_ReturnValidInfo()
-        {
-            var comments = SampleOpenedPullRequest.Get.PullRequestResource.ListPullRequestComments();
-            comments.ShouldNotBeNull();
-            comments.Count.ShouldBeGreaterThanOrEqualTo(1);
-            comments[0].ShouldBeFilled();
-            comments[0].content.raw.ShouldBe("This PR is just for testing purposes.");
-        }
-
-        [Test]
-        [Obsolete("Test of an obsolete method")]
-        public void ListPullRequestComments_NotExistingPullRequest_ThrowException()
-        {
-            var exception = Assert.Throws<BitbucketV2Exception>(() => NotExistingPullRequest.ListPullRequestComments());
-            exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
-        }
-
-        [Test]
-        [Obsolete("Test of an obsolete method")]
-        public void GetPullRequestComment_ExistingCommentOnAPullRequest_ReturnValidInfo()
-        {
-            var commentId = SampleOpenedPullRequest.Get.GlobalComment.id;
-            Debug.Assert(commentId != null, "commentId != null");
-            var comment = SampleOpenedPullRequest.Get.PullRequestResource.GetPullRequestComment(commentId.Value);
-            comment.ShouldBeFilled();
-            comment.content.raw.ShouldBe("This PR is just for testing purposes.");
-        }
-
-        [Test]
-        [Obsolete("Test of an obsolete method")]
-        public void GetPullRequestComment_ExistingReplyCommentOnAPullRequest_ReturnValidInfo()
-        {
-            var commentId = SampleOpenedPullRequest.Get.ResponseComment.id;
-            Debug.Assert(commentId != null, "commentId != null");
-            var comment = SampleOpenedPullRequest.Get.PullRequestResource.GetPullRequestComment(commentId.Value);
-            comment.ShouldBeFilled();
-            comment.parent.ShouldBeFilled();
-        }
-
-        [Test]
-        [Obsolete("Test of an obsolete method")]
-        public void GetPullRequestComment_NotExistingCommentOnPullRequest_ThrowException()
-        {
-            var exception = Assert.Throws<BitbucketV2Exception>(() => ExistingPullRequest.GetPullRequestComment(int.MaxValue));
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 

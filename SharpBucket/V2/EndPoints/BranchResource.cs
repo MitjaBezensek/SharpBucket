@@ -13,12 +13,6 @@ namespace SharpBucket.V2.EndPoints
     /// </summary>
     public class BranchResource : EndPoint
     {
-        [Obsolete("Prefer repositoriesEndPoint.RepositoryResource(accountName, repoSlugOrName).BranchesResource")]
-        public BranchResource(string accountName, string repoSlugOrName, RepositoriesEndPoint repositoriesEndPoint)
-            :this(repositoriesEndPoint.RepositoryResource(accountName, repoSlugOrName))
-        {
-        }
-
         internal BranchResource(RepositoryResource repositoryResource)
             : base(repositoryResource, "refs/branches")
         {

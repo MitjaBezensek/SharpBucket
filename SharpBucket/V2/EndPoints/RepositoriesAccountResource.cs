@@ -18,13 +18,6 @@ namespace SharpBucket.V2.EndPoints
         /// </summary>
         public string AccountName { get; }
 
-        [Obsolete("Prefer repositoriesEndPoint.RepositoriesResource(accountName)")]
-        public RepositoriesAccountResource(
-            ISharpBucketRequesterV2 sharpBucketV2, string accountName, RepositoriesEndPoint repositoriesEndPoint)
-            : this(repositoriesEndPoint, accountName)
-        {
-        }
-
         internal RepositoriesAccountResource(
             RepositoriesEndPoint repositoriesEndPoint, string accountName)
             : base(repositoriesEndPoint, accountName.GuidOrValue())

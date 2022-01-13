@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using SharpBucket.Utility;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -16,14 +15,6 @@ namespace SharpBucket.V2.EndPoints
     {
         #region Pull Requests Resource
 
-        [Obsolete("Prefer PullRequestsResource(RepositoryResource repositoryResource)")]
-        public PullRequestsResource(string accountName, string repoSlugOrName, RepositoriesEndPoint repositoriesEndPoint)
-            : base(
-                  repositoriesEndPoint,
-                  $"{accountName.GuidOrValue()}/{repoSlugOrName.ToSlug()}/pullrequests")
-        {
-        }
-
         public PullRequestsResource(RepositoryResource repositoryResource)
             : base(repositoryResource, "pullrequests")
         {
@@ -35,18 +26,6 @@ namespace SharpBucket.V2.EndPoints
         /// <returns></returns>
         public List<PullRequest> ListPullRequests()
             => ListPullRequests(new ListPullRequestsParameters());
-
-        /// <summary>
-        /// List open pull requests on the repository.
-        /// </summary>
-        /// <param name="parameters">Parameters for the query.</param>
-        /// <returns></returns>
-        [Obsolete("Prefer the ListPullRequests(ListPullRequestsParameters) overload.")]
-        public List<PullRequest> ListPullRequests(ListParameters parameters)
-        {
-            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-            return GetPaginatedValues<PullRequest>(BaseUrl, parameters.Max, parameters.ToDictionary());
-        }
 
         /// <summary>
         /// List pull requests on the repository.
@@ -141,13 +120,6 @@ namespace SharpBucket.V2.EndPoints
         {
             return SharpBucketV2.PutAsync(pullRequest, BaseUrl, token);
         }
-
-        /// <summary>
-        /// Returns activity log for all the pull requests on the repository.
-        /// </summary>
-        [Obsolete("Use GetPullRequestsActivities instead (naming improved, and max parameter exposed)")]
-        public List<Activity> GetPullRequestLog()
-            => GetPullRequestsActivities();
 
         /// <summary>
         /// Returns activity log for all the pull requests on the repository.

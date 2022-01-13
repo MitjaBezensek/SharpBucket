@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 
-using SharpBucket.Utility;
-
 using Repository = SharpBucket.V2.Pocos.Repository;
 
 namespace SharpBucket.V2.EndPoints
@@ -84,34 +82,6 @@ namespace SharpBucket.V2.EndPoints
             return new RepositoriesAccountResource(this, accountName);
         }
 
-        /// <summary>
-        /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
-        /// this method returns a collection containing public and private repositories. 
-        /// Otherwise, this method returns a collection of the public repositories.
-        /// </summary>
-        /// <param name="accountName">The account whose repositories you wish to get.</param>
-        /// <returns></returns>
-        [Obsolete("Prefer go through the RepositoriesAccountResource(accountName) method.")]
-        public List<Repository> ListRepositories(string accountName)
-            => RepositoriesResource(accountName).ListRepositories();
-
-        /// <summary>
-        /// List of repositories associated with an account. If the caller is properly authenticated and authorized, 
-        /// this method returns a collection containing public and private repositories. 
-        /// Otherwise, this method returns a collection of the public repositories.
-        /// </summary>
-        /// <param name="accountName">The account whose repositories you wish to get.</param>
-        /// <param name="parameters">Parameters for the query.</param>
-        /// <returns></returns>
-        [Obsolete("Prefer go through the RepositoriesAccountResource(accountName) method, and use a method using a ListRepositoriesParameters.")]
-        public List<Repository> ListRepositories(string accountName, ListParameters parameters)
-        {
-            _ = parameters ?? throw new ArgumentNullException(nameof(parameters));
-
-            var overrideUrl = $"{BaseUrl}{accountName.GuidOrValue()}/";
-            return GetPaginatedValues<Repository>(overrideUrl, parameters.Max, parameters.ToDictionary());
-        }
-
         #endregion
 
         #region Repository resource
@@ -128,58 +98,6 @@ namespace SharpBucket.V2.EndPoints
         public RepositoryResource RepositoryResource(string accountName, string repoSlugOrName)
         {
             return RepositoriesResource(accountName).RepositoryResource(repoSlugOrName);
-        }
-
-        #endregion
-
-        #region Pull Requests Resource
-
-        /// <summary>
-        /// Manage pull requests for a repository. Use this resource to perform CRUD (create/read/update/delete) operations on a pull request. 
-        /// More info:
-        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Bworkspace%7D/%7Brepo_slug%7D/pullrequests
-        /// </summary>
-        /// <param name="accountName">The owner of the repository.</param>
-        /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
-        /// <returns></returns>
-        [Obsolete("Use RepositoryResource(string,string).PullRequestsResource() instead")]
-        public PullRequestsResource PullRequestsResource(string accountName, string repoSlugOrName)
-        {
-            return RepositoryResource(accountName, repoSlugOrName).PullRequestsResource();
-        }
-
-        #endregion
-
-        #region Branch Resource
-
-        /// <summary>
-        /// Manage branches for a repository. Use this resource to perform CRUD (create/read/update/delete) operations. 
-        /// More info:
-        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/refs/branches
-        /// </summary>
-        /// <param name="accountName">The owner of the repository.</param>
-        /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
-        [Obsolete("Prefer RepositoryResource(accountName, repoSlugOrName).BranchesResource.")]
-        public BranchResource BranchResource(string accountName, string repoSlugOrName)
-        {
-            return RepositoryResource(accountName, repoSlugOrName).BranchesResource;
-        }
-
-        #endregion
-
-        #region Tag Resource
-
-        /// <summary>
-        /// Manage tags for a repository. Use this resource to perform CRUD (create/read/update/delete) operations. 
-        /// More info:
-        /// https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/refs/tags
-        /// </summary>
-        /// <param name="accountName">The owner of the repository.</param>
-        /// <param name="repoSlugOrName">The repository slug, name, or UUID.</param>
-        [Obsolete("Use RepositoryResource(string,string).TagsResource instead")]
-        public TagResource TagResource(string accountName, string repoSlugOrName)
-        {
-            return new TagResource(accountName, repoSlugOrName, this);
         }
 
         #endregion

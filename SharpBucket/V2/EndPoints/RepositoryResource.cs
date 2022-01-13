@@ -23,12 +23,6 @@ namespace SharpBucket.V2.EndPoints
 
         #region Repository Resource
 
-        [Obsolete("Prefer repositoriesEndPoint.RepositoriesResource(accountName).RepositoryResource(repoSlugOrName)")]
-        public RepositoryResource(string accountName, string repoSlugOrName, RepositoriesEndPoint repositoriesEndPoint)
-            : this(repositoriesEndPoint.RepositoriesResource(accountName), repoSlugOrName)
-        {
-        }
-
         internal RepositoryResource(RepositoriesAccountResource repositoriesAccountResource, string repoSlugOrName)
             : base(repositoriesAccountResource, repoSlugOrName.ToSlug())
         {
@@ -598,42 +592,6 @@ namespace SharpBucket.V2.EndPoints
         {
             var overrideUrl = BaseUrl + $"/commit/{revision}";
             return SharpBucketV2.GetAsync<Commit>(overrideUrl, token);
-        }
-
-        /// <summary>
-        /// List of comments on the specified commit.
-        /// </summary>
-        /// <param name="revision">The SHA1 of the commit.</param>
-        /// <returns></returns>
-        [Obsolete("Prefer CommitResource(revision).CommentsResource.ListComments() or any other listing method in CommitResource(revision).CommentsResource")]
-        public List<Comment> ListCommitComments(string revision)
-        {
-            return CommitResource(revision).CommentsResource.EnumerateComments().Cast<Comment>().ToList();
-        }
-
-        /// <summary>
-        /// To get an individual commit comment, just follow the object's self link.
-        /// </summary>
-        /// <param name="revision">The SHA1 of the commit.</param>
-        /// <param name="commentId">The comment identifier.</param>
-        /// <returns></returns>
-        [Obsolete("Prefer CommitResource(revision).CommentsResource.GetComment(commentId)")]
-        public Comment GetCommitComment(string revision, int commentId)
-        {
-            return CommitResource(revision).CommentsResource.GetComment(commentId);
-        }
-
-        /// <summary>
-        /// To get an individual commit comment, just follow the object's self link.
-        /// </summary>
-        /// <param name="revision">The SHA1 of the commit.</param>
-        /// <param name="commentId">The comment identifier.</param>
-        /// <param name="token">The cancellation token</param>
-        /// <returns></returns>
-        [Obsolete("Prefer CommitResource(revision).CommentsResource.GetCommentAsync(commentId, token)")]
-        public async Task<Comment> GetCommitCommentAsync(string revision, int commentId, CancellationToken token = default)
-        {
-            return await CommitResource(revision).CommentsResource.GetCommentAsync(commentId, token);
         }
 
         /// <summary>

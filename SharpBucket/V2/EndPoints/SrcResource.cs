@@ -25,25 +25,6 @@ namespace SharpBucket.V2.EndPoints
         /// if you want a fully async experience, you should do yourself an explicit call to <see cref="RepositoryResource.GetMainBranchRevisionAsync(CancellationToken)"/>
         /// and then provide the result in the <paramref name="revision"/> parameter.
         /// </remarks>
-        /// <param name="repositoriesEndPoint">The base end point extended by this resource.</param>
-        /// <param name="accountName">The name of the account or team in which is located the repository we want to browse.</param>
-        /// <param name="repoSlugOrName">The slug or name of the repository we want to browse. (this may also be the repository UUID).</param>
-        /// <param name="revision">The name of the revision to browse. This may be a commit hash, a branch name, a tag name, or null to target the last commit of the main branch.</param>
-        /// <param name="path">An optional path to a sub directory if you want to start to browse somewhere else that at the root path.</param>
-        [Obsolete("Prefer repositoriesEndPoint.RepositoriesResource(accountName).RepositoryResource(repoSlugOrName).SrcResource")]
-        public SrcResource(RepositoriesEndPoint repositoriesEndPoint, string accountName, string repoSlugOrName, string revision = null, string path = null)
-            : this(repositoriesEndPoint.RepositoriesResource(accountName).RepositoryResource(repoSlugOrName), revision, path)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="SrcResource"/>.
-        /// </summary>
-        /// <remarks>
-        /// If revision is null a non async request will occurs.
-        /// if you want a fully async experience, you should do yourself an explicit call to <see cref="RepositoryResource.GetMainBranchRevisionAsync(CancellationToken)"/>
-        /// and then provide the result in the <paramref name="revision"/> parameter.
-        /// </remarks>
         /// <param name="repositoryResource">The parent resource extended by this resource.</param>
         /// <param name="revision">The name of the revision to browse. This may be a commit hash, a branch name, a tag name, or null to target the last commit of the main branch.</param>
         /// <param name="path">An optional path to a sub directory if you want to start to browse somewhere else that at the root path.</param>

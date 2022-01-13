@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using SharpBucket.V2.Pocos;
@@ -15,14 +14,6 @@ namespace SharpBucket.V2.EndPoints
     public class PullRequestResource : EndPoint
     {
         private readonly Lazy<PullRequestCommentsResource> _commentsResource;
-
-        [Obsolete("Prefer PullRequestResource(PullRequestsResource pullRequestsResource, int pullRequestId)")]
-        public PullRequestResource(string accountName, string repoSlugOrName, int pullRequestId, RepositoriesEndPoint repositoriesEndPoint)
-            : this(
-                  repositoriesEndPoint.RepositoryResource(accountName, repoSlugOrName).PullRequestsResource(),
-                  pullRequestId)
-        {
-        }
 
         public PullRequestResource(PullRequestsResource pullRequestsResource, int pullRequestId)
             : base(pullRequestsResource, pullRequestId.ToString())
@@ -156,13 +147,6 @@ namespace SharpBucket.V2.EndPoints
         }
 
         /// <summary>
-        /// Gets a log of the activity for a specific pull request.
-        /// </summary>
-        [Obsolete("Use ListPullRequestActivities instead which is the exact same method but with a name that respect the global naming rules of the project.")]
-        public List<Activity> GetPullRequestActivity()
-            => ListPullRequestActivities();
-
-        /// <summary>
         /// List the activities for a specific pull request.
         /// </summary>
         public List<Activity> ListPullRequestActivities()
@@ -239,32 +223,6 @@ namespace SharpBucket.V2.EndPoints
         {
             var overrideUrl = BaseUrl + "/decline";
             return await SharpBucketV2.PostAsync<PullRequest>(null, overrideUrl, token);
-        }
-
-        /// <summary>
-        /// List of comments on the specified pull request. 
-        /// </summary>
-        [Obsolete("Prefer CommentsResource.ListComments()")]
-        public List<Comment> ListPullRequestComments()
-        {
-            return CommentsResource.EnumerateComments().Cast<Comment>().ToList();
-        }
-
-        /// <summary>
-        /// Gets an individual comment on an request. Private repositories require authorization with an account that has appropriate access.
-        /// </summary>
-        /// <param name="commentId">The comment identifier.</param>
-        [Obsolete("Prefer CommentsResource.GetComment(commentId)")]
-        public Comment GetPullRequestComment(int commentId)
-        {
-            return CommentsResource.GetComment(commentId);
-        }
-
-        [Obsolete("Prefer CommentsResource.PostComment(comment)")]
-        public Comment PostPullRequestComment(Comment comment)
-        {
-            var overrideUrl = BaseUrl + "/comments";
-            return SharpBucketV2.Post(comment, overrideUrl);
         }
     }
 }

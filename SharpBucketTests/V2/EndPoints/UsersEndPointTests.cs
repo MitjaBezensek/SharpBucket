@@ -49,16 +49,5 @@ namespace SharpBucketTests.V2.EndPoints
             profile.created_on.ShouldBe("2008-06-26T13:58:38+00:00");
             profile.account_status.ShouldBe("active", nameof(profile.account_status));
         }
-
-        [Test]
-        [Obsolete("Test of an obsolete method")]
-        public void ListRepositories_FromMirrorAccount_ShouldReturnMirrorsRepositories()
-        {
-            usersEndPoint.ShouldNotBe(null);
-            var repositories = usersEndPoint.ListRepositories();
-            repositories.Count.ShouldBeGreaterThan(10);
-            repositories = usersEndPoint.ListRepositories(max: 5);
-            repositories.Count.ShouldBe(5);
-        }
     }
 }

@@ -16,13 +16,6 @@ namespace SharpBucket.V2
     public interface ISharpBucketV2 : ISharpBucket, ISharpBucketRequesterV2
     {
         /// <summary>
-        /// Get the Teams end pPoint.
-        ///  Give access to the data relative to the teams.
-        /// </summary>
-        [Obsolete("This endpoint has been deprecated and will stop functioning soon. You should use the workspaces endpoint instead.")]
-        TeamsEndPoint TeamsEndPoint();
-
-        /// <summary>
         /// Get the Repositories end point.
         /// Give access to the data relative to the public repositories and private repositories of the logged in user.
         /// </summary>

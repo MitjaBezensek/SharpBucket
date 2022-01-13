@@ -51,14 +51,5 @@ namespace SharpBucket.V2.EndPoints
         {
             return await SharpBucketV2.GetAsync<User>(BaseUrl, token);
         }
-
-        /// <summary>
-        /// List all of the user's repositories. 
-        /// Private repositories only appear on this list if the caller is authenticated and is authorized to view the repository.
-        /// </summary>
-        /// <param name="max">The maximum number of items to return. 0 returns all items.</param>
-        [Obsolete("Prefer go through the RepositoriesResource property.")]
-        public List<Repository> ListRepositories(int max = 0)
-            => this.RepositoriesResource.ListRepositories(new ListRepositoriesParameters { Max = max });
     }
 }

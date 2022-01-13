@@ -14,12 +14,6 @@ namespace SharpBucket.V2.EndPoints
     /// </summary>
     public class TagsResource : EndPoint
     {
-        [Obsolete("Prefer repositoriesEndPoint.RepositoriesResource(accountName).RepositoryResource(repoSlugOrName).TagsResource")]
-        public TagsResource(string accountName, string repoSlugOrName, RepositoriesEndPoint repositoriesEndPoint)
-            :this (repositoriesEndPoint.RepositoriesResource(accountName).RepositoryResource(repoSlugOrName))
-        {
-        }
-
         internal TagsResource(RepositoryResource repositoryResource)
             : base(repositoryResource, "refs/tags")
         {

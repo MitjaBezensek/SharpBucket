@@ -23,16 +23,6 @@ namespace SharpBucket.V2
         }
 
         /// <summary>
-        /// Get the Teams endpoint.
-        ///  Give access to the data relative to the teams.
-        /// </summary>
-        [Obsolete("This endpoint has been deprecated and will stop functioning soon. You should use WorkspacesEndPoint() instead.")]
-        public TeamsEndPoint TeamsEndPoint()
-        {
-            return new TeamsEndPoint(this);
-        }
-
-        /// <summary>
         /// Get the Repositories endpoint.
         /// Give access to the data relative to the public repositories and private repositories of the logged in user.
         /// </summary>
