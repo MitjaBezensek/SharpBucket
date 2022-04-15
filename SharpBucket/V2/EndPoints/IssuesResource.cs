@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-
+using System.Threading.Tasks;
 using SharpBucket.V2.Pocos;
 
 namespace SharpBucket.V2.EndPoints
@@ -65,6 +65,27 @@ namespace SharpBucket.V2.EndPoints
             return SharpBucketV2.EnumeratePaginatedValuesAsync<Issue>(BaseUrl, parameters.ToDictionary(), parameters.PageLen, token);
         }
 #endif
+
+        /// <summary>
+        /// Creates a new issue in the specified repository.
+        /// </summary>
+        /// <param name="issue">The issue to create.</param>
+        /// <returns>The created issue.</returns>
+        public Issue PostIssue(Issue issue)
+        {
+            return SharpBucketV2.Post(issue, BaseUrl);
+        }
+
+        /// <summary>
+        /// Creates a new issue in the specified repository.
+        /// </summary>
+        /// <param name="issue">The issue to create.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The created issue.</returns>
+        public Task<Issue> PostIssueAsync(Issue issue, CancellationToken token = default)
+        {
+            return SharpBucketV2.PostAsync(issue, BaseUrl, token);
+        }
 
         #region Issue Resource
 

@@ -63,6 +63,15 @@ namespace SharpBucket.V2
         {
             protected override object SerializeEnum(Enum p)
             {
+                if (p is IssuePriority)
+                    return p.ToString().ToLower();
+
+                if (p is IssueKind)
+                    return p.ToString().ToLower();
+
+                if (p is IssueStatus)
+                    return p.ToString().ToLower();
+                
                 return p.ToString();
             }
 
