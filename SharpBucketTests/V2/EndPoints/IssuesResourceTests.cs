@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using SharpBucket.V2;
 using SharpBucket.V2.EndPoints;
+using SharpBucket.V2.Pocos;
+using SharpBucketTests.V2.Pocos;
 using Shouldly;
 
 namespace SharpBucketTests.V2.EndPoints
@@ -99,6 +101,86 @@ namespace SharpBucketTests.V2.EndPoints
             var exception = Should.Throw<BitbucketV2Exception>(
                 async () => await NotExistingRepository.EnumerateIssuesAsync().ToListAsync());
             exception.HttpStatusCode.ShouldBe(HttpStatusCode.NotFound);
+        }
+
+        [Test]
+        public void PostIssue_NewIssue_IssueIsCreated()
+        {
+            var issueResource = SampleRepositories.TestRepository.RepositoryResource.IssuesResource();
+            var initialIssues = issueResource.ListIssues();
+            var newIssue = new Issue
+            {
+                title = "newIssue",
+                kind = IssueKind.Task,
+                state = IssueStatus.Open,
+                priority = IssuePriority.Minor
+            };
+
+            var createdIssue = issueResource.PostIssue(newIssue);
+            
+            createdIssue.ShouldBeFilled();
+            createdIssue.title.ShouldBe(newIssue.title);
+            createdIssue.kind.ShouldBe(newIssue.kind);
+            createdIssue.state.ShouldBe(newIssue.state);
+            createdIssue.priority.ShouldBe(newIssue.priority);
+            
+            var currentIssues = issueResource.ListIssues();
+            currentIssues.Count.ShouldBeGreaterThan(initialIssues.Count);
+        }
+
+        [Test]
+        public void PostIssue_IssueWithNullTitle_ThrowsException()
+        {
+            var issueResource = SampleRepositories.TestRepository.RepositoryResource.IssuesResource();
+            var newIssue = new Issue
+            {
+                title = null,
+                kind = IssueKind.Task,
+                state = IssueStatus.Open,
+                priority = IssuePriority.Minor
+            };
+
+            Should.Throw<BitbucketV2Exception>(() => issueResource.PostIssue(newIssue));
+        }
+        
+        [Test]
+        public async Task PostIssueAsync_NewIssue_IssueIsCreated()
+        {
+            var issueResource = SampleRepositories.TestRepository.RepositoryResource.IssuesResource();
+            var initialIssues = issueResource.ListIssues();
+            var newIssue = new Issue
+            {
+                title = "newIssue",
+                kind = IssueKind.Task,
+                state = IssueStatus.Open,
+                priority = IssuePriority.Minor
+            };
+
+            var createdIssue = await issueResource.PostIssueAsync(newIssue);
+            
+            createdIssue.ShouldBeFilled();
+            createdIssue.title.ShouldBe(newIssue.title);
+            createdIssue.kind.ShouldBe(newIssue.kind);
+            createdIssue.state.ShouldBe(newIssue.state);
+            createdIssue.priority.ShouldBe(newIssue.priority);
+            
+            var currentIssues = issueResource.ListIssues();
+            currentIssues.Count.ShouldBeGreaterThan(initialIssues.Count);
+        }
+
+        [Test]
+        public async Task PostIssueAsync_IssueWithNullTitle_ThrowsException()
+        {
+            var issueResource = SampleRepositories.TestRepository.RepositoryResource.IssuesResource();
+            var newIssue = new Issue
+            {
+                title = null,
+                kind = IssueKind.Task,
+                state = IssueStatus.Open,
+                priority = IssuePriority.Minor
+            };
+
+            Should.Throw<BitbucketV2Exception>(async () => await issueResource.PostIssueAsync(newIssue));
         }
     }
 }
