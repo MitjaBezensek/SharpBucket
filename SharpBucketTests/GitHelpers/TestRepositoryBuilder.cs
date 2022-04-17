@@ -108,9 +108,9 @@ namespace SharpBucketTests.GitHelpers
             var dir = Path.GetDirectoryName(fileName);
             if (!string.IsNullOrEmpty(dir))
             {
-                Directory.CreateDirectory($"{WorkingDirectory}\\{dir}");
+                Directory.CreateDirectory(Path.Combine(WorkingDirectory, dir));
             }
-            File.WriteAllText($"{WorkingDirectory}\\{fileName}", fileContent);
+            File.WriteAllText(Path.Combine(WorkingDirectory, fileName), fileContent);
             Commands.Stage(repository, fileName);
         }
 
