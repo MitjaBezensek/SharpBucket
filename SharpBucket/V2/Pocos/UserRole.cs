@@ -5,5 +5,6 @@
         public User User { get; set; }
         public string Role { get; set; }
         public bool Approved { get; set; }
+        public string State { get; set; }
     }
 }
